@@ -26,6 +26,10 @@
 - Enforce variable naming convention
     - `Name` for global
     - `name` for local
+    
+## Future ideas
+
+- Auto-format code via `gawk --pretty-print`
 
 ## Useful links
 
