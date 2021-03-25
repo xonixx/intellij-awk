@@ -1,10 +1,11 @@
 # intellij-awk
+
 [WiP] The missing IntelliJ IDEA language support plugin for [AWK](https://en.wikipedia.org/wiki/AWK)
 
 ## Motivation
 
 - At the moment there is no AWK plugin for IDEA, which is a pity.
-- Interested to sharpen my Java skills and learn some IDEA internals. 
+- Interested to sharpen my Java skills and learn some IDEA internals.
 
 ## Goals v0.0.1
 
@@ -19,10 +20,12 @@
 
 ## Goals v0.0.3
 
+- Refactoring support
+    - rename variable
+    - rename function
 - Enforce variable naming convention
     - `Name` for global
     - `name` for local
-
 
 ## Useful links
 
