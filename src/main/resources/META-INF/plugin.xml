@@ -13,7 +13,8 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <fileType name="Simple File" implementationClass="intellij_awk.SimpleFileType"
+                  fieldName="INSTANCE" language="Simple" extensions="simple"/>
     </extensions>
 
     <actions>
