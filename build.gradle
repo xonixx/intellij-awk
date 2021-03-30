@@ -29,3 +29,5 @@ patchPluginXml {
 test {
     useJUnitPlatform()
 }
+
+sourceSets.main.java.srcDirs 'src/main/gen'

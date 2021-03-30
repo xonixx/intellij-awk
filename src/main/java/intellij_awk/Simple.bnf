@@ -1,0 +1,20 @@
+{
+  parserClass="intellij_awk.parser.SimpleParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Simple"
+  psiImplClassSuffix="Impl"
+  psiPackage="intellij_awk.psi"
+  psiImplPackage="intellij_awk.psi.impl"
+
+  elementTypeHolderClass="intellij_awk.psi.SimpleTypes"
+  elementTypeClass="intellij_awk.psi.SimpleElementType"
+  tokenTypeClass="intellij_awk.psi.SimpleTokenType"
+}
+
+simpleFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY
