@@ -19,6 +19,7 @@
                                implementationClass="intellij_awk.SimpleParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Simple"
                                        implementationClass="intellij_awk.SimpleSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="intellij_awk.SimpleColorSettingsPage"/>
     </extensions>
 
     <actions>
