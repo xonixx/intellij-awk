@@ -17,6 +17,8 @@
                   fieldName="INSTANCE" language="Simple" extensions="simple"/>
         <lang.parserDefinition language="Simple"
                                implementationClass="intellij_awk.SimpleParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Simple"
+                                       implementationClass="intellij_awk.SimpleSyntaxHighlighterFactory"/>
     </extensions>
 
     <actions>
