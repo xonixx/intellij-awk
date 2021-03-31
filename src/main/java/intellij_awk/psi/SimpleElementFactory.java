@@ -12,7 +12,7 @@ public class SimpleElementFactory {
 
   public static SimpleFile createFile(Project project, String text) {
     String name = "dummy.simple";
-    return (SimpleFile) PsiFileFactory.getInstance(project).
-                createFileFromText(name, SimpleFileType.INSTANCE, text);
+    return (SimpleFile)
+        PsiFileFactory.getInstance(project).createFileFromText(name, SimpleFileType.INSTANCE, text);
   }
 }

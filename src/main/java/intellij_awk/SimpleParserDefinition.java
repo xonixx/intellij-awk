@@ -73,5 +73,4 @@ public class SimpleParserDefinition implements ParserDefinition {
   public PsiElement createElement(ASTNode node) {
     return SimpleTypes.Factory.createElement(node);
   }
-
 }

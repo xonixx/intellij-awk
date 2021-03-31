@@ -17,20 +17,22 @@ import java.util.List;
 public class SimpleUtil {
 
   /**
-   * Searches the entire project for Simple language files with instances of the Simple property with the given key.
+   * Searches the entire project for Simple language files with instances of the Simple property
+   * with the given key.
    *
    * @param project current project
-   * @param key     to check
+   * @param key to check
    * @return matching properties
    */
   public static List<SimpleProperty> findProperties(Project project, String key) {
     List<SimpleProperty> result = new ArrayList<>();
     Collection<VirtualFile> virtualFiles =
-            FileTypeIndex.getFiles(SimpleFileType.INSTANCE, GlobalSearchScope.allScope(project));
+        FileTypeIndex.getFiles(SimpleFileType.INSTANCE, GlobalSearchScope.allScope(project));
     for (VirtualFile virtualFile : virtualFiles) {
       SimpleFile simpleFile = (SimpleFile) PsiManager.getInstance(project).findFile(virtualFile);
       if (simpleFile != null) {
-        SimpleProperty[] properties = PsiTreeUtil.getChildrenOfType(simpleFile, SimpleProperty.class);
+        SimpleProperty[] properties =
+            PsiTreeUtil.getChildrenOfType(simpleFile, SimpleProperty.class);
         if (properties != null) {
           for (SimpleProperty property : properties) {
             if (key.equals(property.getKey())) {
@@ -46,11 +48,12 @@ public class SimpleUtil {
   public static List<SimpleProperty> findProperties(Project project) {
     List<SimpleProperty> result = new ArrayList<>();
     Collection<VirtualFile> virtualFiles =
-            FileTypeIndex.getFiles(SimpleFileType.INSTANCE, GlobalSearchScope.allScope(project));
+        FileTypeIndex.getFiles(SimpleFileType.INSTANCE, GlobalSearchScope.allScope(project));
     for (VirtualFile virtualFile : virtualFiles) {
       SimpleFile simpleFile = (SimpleFile) PsiManager.getInstance(project).findFile(virtualFile);
       if (simpleFile != null) {
-        SimpleProperty[] properties = PsiTreeUtil.getChildrenOfType(simpleFile, SimpleProperty.class);
+        SimpleProperty[] properties =
+            PsiTreeUtil.getChildrenOfType(simpleFile, SimpleProperty.class);
         if (properties != null) {
           Collections.addAll(result, properties);
         }
@@ -58,5 +61,4 @@ public class SimpleUtil {
     }
     return result;
   }
-
 }

@@ -12,7 +12,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
+public class SimpleReference extends PsiReferenceBase<PsiElement>
+    implements PsiPolyVariantReference {
 
   private final String key;
 
@@ -48,13 +49,12 @@ public class SimpleReference extends PsiReferenceBase<PsiElement> implements Psi
     List<LookupElement> variants = new ArrayList<>();
     for (final SimpleProperty property : properties) {
       if (property.getKey() != null && property.getKey().length() > 0) {
-        variants.add(LookupElementBuilder
-                .create(property).withIcon(SimpleIcons.FILE)
-                .withTypeText(property.getContainingFile().getName())
-        );
+        variants.add(
+            LookupElementBuilder.create(property)
+                .withIcon(SimpleIcons.FILE)
+                .withTypeText(property.getContainingFile().getName()));
       }
     }
     return variants.toArray();
   }
-
 }

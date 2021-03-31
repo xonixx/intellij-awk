@@ -9,5 +9,4 @@ public class SimpleLanguage extends Language {
   private SimpleLanguage() {
     super("Simple");
   }
-
 }

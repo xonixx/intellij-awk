@@ -15,5 +15,4 @@ public class SimpleTokenType extends IElementType {
   public String toString() {
     return "SimpleTokenType." + super.toString();
   }
-
 }

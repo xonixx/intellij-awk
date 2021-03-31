@@ -13,5 +13,4 @@ public class SimpleSyntaxHighlighterFactory extends SyntaxHighlighterFactory {
   public SyntaxHighlighter getSyntaxHighlighter(Project project, VirtualFile virtualFile) {
     return new SimpleSyntaxHighlighter();
   }
-
 }
