@@ -28,6 +28,7 @@
                                         implementationClass="intellij_awk.SimpleLineMarkerProvider"/>
         <completion.contributor language="Simple"
                                 implementationClass="intellij_awk.SimpleCompletionContributor"/>
+        <psi.referenceContributor implementation="intellij_awk.SimpleReferenceContributor"/>
     </extensions>
 
     <actions>
