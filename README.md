@@ -41,3 +41,11 @@
     - https://slebok.github.io/zoo/#awk
         - [EBNF Grammar](https://github.com/slebok/zoo/blob/master/zoo/awk/manual/fetched/src.grammar.txt)
         - https://pubs.opengroup.org/onlinepubs/7908799/xcu/awk.html#tag_000_000_108_016
+- Some other language plugins
+    - [Zig](https://github.com/ice1000/intellij-zig)
+    - [Solidity](https://github.com/intellij-solidity/intellij-solidity)
+    - [Erlang](https://github.com/ignatov/intellij-erlang)
+    - [Elixir](https://github.com/KronicDeth/intellij-elixir)
+    - [Rust](https://github.com/intellij-rust/intellij-rust)
+    - [Bash](https://github.com/BashSupport/BashSupport)
+    - [Zephir](https://github.com/zephir-lang/idea-plugin)
