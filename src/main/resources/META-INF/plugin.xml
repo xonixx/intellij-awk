@@ -11,6 +11,7 @@
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends><!--TODO do we need for AWK?-->
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Simple File" implementationClass="intellij_awk.SimpleFileType"
@@ -20,6 +21,8 @@
         <lang.syntaxHighlighterFactory language="Simple"
                                        implementationClass="intellij_awk.SimpleSyntaxHighlighterFactory"/>
         <colorSettingsPage implementation="intellij_awk.SimpleColorSettingsPage"/>
+
+        <annotator language="JAVA" implementationClass="intellij_awk.SimpleAnnotator"/>
     </extensions>
 
     <actions>
