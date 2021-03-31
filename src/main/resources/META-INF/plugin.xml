@@ -23,6 +23,9 @@
         <colorSettingsPage implementation="intellij_awk.SimpleColorSettingsPage"/>
 
         <annotator language="JAVA" implementationClass="intellij_awk.SimpleAnnotator"/>
+
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="intellij_awk.SimpleLineMarkerProvider"/>
     </extensions>
 
     <actions>
