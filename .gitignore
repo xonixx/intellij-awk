@@ -4,3 +4,4 @@
 gradle/wrapper/gradle-wrapper.jar
 build/
 soft/
+src/main/gen/
