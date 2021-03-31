@@ -26,6 +26,8 @@
 
         <codeInsight.lineMarkerProvider language="JAVA"
                                         implementationClass="intellij_awk.SimpleLineMarkerProvider"/>
+        <completion.contributor language="Simple"
+                                implementationClass="intellij_awk.SimpleCompletionContributor"/>
     </extensions>
 
     <actions>
