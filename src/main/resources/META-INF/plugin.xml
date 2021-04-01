@@ -44,6 +44,7 @@
         <codeStyleSettingsProvider implementation="intellij_awk.SimpleCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider
                 implementation="intellij_awk.SimpleLanguageCodeStyleSettingsProvider"/>
+        <lang.commenter language="Simple" implementationClass="intellij_awk.SimpleCommenter"/>
     </extensions>
 
     <actions>
