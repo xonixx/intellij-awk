@@ -39,6 +39,8 @@
                 implementation="intellij_awk.SimpleChooseByNameContributor"/>/
         <lang.psiStructureViewFactory language="Simple"
                                       implementationClass="intellij_awk.SimpleStructureViewFactory"/>
+        <lang.formatter language="Simple"
+                        implementationClass="intellij_awk.SimpleFormattingModelBuilder"/>
     </extensions>
 
     <actions>
