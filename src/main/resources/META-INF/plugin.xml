@@ -37,6 +37,8 @@
                              implementationClass="intellij_awk.SimpleFoldingBuilder"/>
         <gotoSymbolContributor
                 implementation="intellij_awk.SimpleChooseByNameContributor"/>/
+        <lang.psiStructureViewFactory language="Simple"
+                                      implementationClass="intellij_awk.SimpleStructureViewFactory"/>
     </extensions>
 
     <actions>

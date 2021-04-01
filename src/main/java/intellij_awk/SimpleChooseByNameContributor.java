@@ -26,10 +26,10 @@ public class SimpleChooseByNameContributor implements ChooseByNameContributor {
 
   @NotNull
   @Override
-  public NavigationItem[] getItemsByName(String name, String pattern, Project project, boolean includeNonProjectItems) {
+  public NavigationItem[] getItemsByName(
+      String name, String pattern, Project project, boolean includeNonProjectItems) {
     // TODO: include non project items
     List<SimpleProperty> properties = SimpleUtil.findProperties(project, name);
     return properties.toArray(new NavigationItem[properties.size()]);
   }
-
 }
