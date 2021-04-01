@@ -35,6 +35,8 @@
                                  implementationClass="intellij_awk.SimpleFindUsagesProvider"/>
         <lang.foldingBuilder language="JAVA"
                              implementationClass="intellij_awk.SimpleFoldingBuilder"/>
+        <gotoSymbolContributor
+                implementation="intellij_awk.SimpleChooseByNameContributor"/>/
     </extensions>
 
     <actions>

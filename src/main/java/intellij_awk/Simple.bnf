@@ -22,6 +22,6 @@ private item_ ::= (property|COMMENT|CRLF)
 property ::= (KEY? SEPARATOR VALUE?) | KEY {
   mixin="intellij_awk.psi.impl.SimpleNamedElementImpl"
   implements="intellij_awk.psi.SimpleNamedElement"
-  methods=[getKey getValue getName setName getNameIdentifier]
+  methods=[getKey getValue getName setName getNameIdentifier getPresentation]
 }
 
