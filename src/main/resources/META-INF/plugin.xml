@@ -29,6 +29,8 @@
         <completion.contributor language="Simple"
                                 implementationClass="intellij_awk.SimpleCompletionContributor"/>
         <psi.referenceContributor implementation="intellij_awk.SimpleReferenceContributor"/>
+        <lang.refactoringSupport language="Simple"
+                                 implementationClass="intellij_awk.SimpleRefactoringSupportProvider"/>
     </extensions>
 
     <actions>
