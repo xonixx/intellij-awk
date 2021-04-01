@@ -31,6 +31,8 @@
         <psi.referenceContributor implementation="intellij_awk.SimpleReferenceContributor"/>
         <lang.refactoringSupport language="Simple"
                                  implementationClass="intellij_awk.SimpleRefactoringSupportProvider"/>
+        <lang.findUsagesProvider language="Simple"
+                                 implementationClass="intellij_awk.SimpleFindUsagesProvider"/>
     </extensions>
 
     <actions>
