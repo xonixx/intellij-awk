@@ -33,6 +33,8 @@
                                  implementationClass="intellij_awk.SimpleRefactoringSupportProvider"/>
         <lang.findUsagesProvider language="Simple"
                                  implementationClass="intellij_awk.SimpleFindUsagesProvider"/>
+        <lang.foldingBuilder language="JAVA"
+                             implementationClass="intellij_awk.SimpleFoldingBuilder"/>
     </extensions>
 
     <actions>
