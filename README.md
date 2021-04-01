@@ -49,3 +49,5 @@
     - [Rust](https://github.com/intellij-rust/intellij-rust)
     - [Bash](https://github.com/BashSupport/BashSupport)
     - [Zephir](https://github.com/zephir-lang/idea-plugin)
+    - [IDEA sh](https://github.com/JetBrains/intellij-community/tree/master/plugins/sh)
+    - [IDEA properties](https://github.com/JetBrains/intellij-community/tree/master/plugins/properties) 
