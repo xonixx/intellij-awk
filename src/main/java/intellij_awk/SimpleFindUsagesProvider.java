@@ -16,10 +16,11 @@ public class SimpleFindUsagesProvider implements FindUsagesProvider {
   @Nullable
   @Override
   public WordsScanner getWordsScanner() {
-    return new DefaultWordsScanner(new SimpleLexerAdapter(),
-            TokenSet.create(SimpleTypes.KEY),
-            TokenSet.create(SimpleTypes.COMMENT),
-            TokenSet.EMPTY);
+    return new DefaultWordsScanner(
+        new SimpleLexerAdapter(),
+        TokenSet.create(SimpleTypes.KEY),
+        TokenSet.create(SimpleTypes.COMMENT),
+        TokenSet.EMPTY);
   }
 
   @Override
@@ -57,10 +58,11 @@ public class SimpleFindUsagesProvider implements FindUsagesProvider {
   @Override
   public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
     if (element instanceof SimpleProperty) {
-      return ((SimpleProperty) element).getKey() + SimpleAnnotator.SIMPLE_SEPARATOR_STR + ((SimpleProperty) element).getValue();
+      return ((SimpleProperty) element).getKey()
+          + SimpleAnnotator.SIMPLE_SEPARATOR_STR
+          + ((SimpleProperty) element).getValue();
     } else {
       return "";
     }
   }
-
 }
