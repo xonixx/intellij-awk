@@ -41,6 +41,8 @@
     - https://slebok.github.io/zoo/#awk
         - [EBNF Grammar](https://github.com/slebok/zoo/blob/master/zoo/awk/manual/fetched/src.grammar.txt)
         - https://pubs.opengroup.org/onlinepubs/7908799/xcu/awk.html#tag_000_000_108_016
+    - [AWK.sublime-syntax](https://github.com/JohnNilsson/awk-sublime/blob/master/AWK.sublime-syntax)
+        - [Explanation](https://www.sublimetext.com/docs/3/syntax.html)
 - Some other language plugins
     - [Zig](https://github.com/ice1000/intellij-zig)
     - [Solidity](https://github.com/intellij-solidity/intellij-solidity)
