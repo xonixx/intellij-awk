@@ -105,6 +105,7 @@
 
 /*
     Grammar based on https://pubs.opengroup.org/onlinepubs/7908799/xcu/awk.html#tag_000_000_108_016
+    TODO 1. Comments in grammar?
 */
 
 // /pattern/
@@ -128,12 +129,16 @@ program ::= item (terminator item)*
 //                 ;
 
 // BEGIN { ... }
+// { ... }
+// 1
 // function a() { ... }
-item             ::= FUNCTION NAME      '(' param_list_opt ')'
+item             ::= FUNCTION FUNC_NAME '(' param_list_opt ')'
                        newline_opt action
-                 | FUNCTION FUNC_NAME '(' param_list_opt ')'
-                       newline_opt action
+// TODO: do we need 2 lines below?
+//                 | FUNCTION NAME      '(' param_list_opt ')'
+//                                         newline_opt action
                  | pattern action*
+                 | action
                  ;
 
 param_list_opt   ::= param_list?
@@ -144,8 +149,7 @@ param_list       ::= NAME (',' NAME)*
 
 pattern          ::= BEGIN
                  | END
-                 | expr
-                 | expr ',' newline_opt expr
+                 | expr (',' newline_opt expr)?
                  ;
 
 action           ::= '{' newline_opt                           '}'
@@ -248,72 +252,77 @@ expr             ::= unary_expr
                  | non_unary_expr
                  ;
 
-unary_expr       ::= '+' expr
-                 | '-' expr
-                 | unary_expr '^'      expr
-                 | unary_expr '*'      expr
-                 | unary_expr '/'      expr
-                 | unary_expr '%'      expr
-                 | unary_expr '+'      expr
-                 | unary_expr '-'      expr
-                 | unary_expr          non_unary_expr
-                 | unary_expr '<'      expr
-                 | unary_expr LE       expr
-                 | unary_expr NE       expr
-                 | unary_expr EQ       expr
-                 | unary_expr '>'      expr
-                 | unary_expr GE       expr
-                 | unary_expr '~'      expr
-                 | unary_expr NO_MATCH expr
-                 | unary_expr IN NAME
-                 | unary_expr AND newline_opt expr
-                 | unary_expr OR  newline_opt expr
-                 | unary_expr '?' expr ':' expr
-                 | unary_input_function
+unary_expr       ::= ('+'|'-')? expr
+                  (    '^'      expr
+                     | '*'      expr
+                     | '/'      expr
+                     | '%'      expr
+                     | '+'      expr
+                     | '-'      expr
+                     |          non_unary_expr
+                     | '<'      expr
+                     | LE       expr
+                     | NE       expr
+                     | EQ       expr
+                     | '>'      expr
+                     | GE       expr
+                     | '~'      expr
+                     | NO_MATCH expr
+                     | IN NAME
+                     | AND newline_opt expr
+                     | OR  newline_opt expr
+                     | '?' expr ':' expr
+                     | '|' simple_get
+                 )?
                  ;
 
-non_unary_expr   ::= '(' expr ')'
-                 | '!' expr
-                 | non_unary_expr '^'      expr
-                 | non_unary_expr '*'      expr
-                 | non_unary_expr '/'      expr
-                 | non_unary_expr '%'      expr
-                 | non_unary_expr '+'      expr
-                 | non_unary_expr '-'      expr
-                 | non_unary_expr          non_unary_expr
-                 | non_unary_expr '<'      expr
-                 | non_unary_expr LE       expr
-                 | non_unary_expr NE       expr
-                 | non_unary_expr EQ       expr
-                 | non_unary_expr '>'      expr
-                 | non_unary_expr GE       expr
-                 | non_unary_expr '~'      expr
-                 | non_unary_expr NO_MATCH expr
-                 | non_unary_expr IN NAME
-                 | '(' multiple_expr_list ')' IN NAME
-                 | non_unary_expr AND newline_opt expr
-                 | non_unary_expr OR  newline_opt expr
-                 | non_unary_expr '?' expr ':' expr
-                 | NUMBER
-                 | STRING
-                 | lvalue
-                 | ERE
-                 | lvalue INCR
-                 | lvalue DECR
-                 | INCR lvalue
-                 | DECR lvalue
-                 | lvalue POW_ASSIGN expr
-                 | lvalue MOD_ASSIGN expr
-                 | lvalue MUL_ASSIGN expr
-                 | lvalue DIV_ASSIGN expr
-                 | lvalue ADD_ASSIGN expr
-                 | lvalue SUB_ASSIGN expr
-                 | lvalue '=' expr
-                 | FUNC_NAME '(' expr_list_opt ')'
-                      /* no white space allowed before '(' */
-                 | BUILTIN_FUNC_NAME '(' expr_list_opt ')'
-                 | BUILTIN_FUNC_NAME
-                 | non_unary_input_function
+non_unary_expr   ::= (
+                           '(' expr ')'
+                         | '(' multiple_expr_list ')' IN NAME
+                         | '!' expr
+                         | simple_get ('<' expr)?
+                         | NUMBER
+                         | STRING
+                         | ERE
+                         | lvalue INCR
+                         | lvalue DECR
+                         | INCR lvalue
+                         | DECR lvalue
+                         | lvalue POW_ASSIGN expr
+                         | lvalue MOD_ASSIGN expr
+                         | lvalue MUL_ASSIGN expr
+                         | lvalue DIV_ASSIGN expr
+                         | lvalue ADD_ASSIGN expr
+                         | lvalue SUB_ASSIGN expr
+                         | lvalue '=' expr
+                         | lvalue
+                         | FUNC_NAME '(' expr_list_opt ')'
+                              /* no white space allowed before '(' */ // TODO is this still relevant?
+                         | BUILTIN_FUNC_NAME '(' expr_list_opt ')'
+                         | BUILTIN_FUNC_NAME
+                     )
+                     (
+                           '^'      expr
+                         | '*'      expr
+                         | '/'      expr
+                         | '%'      expr
+                         | '+'      expr
+                         | '-'      expr
+                         |          non_unary_expr
+                         | '<'      expr
+                         | LE       expr
+                         | NE       expr
+                         | EQ       expr
+                         | '>'      expr
+                         | GE       expr
+                         | '~'      expr
+                         | NO_MATCH expr
+                         | IN NAME
+                         | AND newline_opt expr
+                         | OR  newline_opt expr
+                         | '?' expr ':' expr
+                         | '|' simple_get
+                     )?
                  ;
 
 print_expr_list_opt ::= print_expr_list?
@@ -387,16 +396,14 @@ lvalue           ::= NAME ('[' expr_list ']')*
                  | '$' expr
                  ;
 
-non_unary_input_function ::= simple_get
-                 | simple_get '<' expr
-                 | non_unary_expr '|' simple_get
-                 ;
+//non_unary_input_function ::= simple_get ('<' expr)?
+//                 | non_unary_expr '|' simple_get
+//                 ;
 
-unary_input_function ::= unary_expr '|' simple_get
-                 ;
+//unary_input_function ::= unary_expr '|' simple_get
+//                 ;
 
-simple_get       ::= GETLINE
-                 | GETLINE lvalue
+simple_get       ::= GETLINE lvalue?
                  ;
 
 newline_opt      ::= NEWLINE*
