@@ -3,12 +3,12 @@ package intellij_awk;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import intellij_awk.psi.SimpleTypes;
+import intellij_awk.psi.AwkTypes;
 import com.intellij.psi.TokenType;
 
 %%
 
-%class SimpleLexer
+%class AwkLexer
 %implements FlexLexer
 %unicode
 %function advance
