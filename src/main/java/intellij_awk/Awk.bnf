@@ -52,23 +52,23 @@
 // %token '+' '-' '*' '%' '^' '!' '>' '<' '|' '?' ':' '~' '$' '='
 
   tokens = [
-    Begin='BEGIN'
-    End='END'
-    Break='break'
-    Continue='continue'
-    Delete='delete'
-    Do='do'
-    Else='else'
-    Exit='exit'
-    For='for'
-    Function='function'
-    If='if'
-    In='in'
-    Next='next'
-    Print='print'
-    Printf='printf'
-    Return='return'
-    While='while'
+    BEGIN='BEGIN'
+    END='END'
+    BREAK='break'
+    CONTINUE='continue'
+    DELETE='delete'
+    DO='do'
+    ELSE='else'
+    EXIT='exit'
+    FOR='for'
+    FUNCTION='function'
+    IF='if'
+    IN='in'
+    NEXT='next'
+    PRINT='print'
+    PRINTF='printf'
+    RETURN='return'
+    WHILE='while'
     BUILTIN_FUNC_NAME='regexp:atan2|cos|sin|exp|log|sqrt|int|rand|srand|gsub|index|length|match|split|sprintf|sub|substr|tolower|toupper|close|system'
     NUMBER='regexp:[0-9]+(?:\.[0-9]+)?(?:[eE][+-][0-9]+)'
     STRING='regexp:(["]([^"\\]|\\.)*["])'
@@ -91,6 +91,12 @@
     APPEND='>>'
     NEWLINE='regexp:\\r\\n|\\n'
 
+    /*
+    The token NAME consists of a word that is not a keyword or a name of a built-in function and is not followed immediately (without any delimiters) by the "(" character.
+    The token FUNC_NAME consists of a word that is not a keyword or a name of a built-in function, followed immediately (without any delimiters) by the "(" character. The "(" character will not be included as part of the token.
+    */
+    NAME='regexp:[a-zA-Z]+[a-zA-Z\d]*'
+    FUNC_NAME='regexp:[a-zA-Z]+[a-zA-Z\d]*'
     // this is a special grammar for "preview only" because grammar-kit seems to not
     // support whitespaces
     livePreviewWs='regexp:[\s]*'
@@ -123,21 +129,20 @@ program ::= ((item|pattern) terminator)*
 // BEGIN { ... }
 // function a() { ... }
 item             ::= pattern action
-                 | Function NAME      '(' param_list_opt ')'
+                 | FUNCTION NAME      '(' param_list_opt ')'
                        newline_opt action
-                 | Function FUNC_NAME '(' param_list_opt ')'
+                 | FUNCTION FUNC_NAME '(' param_list_opt ')'
                        newline_opt action
                  ;
 
 param_list_opt   ::= param_list?
                  ;
 
-param_list       ::= NAME
-                 | param_list ',' NAME
+param_list       ::= NAME (',' NAME)*
                  ;
 
-pattern          ::= Begin
-                 | End
+pattern          ::= BEGIN
+                 | END
                  | expr
                  | expr ',' newline_opt expr
                  ;
@@ -165,14 +170,14 @@ unterminated_statement_list ::= unterminated_statement
                  ;
 
 terminated_statement ::= action newline_opt
-                 | If '(' expr ')' newline_opt terminated_statement
-                 | If '(' expr ')' newline_opt terminated_statement
-                       Else newline_opt terminated_statement
-                 | While '(' expr ')' newline_opt terminated_statement
-                 | For '(' simple_statement_opt ';'
+                 | IF '(' expr ')' newline_opt terminated_statement
+                 | IF '(' expr ')' newline_opt terminated_statement
+                       ELSE newline_opt terminated_statement
+                 | WHILE '(' expr ')' newline_opt terminated_statement
+                 | FOR '(' simple_statement_opt ';'
                       expr_opt ';' simple_statement_opt ')' newline_opt
                       terminated_statement
-                 | For '(' NAME In NAME ')' newline_opt
+                 | FOR '(' NAME IN NAME ')' newline_opt
                       terminated_statement
                  | ';' newline_opt
                  | terminatable_statement NEWLINE newline_opt
@@ -180,30 +185,30 @@ terminated_statement ::= action newline_opt
                  ;
 
 unterminated_statement ::= terminatable_statement
-                 | If '(' expr ')' newline_opt unterminated_statement
-                 | If '(' expr ')' newline_opt terminated_statement
-                      Else newline_opt unterminated_statement
-                 | While '(' expr ')' newline_opt unterminated_statement
-                 | For '(' simple_statement_opt ';'
+                 | IF '(' expr ')' newline_opt unterminated_statement
+                 | IF '(' expr ')' newline_opt terminated_statement
+                      ELSE newline_opt unterminated_statement
+                 | WHILE '(' expr ')' newline_opt unterminated_statement
+                 | FOR '(' simple_statement_opt ';'
                   expr_opt ';' simple_statement_opt ')' newline_opt
                       unterminated_statement
-                 | For '(' NAME In NAME ')' newline_opt
+                 | FOR '(' NAME IN NAME ')' newline_opt
                       unterminated_statement
                  ;
 
 terminatable_statement ::= simple_statement
-                 | Break
-                 | Continue
-                 | Next
-                 | Exit expr_opt
-                 | Return expr_opt
-                 | Do newline_opt terminated_statement While '(' expr ')'
+                 | BREAK
+                 | CONTINUE
+                 | NEXT
+                 | EXIT expr_opt
+                 | RETURN expr_opt
+                 | DO newline_opt terminated_statement WHILE '(' expr ')'
                  ;
 
 simple_statement_opt ::= simple_statement?
                  ;
 
-simple_statement ::= Delete NAME '[' expr_list ']'
+simple_statement ::= DELETE NAME '[' expr_list ']'
                  | expr
                  | print_statement
                  ;
@@ -214,10 +219,10 @@ print_statement  ::= simple_print_statement output_redirection?
 //                 | simple_print_statement output_redirection
 //                 ;
 
-simple_print_statement ::= Print  print_expr_list_opt
-                 | Print  '(' multiple_expr_list ')'
-                 | Printf print_expr_list
-                 | Printf '(' multiple_expr_list ')'
+simple_print_statement ::= PRINT  print_expr_list_opt
+                 | PRINT  '(' multiple_expr_list ')'
+                 | PRINTF print_expr_list
+                 | PRINTF '(' multiple_expr_list ')'
                  ;
 
 output_redirection ::= '>'    expr
@@ -260,7 +265,7 @@ unary_expr       ::= '+' expr
                  | unary_expr GE       expr
                  | unary_expr '~'      expr
                  | unary_expr NO_MATCH expr
-                 | unary_expr In NAME
+                 | unary_expr IN NAME
                  | unary_expr AND newline_opt expr
                  | unary_expr OR  newline_opt expr
                  | unary_expr '?' expr ':' expr
@@ -284,8 +289,8 @@ non_unary_expr   ::= '(' expr ')'
                  | non_unary_expr GE       expr
                  | non_unary_expr '~'      expr
                  | non_unary_expr NO_MATCH expr
-                 | non_unary_expr In NAME
-                 | '(' multiple_expr_list ')' In NAME
+                 | non_unary_expr IN NAME
+                 | '(' multiple_expr_list ')' IN NAME
                  | non_unary_expr AND newline_opt expr
                  | non_unary_expr OR  newline_opt expr
                  | non_unary_expr '?' expr ':' expr
@@ -335,7 +340,7 @@ unary_print_expr ::= '+' print_expr
                  | unary_print_expr          non_unary_print_expr
                  | unary_print_expr '~'      print_expr
                  | unary_print_expr NO_MATCH print_expr
-                 | unary_print_expr In NAME
+                 | unary_print_expr IN NAME
                  | unary_print_expr AND newline_opt print_expr
                  | unary_print_expr OR  newline_opt print_expr
                  | unary_print_expr '?' print_expr ':' print_expr
@@ -352,8 +357,8 @@ non_unary_print_expr ::= '(' expr ')'
                  | non_unary_print_expr          non_unary_print_expr
                  | non_unary_print_expr '~'      print_expr
                  | non_unary_print_expr NO_MATCH print_expr
-                 | non_unary_print_expr In NAME
-                 | '(' multiple_expr_list ')' In NAME
+                 | non_unary_print_expr IN NAME
+                 | '(' multiple_expr_list ')' IN NAME
                  | non_unary_print_expr AND newline_opt print_expr
                  | non_unary_print_expr OR  newline_opt print_expr
                  | non_unary_print_expr '?' print_expr ':' print_expr
@@ -378,8 +383,7 @@ non_unary_print_expr ::= '(' expr ')'
                  | BUILTIN_FUNC_NAME
                  ;
 
-lvalue           ::= NAME
-                 | NAME '[' expr_list ']'
+lvalue           ::= NAME ('[' expr_list ']')*
                  | '$' expr
                  ;
 
