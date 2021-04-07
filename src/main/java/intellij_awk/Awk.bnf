@@ -338,58 +338,63 @@ print_expr       ::= unary_print_expr
                  | non_unary_print_expr
                  ;
 
-unary_print_expr ::= '+' print_expr
-                 | '-' print_expr
-                 | unary_print_expr '^'      print_expr
-                 | unary_print_expr '*'      print_expr
-                 | unary_print_expr '/'      print_expr
-                 | unary_print_expr '%'      print_expr
-                 | unary_print_expr '+'      print_expr
-                 | unary_print_expr '-'      print_expr
-                 | unary_print_expr          non_unary_print_expr
-                 | unary_print_expr '~'      print_expr
-                 | unary_print_expr NO_MATCH print_expr
-                 | unary_print_expr IN NAME
-                 | unary_print_expr AND newline_opt print_expr
-                 | unary_print_expr OR  newline_opt print_expr
-                 | unary_print_expr '?' print_expr ':' print_expr
+unary_print_expr ::= ('+'|'-') print_expr
+                 (
+                       '^'      print_expr
+                     | '*'      print_expr
+                     | '/'      print_expr
+                     | '%'      print_expr
+                     | '+'      print_expr
+                     | '-'      print_expr
+                     |          non_unary_print_expr
+                     | '~'      print_expr
+                     | NO_MATCH print_expr
+                     | IN NAME
+                     | AND newline_opt print_expr
+                     | OR  newline_opt print_expr
+                     | '?' print_expr ':' print_expr
+                 )?
                  ;
 
-non_unary_print_expr ::= '(' expr ')'
-                 | '!' print_expr
-                 | non_unary_print_expr '^'      print_expr
-                 | non_unary_print_expr '*'      print_expr
-                 | non_unary_print_expr '/'      print_expr
-                 | non_unary_print_expr '%'      print_expr
-                 | non_unary_print_expr '+'      print_expr
-                 | non_unary_print_expr '-'      print_expr
-                 | non_unary_print_expr          non_unary_print_expr
-                 | non_unary_print_expr '~'      print_expr
-                 | non_unary_print_expr NO_MATCH print_expr
-                 | non_unary_print_expr IN NAME
-                 | '(' multiple_expr_list ')' IN NAME
-                 | non_unary_print_expr AND newline_opt print_expr
-                 | non_unary_print_expr OR  newline_opt print_expr
-                 | non_unary_print_expr '?' print_expr ':' print_expr
-                 | NUMBER
-                 | STRING
-                 | lvalue
-                 | ERE
-                 | lvalue INCR
-                 | lvalue DECR
-                 | INCR lvalue
-                 | DECR lvalue
-                 | lvalue POW_ASSIGN print_expr
-                 | lvalue MOD_ASSIGN print_expr
-                 | lvalue MUL_ASSIGN print_expr
-                 | lvalue DIV_ASSIGN print_expr
-                 | lvalue ADD_ASSIGN print_expr
-                 | lvalue SUB_ASSIGN print_expr
-                 | lvalue '=' print_expr
-                 | FUNC_NAME '(' expr_list_opt ')'
-                     /* no white space allowed before '(' */
-                 | BUILTIN_FUNC_NAME '(' expr_list_opt ')'
-                 | BUILTIN_FUNC_NAME
+non_unary_print_expr ::= (
+                       '(' expr ')'
+                     | '!' print_expr
+                     | '(' multiple_expr_list ')' IN NAME
+                     | NUMBER
+                     | STRING
+                     | ERE
+                     | lvalue INCR
+                     | lvalue DECR
+                     | INCR lvalue
+                     | DECR lvalue
+                     | lvalue POW_ASSIGN print_expr
+                     | lvalue MOD_ASSIGN print_expr
+                     | lvalue MUL_ASSIGN print_expr
+                     | lvalue DIV_ASSIGN print_expr
+                     | lvalue ADD_ASSIGN print_expr
+                     | lvalue SUB_ASSIGN print_expr
+                     | lvalue '=' print_expr
+                     | lvalue
+                     | FUNC_NAME '(' expr_list_opt ')'
+                         /* no white space allowed before '(' */
+                     | BUILTIN_FUNC_NAME '(' expr_list_opt ')'
+                     | BUILTIN_FUNC_NAME
+                 )
+                 (
+                       '^'      print_expr
+                     | '*'      print_expr
+                     | '/'      print_expr
+                     | '%'      print_expr
+                     | '+'      print_expr
+                     | '-'      print_expr
+                     |          non_unary_print_expr
+                     | '~'      print_expr
+                     | NO_MATCH print_expr
+                     | IN NAME
+                     | AND newline_opt print_expr
+                     | OR  newline_opt print_expr
+                     | '?' print_expr ':' print_expr
+                 )?
                  ;
 
 lvalue           ::= NAME ('[' expr_list ']')*
