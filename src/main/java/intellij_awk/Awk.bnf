@@ -139,23 +139,18 @@ item             ::= FUNCTION FUNC_NAME '(' param_list_opt ')'
 //                                         newline_opt action
                  | pattern action*
                  | action
-                 ;
 
 param_list_opt   ::= param_list?
-                 ;
 
 param_list       ::= NAME (',' NAME)*
-                 ;
 
 pattern          ::= BEGIN
                  | END
                  | expr (',' newline_opt expr)?
-                 ;
 
 action           ::= '{' newline_opt                           '}'
                  | '{' newline_opt terminated_statement_list   '}'
                  | '{' newline_opt unterminated_statement_list '}'
-                 ;
 
 terminator       ::= (NEWLINE|';')+
 //terminator       ::= terminator ';'
@@ -165,14 +160,12 @@ terminator       ::= (NEWLINE|';')+
 //                 ;
 
 terminated_statement_list ::= terminated_statement+
-                 ;
 //terminated_statement_list ::= terminated_statement
 //                 | terminated_statement_list terminated_statement
 //                 ;
 
 unterminated_statement_list ::= unterminated_statement
                  | terminated_statement_list unterminated_statement
-                 ;
 
 terminated_statement ::= action newline_opt
                  | IF '(' expr ')' newline_opt terminated_statement
@@ -187,7 +180,6 @@ terminated_statement ::= action newline_opt
                  | ';' newline_opt
                  | terminatable_statement NEWLINE newline_opt
                  | terminatable_statement ';'     newline_opt
-                 ;
 
 unterminated_statement ::= terminatable_statement
                  | IF '(' expr ')' newline_opt unterminated_statement
@@ -199,7 +191,6 @@ unterminated_statement ::= terminatable_statement
                       unterminated_statement
                  | FOR '(' NAME IN NAME ')' newline_opt
                       unterminated_statement
-                 ;
 
 terminatable_statement ::= simple_statement
                  | BREAK
@@ -208,18 +199,14 @@ terminatable_statement ::= simple_statement
                  | EXIT expr_opt
                  | RETURN expr_opt
                  | DO newline_opt terminated_statement WHILE '(' expr ')'
-                 ;
 
 simple_statement_opt ::= simple_statement?
-                 ;
 
 simple_statement ::= DELETE NAME '[' expr_list ']'
                  | expr
                  | print_statement
-                 ;
 
 print_statement  ::= simple_print_statement output_redirection?
-                 ;
 //print_statement  ::= simple_print_statement
 //                 | simple_print_statement output_redirection
 //                 ;
@@ -228,29 +215,22 @@ simple_print_statement ::= PRINT  print_expr_list_opt
                  | PRINT  '(' multiple_expr_list ')'
                  | PRINTF print_expr_list
                  | PRINTF '(' multiple_expr_list ')'
-                 ;
 
 output_redirection ::= '>'    expr
                  | APPEND expr
                  | '|'    expr
-                 ;
 
 expr_list_opt    ::= expr_list?
-                 ;
 
 expr_list        ::= multiple_expr_list
                  | expr // TODO do we need this line?
-                 ;
 
 multiple_expr_list ::= expr (',' newline_opt expr)*
-                 ;
 
 expr_opt         ::= expr?
-                 ;
 
 expr             ::= unary_expr
                  | non_unary_expr
-                 ;
 
 unary_expr       ::= ('+'|'-')  expr
                   (    '^'      expr
@@ -274,7 +254,6 @@ unary_expr       ::= ('+'|'-')  expr
                      | '?' expr ':' expr
                      | '|' simple_get
                  )?
-                 ;
 
 non_unary_expr   ::= (
                            '(' expr ')'
@@ -323,20 +302,16 @@ non_unary_expr   ::= (
                          | '?' expr ':' expr
                          | '|' simple_get
                      )?
-                 ;
 
 print_expr_list_opt ::= print_expr_list?
-                 ;
 
 print_expr_list  ::= print_expr (',' newline_opt print_expr)*
-                 ;
 //print_expr_list  ::= print_expr
 //                 | print_expr_list ',' newline_opt print_expr
 //                 ;
 
 print_expr       ::= unary_print_expr
                  | non_unary_print_expr
-                 ;
 
 unary_print_expr ::= ('+'|'-') print_expr
                  (
@@ -354,7 +329,6 @@ unary_print_expr ::= ('+'|'-') print_expr
                      | OR  newline_opt print_expr
                      | '?' print_expr ':' print_expr
                  )?
-                 ;
 
 non_unary_print_expr ::= (
                        '(' expr ')'
@@ -395,11 +369,9 @@ non_unary_print_expr ::= (
                      | OR  newline_opt print_expr
                      | '?' print_expr ':' print_expr
                  )?
-                 ;
 
 lvalue           ::= NAME ('[' expr_list ']')*
                  | '$' expr
-                 ;
 
 //non_unary_input_function ::= simple_get ('<' expr)?
 //                 | non_unary_expr '|' simple_get
@@ -409,10 +381,8 @@ lvalue           ::= NAME ('[' expr_list ']')*
 //                 ;
 
 simple_get       ::= GETLINE lvalue?
-                 ;
 
 newline_opt      ::= NEWLINE*
-                 ;
 //newline_opt      ::= /* empty */
 //                 | newline_opt NEWLINE
 //                 ;
