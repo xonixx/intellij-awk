@@ -71,6 +71,7 @@
     While='while'
     BUILTIN_FUNC_NAME='regexp:atan2|cos|sin|exp|log|sqrt|int|rand|srand|gsub|index|length|match|split|sprintf|sub|substr|tolower|toupper|close|system'
     NUMBER='regexp:[0-9]+(?:\.[0-9]+)?(?:[eE][+-][0-9]+)'
+    STRING='regexp:(["]([^"\\]|\\.)*["])'
     GETLINE='getline'
     ADD_ASSIGN='+='
     SUB_ASSIGN='-='
@@ -89,6 +90,10 @@
     DECR='--'
     APPEND='>>'
     NEWLINE='regexp:\\r\\n|\\n'
+
+    // this is a special grammar for "preview only" because grammar-kit seems to not
+    // support whitespaces
+    livePreviewWs='regexp:[\s]*'
   ]
 }
 
