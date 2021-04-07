@@ -252,7 +252,7 @@ expr             ::= unary_expr
                  | non_unary_expr
                  ;
 
-unary_expr       ::= ('+'|'-')? expr
+unary_expr       ::= ('+'|'-')  expr
                   (    '^'      expr
                      | '*'      expr
                      | '/'      expr
