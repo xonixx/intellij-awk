@@ -1,18 +1,18 @@
 {
-  parserClass="intellij_awk.parser.SimpleParser"
+  parserClass="intellij_awk.AwkParser"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
-  psiClassPrefix="Simple"
+  psiClassPrefix="Awk"
   psiImplClassSuffix="Impl"
   psiPackage="intellij_awk.psi"
   psiImplPackage="intellij_awk.psi.impl"
 
-  elementTypeHolderClass="intellij_awk.psi.SimpleTypes"
+  elementTypeHolderClass="intellij_awk.psi.AwkTypes"
   elementTypeClass="intellij_awk.psi.SimpleElementType"
   tokenTypeClass="intellij_awk.psi.SimpleTokenType"
 
-  psiImplUtilClass="intellij_awk.psi.impl.SimplePsiImplUtil"
+  psiImplUtilClass="intellij_awk.psi.impl.AwkPsiImplUtil"
 }
 
 simpleFile ::= item_*
