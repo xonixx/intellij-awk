@@ -52,6 +52,7 @@ Exponent = [eE] [+\-]? [0-9]+
 %%
 
 {END_OF_LINE_COMMENT}                       { return AwkTypes.COMMENT; }
+// TODO
 {CRLF}({CRLF}|{WHITE_SPACE})+               { return TokenType.WHITE_SPACE; }
 ({CRLF}|{WHITE_SPACE})+                     { return TokenType.WHITE_SPACE; }
 

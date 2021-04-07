@@ -9,8 +9,8 @@
   psiImplPackage="intellij_awk.psi.impl"
 
   elementTypeHolderClass="intellij_awk.psi.AwkTypes"
-  elementTypeClass="intellij_awk.psi.SimpleElementType"
-  tokenTypeClass="intellij_awk.psi.SimpleTokenType"
+  elementTypeClass="intellij_awk.psi.AwkElementType"
+  tokenTypeClass="intellij_awk.psi.AwkTokenType"
 
   psiImplUtilClass="intellij_awk.psi.impl.AwkPsiImplUtil"
 }
@@ -20,8 +20,8 @@ simpleFile ::= item_*
 private item_ ::= (property|COMMENT|CRLF)
 
 property ::= (KEY? SEPARATOR VALUE?) | KEY {
-  mixin="intellij_awk.psi.impl.SimpleNamedElementImpl"
-  implements="intellij_awk.psi.SimpleNamedElement"
-  methods=[getKey getValue getName setName getNameIdentifier getPresentation]
+  mixin="intellij_awk.psi.impl.AwkNamedElementImpl"
+  implements="intellij_awk.psi.AwkNamedElement"
+  methods=[]
 }
 
