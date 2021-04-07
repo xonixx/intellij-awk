@@ -35,6 +35,7 @@
 
 - BWK https://github.com/onetrueawk/awk
 - [Custom language support JetBrains tutorial](https://plugins.jetbrains.com/docs/intellij/custom-language-support.html)
+- [Grammar-Kit tutorial](https://github.com/JetBrains/Grammar-Kit/blob/master/TUTORIAL.md)
 - Grammar:
     - [AWK Grammar in Yacc from BWK](https://github.com/onetrueawk/awk/blob/master/awkgram.y)
     - [AWK Grammar in Yacc from Gawk](http://git.savannah.gnu.org/cgit/gawk.git/tree/awkgram.y)
