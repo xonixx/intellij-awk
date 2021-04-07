@@ -18,28 +18,50 @@ import com.intellij.psi.TokenType;
 
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
-FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
-VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
-END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
-SEPARATOR=[:=]
-KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
+END_OF_LINE_COMMENT=("#")[^\r\n]*
+
+STRING=\"([^\"\r\n\\]|\\.)*\"
+
+/* identifiers */
+
+ConstantIdentifier = {SimpleConstantIdentifier}
+SimpleConstantIdentifier = [#A-Z0-9_]+
+
+Identifier = [:jletter:][:jletterdigit:]*
+
+TypeIdentifier = {SimpleTypeIdentifier}
+SimpleTypeIdentifier = [A-Z][:jletterdigit:]*
+
+/* int literals */
+
+DecLiteral = 0 | [1-9][0-9]* {IntegerSuffix}
+
+HexLiteral    = 0 [xX] 0* {HexDigit}* {IntegerSuffix}
+HexDigit      = [0-9a-fA-F]
+
+OctLiteral    = 0+ {OctDigit}* {IntegerSuffix}
+OctDigit          = [0-7]
+
+IntegerSuffix = [uU]? [lL]? [uU]?
+
+/* float literals */
+
+FloatLiteral  = ({FLit1}|{FLit2}|{FLit3}|{FLit4}) ([fF]|[dD])?
+
+FLit1 = [0-9]+ \. [0-9]* {Exponent}?
+FLit2 = \. [0-9]+ {Exponent}?
+FLit3 = [0-9]+ {Exponent}
+FLit4 = [0-9]+ {Exponent}?
+
+Exponent = [eE] [+\-]? [0-9]+
+
 
 %state WAITING_VALUE
 
 %%
 
-<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return AwkTypes.COMMENT; }
+{END_OF_LINE_COMMENT}                       { yybegin(YYINITIAL); return AwkTypes.COMMENT; }
+{CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+({CRLF}|{WHITE_SPACE})+                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
-<YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return AwkTypes.KEY; }
-
-<YYINITIAL> {SEPARATOR}                                     { yybegin(WAITING_VALUE); return AwkTypes.SEPARATOR; }
-
-<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-
-<WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-
-<WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   { yybegin(YYINITIAL); return AwkTypes.VALUE; }
-
-({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-
-[^]                                                         { return TokenType.BAD_CHARACTER; }
+[^]                                         { return TokenType.BAD_CHARACTER; }
