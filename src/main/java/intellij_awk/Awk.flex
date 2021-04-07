@@ -5,6 +5,7 @@ import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import intellij_awk.psi.AwkTypes;
 import com.intellij.psi.TokenType;
+import com.intellij.lang.Language;
 
 %%
 
@@ -24,29 +25,19 @@ STRING=\"([^\"\r\n\\]|\\.)*\"
 
 /* identifiers */
 
-ConstantIdentifier = {SimpleConstantIdentifier}
-SimpleConstantIdentifier = [#A-Z0-9_]+
-
 Identifier = [:jletter:][:jletterdigit:]*
-
-TypeIdentifier = {SimpleTypeIdentifier}
-SimpleTypeIdentifier = [A-Z][:jletterdigit:]*
 
 /* int literals */
 
-DecLiteral = 0 | [1-9][0-9]* {IntegerSuffix}
+DecLiteral = 0 | [1-9][0-9]*
 
-HexLiteral    = 0 [xX] 0* {HexDigit}* {IntegerSuffix}
-HexDigit      = [0-9a-fA-F]
-
-OctLiteral    = 0+ {OctDigit}* {IntegerSuffix}
+// TODO posix doesn't support oct
+OctLiteral    = 0+ {OctDigit}*
 OctDigit          = [0-7]
-
-IntegerSuffix = [uU]? [lL]? [uU]?
 
 /* float literals */
 
-FloatLiteral  = ({FLit1}|{FLit2}|{FLit3}|{FLit4}) ([fF]|[dD])?
+FloatLiteral  = {FLit1}|{FLit2}|{FLit3}|{FLit4}
 
 FLit1 = [0-9]+ \. [0-9]* {Exponent}?
 FLit2 = \. [0-9]+ {Exponent}?
@@ -56,12 +47,18 @@ FLit4 = [0-9]+ {Exponent}?
 Exponent = [eE] [+\-]? [0-9]+
 
 
-%state WAITING_VALUE
+//%state WAITING_VALUE
 
 %%
 
-{END_OF_LINE_COMMENT}                       { yybegin(YYINITIAL); return AwkTypes.COMMENT; }
-{CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-({CRLF}|{WHITE_SPACE})+                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+{END_OF_LINE_COMMENT}                       { return AwkTypes.COMMENT; }
+{CRLF}({CRLF}|{WHITE_SPACE})+               { return TokenType.WHITE_SPACE; }
+({CRLF}|{WHITE_SPACE})+                     { return TokenType.WHITE_SPACE; }
+
+{STRING}    { return new IElementType("STRING", Language.ANY); }
+{DecLiteral} |
+{OctLiteral} |
+{FloatLiteral}
+	 { return new IElementType("NUMBER", Language.ANY); }
 
 [^]                                         { return TokenType.BAD_CHARACTER; }
