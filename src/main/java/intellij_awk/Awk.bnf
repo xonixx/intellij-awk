@@ -13,6 +13,49 @@
   tokenTypeClass="intellij_awk.psi.AwkTokenType"
 
   psiImplUtilClass="intellij_awk.psi.impl.AwkPsiImplUtil"
+
+// %token NAME NUMBER STRING ERE
+// %token FUNC_NAME   /* name followed by '(' without white space */
+//
+// /* Keywords  */
+// %token       Begin   End
+// /*          'BEGIN' 'END'                            */
+//
+// %token       Break   Continue   Delete   Do   Else
+// /*          'break' 'continue' 'delete' 'do' 'else'  */
+//
+// %token       Exit   For   Function   If   In
+// /*          'exit' 'for' 'function' 'if' 'in'        */
+//
+// %token       Next   Print   Printf   Return   While
+// /*          'next' 'print' 'printf' 'return' 'while' */
+//
+// /* Reserved function names */
+// %token BUILTIN_FUNC_NAME
+//             /* one token for the following:
+//              * atan2 cos sin exp log sqrt int rand srand
+//              * gsub index length match split sprintf sub
+//              * substr tolower toupper close system
+//              */
+// %token GETLINE
+//             /* Syntactically different from other built-ins */
+//
+// /* Two-character tokens */
+// %token ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN POW_ASSIGN
+// /*     '+='       '-='       '*='       '/='       '%='       '^=' */
+//
+// %token  OR   AND  NO_MATCH   EQ   LE   GE   NE   INCR  DECR  APPEND
+// /*      '||' '&&' '!' '==' '<=' '>=' '!=' '++'  '--'  '>>'   */
+//
+// /* One-character tokens */
+// %token '{' '}' '(' ')' '[' ']' ',' ';' NEWLINE
+// %token '+' '-' '*' '%' '^' '!' '>' '<' '|' '?' ':' '~' '$' '='
+
+  tokens = [
+    Begin='BEGIN'
+    End='END'
+
+  ]
 }
 
 /*
