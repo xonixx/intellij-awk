@@ -70,7 +70,7 @@
     RETURN='return'
     WHILE='while'
     BUILTIN_FUNC_NAME='regexp:atan2|cos|sin|exp|log|sqrt|int|rand|srand|gsub|index|length|match|split|sprintf|sub|substr|tolower|toupper|close|system'
-    NUMBER='regexp:[0-9]+(?:\.[0-9]+)?(?:[eE][+-][0-9]+)'
+    NUMBER='regexp:[0-9]+(?:\.[0-9]+)?(?:[eE][+-][0-9]+)?'
     STRING='regexp:(["]([^"\\]|\\.)*["])'
     GETLINE='getline'
     ADD_ASSIGN='+='
@@ -110,7 +110,8 @@
 // /pattern/
 // /pattern/ { ... }
 // function f() { ... }
-program ::= ((item|pattern) terminator)*
+// TODO this won't parse 'BEGIN {} ;;;'
+program ::= item (terminator item)*
 
 //program          ::= item_list
 //                 | actionless_item_list
@@ -128,11 +129,11 @@ program ::= ((item|pattern) terminator)*
 
 // BEGIN { ... }
 // function a() { ... }
-item             ::= pattern action
-                 | FUNCTION NAME      '(' param_list_opt ')'
+item             ::= FUNCTION NAME      '(' param_list_opt ')'
                        newline_opt action
                  | FUNCTION FUNC_NAME '(' param_list_opt ')'
                        newline_opt action
+                 | pattern action*
                  ;
 
 param_list_opt   ::= param_list?
@@ -147,7 +148,7 @@ pattern          ::= BEGIN
                  | expr ',' newline_opt expr
                  ;
 
-action           ::= '{' newline_opt                             '}'
+action           ::= '{' newline_opt                           '}'
                  | '{' newline_opt terminated_statement_list   '}'
                  | '{' newline_opt unterminated_statement_list '}'
                  ;
@@ -233,12 +234,11 @@ output_redirection ::= '>'    expr
 expr_list_opt    ::= expr_list?
                  ;
 
-expr_list        ::= expr
-                 | multiple_expr_list
+expr_list        ::= multiple_expr_list
+                 | expr // TODO do we need this line?
                  ;
 
-multiple_expr_list ::= expr ',' newline_opt expr
-                 | multiple_expr_list ',' newline_opt expr
+multiple_expr_list ::= expr (',' newline_opt expr)*
                  ;
 
 expr_opt         ::= expr?
