@@ -15,14 +15,17 @@
 
 ## Goals v0.0.2
 
-- Showing documentation for built-in functions
-- Showing documentation for built-in variables (`NR`/`NF`/etc.)
+- Refactoring support
+  - rename variable
+  - rename function
 
 ## Goals v0.0.3
 
-- Refactoring support
-    - rename variable
-    - rename function
+- Showing documentation for built-in functions
+- Showing documentation for built-in variables (`NR`/`NF`/etc.)
+
+## Goals v0.0.4
+
 - Enforce variable naming convention
     - `Name` for global
     - `name` for local
