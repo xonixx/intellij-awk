@@ -166,16 +166,15 @@ terminated_statement_list ::= terminated_statement+
 //                 | terminated_statement_list terminated_statement
 //                 ;
 
-unterminated_statement_list ::= unterminated_statement
-                 | terminated_statement_list unterminated_statement
+unterminated_statement_list ::= terminated_statement_list unterminated_statement
+                 | unterminated_statement
 
 terminated_statement ::= action newline_opt
                  | IF '(' expr ')' newline_opt terminated_statement
-                 | IF '(' expr ')' newline_opt terminated_statement
                        ELSE newline_opt terminated_statement
+                 | IF '(' expr ')' newline_opt terminated_statement
                  | WHILE '(' expr ')' newline_opt terminated_statement
-                 | FOR '(' simple_statement_opt ';'
-                      expr_opt ';' simple_statement_opt ')' newline_opt
+                 | FOR '(' simple_statement_opt ';' expr_opt ';' simple_statement_opt ')' newline_opt
                       terminated_statement
                  | FOR '(' NAME IN NAME ')' newline_opt
                       terminated_statement
@@ -184,12 +183,11 @@ terminated_statement ::= action newline_opt
                  | terminatable_statement ';'     newline_opt
 
 unterminated_statement ::= terminatable_statement
-                 | IF '(' expr ')' newline_opt unterminated_statement
                  | IF '(' expr ')' newline_opt terminated_statement
                       ELSE newline_opt unterminated_statement
+                 | IF '(' expr ')' newline_opt unterminated_statement
                  | WHILE '(' expr ')' newline_opt unterminated_statement
-                 | FOR '(' simple_statement_opt ';'
-                  expr_opt ';' simple_statement_opt ')' newline_opt
+                 | FOR '(' simple_statement_opt ';' expr_opt ';' simple_statement_opt ')' newline_opt
                       unterminated_statement
                  | FOR '(' NAME IN NAME ')' newline_opt
                       unterminated_statement
