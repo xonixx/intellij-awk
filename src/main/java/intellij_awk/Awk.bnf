@@ -1,3 +1,7 @@
+/*
+    Grammar based on https://pubs.opengroup.org/onlinepubs/7908799/xcu/awk.html#tag_000_000_108_016
+    TODO 1. Comments in grammar?
+*/
 {
   parserClass="intellij_awk.AwkParser"
 
@@ -106,30 +110,11 @@
   ]
 }
 
-/*
-    Grammar based on https://pubs.opengroup.org/onlinepubs/7908799/xcu/awk.html#tag_000_000_108_016
-    TODO 1. Comments in grammar?
-*/
-
 // /pattern/
 // /pattern/ { ... }
 // function f() { ... }
 // TODO this won't parse 'BEGIN {} ;;;'
 program ::= newline_opt item (terminator item)* newline_opt
-
-//program          ::= item_list
-//                 | actionless_item_list
-//                 ;
-
-//item_list        ::= actionless_item_list item terminator
-//                 | item_list            item terminator
-//                 | item_list          action terminator
-//                 | newline_opt
-//                 ;
-//
-//actionless_item_list ::= item_list            pattern terminator
-//                 | actionless_item_list pattern terminator
-//                 ;
 
 // BEGIN { ... }
 // { ... }
@@ -156,16 +141,8 @@ action           ::= '{' newline_opt                           '}'
                  | '{' newline_opt unterminated_statement_list '}'
 
 terminator       ::= (NEWLINE|';')+
-//terminator       ::= terminator ';'
-//                 | terminator NEWLINE
-//                 |            ';'
-//                 |            NEWLINE
-//                 ;
 
 terminated_statement_list ::= terminated_statement+
-//terminated_statement_list ::= terminated_statement
-//                 | terminated_statement_list terminated_statement
-//                 ;
 
 unterminated_statement_list ::= terminated_statement_list unterminated_statement
                  | unterminated_statement
@@ -208,9 +185,6 @@ simple_statement ::= DELETE NAME '[' expr_list ']'
                  | print_statement
 
 print_statement  ::= simple_print_statement output_redirection?
-//print_statement  ::= simple_print_statement
-//                 | simple_print_statement output_redirection
-//                 ;
 
 simple_print_statement ::= PRINT  print_expr_list_opt
                  | PRINT  '(' multiple_expr_list ')'
@@ -324,9 +298,6 @@ non_unary_expr1     ::= (
 print_expr_list_opt ::= print_expr_list?
 
 print_expr_list  ::= print_expr (',' newline_opt print_expr)*
-//print_expr_list  ::= print_expr
-//                 | print_expr_list ',' newline_opt print_expr
-//                 ;
 
 print_expr       ::= unary_print_expr
                  | non_unary_print_expr
@@ -400,16 +371,6 @@ non_unary_print_expr1 ::= (
 lvalue           ::= NAME ('[' expr_list ']')*
                  | DOLLAR expr
 
-//non_unary_input_function ::= simple_get ('<' expr)?
-//                 | non_unary_expr '|' simple_get
-//                 ;
-
-//unary_input_function ::= unary_expr '|' simple_get
-//                 ;
-
 simple_get       ::= GETLINE lvalue?
 
 newline_opt      ::= NEWLINE*
-//newline_opt      ::= /* empty */
-//                 | newline_opt NEWLINE
-//                 ;
