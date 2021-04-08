@@ -115,7 +115,7 @@
 // /pattern/ { ... }
 // function f() { ... }
 // TODO this won't parse 'BEGIN {} ;;;'
-program ::= item (terminator item)* newline_opt
+program ::= newline_opt item (terminator item)* newline_opt
 
 //program          ::= item_list
 //                 | actionless_item_list
