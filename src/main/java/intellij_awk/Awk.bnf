@@ -52,6 +52,7 @@
 // %token '+' '-' '*' '%' '^' '!' '>' '<' '|' '?' ':' '~' '$' '='
 
   tokens = [
+    comment='regexp:#.*'
     BEGIN='BEGIN'
     END='END'
     BREAK='break'
@@ -89,18 +90,18 @@
     INCR='++'
     DECR='--'
     APPEND='>>'
-    NEWLINE='regexp:\\r\\n|\\n'
+    NEWLINE='regexp:\r\n|\n'
     DOLLAR='$' // for some reason $ doesn't work inline
 
     /*
     The token NAME consists of a word that is not a keyword or a name of a built-in function and is not followed immediately (without any delimiters) by the "(" character.
     The token FUNC_NAME consists of a word that is not a keyword or a name of a built-in function, followed immediately (without any delimiters) by the "(" character. The "(" character will not be included as part of the token.
     */
-    NAME='regexp:[a-zA-Z_]+[a-zA-Z_\d]*'
     FUNC_NAME='regexp:[a-zA-Z_]+[a-zA-Z_\d]*(?=\()'
+    NAME='regexp:[a-zA-Z_]+[a-zA-Z_\d]*'
     // this is a special grammar for "preview only" because grammar-kit seems to not
     // support whitespaces
-    livePreviewWs='regexp:[\s]*'
+    livePreviewWs='regexp:[ \t]*'
   ]
 }
 
