@@ -83,7 +83,7 @@
     POW_ASSIGN='^='
     OR='||'
     AND='&&'
-    NO_MATCH='!'
+    NO_MATCH='!~'
     EQ='=='
     LE='<='
     GE='>='
