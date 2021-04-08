@@ -330,22 +330,26 @@ print_expr_list  ::= print_expr (',' newline_opt print_expr)*
 print_expr       ::= unary_print_expr
                  | non_unary_print_expr
 
-unary_print_expr ::= ('+'|'-') print_expr
-                 (
-                       '^'      print_expr
-                     | '*'      print_expr
-                     | '/'      print_expr
-                     | '%'      print_expr
-                     | '+'      print_expr
-                     | '-'      print_expr
-                     |          non_unary_print_expr
-                     | '~'      print_expr
-                     | NO_MATCH print_expr
-                     | IN NAME
-                     | AND newline_opt print_expr
-                     | OR  newline_opt print_expr
-                     | '?' print_expr ':' print_expr
-                 )?
+unary_print_expr ::= ('+'|'-') print_expr unary_print_expr1
+
+unary_print_expr1  ::= (
+                            (
+                                  '^'      print_expr
+                                | '*'      print_expr
+                                | '/'      print_expr
+                                | '%'      print_expr
+                                | '+'      print_expr
+                                | '-'      print_expr
+                                |          non_unary_print_expr
+                                | '~'      print_expr
+                                | NO_MATCH print_expr
+                                | IN NAME
+                                | AND newline_opt print_expr
+                                | OR  newline_opt print_expr
+                                | '?' print_expr ':' print_expr
+                            )
+                            unary_print_expr1
+                        )?
 
 non_unary_print_expr ::= (
                        '(' expr ')'
@@ -371,21 +375,26 @@ non_unary_print_expr ::= (
                      | BUILTIN_FUNC_NAME '(' expr_list_opt ')'
                      | BUILTIN_FUNC_NAME
                  )
-                 (
-                       '^'      print_expr
-                     | '*'      print_expr
-                     | '/'      print_expr
-                     | '%'      print_expr
-                     | '+'      print_expr
-                     | '-'      print_expr
-                     |          non_unary_print_expr
-                     | '~'      print_expr
-                     | NO_MATCH print_expr
-                     | IN NAME
-                     | AND newline_opt print_expr
-                     | OR  newline_opt print_expr
-                     | '?' print_expr ':' print_expr
-                 )?
+                 non_unary_print_expr1
+
+non_unary_print_expr1 ::= (
+                            (
+                                '^'      print_expr
+                                | '*'      print_expr
+                                | '/'      print_expr
+                                | '%'      print_expr
+                                | '+'      print_expr
+                                | '-'      print_expr
+                                |          non_unary_print_expr
+                                | '~'      print_expr
+                                | NO_MATCH print_expr
+                                | IN NAME
+                                | AND newline_opt print_expr
+                                | OR  newline_opt print_expr
+                                | '?' print_expr ':' print_expr
+                            )
+                            non_unary_print_expr1
+                          )?
 
 lvalue           ::= NAME ('[' expr_list ']')*
                  | DOLLAR expr
