@@ -144,7 +144,7 @@ item             ::= FUNCTION FUNC_NAME '(' param_list_opt ')'
 
 param_list_opt   ::= param_list?
 
-param_list       ::= NAME (',' NAME)*
+param_list       ::= NAME (',' newline_opt NAME)*
 
 pattern          ::= BEGIN
                  | END
