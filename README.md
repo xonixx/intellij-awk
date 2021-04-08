@@ -29,6 +29,8 @@
 - Enforce variable naming convention
     - `Name` for global
     - `name` for local
+  
+The idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools)
     
 ## Future ideas
 
