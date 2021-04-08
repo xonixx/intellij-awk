@@ -232,28 +232,41 @@ expr_opt         ::= expr?
 expr             ::= unary_expr
                  | non_unary_expr
 
-unary_expr       ::= ('+'|'-')  expr
-                  (    '^'      expr
-                     | '*'      expr
-                     | '/'      expr
-                     | '%'      expr
-                     | '+'      expr
-                     | '-'      expr
-                     |          non_unary_expr
-                     | '<'      expr
-                     | LE       expr
-                     | NE       expr
-                     | EQ       expr
-                     | '>'      expr
-                     | GE       expr
-                     | '~'      expr
-                     | NO_MATCH expr
-                     | IN NAME
-                     | AND newline_opt expr
-                     | OR  newline_opt expr
-                     | '?' expr ':' expr
-                     | '|' simple_get
-                 )?
+/*
+    Eliminate left recursion: https://web.cs.wpi.edu/~kal/PLT/PLT4.1.2.html
+
+    A --> A α | β
+    introduce a new nonterminal A' and rewrite the rule as
+
+    A --> β A'
+    A' --> ε | α A'   <-->  A' --> (α A')?
+*/
+unary_expr       ::= ('+'|'-')  expr unary_expr1
+
+unary_expr1      ::= (
+                        (    '^'      expr
+                           | '*'      expr
+                           | '/'      expr
+                           | '%'      expr
+                           | '+'      expr
+                           | '-'      expr
+                           |          non_unary_expr
+                           | '<'      expr
+                           | LE       expr
+                           | NE       expr
+                           | EQ       expr
+                           | '>'      expr
+                           | GE       expr
+                           | '~'      expr
+                           | NO_MATCH expr
+                           | IN NAME
+                           | AND newline_opt expr
+                           | OR  newline_opt expr
+                           | '?' expr ':' expr
+                           | '|' simple_get
+                       )
+                       unary_expr1
+                   )?
 
 non_unary_expr   ::= (
                            '(' expr ')'
@@ -280,28 +293,32 @@ non_unary_expr   ::= (
                          | BUILTIN_FUNC_NAME '(' expr_list_opt ')'
                          | BUILTIN_FUNC_NAME
                      )
-                     (
-                           '^'      expr
-                         | '*'      expr
-                         | '/'      expr
-                         | '%'      expr
-                         | '+'      expr
-                         | '-'      expr
-                         |          non_unary_expr
-                         | '<'      expr
-                         | LE       expr
-                         | NE       expr
-                         | EQ       expr
-                         | '>'      expr
-                         | GE       expr
-                         | '~'      expr
-                         | NO_MATCH expr
-                         | IN NAME
-                         | AND newline_opt expr
-                         | OR  newline_opt expr
-                         | '?' expr ':' expr
-                         | '|' simple_get
-                     )?
+                     non_unary_expr1
+
+non_unary_expr1     ::= (
+                          (     '^'      expr
+                              | '*'      expr
+                              | '/'      expr
+                              | '%'      expr
+                              | '+'      expr
+                              | '-'      expr
+                              |          non_unary_expr
+                              | '<'      expr
+                              | LE       expr
+                              | NE       expr
+                              | EQ       expr
+                              | '>'      expr
+                              | GE       expr
+                              | '~'      expr
+                              | NO_MATCH expr
+                              | IN NAME
+                              | AND newline_opt expr
+                              | OR  newline_opt expr
+                              | '?' expr ':' expr
+                              | '|' simple_get
+                          )
+                          non_unary_expr1
+                      )?
 
 print_expr_list_opt ::= print_expr_list?
 
