@@ -10,30 +10,31 @@ import static intellij_awk.psi.AwkTypes.*;
 %%
 
 %{
-  public _AwkLexer() {
+  public AwkLexer() {
     this((java.io.Reader)null);
   }
 %}
 
 %public
-%class _AwkLexer
+%class AwkLexer
 %implements FlexLexer
 %function advance
 %type IElementType
 %unicode
 
 EOL=\R
-WHITE_SPACE=\s+
+//WHITE_SPACE=\s+
 
 COMMENT=#.*
 BUILTIN_FUNC_NAME=atan2|cos|sin|exp|log|sqrt|int|rand|srand|gsub|index|length|match|split|sprintf|sub|substr|tolower|toupper|close|system
-NUMBER=[0-9]+(?:\.[0-9]+)?(?:[eE][+-][0-9]+)?
+NUMBER=[0-9]+(\.[0-9]+)?([eE][+-][0-9]+)?
 STRING=([\"]([^\"\\]|\\.)*[\"])
 ERE="/"([^\\\n]|\\[^\n])*"/"
 NEWLINE=\r\n|\n
-FUNC_NAME=[a-zA-Z_]+[a-zA-Z_\d]*(?=\()
+FUNC_NAME=[a-zA-Z_]+[a-zA-Z_\d]*
 NAME=[a-zA-Z_]+[a-zA-Z_\d]*
-LIVEPREVIEWWS=[ \t]*(\\\n)*
+//LIVEPREVIEWWS=[ \t]*(\\\n)*
+WHITE_SPACE=[ \t]+ | (\\\n)
 
 %%
 <YYINITIAL> {
@@ -81,9 +82,9 @@ LIVEPREVIEWWS=[ \t]*(\\\n)*
   {STRING}                 { return STRING; }
   {ERE}                    { return ERE; }
   {NEWLINE}                { return NEWLINE; }
-  {FUNC_NAME}              { return FUNC_NAME; }
+  {FUNC_NAME}/\(           { return FUNC_NAME; }
   {NAME}                   { return NAME; }
-  {LIVEPREVIEWWS}          { return LIVEPREVIEWWS; }
+//  {LIVEPREVIEWWS}          { return LIVEPREVIEWWS; }
 
 }
 
