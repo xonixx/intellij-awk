@@ -4,3 +4,4 @@
 build/
 soft/
 src/main/gen/
+src/main/java/intellij_awk/_AwkLexer.flex
