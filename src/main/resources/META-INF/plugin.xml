@@ -16,8 +16,12 @@
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="Simple File" implementationClass="intellij_awk.SimpleFileType"
                   fieldName="INSTANCE" language="Simple" extensions="simple"/>
+        <fileType name="AWK File" implementationClass="intellij_awk.AwkFileType"
+                  fieldName="INSTANCE" language="Simple" extensions="simple"/>
         <lang.parserDefinition language="Simple"
                                implementationClass="intellij_awk.SimpleParserDefinition"/>
+        <lang.parserDefinition language="AWK"
+                               implementationClass="intellij_awk.AwkParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Simple"
                                        implementationClass="intellij_awk.SimpleSyntaxHighlighterFactory"/>
         <colorSettingsPage implementation="intellij_awk.SimpleColorSettingsPage"/>
