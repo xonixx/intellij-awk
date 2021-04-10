@@ -18,7 +18,7 @@
 
   psiImplUtilClass="intellij_awk.psi.impl.AwkPsiImplUtil"
 
-// %token NAME NUMBER STRING ERE
+// %token VAR_NAME NUMBER STRING ERE
 // %token FUNC_NAME   /* name followed by '(' without white space */
 //
 // /* Keywords  */
@@ -99,11 +99,11 @@
     DOLLAR='$' // for some reason $ doesn't work inline
 
     /*
-    The token NAME consists of a word that is not a keyword or a name of a built-in function and is not followed immediately (without any delimiters) by the "(" character.
+    The token VAR_NAME      consists of a word that is not a keyword or a name of a built-in function and is not followed immediately (without any delimiters) by the "(" character.
     The token FUNC_NAME consists of a word that is not a keyword or a name of a built-in function, followed immediately (without any delimiters) by the "(" character. The "(" character will not be included as part of the token.
     */
     FUNC_NAME='regexp:[a-zA-Z_]+[a-zA-Z_\d]*(?=\()'
-    NAME='regexp:[a-zA-Z_]+[a-zA-Z_\d]*'
+    VAR_NAME='regexp:[a-zA-Z_]+[a-zA-Z_\d]*'
     // this is a special grammar for "preview only" because grammar-kit seems to not
     // support whitespaces
     livePreviewWs='regexp:[ \t]*(\\\n)*'
@@ -123,14 +123,14 @@ program ::= newline_opt item (terminator item)* newline_opt
 item             ::= FUNCTION FUNC_NAME '(' param_list_opt ')'
                        newline_opt action
 // TODO: do we need 2 lines below?
-//                 | FUNCTION NAME      '(' param_list_opt ')'
+//                 | FUNCTION VAR_NAME      '(' param_list_opt ')'
 //                                         newline_opt action
                  | pattern action*
                  | action
 
 param_list_opt   ::= param_list?
 
-param_list       ::= NAME (',' newline_opt NAME)*
+param_list       ::= VAR_NAME (',' newline_opt VAR_NAME)*
 
 pattern          ::= BEGIN
                  | END
@@ -154,7 +154,7 @@ terminated_statement ::= action newline_opt
                  | WHILE '(' expr ')' newline_opt terminated_statement
                  | FOR '(' simple_statement_opt ';' expr_opt ';' simple_statement_opt ')' newline_opt
                       terminated_statement
-                 | FOR '(' NAME IN NAME ')' newline_opt
+                 | FOR '(' VAR_NAME IN VAR_NAME ')' newline_opt
                       terminated_statement
                  | ';' newline_opt
                  | terminatable_statement NEWLINE newline_opt
@@ -167,7 +167,7 @@ unterminated_statement ::= terminatable_statement
                  | WHILE '(' expr ')' newline_opt unterminated_statement
                  | FOR '(' simple_statement_opt ';' expr_opt ';' simple_statement_opt ')' newline_opt
                       unterminated_statement
-                 | FOR '(' NAME IN NAME ')' newline_opt
+                 | FOR '(' VAR_NAME IN VAR_NAME ')' newline_opt
                       unterminated_statement
 
 terminatable_statement ::= simple_statement
@@ -180,7 +180,7 @@ terminatable_statement ::= simple_statement
 
 simple_statement_opt ::= simple_statement?
 
-simple_statement ::= DELETE NAME '[' expr_list ']'
+simple_statement ::= DELETE VAR_NAME '[' expr_list ']'
                  | expr
                  | print_statement
 
@@ -234,7 +234,7 @@ unary_expr1      ::= (
                            | GE       expr
                            | '~'      expr
                            | NO_MATCH expr
-                           | IN NAME
+                           | IN VAR_NAME
                            | AND newline_opt expr
                            | OR  newline_opt expr
                            | '?' expr ':' expr
@@ -245,7 +245,7 @@ unary_expr1      ::= (
 
 non_unary_expr   ::= (
                            '(' expr ')'
-                         | '(' multiple_expr_list ')' IN NAME
+                         | '(' multiple_expr_list ')' IN VAR_NAME
                          | '!' expr
                          | simple_get ('<' expr)?
                          | NUMBER
@@ -286,7 +286,7 @@ non_unary_expr1     ::= (
                               | GE       expr
                               | '~'      expr
                               | NO_MATCH expr
-                              | IN NAME
+                              | IN VAR_NAME
                               | AND newline_opt expr
                               | OR  newline_opt expr
                               | '?' expr ':' expr
@@ -315,7 +315,7 @@ unary_print_expr1  ::= (
                                 |          non_unary_print_expr
                                 | '~'      print_expr
                                 | NO_MATCH print_expr
-                                | IN NAME
+                                | IN VAR_NAME
                                 | AND newline_opt print_expr
                                 | OR  newline_opt print_expr
                                 | '?' print_expr ':' print_expr
@@ -326,7 +326,7 @@ unary_print_expr1  ::= (
 non_unary_print_expr ::= (
                        '(' expr ')'
                      | '!' print_expr
-                     | '(' multiple_expr_list ')' IN NAME
+                     | '(' multiple_expr_list ')' IN VAR_NAME
                      | NUMBER
                      | STRING
                      | ERE
@@ -360,7 +360,7 @@ non_unary_print_expr1 ::= (
                                 |          non_unary_print_expr
                                 | '~'      print_expr
                                 | NO_MATCH print_expr
-                                | IN NAME
+                                | IN VAR_NAME
                                 | AND newline_opt print_expr
                                 | OR  newline_opt print_expr
                                 | '?' print_expr ':' print_expr
@@ -368,7 +368,7 @@ non_unary_print_expr1 ::= (
                             non_unary_print_expr1
                           )?
 
-lvalue           ::= NAME ('[' expr_list ']')*
+lvalue           ::= VAR_NAME ('[' expr_list ']')*
                  | DOLLAR expr
 
 simple_get       ::= GETLINE lvalue?

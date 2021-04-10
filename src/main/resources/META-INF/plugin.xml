@@ -17,7 +17,7 @@
         <fileType name="Simple File" implementationClass="intellij_awk.SimpleFileType"
                   fieldName="INSTANCE" language="Simple" extensions="simple"/>
         <fileType name="AWK File" implementationClass="intellij_awk.AwkFileType"
-                  fieldName="INSTANCE" language="Simple" extensions="simple"/>
+                  fieldName="INSTANCE" language="AWK" extensions="awk"/>
         <lang.parserDefinition language="Simple"
                                implementationClass="intellij_awk.SimpleParserDefinition"/>
         <lang.parserDefinition language="AWK"

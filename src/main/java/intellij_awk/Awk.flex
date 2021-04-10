@@ -32,7 +32,7 @@ STRING=([\"]([^\"\\]|\\.)*[\"])
 ERE="/"([^\\\n]|\\[^\n])*"/"
 NEWLINE=\r\n|\n
 FUNC_NAME=[a-zA-Z_]+[a-zA-Z_\d]*
-NAME=[a-zA-Z_]+[a-zA-Z_\d]*
+VAR_NAME=[a-zA-Z_]+[a-zA-Z_\d]*
 //LIVEPREVIEWWS=[ \t]*(\\\n)*
 WHITE_SPACE=[ \t]+ | (\\\n)
 
@@ -83,7 +83,7 @@ WHITE_SPACE=[ \t]+ | (\\\n)
   {ERE}                    { return ERE; }
   {NEWLINE}                { return NEWLINE; }
   {FUNC_NAME}/\(           { return FUNC_NAME; }
-  {NAME}                   { return NAME; }
+  {VAR_NAME}               { return VAR_NAME; }
 //  {LIVEPREVIEWWS}          { return LIVEPREVIEWWS; }
 
 }
