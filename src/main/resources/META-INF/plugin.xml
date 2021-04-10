@@ -24,6 +24,8 @@
                                implementationClass="intellij_awk.AwkParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Simple"
                                        implementationClass="intellij_awk.SimpleSyntaxHighlighterFactory"/>
+        <lang.syntaxHighlighterFactory language="AWK"
+                                       implementationClass="intellij_awk.AwkSyntaxHighlighterFactory"/>
         <colorSettingsPage implementation="intellij_awk.SimpleColorSettingsPage"/>
 
         <annotator language="JAVA" implementationClass="intellij_awk.SimpleAnnotator"/>
