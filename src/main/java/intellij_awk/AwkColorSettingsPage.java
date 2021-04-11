@@ -15,39 +15,70 @@ public class AwkColorSettingsPage implements ColorSettingsPage {
 
   private static final AttributesDescriptor[] DESCRIPTORS =
       new AttributesDescriptor[] {
-        new AttributesDescriptor("Key", SimpleSyntaxHighlighter.KEY),
-        new AttributesDescriptor("Separator", SimpleSyntaxHighlighter.SEPARATOR),
-        new AttributesDescriptor("Value", SimpleSyntaxHighlighter.VALUE),
-        new AttributesDescriptor("Bad Value", SimpleSyntaxHighlighter.BAD_CHARACTER)
+        new AttributesDescriptor("Keyword", AwkSyntaxHighlighter.KEYWORD),
+        new AttributesDescriptor("String", AwkSyntaxHighlighter.STRING),
+        new AttributesDescriptor("Number", AwkSyntaxHighlighter.NUMBER),
+        new AttributesDescriptor("Comment", AwkSyntaxHighlighter.COMMENT),
+        new AttributesDescriptor("Bad Character", AwkSyntaxHighlighter.BAD_CHARACTER),
+        new AttributesDescriptor("Comma", AwkSyntaxHighlighter.COMMA),
+        new AttributesDescriptor("Semicolon", AwkSyntaxHighlighter.SEMICOLON),
+        new AttributesDescriptor("Operations", AwkSyntaxHighlighter.OPERATION_SIGN),
+        new AttributesDescriptor("Braces", AwkSyntaxHighlighter.BRACES),
+        new AttributesDescriptor("Brackets", AwkSyntaxHighlighter.BRACKETS),
+        new AttributesDescriptor("Parentheses", AwkSyntaxHighlighter.PARENTHESES)
       };
 
   @Nullable
   @Override
   public Icon getIcon() {
-    return SimpleIcons.FILE;
+    return AwkIcons.FILE;
   }
 
   @NotNull
   @Override
   public SyntaxHighlighter getHighlighter() {
-    return new SimpleSyntaxHighlighter();
+    return new AwkSyntaxHighlighter();
   }
 
   @NotNull
   @Override
   public String getDemoText() {
-    return "# You are reading the \".properties\" entry.\n"
-        + "! The exclamation mark can also mark text as comments.\n"
-        + "website = https://en.wikipedia.org/\n"
-        + "language = English\n"
-        + "# The backslash below tells the application to continue reading\n"
-        + "# the value onto the next line.\n"
-        + "message = Welcome to \\\n"
-        + "          Wikipedia!\n"
-        + "# Add spaces to the key\n"
-        + "key\\ with\\ spaces = This is the value that could be looked up with the key \"key with spaces\".\n"
-        + "# Unicode\n"
-        + "tab : \\u0009";
+    return "BEGIN {\n"
+        + "    Trace=\"Trace\" in ENVIRON\n"
+        + "    Number=1.23E-12\n"
+        + "    @ # bad char\n"
+        + "    split(\"\", GronAsm); GronAsmLen=0; split(\"\", LineNums)\n"
+        + "\n"
+        + "    while (getline > 0) {\n"
+        + "        if ((Instr = trim($0))!=\"\") { GronAsm[GronAsmLen++] = Instr; LineNums[GronAsmLen] = NR }\n"
+        + "    }\n"
+        + "\n"
+        + "    split(\"\", AddrType)  # addr -> type\n"
+        + "    split(\"\", AddrKey)   # addr -> last segment name\n"
+        + "\n"
+        + "    for (i=0; i<GronAsmLen; i++) {\n"
+        + "        Instr = GronAsm[i];\n"
+        + "\n"
+        + "        if (\"record\" == Instr) {\n"
+        + "            split(\"\",Path)\n"
+        + "            split(\"\",Value) # [ type, value ]\n"
+        + "        }\n"
+        + "        else if (isSegmentType(Instr)) { arrPush(Types, Instr); arrPush(Path, GronAsm[++i]) }\n"
+        + "        else if (\"value\" == Instr) {\n"
+        + "            Instr = GronAsm[++i];\n"
+        + "            split(\"\",Value)\n"
+        + "            Value[0] = Instr\n"
+        + "            if (isValueHolder(Instr))\n"
+        + "                Value[1] = GronAsm[++i]\n"
+        + "        } else if (\"end\" == Instr) { processRecord() }\n"
+        + "    }\n"
+        + "    if (Trace) print \"--- JSON asm ---\"\n"
+        + "    for (i=0; i<JsonAsmLen; i++)\n"
+        + "        print JsonAsm[i]\n"
+        + "}\n"
+        + "\n"
+        + "function isComplex(s) { return \"object\"==s || \"array\"==s }\n"
+        + "function trim(s) { sub(/^[ \\t\\r\\n]+/, \"\", s); sub(/[ \\t\\r\\n]+$/, \"\", s); return s; }";
   }
 
   @Nullable
@@ -71,6 +102,6 @@ public class AwkColorSettingsPage implements ColorSettingsPage {
   @NotNull
   @Override
   public String getDisplayName() {
-    return "Simple";
+    return "AWK";
   }
 }
