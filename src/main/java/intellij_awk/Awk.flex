@@ -81,6 +81,22 @@ WHITE_SPACE=[ \t]+ | (\\\n)
   "}"                      { return RBRACE; }
   "("                      { return LPAREN; }
   ")"                      { return RPAREN; }
+  ","                      { return COMMA; }
+  ";"                      { return SEMICOLON; }
+  "<"                      { return LT; }
+  ">"                      { return GT; }
+  "+"                      { return ADD; }
+  "-"                      { return SUB; }
+  "*"                      { return MUL; }
+  "/"                      { return DIV; }
+  "%"                      { return MOD; }
+  "^"                      { return POW; }
+  "~"                      { return MATCH; }
+  "|"                      { return PIPE; }
+  "!"                      { return NOT; }
+  "?"                      { return QUESTION; }
+  ":"                      { return COLON; }
+  "="                      { return ASSIGN; }
 
   {COMMENT}                { return COMMENT; }
   {BUILTIN_FUNC_NAME}      { return BUILTIN_FUNC_NAME; }

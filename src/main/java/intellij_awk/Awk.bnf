@@ -49,7 +49,7 @@
 // /*     '+='       '-='       '*='       '/='       '%='       '^=' */
 //
 // %token  OR   AND  NO_MATCH   EQ   LE   GE   NE   INCR  DECR  APPEND
-// /*      '||' '&&' '!' '==' '<=' '>=' '!=' '++'  '--'  '>>'   */
+// /*      '||' '&&' '!~' '==' '<=' '>=' '!=' '++'  '--'  '>>'   */
 //
 // /* One-character tokens */
 // %token '{' '}' '(' ')' '[' ']' ',' ';' NEWLINE
@@ -105,6 +105,24 @@
     LPAREN='('
     RPAREN=')'
 
+    COMMA=','
+    SEMICOLON=';'
+
+    LT='<'
+    GT='>'
+    ADD='+'
+    SUB='-'
+    MUL='*'
+    DIV='/'
+    MOD='%'
+    POW='^'
+    MATCH='~'
+    PIPE='|'
+    NOT='!'
+    QUESTION='?'
+    COLON=':'
+    ASSIGN='='
+    
     /*
     The token VAR_NAME      consists of a word that is not a keyword or a name of a built-in function and is not followed immediately (without any delimiters) by the "(" character.
     The token FUNC_NAME consists of a word that is not a keyword or a name of a built-in function, followed immediately (without any delimiters) by the "(" character. The "(" character will not be included as part of the token.
@@ -137,17 +155,17 @@ item             ::= FUNCTION FUNC_NAME LPAREN param_list_opt RPAREN
 
 param_list_opt   ::= param_list?
 
-param_list       ::= VAR_NAME (',' newline_opt VAR_NAME)*
+param_list       ::= VAR_NAME (COMMA newline_opt VAR_NAME)*
 
 pattern          ::= BEGIN
                  | END
-                 | expr (',' newline_opt expr)?
+                 | expr (COMMA newline_opt expr)?
 
 action           ::= LBRACE newline_opt                           RBRACE
                  | LBRACE newline_opt terminated_statement_list   RBRACE
                  | LBRACE newline_opt unterminated_statement_list RBRACE
 
-terminator       ::= (NEWLINE|';')+
+terminator       ::= (NEWLINE|SEMICOLON)+
 
 terminated_statement_list ::= terminated_statement+
 
@@ -159,20 +177,20 @@ terminated_statement ::= action newline_opt
                        ELSE newline_opt terminated_statement
                  | IF LPAREN expr RPAREN newline_opt terminated_statement
                  | WHILE LPAREN expr RPAREN newline_opt terminated_statement
-                 | FOR LPAREN simple_statement_opt ';' expr_opt ';' simple_statement_opt RPAREN newline_opt
+                 | FOR LPAREN simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
                       terminated_statement
                  | FOR LPAREN VAR_NAME IN VAR_NAME RPAREN newline_opt
                       terminated_statement
-                 | ';' newline_opt
+                 | SEMICOLON newline_opt
                  | terminatable_statement NEWLINE newline_opt
-                 | terminatable_statement ';'     newline_opt
+                 | terminatable_statement SEMICOLON     newline_opt
 
 unterminated_statement ::= terminatable_statement
                  | IF LPAREN expr RPAREN newline_opt terminated_statement
                       ELSE newline_opt unterminated_statement
                  | IF LPAREN expr RPAREN newline_opt unterminated_statement
                  | WHILE LPAREN expr RPAREN newline_opt unterminated_statement
-                 | FOR LPAREN simple_statement_opt ';' expr_opt ';' simple_statement_opt RPAREN newline_opt
+                 | FOR LPAREN simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
                       unterminated_statement
                  | FOR LPAREN VAR_NAME IN VAR_NAME RPAREN newline_opt
                       unterminated_statement
@@ -198,16 +216,16 @@ simple_print_statement ::= PRINT  print_expr_list_opt
                  | PRINTF print_expr_list
                  | PRINTF LPAREN multiple_expr_list RPAREN
 
-output_redirection ::= '>'    expr
-                 | APPEND expr
-                 | '|'    expr
+output_redirection ::= GT  expr
+                 | APPEND  expr
+                 | PIPE    expr
 
 expr_list_opt    ::= expr_list?
 
 expr_list        ::= multiple_expr_list
                  | expr // TODO do we need this line?
 
-multiple_expr_list ::= expr (',' newline_opt expr)*
+multiple_expr_list ::= expr (COMMA newline_opt expr)*
 
 expr_opt         ::= expr?
 
@@ -223,29 +241,29 @@ expr             ::= unary_expr
     A --> β A'
     A' --> ε | α A'   <-->  A' --> (α A')?
 */
-unary_expr       ::= ('+'|'-')  expr unary_expr1
+unary_expr       ::= (ADD|SUB)  expr unary_expr1
 
 unary_expr1      ::= (
-                        (    '^'      expr
-                           | '*'      expr
-                           | '/'      expr
-                           | '%'      expr
-                           | '+'      expr
-                           | '-'      expr
+                        (    POW      expr
+                           | MUL      expr
+                           | DIV      expr
+                           | MOD      expr
+                           | ADD      expr
+                           | SUB      expr
                            |          non_unary_expr
-                           | '<'      expr
+                           | LT       expr
                            | LE       expr
                            | NE       expr
                            | EQ       expr
-                           | '>'      expr
+                           | GT       expr
                            | GE       expr
-                           | '~'      expr
+                           | MATCH    expr
                            | NO_MATCH expr
                            | IN VAR_NAME
                            | AND newline_opt expr
                            | OR  newline_opt expr
-                           | '?' expr ':' expr
-                           | '|' simple_get
+                           | QUESTION expr COLON expr
+                           | PIPE simple_get
                        )
                        unary_expr1
                    )?
@@ -253,8 +271,8 @@ unary_expr1      ::= (
 non_unary_expr   ::= (
                            LPAREN expr RPAREN
                          | LPAREN multiple_expr_list RPAREN IN VAR_NAME
-                         | '!' expr
-                         | simple_get ('<' expr)?
+                         | NOT expr
+                         | simple_get (LT expr)?
                          | NUMBER
                          | STRING
                          | ERE
@@ -268,7 +286,7 @@ non_unary_expr   ::= (
                          | lvalue DIV_ASSIGN expr
                          | lvalue ADD_ASSIGN expr
                          | lvalue SUB_ASSIGN expr
-                         | lvalue '=' expr
+                         | lvalue ASSIGN expr
                          | lvalue
                          | FUNC_NAME LPAREN expr_list_opt RPAREN
                               /* no white space allowed before LPAREN */ // TODO is this still relevant?
@@ -278,61 +296,61 @@ non_unary_expr   ::= (
                      non_unary_expr1
 
 non_unary_expr1     ::= (
-                          (     '^'      expr
-                              | '*'      expr
-                              | '/'      expr
-                              | '%'      expr
-                              | '+'      expr
-                              | '-'      expr
+                          (     POW      expr
+                              | MUL      expr
+                              | DIV      expr
+                              | MOD      expr
+                              | ADD      expr
+                              | SUB      expr
                               |          non_unary_expr
-                              | '<'      expr
+                              | LT       expr
                               | LE       expr
                               | NE       expr
                               | EQ       expr
-                              | '>'      expr
+                              | GT       expr
                               | GE       expr
-                              | '~'      expr
+                              | MATCH    expr
                               | NO_MATCH expr
                               | IN VAR_NAME
                               | AND newline_opt expr
                               | OR  newline_opt expr
-                              | '?' expr ':' expr
-                              | '|' simple_get
+                              | QUESTION expr COLON expr
+                              | PIPE simple_get
                           )
                           non_unary_expr1
                       )?
 
 print_expr_list_opt ::= print_expr_list?
 
-print_expr_list  ::= print_expr (',' newline_opt print_expr)*
+print_expr_list  ::= print_expr (COMMA newline_opt print_expr)*
 
 print_expr       ::= unary_print_expr
                  | non_unary_print_expr
 
-unary_print_expr ::= ('+'|'-') print_expr unary_print_expr1
+unary_print_expr ::= (ADD|SUB) print_expr unary_print_expr1
 
 unary_print_expr1  ::= (
                             (
-                                  '^'      print_expr
-                                | '*'      print_expr
-                                | '/'      print_expr
-                                | '%'      print_expr
-                                | '+'      print_expr
-                                | '-'      print_expr
+                                  POW      print_expr
+                                | MUL      print_expr
+                                | DIV      print_expr
+                                | MOD      print_expr
+                                | ADD      print_expr
+                                | SUB      print_expr
                                 |          non_unary_print_expr
-                                | '~'      print_expr
+                                | MATCH    print_expr
                                 | NO_MATCH print_expr
                                 | IN VAR_NAME
                                 | AND newline_opt print_expr
                                 | OR  newline_opt print_expr
-                                | '?' print_expr ':' print_expr
+                                | QUESTION print_expr COLON print_expr
                             )
                             unary_print_expr1
                         )?
 
 non_unary_print_expr ::= (
                        LPAREN expr RPAREN
-                     | '!' print_expr
+                     | NOT print_expr
                      | LPAREN multiple_expr_list RPAREN IN VAR_NAME
                      | NUMBER
                      | STRING
@@ -347,7 +365,7 @@ non_unary_print_expr ::= (
                      | lvalue DIV_ASSIGN print_expr
                      | lvalue ADD_ASSIGN print_expr
                      | lvalue SUB_ASSIGN print_expr
-                     | lvalue '=' print_expr
+                     | lvalue ASSIGN     print_expr
                      | lvalue
                      | FUNC_NAME LPAREN expr_list_opt RPAREN
                          /* no white space allowed before LPAREN */
@@ -358,19 +376,19 @@ non_unary_print_expr ::= (
 
 non_unary_print_expr1 ::= (
                             (
-                                '^'      print_expr
-                                | '*'      print_expr
-                                | '/'      print_expr
-                                | '%'      print_expr
-                                | '+'      print_expr
-                                | '-'      print_expr
+                                POW      print_expr
+                                | MUL      print_expr
+                                | DIV      print_expr
+                                | MOD      print_expr
+                                | ADD      print_expr
+                                | SUB      print_expr
                                 |          non_unary_print_expr
-                                | '~'      print_expr
+                                | MATCH    print_expr
                                 | NO_MATCH print_expr
                                 | IN VAR_NAME
                                 | AND newline_opt print_expr
                                 | OR  newline_opt print_expr
-                                | '?' print_expr ':' print_expr
+                                | QUESTION print_expr COLON print_expr
                             )
                             non_unary_print_expr1
                           )?
