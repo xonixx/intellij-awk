@@ -34,6 +34,16 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
           AwkTypes.BREAK,
           AwkTypes.CONTINUE,
           AwkTypes.EXIT);
+  public static final TokenSet BRACES_SET = TokenSet.create(AwkTypes.LBRACE, AwkTypes.RBRACE);
+  public static final TokenSet BRACKETS_SET = TokenSet.create(AwkTypes.LBRACKET, AwkTypes.RBRACKET);
+  public static final TokenSet PARENTHESES_SET = TokenSet.create(AwkTypes.LPAREN, AwkTypes.RPAREN);
+
+  public static final TextAttributesKey BRACES =
+      createTextAttributesKey("AWK_BRACES", DefaultLanguageHighlighterColors.BRACES);
+  public static final TextAttributesKey BRACKETS =
+      createTextAttributesKey("AWK_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS);
+  public static final TextAttributesKey PARENTHESES =
+      createTextAttributesKey("AWK_PARENTHESES", DefaultLanguageHighlighterColors.PARENTHESES);
 
   public static final TextAttributesKey KEYWORD =
       createTextAttributesKey("AWK_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
@@ -47,6 +57,11 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
       createTextAttributesKey("AWK_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
   private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[] {BAD_CHARACTER};
+
+  private static final TextAttributesKey[] BRACES_KEYS = new TextAttributesKey[] {BRACES};
+  private static final TextAttributesKey[] BRACKETS_KEYS = new TextAttributesKey[] {BRACKETS};
+  private static final TextAttributesKey[] PARENTHESES_KEYS = new TextAttributesKey[] {PARENTHESES};
+
   private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[] {KEYWORD};
   private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[] {STRING};
   private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[] {NUMBER};
@@ -64,6 +79,12 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
   public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
     if (KEYWORDS.contains(tokenType)) {
       return KEYWORD_KEYS;
+    } else if (BRACES_SET.contains(tokenType)) {
+      return BRACES_KEYS;
+    } else if (BRACKETS_SET.contains(tokenType)) {
+      return BRACKETS_KEYS;
+    } else if (PARENTHESES_SET.contains(tokenType)) {
+      return PARENTHESES_KEYS;
     } else if (tokenType.equals(AwkTypes.STRING)) {
       return STRING_KEYS;
     } else if (tokenType.equals(AwkTypes.NUMBER)) {

@@ -75,6 +75,12 @@ WHITE_SPACE=[ \t]+ | (\\\n)
   "--"                     { return DECR; }
   ">>"                     { return APPEND; }
   "$"                      { return DOLLAR; }
+  "["                      { return LBRACKET; }
+  "]"                      { return RBRACKET; }
+  "{"                      { return LBRACE; }
+  "}"                      { return RBRACE; }
+  "("                      { return LPAREN; }
+  ")"                      { return RPAREN; }
 
   {COMMENT}                { return COMMENT; }
   {BUILTIN_FUNC_NAME}      { return BUILTIN_FUNC_NAME; }

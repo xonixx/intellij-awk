@@ -98,6 +98,13 @@
     NEWLINE='regexp:\r\n|\n'
     DOLLAR='$' // for some reason $ doesn't work inline
 
+    LBRACKET='['
+    RBRACKET=']'
+    LBRACE='{'
+    RBRACE='}'
+    LPAREN='('
+    RPAREN=')'
+
     /*
     The token VAR_NAME      consists of a word that is not a keyword or a name of a built-in function and is not followed immediately (without any delimiters) by the "(" character.
     The token FUNC_NAME consists of a word that is not a keyword or a name of a built-in function, followed immediately (without any delimiters) by the "(" character. The "(" character will not be included as part of the token.
@@ -120,10 +127,10 @@ program ::= newline_opt item (terminator item)* newline_opt
 // { ... }
 // 1
 // function a() { ... }
-item             ::= FUNCTION FUNC_NAME '(' param_list_opt ')'
+item             ::= FUNCTION FUNC_NAME LPAREN param_list_opt RPAREN
                        newline_opt action
 // TODO: do we need 2 lines below?
-//                 | FUNCTION VAR_NAME      '(' param_list_opt ')'
+//                 | FUNCTION VAR_NAME      LPAREN param_list_opt RPAREN
 //                                         newline_opt action
                  | pattern action*
                  | action
@@ -136,9 +143,9 @@ pattern          ::= BEGIN
                  | END
                  | expr (',' newline_opt expr)?
 
-action           ::= '{' newline_opt                           '}'
-                 | '{' newline_opt terminated_statement_list   '}'
-                 | '{' newline_opt unterminated_statement_list '}'
+action           ::= LBRACE newline_opt                           RBRACE
+                 | LBRACE newline_opt terminated_statement_list   RBRACE
+                 | LBRACE newline_opt unterminated_statement_list RBRACE
 
 terminator       ::= (NEWLINE|';')+
 
@@ -148,26 +155,26 @@ unterminated_statement_list ::= terminated_statement_list unterminated_statement
                  | unterminated_statement
 
 terminated_statement ::= action newline_opt
-                 | IF '(' expr ')' newline_opt terminated_statement
+                 | IF LPAREN expr RPAREN newline_opt terminated_statement
                        ELSE newline_opt terminated_statement
-                 | IF '(' expr ')' newline_opt terminated_statement
-                 | WHILE '(' expr ')' newline_opt terminated_statement
-                 | FOR '(' simple_statement_opt ';' expr_opt ';' simple_statement_opt ')' newline_opt
+                 | IF LPAREN expr RPAREN newline_opt terminated_statement
+                 | WHILE LPAREN expr RPAREN newline_opt terminated_statement
+                 | FOR LPAREN simple_statement_opt ';' expr_opt ';' simple_statement_opt RPAREN newline_opt
                       terminated_statement
-                 | FOR '(' VAR_NAME IN VAR_NAME ')' newline_opt
+                 | FOR LPAREN VAR_NAME IN VAR_NAME RPAREN newline_opt
                       terminated_statement
                  | ';' newline_opt
                  | terminatable_statement NEWLINE newline_opt
                  | terminatable_statement ';'     newline_opt
 
 unterminated_statement ::= terminatable_statement
-                 | IF '(' expr ')' newline_opt terminated_statement
+                 | IF LPAREN expr RPAREN newline_opt terminated_statement
                       ELSE newline_opt unterminated_statement
-                 | IF '(' expr ')' newline_opt unterminated_statement
-                 | WHILE '(' expr ')' newline_opt unterminated_statement
-                 | FOR '(' simple_statement_opt ';' expr_opt ';' simple_statement_opt ')' newline_opt
+                 | IF LPAREN expr RPAREN newline_opt unterminated_statement
+                 | WHILE LPAREN expr RPAREN newline_opt unterminated_statement
+                 | FOR LPAREN simple_statement_opt ';' expr_opt ';' simple_statement_opt RPAREN newline_opt
                       unterminated_statement
-                 | FOR '(' VAR_NAME IN VAR_NAME ')' newline_opt
+                 | FOR LPAREN VAR_NAME IN VAR_NAME RPAREN newline_opt
                       unterminated_statement
 
 terminatable_statement ::= simple_statement
@@ -176,20 +183,20 @@ terminatable_statement ::= simple_statement
                  | NEXT
                  | EXIT expr_opt
                  | RETURN expr_opt
-                 | DO newline_opt terminated_statement WHILE '(' expr ')'
+                 | DO newline_opt terminated_statement WHILE LPAREN expr RPAREN
 
 simple_statement_opt ::= simple_statement?
 
-simple_statement ::= DELETE VAR_NAME '[' expr_list ']'
+simple_statement ::= DELETE VAR_NAME LBRACKET expr_list RBRACKET
                  | expr
                  | print_statement
 
 print_statement  ::= simple_print_statement output_redirection?
 
 simple_print_statement ::= PRINT  print_expr_list_opt
-                 | PRINT  '(' multiple_expr_list ')'
+                 | PRINT  LPAREN multiple_expr_list RPAREN
                  | PRINTF print_expr_list
-                 | PRINTF '(' multiple_expr_list ')'
+                 | PRINTF LPAREN multiple_expr_list RPAREN
 
 output_redirection ::= '>'    expr
                  | APPEND expr
@@ -244,8 +251,8 @@ unary_expr1      ::= (
                    )?
 
 non_unary_expr   ::= (
-                           '(' expr ')'
-                         | '(' multiple_expr_list ')' IN VAR_NAME
+                           LPAREN expr RPAREN
+                         | LPAREN multiple_expr_list RPAREN IN VAR_NAME
                          | '!' expr
                          | simple_get ('<' expr)?
                          | NUMBER
@@ -263,9 +270,9 @@ non_unary_expr   ::= (
                          | lvalue SUB_ASSIGN expr
                          | lvalue '=' expr
                          | lvalue
-                         | FUNC_NAME '(' expr_list_opt ')'
-                              /* no white space allowed before '(' */ // TODO is this still relevant?
-                         | BUILTIN_FUNC_NAME '(' expr_list_opt ')'
+                         | FUNC_NAME LPAREN expr_list_opt RPAREN
+                              /* no white space allowed before LPAREN */ // TODO is this still relevant?
+                         | BUILTIN_FUNC_NAME LPAREN expr_list_opt RPAREN
                          | BUILTIN_FUNC_NAME
                      )
                      non_unary_expr1
@@ -324,9 +331,9 @@ unary_print_expr1  ::= (
                         )?
 
 non_unary_print_expr ::= (
-                       '(' expr ')'
+                       LPAREN expr RPAREN
                      | '!' print_expr
-                     | '(' multiple_expr_list ')' IN VAR_NAME
+                     | LPAREN multiple_expr_list RPAREN IN VAR_NAME
                      | NUMBER
                      | STRING
                      | ERE
@@ -342,9 +349,9 @@ non_unary_print_expr ::= (
                      | lvalue SUB_ASSIGN print_expr
                      | lvalue '=' print_expr
                      | lvalue
-                     | FUNC_NAME '(' expr_list_opt ')'
-                         /* no white space allowed before '(' */
-                     | BUILTIN_FUNC_NAME '(' expr_list_opt ')'
+                     | FUNC_NAME LPAREN expr_list_opt RPAREN
+                         /* no white space allowed before LPAREN */
+                     | BUILTIN_FUNC_NAME LPAREN expr_list_opt RPAREN
                      | BUILTIN_FUNC_NAME
                  )
                  non_unary_print_expr1
@@ -368,7 +375,7 @@ non_unary_print_expr1 ::= (
                             non_unary_print_expr1
                           )?
 
-lvalue           ::= VAR_NAME ('[' expr_list ']')*
+lvalue           ::= VAR_NAME (LBRACKET expr_list RBRACKET)*
                  | DOLLAR expr
 
 simple_get       ::= GETLINE lvalue?
