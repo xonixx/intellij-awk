@@ -34,9 +34,47 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
           AwkTypes.BREAK,
           AwkTypes.CONTINUE,
           AwkTypes.EXIT);
+
+  public static final TokenSet OPERATORS =
+      TokenSet.create(
+          AwkTypes.ADD_ASSIGN,
+          AwkTypes.SUB_ASSIGN,
+          AwkTypes.MUL_ASSIGN,
+          AwkTypes.DIV_ASSIGN,
+          AwkTypes.MOD_ASSIGN,
+          AwkTypes.POW_ASSIGN,
+          AwkTypes.OR,
+          AwkTypes.AND,
+          AwkTypes.NO_MATCH,
+          AwkTypes.EQ,
+          AwkTypes.LE,
+          AwkTypes.GE,
+          AwkTypes.NE,
+          AwkTypes.INCR,
+          AwkTypes.DECR,
+          AwkTypes.LT,
+          AwkTypes.GT,
+          AwkTypes.ADD,
+          AwkTypes.SUB,
+          AwkTypes.MUL,
+          AwkTypes.DIV,
+          AwkTypes.MOD,
+          AwkTypes.POW,
+          AwkTypes.MATCH,
+          AwkTypes.NOT,
+          AwkTypes.ASSIGN);
+
   public static final TokenSet BRACES_SET = TokenSet.create(AwkTypes.LBRACE, AwkTypes.RBRACE);
   public static final TokenSet BRACKETS_SET = TokenSet.create(AwkTypes.LBRACKET, AwkTypes.RBRACKET);
   public static final TokenSet PARENTHESES_SET = TokenSet.create(AwkTypes.LPAREN, AwkTypes.RPAREN);
+
+  public static final TextAttributesKey COMMA =
+      createTextAttributesKey("AWK_COMMA", DefaultLanguageHighlighterColors.COMMA);
+  public static final TextAttributesKey SEMICOLON =
+      createTextAttributesKey("AWK_SEMICOLON", DefaultLanguageHighlighterColors.SEMICOLON);
+  public static final TextAttributesKey OPERATION_SIGN =
+      createTextAttributesKey(
+          "AWK_OPERATION_SIGN", DefaultLanguageHighlighterColors.OPERATION_SIGN);
 
   public static final TextAttributesKey BRACES =
       createTextAttributesKey("AWK_BRACES", DefaultLanguageHighlighterColors.BRACES);
@@ -57,6 +95,11 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
       createTextAttributesKey("AWK_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
   private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[] {BAD_CHARACTER};
+
+  private static final TextAttributesKey[] COMMA_KEYS = new TextAttributesKey[] {COMMA};
+  private static final TextAttributesKey[] SEMICOLON_KEYS = new TextAttributesKey[] {SEMICOLON};
+  private static final TextAttributesKey[] OPERATION_SIGN_KEYS =
+      new TextAttributesKey[] {OPERATION_SIGN};
 
   private static final TextAttributesKey[] BRACES_KEYS = new TextAttributesKey[] {BRACES};
   private static final TextAttributesKey[] BRACKETS_KEYS = new TextAttributesKey[] {BRACKETS};
@@ -85,12 +128,18 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
       return BRACKETS_KEYS;
     } else if (PARENTHESES_SET.contains(tokenType)) {
       return PARENTHESES_KEYS;
-    } else if (tokenType.equals(AwkTypes.STRING)) {
+    } else if (OPERATORS.contains(tokenType)) {
+      return OPERATION_SIGN_KEYS;
+    } else if (tokenType.equals(AwkTypes.STRING) || tokenType.equals(AwkTypes.ERE)) {
       return STRING_KEYS;
     } else if (tokenType.equals(AwkTypes.NUMBER)) {
       return NUMBER_KEYS;
     } else if (tokenType.equals(AwkTypes.COMMENT)) {
       return COMMENT_KEYS;
+    } else if (tokenType.equals(AwkTypes.COMMA)) {
+      return COMMA_KEYS;
+    } else if (tokenType.equals(AwkTypes.SEMICOLON)) {
+      return SEMICOLON_KEYS;
     } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
       return BAD_CHAR_KEYS;
     }
