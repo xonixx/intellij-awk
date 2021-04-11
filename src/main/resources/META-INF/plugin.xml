@@ -28,6 +28,8 @@
                                        implementationClass="intellij_awk.AwkSyntaxHighlighterFactory"/>
         <colorSettingsPage implementation="intellij_awk.SimpleColorSettingsPage"/>
 
+        <colorSettingsPage implementation="intellij_awk.AwkColorSettingsPage"/>
+
         <annotator language="JAVA" implementationClass="intellij_awk.SimpleAnnotator"/>
 
         <codeInsight.lineMarkerProvider language="JAVA"
