@@ -25,6 +25,7 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
           AwkTypes.FOR,
           AwkTypes.WHILE,
           AwkTypes.DO,
+          AwkTypes.DELETE,
           AwkTypes.IF,
           AwkTypes.ELSE,
           AwkTypes.PRINT,
