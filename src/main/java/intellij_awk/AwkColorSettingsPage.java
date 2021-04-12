@@ -16,6 +16,7 @@ public class AwkColorSettingsPage implements ColorSettingsPage {
   private static final AttributesDescriptor[] DESCRIPTORS =
       new AttributesDescriptor[] {
         new AttributesDescriptor("Keyword", AwkSyntaxHighlighter.KEYWORD),
+        new AttributesDescriptor("Special Variable", AwkSyntaxHighlighter.SPECIAL_VARIABLE),
         new AttributesDescriptor("String", AwkSyntaxHighlighter.STRING),
         new AttributesDescriptor("Number", AwkSyntaxHighlighter.NUMBER),
         new AttributesDescriptor("Comment", AwkSyntaxHighlighter.COMMENT),
