@@ -83,6 +83,9 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
   public static final TextAttributesKey PARENTHESES =
       createTextAttributesKey("AWK_PARENTHESES", DefaultLanguageHighlighterColors.PARENTHESES);
 
+  public static final TextAttributesKey SPECIAL_VARIABLE =
+      createTextAttributesKey("AWK_SPECIAL_VARIABLE", DefaultLanguageHighlighterColors.CONSTANT);
+
   public static final TextAttributesKey KEYWORD =
       createTextAttributesKey("AWK_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
   public static final TextAttributesKey NUMBER =
@@ -104,6 +107,8 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
   private static final TextAttributesKey[] BRACES_KEYS = new TextAttributesKey[] {BRACES};
   private static final TextAttributesKey[] BRACKETS_KEYS = new TextAttributesKey[] {BRACKETS};
   private static final TextAttributesKey[] PARENTHESES_KEYS = new TextAttributesKey[] {PARENTHESES};
+
+  private static final TextAttributesKey[] SPECIAL_VARIABLE_KEYS = new TextAttributesKey[] {SPECIAL_VARIABLE};
 
   private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[] {KEYWORD};
   private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[] {STRING};
@@ -140,6 +145,8 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
       return COMMA_KEYS;
     } else if (tokenType.equals(AwkTypes.SEMICOLON)) {
       return SEMICOLON_KEYS;
+    } else if (tokenType.equals(AwkTypes.SPECIAL_VAR_NAME)) {
+      return SPECIAL_VARIABLE_KEYS;
     } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
       return BAD_CHAR_KEYS;
     }

@@ -32,6 +32,7 @@ STRING=([\"]([^\"\\]|\\.)*[\"])
 ERE="/"([^\\\n/]|\\[^\n])*"/"
 NEWLINE=\r\n|\n
 FUNC_NAME=[a-zA-Z_]+[a-zA-Z_\d]*
+SPECIAL_VAR_NAME=ARGC|ARGV|CONVFMT|ENVIRON|FILENAME|FNR|FS|NF|NR|OFMT|OFS|ORS|RLENGTH|RS|RSTART|SUBSEP
 VAR_NAME=[a-zA-Z_]+[a-zA-Z_\d]*
 //LIVEPREVIEWWS=[ \t]*(\\\n)*
 WHITE_SPACE=[ \t]+ | (\\\n)
@@ -105,6 +106,7 @@ WHITE_SPACE=[ \t]+ | (\\\n)
   {ERE}                    { return ERE; }
   {NEWLINE}                { return NEWLINE; }
   {FUNC_NAME}/\(           { return FUNC_NAME; }
+  {SPECIAL_VAR_NAME}       { return SPECIAL_VAR_NAME; }
   {VAR_NAME}               { return VAR_NAME; }
 //  {LIVEPREVIEWWS}          { return LIVEPREVIEWWS; }
 

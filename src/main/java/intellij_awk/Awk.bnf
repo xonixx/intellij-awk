@@ -1,6 +1,5 @@
 /*
     Grammar based on https://pubs.opengroup.org/onlinepubs/7908799/xcu/awk.html#tag_000_000_108_016
-    TODO 1. Comments in grammar?
 */
 {
   parserClass="intellij_awk.AwkParser"
@@ -128,6 +127,9 @@
     The token FUNC_NAME consists of a word that is not a keyword or a name of a built-in function, followed immediately (without any delimiters) by the "(" character. The "(" character will not be included as part of the token.
     */
     FUNC_NAME='regexp:[a-zA-Z_]+[a-zA-Z_\d]*(?=\()'
+
+    // via https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
+    SPECIAL_VAR_NAME='regexp:ARGC|ARGV|CONVFMT|ENVIRON|FILENAME|FNR|FS|NF|NR|OFMT|OFS|ORS|RLENGTH|RS|RSTART|SUBSEP'
     VAR_NAME='regexp:[a-zA-Z_]+[a-zA-Z_\d]*'
     // this is a special grammar for "preview only" because grammar-kit seems to not
     // support whitespaces
@@ -155,7 +157,7 @@ item             ::= FUNCTION FUNC_NAME LPAREN param_list_opt RPAREN
 
 param_list_opt   ::= param_list?
 
-param_list       ::= VAR_NAME (COMMA newline_opt VAR_NAME)*
+param_list       ::= var_name (COMMA newline_opt var_name)*
 
 pattern          ::= BEGIN
                  | END
@@ -179,7 +181,7 @@ terminated_statement ::= action newline_opt
                  | WHILE LPAREN expr RPAREN newline_opt terminated_statement
                  | FOR LPAREN simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
                       terminated_statement
-                 | FOR LPAREN VAR_NAME IN VAR_NAME RPAREN newline_opt
+                 | FOR LPAREN var_name IN var_name RPAREN newline_opt
                       terminated_statement
                  | SEMICOLON newline_opt
                  | terminatable_statement NEWLINE newline_opt
@@ -192,7 +194,7 @@ unterminated_statement ::= terminatable_statement
                  | WHILE LPAREN expr RPAREN newline_opt unterminated_statement
                  | FOR LPAREN simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
                       unterminated_statement
-                 | FOR LPAREN VAR_NAME IN VAR_NAME RPAREN newline_opt
+                 | FOR LPAREN var_name IN var_name RPAREN newline_opt
                       unterminated_statement
 
 terminatable_statement ::= simple_statement
@@ -205,7 +207,7 @@ terminatable_statement ::= simple_statement
 
 simple_statement_opt ::= simple_statement?
 
-simple_statement ::= DELETE VAR_NAME LBRACKET expr_list RBRACKET
+simple_statement ::= DELETE var_name LBRACKET expr_list RBRACKET
                  | expr
                  | print_statement
 
@@ -259,7 +261,7 @@ unary_expr1      ::= (
                            | GE       expr
                            | MATCH    expr
                            | NO_MATCH expr
-                           | IN VAR_NAME
+                           | IN var_name
                            | AND newline_opt expr
                            | OR  newline_opt expr
                            | QUESTION expr COLON expr
@@ -270,7 +272,7 @@ unary_expr1      ::= (
 
 non_unary_expr   ::= (
                            LPAREN expr RPAREN
-                         | LPAREN multiple_expr_list RPAREN IN VAR_NAME
+                         | LPAREN multiple_expr_list RPAREN IN var_name
                          | NOT expr
                          | simple_get (LT expr)?
                          | NUMBER
@@ -311,7 +313,7 @@ non_unary_expr1     ::= (
                               | GE       expr
                               | MATCH    expr
                               | NO_MATCH expr
-                              | IN VAR_NAME
+                              | IN var_name
                               | AND newline_opt expr
                               | OR  newline_opt expr
                               | QUESTION expr COLON expr
@@ -340,7 +342,7 @@ unary_print_expr1  ::= (
                                 |          non_unary_print_expr
                                 | MATCH    print_expr
                                 | NO_MATCH print_expr
-                                | IN VAR_NAME
+                                | IN var_name
                                 | AND newline_opt print_expr
                                 | OR  newline_opt print_expr
                                 | QUESTION print_expr COLON print_expr
@@ -351,7 +353,7 @@ unary_print_expr1  ::= (
 non_unary_print_expr ::= (
                        LPAREN expr RPAREN
                      | NOT print_expr
-                     | LPAREN multiple_expr_list RPAREN IN VAR_NAME
+                     | LPAREN multiple_expr_list RPAREN IN var_name
                      | NUMBER
                      | STRING
                      | ERE
@@ -385,7 +387,7 @@ non_unary_print_expr1 ::= (
                                 |          non_unary_print_expr
                                 | MATCH    print_expr
                                 | NO_MATCH print_expr
-                                | IN VAR_NAME
+                                | IN var_name
                                 | AND newline_opt print_expr
                                 | OR  newline_opt print_expr
                                 | QUESTION print_expr COLON print_expr
@@ -393,8 +395,11 @@ non_unary_print_expr1 ::= (
                             non_unary_print_expr1
                           )?
 
-lvalue           ::= VAR_NAME (LBRACKET expr_list RBRACKET)*
+lvalue           ::= var_name (LBRACKET expr_list RBRACKET)*
                  | DOLLAR expr
+
+private var_name ::= SPECIAL_VAR_NAME
+                 | VAR_NAME
 
 simple_get       ::= GETLINE lvalue?
 
