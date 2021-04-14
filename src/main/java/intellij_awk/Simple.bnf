@@ -20,8 +20,10 @@ simpleFile ::= item_*
 private item_ ::= (property|COMMENT|CRLF)
 
 property ::= (KEY? SEPARATOR VALUE?) | KEY {
+  pin=3
+  recoverWhile="recover_property"
   mixin="intellij_awk.psi.impl.SimpleNamedElementImpl"
   implements="intellij_awk.psi.SimpleNamedElement"
   methods=[getKey getValue getName setName getNameIdentifier getPresentation]
 }
-
+private recover_property ::= !(KEY|SEPARATOR|COMMENT)
