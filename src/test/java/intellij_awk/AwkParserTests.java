@@ -13,16 +13,39 @@ public class AwkParserTests extends ParsingTestCase {
   }
 
   public void testJsonGenAsm() {
-    doTest(true);
+    ensureOnlyParsingNoErrors();
   }
 
-  @Override
-  protected boolean skipSpaces() {
-    return false;
+  public void testGronParser() {
+    ensureOnlyParsingNoErrors();
   }
 
-  @Override
-  protected boolean includeRanges() {
-    return true;
+  public void testJsonCompile() {
+    ensureOnlyParsingNoErrors();
+  }
+
+  public void testJsonGron() {
+    ensureOnlyParsingNoErrors();
+  }
+
+  public void testJsonParser() {
+    ensureOnlyParsingNoErrors();
+  }
+
+  public void testJsonStructure() {
+    ensureOnlyParsingNoErrors();
+  }
+
+  public void testMakesure() {
+    ensureOnlyParsingNoErrors();
+  }
+
+  public void testUngron() {
+    ensureOnlyParsingNoErrors();
+  }
+
+  private void ensureOnlyParsingNoErrors() {
+    doTest(false);
+    ensureNoErrorElements();
   }
 }
