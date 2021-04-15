@@ -147,11 +147,8 @@ program ::= newline_opt item (terminator item)* newline_opt
 // { ... }
 // 1
 // function a() { ... }
-item             ::= FUNCTION FUNC_NAME LPAREN param_list_opt RPAREN
+item             ::= FUNCTION (FUNC_NAME | VAR_NAME) LPAREN param_list_opt RPAREN
                        newline_opt action
-// TODO: do we need 2 lines below?
-//                 | FUNCTION VAR_NAME      LPAREN param_list_opt RPAREN
-//                                         newline_opt action
                  | pattern action*
                  | action
 
