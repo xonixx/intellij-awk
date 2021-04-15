@@ -43,22 +43,22 @@ WHITE_SPACE=[ \t]+ | (\\\n)
 
   "BEGIN"                  { return BEGIN; }
   "END"                    { return END; }
-  "break"                  { return BREAK; }
-  "continue"               { return CONTINUE; }
-  "delete"                 { return DELETE; }
-  "do"                     { return DO; }
-  "else"                   { return ELSE; }
-  "exit"                   { return EXIT; }
-  "for"                    { return FOR; }
-  "function"               { return FUNCTION; }
-  "if"                     { return IF; }
-  "in"                     { return IN; }
-  "next"                   { return NEXT; }
-  "print"                  { return PRINT; }
-  "printf"                 { return PRINTF; }
-  "return"                 { return RETURN; }
-  "while"                  { return WHILE; }
-  "getline"                { return GETLINE; }
+  "break"     /\(?         { return BREAK; }
+  "continue"  /\(?         { return CONTINUE; }
+  "delete"    /\(?         { return DELETE; }
+  "do"        /\(?         { return DO; }
+  "else"      /\(?         { return ELSE; }
+  "exit"      /\(?         { return EXIT; }
+  "for"       /\(?         { return FOR; }
+  "function"  /\(?         { return FUNCTION; }
+  "if"        /\(?         { return IF; }
+  "in"        /\(?         { return IN; }
+  "next"      /\(?         { return NEXT; }
+  "print"     /\(?         { return PRINT; }
+  "printf"    /\(?         { return PRINTF; }
+  "return"    /\(?         { return RETURN; }
+  "while"     /\(?         { return WHILE; }
+  "getline"   /\(?         { return GETLINE; }
   "+="                     { return ADD_ASSIGN; }
   "-="                     { return SUB_ASSIGN; }
   "*="                     { return MUL_ASSIGN; }
