@@ -40,6 +40,10 @@ public class AwkParserTests extends ParsingTestCase {
     ensureOnlyParsingNoErrors();
   }
 
+  public void testEmpty() {
+    ensureOnlyParsingNoErrors();
+  }
+
   public void testUngron() {
     ensureOnlyParsingNoErrors();
   }
