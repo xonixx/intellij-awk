@@ -40,6 +40,7 @@ WHITE_SPACE=[ \t]+ | (\\\n)
 %state AFTER_BEGIN_END
 
 %%
+// In AWK the '{' should go on the same line with BEGIN/END
 <AFTER_BEGIN_END> {
   {WHITE_SPACE}            { return WHITE_SPACE; }
   "{"                      { yybegin(YYINITIAL); return LBRACE; }
