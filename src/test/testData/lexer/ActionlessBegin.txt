@@ -1,0 +1,5 @@
+AwkTokenType.BEGIN ('BEGIN')
+AwkTokenType.NEWLINE ('\n')
+AwkTokenType.{ ('{')
+WHITE_SPACE (' ')
+AwkTokenType.} ('}')
