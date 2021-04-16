@@ -21,7 +21,13 @@ public class AwkLexerTests extends LexerTestCase {
     doFileTest("awk");
   }
 
-  public void testActionlessBegin() { doFileTest("awk"); }
+  public void testActionlessBegin() {
+    doFileTest("awk");
+  }
+
+  public void testActionlessEnd() {
+    doFileTest("awk");
+  }
 
   @Override
   protected Lexer createLexer() {

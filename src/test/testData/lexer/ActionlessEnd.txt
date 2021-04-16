@@ -1,0 +1,3 @@
+AwkTokenType.END ('END')
+BAD_CHARACTER ('\n')
+BAD_CHARACTER ('1')
