@@ -1,5 +1,5 @@
 AwkTokenType.BEGIN ('BEGIN')
-AwkTokenType.NEWLINE ('\n')
+BAD_CHARACTER ('\n')
 AwkTokenType.{ ('{')
 WHITE_SPACE (' ')
 AwkTokenType.} ('}')

@@ -41,6 +41,7 @@ The idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/mast
 - BWK https://github.com/onetrueawk/awk
 - [Custom language support JetBrains tutorial](https://plugins.jetbrains.com/docs/intellij/custom-language-support.html)
 - [Grammar-Kit tutorial](https://github.com/JetBrains/Grammar-Kit/blob/master/TUTORIAL.md)
+- [JFlex manual](https://www.jflex.de/manual.html)
 - Grammar:
     - [AWK Grammar in Yacc from BWK](https://github.com/onetrueawk/awk/blob/master/awkgram.y)
     - [AWK Grammar in Yacc from Gawk](http://git.savannah.gnu.org/cgit/gawk.git/tree/awkgram.y)

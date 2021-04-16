@@ -37,12 +37,19 @@ VAR_NAME=[a-zA-Z_]+[a-zA-Z_\d]*
 //LIVEPREVIEWWS=[ \t]*(\\\n)*
 WHITE_SPACE=[ \t]+ | (\\\n)
 
+%state AFTER_BEGIN_END
+
 %%
+<AFTER_BEGIN_END> {
+  {WHITE_SPACE}            { return WHITE_SPACE; }
+  "{"                      { yybegin(YYINITIAL); return LBRACE; }
+}
+
 <YYINITIAL> {
   {WHITE_SPACE}            { return WHITE_SPACE; }
 
-  "BEGIN"                  { return BEGIN; }
-  "END"                    { return END; }
+  "BEGIN"                  { yybegin(AFTER_BEGIN_END); return BEGIN; }
+  "END"                    { yybegin(AFTER_BEGIN_END); return END; }
   "break"     /\(?         { return BREAK; }
   "continue"  /\(?         { return CONTINUE; }
   "delete"    /\(?         { return DELETE; }
