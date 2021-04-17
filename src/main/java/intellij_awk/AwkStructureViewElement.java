@@ -61,11 +61,12 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
   @Override
   public TreeElement[] getChildren() {
     if (myElement instanceof AwkFile) {
-      List<AwkItem> awkItems =
-          PsiTreeUtil.getChildrenOfTypeAsList(myElement, AwkItem.class);
+      List<AwkItem> awkItems = PsiTreeUtil.getChildrenOfTypeAsList(myElement, AwkItem.class);
       List<TreeElement> treeElements = new ArrayList<>(awkItems.size());
       for (AwkItem awkItem : awkItems) {
-        treeElements.add(new AwkStructureViewElement((AwkItemImpl) awkItem));
+        if (awkItem.getNameIdentifier() != null) {
+          treeElements.add(new AwkStructureViewElement((AwkItemImpl) awkItem));
+        }
       }
       return treeElements.toArray(new TreeElement[0]);
     }

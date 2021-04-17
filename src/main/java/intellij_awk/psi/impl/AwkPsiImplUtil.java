@@ -13,22 +13,8 @@ import javax.swing.*;
 
 public class AwkPsiImplUtil {
   public static String getItemName(AwkItem awkItem) {
-    PsiElement nameElement = awkItem.getFuncName();
-    if (nameElement == null) {
-      nameElement = awkItem.getVarName();
-    }
-    if (nameElement != null) {
-      return nameElement.getText();
-    } else {
-      AwkPattern pattern = awkItem.getPattern();
-      if (pattern != null) {
-        PsiElement firstChild = pattern.getFirstChild();
-        IElementType elementType = firstChild.getNode().getElementType();
-        if (AwkTypes.BEGIN.equals(elementType) || AwkTypes.END.equals(elementType))
-          return firstChild.getText();
-      }
-    }
-    return "???";
+    PsiElement nameIdentifier = getNameIdentifier(awkItem);
+    return nameIdentifier != null ? nameIdentifier.getText() : "???";
   }
 
   public static PsiElement getNameIdentifier(AwkItem awkItem) {
