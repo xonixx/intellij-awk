@@ -44,9 +44,9 @@
         <lang.foldingBuilder language="JAVA"
                              implementationClass="intellij_awk.SimpleFoldingBuilder"/>
         <gotoSymbolContributor
-                implementation="intellij_awk.SimpleChooseByNameContributor"/>/
+                implementation="intellij_awk.SimpleChooseByNameContributor"/>
         <gotoSymbolContributor
-                implementation="intellij_awk.AwkChooseByNameContributor"/>/
+                implementation="intellij_awk.AwkChooseByNameContributor"/>
         <lang.psiStructureViewFactory language="Simple"
                                       implementationClass="intellij_awk.SimpleStructureViewFactory"/>
         <lang.psiStructureViewFactory language="AWK"

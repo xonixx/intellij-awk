@@ -151,7 +151,9 @@ item             ::= FUNCTION (FUNC_NAME | VAR_NAME) LPAREN param_list_opt RPARE
                        newline_opt action
                  | pattern action*
                  | action {
-    methods=[getItemName getNameIdentifier getPresentation]
+    mixin="intellij_awk.psi.impl.AwkNamedElementImpl"
+    implements="intellij_awk.psi.AwkNamedElement"
+    methods=[isFunction getItemName getName setName getNameIdentifier getPresentation]
 }
 
 param_list_opt   ::= param_list?

@@ -8,14 +8,27 @@ import intellij_awk.AwkIcons;
 import intellij_awk.psi.AwkItem;
 import intellij_awk.psi.AwkPattern;
 import intellij_awk.psi.AwkTypes;
+import intellij_awk.psi.SimpleProperty;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
 public class AwkPsiImplUtil {
+  public static boolean isFunction(AwkItem awkItem) {
+    return awkItem.getFuncName() != null || awkItem.getVarName() != null;
+  }
+
   public static String getItemName(AwkItem awkItem) {
     PsiElement nameIdentifier = getNameIdentifier(awkItem);
     return nameIdentifier != null ? nameIdentifier.getText() : "???";
+  }
+
+  public static String getName(AwkItem awkItem) {
+    return getItemName(awkItem);
+  }
+
+  public static PsiElement setName(AwkItem awkItem, String newName) {
+    throw new UnsupportedOperationException("TBD");
   }
 
   public static PsiElement getNameIdentifier(AwkItem awkItem) {
@@ -54,8 +67,7 @@ public class AwkPsiImplUtil {
       @Nullable
       @Override
       public Icon getIcon(boolean unused) {
-        String text = getPresentableText();
-        return "BEGIN".equals(text) || "END".equals(text) ? AwkIcons.FILE : AllIcons.Nodes.Function;
+        return awkItem.isFunction() ? AllIcons.Nodes.Function : AwkIcons.FILE;
       }
     };
   }
