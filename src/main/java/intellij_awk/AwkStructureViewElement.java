@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import intellij_awk.psi.AwkFile;
 import intellij_awk.psi.AwkItem;
 import intellij_awk.psi.impl.AwkItemImpl;
+import intellij_awk.psi.impl.AwkItemMixin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -47,8 +48,8 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
   @Override
   public String getAlphaSortKey() {
     String keyPrefix = "";
-    if (myElement instanceof AwkItem) {
-      AwkItem awkItem = (AwkItem) myElement;
+    if (myElement instanceof AwkItemMixin) {
+      AwkItemMixin awkItem = (AwkItemMixin) myElement;
       keyPrefix = awkItem.isFunction() ? "002" : "001";
     }
     String name = myElement.getName();

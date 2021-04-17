@@ -15,8 +15,6 @@
   elementTypeClass="intellij_awk.psi.AwkElementType"
   tokenTypeClass="intellij_awk.psi.AwkTokenType"
 
-  psiImplUtilClass="intellij_awk.psi.impl.AwkPsiImplUtil"
-
 // %token VAR_NAME NUMBER STRING ERE
 // %token FUNC_NAME   /* name followed by '(' without white space */
 //
@@ -151,9 +149,8 @@ item             ::= FUNCTION (FUNC_NAME | VAR_NAME) LPAREN param_list_opt RPARE
                        newline_opt action
                  | pattern action*
                  | action {
-    mixin="intellij_awk.psi.impl.AwkNamedElementImpl"
+    mixin="intellij_awk.psi.impl.AwkItemMixin"
     implements="intellij_awk.psi.AwkNamedElement"
-    methods=[isFunction getItemName getName setName getNameIdentifier getPresentation]
 }
 
 param_list_opt   ::= param_list?

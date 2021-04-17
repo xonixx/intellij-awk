@@ -7,7 +7,7 @@ import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import intellij_awk.psi.AwkFile;
-import intellij_awk.psi.AwkItem;
+import intellij_awk.psi.impl.AwkItemMixin;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,16 +23,16 @@ public class AwkUtil {
    * @param name to check
    * @return matching properties
    */
-  public static List<AwkItem> findFunctions(Project project, String name) {
-    List<AwkItem> result = new ArrayList<>();
+  public static List<AwkItemMixin> findFunctions(Project project, String name) {
+    List<AwkItemMixin> result = new ArrayList<>();
     Collection<VirtualFile> virtualFiles =
         FileTypeIndex.getFiles(AwkFileType.INSTANCE, GlobalSearchScope.allScope(project));
     for (VirtualFile virtualFile : virtualFiles) {
       AwkFile awkFile = (AwkFile) PsiManager.getInstance(project).findFile(virtualFile);
       if (awkFile != null) {
-        AwkItem[] awkItems = PsiTreeUtil.getChildrenOfType(awkFile, AwkItem.class);
+        AwkItemMixin[] awkItems = PsiTreeUtil.getChildrenOfType(awkFile, AwkItemMixin.class);
         if (awkItems != null) {
-          for (AwkItem awkItem : awkItems) {
+          for (AwkItemMixin awkItem : awkItems) {
             if (awkItem.isFunction() && awkItem.getItemName().equals(name)) {
               result.add(awkItem);
             }
@@ -43,16 +43,16 @@ public class AwkUtil {
     return result;
   }
 
-  public static List<AwkItem> findFunctions(Project project) {
-    List<AwkItem> result = new ArrayList<>();
+  public static List<AwkItemMixin> findFunctions(Project project) {
+    List<AwkItemMixin> result = new ArrayList<>();
     Collection<VirtualFile> virtualFiles =
         FileTypeIndex.getFiles(AwkFileType.INSTANCE, GlobalSearchScope.allScope(project));
     for (VirtualFile virtualFile : virtualFiles) {
       AwkFile awkFile = (AwkFile) PsiManager.getInstance(project).findFile(virtualFile);
       if (awkFile != null) {
-        AwkItem[] awkItems = PsiTreeUtil.getChildrenOfType(awkFile, AwkItem.class);
+        AwkItemMixin[] awkItems = PsiTreeUtil.getChildrenOfType(awkFile, AwkItemMixin.class);
         if (awkItems != null) {
-          for (AwkItem awkItem : awkItems) {
+          for (AwkItemMixin awkItem : awkItems) {
             if (awkItem.isFunction()) {
               result.add(awkItem);
             }
