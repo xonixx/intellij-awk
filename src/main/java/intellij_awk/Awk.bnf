@@ -150,7 +150,9 @@ program ::= newline_opt item* (terminator item)* newline_opt
 item             ::= FUNCTION (FUNC_NAME | VAR_NAME) LPAREN param_list_opt RPAREN
                        newline_opt action
                  | pattern action*
-                 | action
+                 | action {
+    methods=[getItemName getNameIdentifier getPresentation]
+}
 
 param_list_opt   ::= param_list?
 

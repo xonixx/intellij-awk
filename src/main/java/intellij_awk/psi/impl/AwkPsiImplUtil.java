@@ -1,80 +1,74 @@
 package intellij_awk.psi.impl;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
-import intellij_awk.SimpleIcons;
-import intellij_awk.psi.SimpleElementFactory;
-import intellij_awk.psi.SimpleProperty;
-import intellij_awk.psi.SimpleTypes;
+import com.intellij.psi.tree.IElementType;
+import intellij_awk.AwkIcons;
+import intellij_awk.psi.AwkItem;
+import intellij_awk.psi.AwkPattern;
+import intellij_awk.psi.AwkTypes;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
 public class AwkPsiImplUtil {
-    public static String getKey(SimpleProperty element) {
-        ASTNode keyNode = element.getNode().findChildByType(SimpleTypes.KEY);
-        if (keyNode != null) {
-            // IMPORTANT: Convert embedded escaped spaces to simple spaces
-            return keyNode.getText().replaceAll("\\\\ ", " ");
-        } else {
-            return null;
-        }
+  public static String getItemName(AwkItem awkItem) {
+    PsiElement nameElement = awkItem.getFuncName();
+    if (nameElement == null) {
+      nameElement = awkItem.getVarName();
     }
-
-    public static String getValue(SimpleProperty element) {
-        ASTNode valueNode = element.getNode().findChildByType(SimpleTypes.VALUE);
-        if (valueNode != null) {
-            return valueNode.getText();
-        } else {
-            return null;
-        }
+    if (nameElement != null) {
+      return nameElement.getText();
+    } else {
+      AwkPattern pattern = awkItem.getPattern();
+      if (pattern != null) {
+        PsiElement firstChild = pattern.getFirstChild();
+        IElementType elementType = firstChild.getNode().getElementType();
+        if (AwkTypes.BEGIN.equals(elementType) || AwkTypes.END.equals(elementType))
+          return firstChild.getText();
+      }
     }
+    return "???";
+  }
 
-    public static String getName(SimpleProperty element) {
-        return getKey(element);
+  public static PsiElement getNameIdentifier(AwkItem awkItem) {
+    PsiElement nameElement = awkItem.getFuncName();
+    if (nameElement == null) {
+      nameElement = awkItem.getVarName();
     }
-
-    public static PsiElement setName(SimpleProperty element, String newName) {
-        ASTNode keyNode = element.getNode().findChildByType(SimpleTypes.KEY);
-        if (keyNode != null) {
-
-            SimpleProperty property = SimpleElementFactory.createProperty(element.getProject(), newName);
-            ASTNode newKeyNode = property.getFirstChild().getNode();
-            element.getNode().replaceChild(keyNode, newKeyNode);
-        }
-        return element;
+    if (nameElement != null) {
+      return nameElement;
+    } else {
+      AwkPattern pattern = awkItem.getPattern();
+      if (pattern != null) {
+        PsiElement firstChild = pattern.getFirstChild();
+        IElementType elementType = firstChild.getNode().getElementType();
+        if (AwkTypes.BEGIN.equals(elementType) || AwkTypes.END.equals(elementType))
+          return firstChild;
+      }
     }
+    return null;
+  }
 
-    public static PsiElement getNameIdentifier(SimpleProperty element) {
-        ASTNode keyNode = element.getNode().findChildByType(SimpleTypes.KEY);
-        if (keyNode != null) {
-            return keyNode.getPsi();
-        } else {
-            return null;
-        }
-    }
+  public static ItemPresentation getPresentation(final AwkItem awkItem) {
+    return new ItemPresentation() {
+      @Nullable
+      @Override
+      public String getPresentableText() {
+        return awkItem.getItemName();
+      }
 
-    public static ItemPresentation getPresentation(final SimpleProperty element) {
-        return new ItemPresentation() {
-            @Nullable
-            @Override
-            public String getPresentableText() {
-                return element.getKey();
-            }
+      @Nullable
+      @Override
+      public String getLocationString() {
+        return awkItem.getContainingFile().getName();
+      }
 
-            @Nullable
-            @Override
-            public String getLocationString() {
-                return element.getContainingFile().getName();
-            }
-
-            @Nullable
-            @Override
-            public Icon getIcon(boolean unused) {
-                return SimpleIcons.FILE;
-            }
-        };
-    }
-
+      @Nullable
+      @Override
+      public Icon getIcon(boolean unused) {
+        return AwkIcons.FILE;
+      }
+    };
+  }
 }
