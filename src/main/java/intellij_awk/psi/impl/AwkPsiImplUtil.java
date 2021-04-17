@@ -8,7 +8,6 @@ import intellij_awk.AwkIcons;
 import intellij_awk.psi.AwkItem;
 import intellij_awk.psi.AwkPattern;
 import intellij_awk.psi.AwkTypes;
-import intellij_awk.psi.SimpleProperty;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;

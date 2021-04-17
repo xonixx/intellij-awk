@@ -46,8 +46,13 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
   @NotNull
   @Override
   public String getAlphaSortKey() {
+    String keyPrefix = "";
+    if (myElement instanceof AwkItem) {
+      AwkItem awkItem = (AwkItem) myElement;
+      keyPrefix = awkItem.isFunction() ? "002" : "001";
+    }
     String name = myElement.getName();
-    return name != null ? name : "";
+    return name != null ? keyPrefix + name : "";
   }
 
   @NotNull
