@@ -45,6 +45,8 @@
                              implementationClass="intellij_awk.SimpleFoldingBuilder"/>
         <gotoSymbolContributor
                 implementation="intellij_awk.SimpleChooseByNameContributor"/>/
+        <gotoSymbolContributor
+                implementation="intellij_awk.AwkChooseByNameContributor"/>/
         <lang.psiStructureViewFactory language="Simple"
                                       implementationClass="intellij_awk.SimpleStructureViewFactory"/>
         <lang.psiStructureViewFactory language="AWK"
