@@ -1,5 +1,6 @@
 package intellij_awk.psi.impl;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -53,7 +54,8 @@ public class AwkPsiImplUtil {
       @Nullable
       @Override
       public Icon getIcon(boolean unused) {
-        return AwkIcons.FILE;
+        String text = getPresentableText();
+        return "BEGIN".equals(text) || "END".equals(text) ? AwkIcons.FILE : AllIcons.Nodes.Function;
       }
     };
   }
