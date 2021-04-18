@@ -50,6 +50,9 @@ public class AwkParserTests extends ParsingTestCase {
   public void testFuncName() {
     ensureOnlyParsingNoErrors();
   }
+  public void testPrintWithParenProblem() {
+    ensureOnlyParsingNoErrors();
+  }
 
   private void ensureOnlyParsingNoErrors() {
     doTest(false);
