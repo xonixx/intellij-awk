@@ -148,10 +148,7 @@ program ::= newline_opt item* (terminator item)* newline_opt
 item             ::= FUNCTION function_name LPAREN param_list_opt RPAREN
                        newline_opt action
                  | pattern action*
-                 | action {
-    mixin="intellij_awk.psi.impl.AwkItemMixin"
-    implements="intellij_awk.psi.AwkNamedElement"
-}
+                 | action
 
 function_name    ::= FUNC_NAME | VAR_NAME {
     mixin="intellij_awk.psi.impl.AwkFunctionNameMixin"
@@ -162,9 +159,13 @@ param_list_opt   ::= param_list?
 
 param_list       ::= var_name (COMMA newline_opt var_name)*
 
-pattern          ::= BEGIN
-                 | END
+pattern          ::= begin_or_end
                  | expr (COMMA newline_opt expr)?
+
+begin_or_end     ::= BEGIN | END {
+    mixin="intellij_awk.psi.impl.AwkNamedElementImpl"
+    implements="intellij_awk.psi.AwkNamedElement"
+}
 
 action           ::= LBRACE newline_opt                           RBRACE
                  | LBRACE newline_opt terminated_statement_list   RBRACE

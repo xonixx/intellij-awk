@@ -3,7 +3,7 @@ package intellij_awk;
 import com.intellij.navigation.ChooseByNameContributor;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.Project;
-import intellij_awk.psi.impl.AwkItemMixin;
+import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -14,10 +14,10 @@ public class AwkChooseByNameContributor implements ChooseByNameContributor {
   @NotNull
   @Override
   public String[] getNames(Project project, boolean includeNonProjectItems) {
-    List<AwkItemMixin> functions = AwkUtil.findFunctions(project);
+    List<AwkFunctionNameImpl> functions = AwkUtil.findFunctions(project);
     List<String> names = new ArrayList<>(functions.size());
-    for (AwkItemMixin function : functions) {
-      String name = function.getItemName();
+    for (AwkFunctionNameImpl function : functions) {
+      String name = function.getName();
       if (name != null && name.length() > 0) {
         names.add(name);
       }
@@ -30,7 +30,7 @@ public class AwkChooseByNameContributor implements ChooseByNameContributor {
   public NavigationItem[] getItemsByName(
       String name, String pattern, Project project, boolean includeNonProjectItems) {
     // TODO: include non project items
-    List<AwkItemMixin> functions = AwkUtil.findFunctions(project, name);
+    List<AwkFunctionNameImpl> functions = AwkUtil.findFunctions(project, name);
     return functions.toArray(new NavigationItem[functions.size()]);
   }
 }

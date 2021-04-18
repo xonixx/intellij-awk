@@ -6,11 +6,13 @@ import com.intellij.ide.util.treeView.smartTree.SortableTreeElement;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.NavigatablePsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.PsiElement;
 import intellij_awk.psi.AwkFile;
+import intellij_awk.psi.AwkFunctionName;
 import intellij_awk.psi.AwkItem;
-import intellij_awk.psi.impl.AwkItemImpl;
-import intellij_awk.psi.impl.AwkItemMixin;
+import intellij_awk.psi.AwkPattern;
+import intellij_awk.psi.impl.AwkBeginOrEndImpl;
+import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -47,13 +49,14 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
   @NotNull
   @Override
   public String getAlphaSortKey() {
-    String keyPrefix = "";
-    if (myElement instanceof AwkItemMixin) {
-      AwkItemMixin awkItem = (AwkItemMixin) myElement;
-      keyPrefix = awkItem.isFunction() ? "002" : "001";
+    if (myElement instanceof AwkBeginOrEndImpl) {
+      AwkBeginOrEndImpl beginOrEnd = (AwkBeginOrEndImpl) myElement;
+      return "001" + beginOrEnd.getName();
+    } else if (myElement instanceof AwkFunctionNameImpl) {
+      AwkFunctionNameImpl functionName = (AwkFunctionNameImpl) myElement;
+      return "002" + functionName.getName();
     }
-    String name = myElement.getName();
-    return name != null ? keyPrefix + name : "";
+    return "???";
   }
 
   @NotNull
@@ -67,11 +70,24 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
   @Override
   public TreeElement[] getChildren() {
     if (myElement instanceof AwkFile) {
-      List<AwkItem> awkItems = PsiTreeUtil.getChildrenOfTypeAsList(myElement, AwkItem.class);
-      List<TreeElement> treeElements = new ArrayList<>(awkItems.size());
-      for (AwkItem awkItem : awkItems) {
-        if (awkItem.getNameIdentifier() != null) {
-          treeElements.add(new AwkStructureViewElement((AwkItemImpl) awkItem));
+      List<TreeElement> treeElements = new ArrayList<>();
+      AwkFile awkFile = (AwkFile) myElement;
+
+      for (PsiElement child : awkFile.getChildren()) {
+
+        if (child instanceof AwkItem) {
+          AwkItem awkItem = (AwkItem) child;
+
+          AwkFunctionName functionName = awkItem.getFunctionName();
+          if (functionName != null) {
+            treeElements.add(new AwkStructureViewElement((NavigatablePsiElement) functionName));
+
+          } else {
+            AwkPattern awkPattern = awkItem.getPattern();
+            if (awkPattern != null && awkPattern.getBeginOrEnd() != null) {
+              treeElements.add(new AwkStructureViewElement((NavigatablePsiElement) awkPattern.getBeginOrEnd()));
+            }
+          }
         }
       }
       return treeElements.toArray(new TreeElement[0]);
