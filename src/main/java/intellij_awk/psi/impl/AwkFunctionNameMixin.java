@@ -42,4 +42,9 @@ public abstract class AwkFunctionNameMixin extends AwkNamedElementImpl implement
       }
     };
   }
+
+  @Override
+  public @Nullable Icon getIcon(int flags) {
+    return AllIcons.Nodes.Function;
+  }
 }
