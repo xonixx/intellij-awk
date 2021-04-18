@@ -53,4 +53,9 @@ public abstract class AwkNamedElementImpl extends ASTWrapperPsiElement implement
       }
     };
   }
+
+  @Override
+  public @Nullable Icon getIcon(int flags) {
+    return AwkIcons.FILE;
+  }
 }
