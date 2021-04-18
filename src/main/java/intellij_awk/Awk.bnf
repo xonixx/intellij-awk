@@ -167,9 +167,9 @@ begin_or_end     ::= BEGIN | END {
     implements="intellij_awk.psi.AwkNamedElement"
 }
 
-action           ::= LBRACE newline_opt                           RBRACE
-                 | LBRACE newline_opt terminated_statement_list   RBRACE
-                 | LBRACE newline_opt unterminated_statement_list RBRACE
+action           ::= LBRACE newline_opt                             RBRACE
+                   | LBRACE newline_opt terminated_statement_list   RBRACE
+                   | LBRACE newline_opt unterminated_statement_list RBRACE
 
 terminator       ::= (NEWLINE|SEMICOLON)+
 
@@ -180,16 +180,14 @@ unterminated_statement_list ::= terminated_statement_list unterminated_statement
 
 terminated_statement ::= action newline_opt
                  | IF LPAREN expr RPAREN newline_opt terminated_statement
-                       ELSE newline_opt terminated_statement
-                 | IF LPAREN expr RPAREN newline_opt terminated_statement
+                       [ ELSE newline_opt terminated_statement ]
                  | WHILE LPAREN expr RPAREN newline_opt terminated_statement
                  | FOR LPAREN simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
                       terminated_statement
                  | FOR LPAREN var_name IN var_name RPAREN newline_opt
                       terminated_statement
                  | SEMICOLON newline_opt
-                 | terminatable_statement NEWLINE newline_opt
-                 | terminatable_statement SEMICOLON     newline_opt
+                 | terminatable_statement (NEWLINE|SEMICOLON) newline_opt
 
 unterminated_statement ::= terminatable_statement
                  | IF LPAREN expr RPAREN newline_opt terminated_statement
@@ -221,9 +219,7 @@ simple_print_statement ::=
                    PRINT  (LPAREN multiple_expr_list RPAREN | print_expr_list_opt)
                  | PRINTF (LPAREN multiple_expr_list RPAREN | print_expr_list)
 
-output_redirection ::= GT  expr
-                 | APPEND  expr
-                 | PIPE    expr
+output_redirection ::= (GT|APPEND|PIPE) expr
 
 expr_list_opt    ::= expr_list?
 
@@ -234,8 +230,7 @@ multiple_expr_list ::= expr (COMMA newline_opt expr)*
 
 expr_opt         ::= expr?
 
-expr             ::= unary_expr
-                 | non_unary_expr
+expr             ::= unary_expr | non_unary_expr
 
 /*
     Eliminate left recursion: https://web.cs.wpi.edu/~kal/PLT/PLT4.1.2.html
@@ -248,7 +243,7 @@ expr             ::= unary_expr
 */
 unary_expr       ::= (ADD|SUB)  expr unary_expr1
 
-unary_expr1      ::= (
+unary_expr1      ::= [
                         (    POW      expr
                            | MUL      expr
                            | DIV      expr
@@ -271,7 +266,7 @@ unary_expr1      ::= (
                            | PIPE simple_get
                        )
                        unary_expr1
-                   )?
+                   ]
 
 non_unary_expr   ::= (
                            LPAREN expr RPAREN
@@ -294,13 +289,12 @@ non_unary_expr   ::= (
                          | lvalue ASSIGN expr
                          | lvalue
                          | FUNC_NAME LPAREN expr_list_opt RPAREN
-                              /* no white space allowed before LPAREN */ // TODO is this still relevant?
-                         | BUILTIN_FUNC_NAME LPAREN expr_list_opt RPAREN
-                         | BUILTIN_FUNC_NAME
+                              /* no white space allowed before LPAREN */
+                         | BUILTIN_FUNC_NAME [ LPAREN expr_list_opt RPAREN ]
                      )
                      non_unary_expr1
 
-non_unary_expr1     ::= (
+non_unary_expr1     ::= [
                           (     POW      expr
                               | MUL      expr
                               | DIV      expr
@@ -323,18 +317,17 @@ non_unary_expr1     ::= (
                               | PIPE simple_get
                           )
                           non_unary_expr1
-                      )?
+                      ]
 
 print_expr_list_opt ::= print_expr_list?
 
 print_expr_list  ::= print_expr (COMMA newline_opt print_expr)*
 
-print_expr       ::= unary_print_expr
-                 | non_unary_print_expr
+print_expr       ::= unary_print_expr | non_unary_print_expr
 
 unary_print_expr ::= (ADD|SUB) print_expr unary_print_expr1
 
-unary_print_expr1  ::= (
+unary_print_expr1  ::= [
                             (
                                   POW      print_expr
                                 | MUL      print_expr
@@ -351,7 +344,7 @@ unary_print_expr1  ::= (
                                 | QUESTION print_expr COLON print_expr
                             )
                             unary_print_expr1
-                        )?
+                        ]
 
 non_unary_print_expr ::= (
                        LPAREN expr RPAREN
@@ -379,7 +372,7 @@ non_unary_print_expr ::= (
                  )
                  non_unary_print_expr1
 
-non_unary_print_expr1 ::= (
+non_unary_print_expr1 ::= [
                             (
                                 POW      print_expr
                                 | MUL      print_expr
@@ -396,7 +389,7 @@ non_unary_print_expr1 ::= (
                                 | QUESTION print_expr COLON print_expr
                             )
                             non_unary_print_expr1
-                          )?
+                          ]
 
 lvalue           ::= var_name (LBRACKET expr_list RBRACKET)*
                  | DOLLAR expr
