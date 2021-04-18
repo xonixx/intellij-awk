@@ -49,8 +49,8 @@ WHITE_SPACE=[ \t]+ | (\\\n)
 <YYINITIAL> {
   {WHITE_SPACE}            { return WHITE_SPACE; }
 
-  "BEGIN"                  { yybegin(AFTER_BEGIN_END); return BEGIN; }
-  "END"                    { yybegin(AFTER_BEGIN_END); return END; }
+  "BEGIN"     /\(?         { yybegin(AFTER_BEGIN_END); return BEGIN; }
+  "END"       /\(?         { yybegin(AFTER_BEGIN_END); return END; }
   "break"     /\(?         { return BREAK; }
   "continue"  /\(?         { return CONTINUE; }
   "delete"    /\(?         { return DELETE; }
