@@ -1,0 +1,7 @@
+AwkTokenType.function ('function')
+WHITE_SPACE (' ')
+AwkTokenType.FUNC_NAME ('BEGIN')
+AwkTokenType.( ('(')
+AwkTokenType.) (')')
+AwkTokenType.{ ('{')
+AwkTokenType.} ('}')

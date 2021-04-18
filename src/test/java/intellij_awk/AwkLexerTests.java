@@ -29,6 +29,10 @@ public class AwkLexerTests extends LexerTestCase {
     doFileTest("awk");
   }
 
+  public void testFunctionBegin() {
+    doFileTest("awk");
+  }
+
   @Override
   protected Lexer createLexer() {
     return new AwkLexerAdapter();

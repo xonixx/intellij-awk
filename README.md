@@ -11,7 +11,7 @@
 
 - [x] Support basic AWK code highlighting
 - [ ] Support basic AWK code navigations (go to declaration, show structure)
-- [ ] Support only POSIX subset (aka BWK), w/o Gawk additions (this can be added later)
+- [x] Support only POSIX subset (aka BWK), w/o Gawk additions (this can be added later)
 
 ## Goals v0.0.2
 
