@@ -217,10 +217,9 @@ simple_statement ::= DELETE var_name LBRACKET expr_list RBRACKET
 
 print_statement  ::= simple_print_statement output_redirection?
 
-simple_print_statement ::= PRINT  print_expr_list_opt
-                 | PRINT  LPAREN multiple_expr_list RPAREN
-                 | PRINTF print_expr_list
-                 | PRINTF LPAREN multiple_expr_list RPAREN
+simple_print_statement ::=
+                   PRINT  (LPAREN multiple_expr_list RPAREN | print_expr_list_opt)
+                 | PRINTF (LPAREN multiple_expr_list RPAREN | print_expr_list)
 
 output_redirection ::= GT  expr
                  | APPEND  expr
