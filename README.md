@@ -51,13 +51,14 @@ The idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/mast
     - [AWK.sublime-syntax](https://github.com/JohnNilsson/awk-sublime/blob/master/AWK.sublime-syntax)
         - [Explanation](https://www.sublimetext.com/docs/3/syntax.html)
 - Some other language plugins
-    - [Zig](https://github.com/ice1000/intellij-zig)
-    - [Solidity](https://github.com/intellij-solidity/intellij-solidity)
-    - [D language](https://github.com/intellij-dlanguage/intellij-dlanguage)
-    - [Erlang](https://github.com/ignatov/intellij-erlang)
-    - [Elixir](https://github.com/KronicDeth/intellij-elixir)
-    - [Rust](https://github.com/intellij-rust/intellij-rust)
-    - [Bash](https://github.com/BashSupport/BashSupport)
-    - [Zephir](https://github.com/zephir-lang/idea-plugin)
-    - [IDEA sh](https://github.com/JetBrains/intellij-community/tree/master/plugins/sh)
-    - [IDEA properties](https://github.com/JetBrains/intellij-community/tree/master/plugins/properties) 
+    - [Zig](https://github.com/ice1000/intellij-zig) `Kotlin`
+    - [Solidity](https://github.com/intellij-solidity/intellij-solidity) `Kotlin`
+    - [D language](https://github.com/intellij-dlanguage/intellij-dlanguage) `Java` `Kotlin`
+    - [Haxe](https://github.com/HaxeFoundation/intellij-haxe) `Java`
+    - [Erlang](https://github.com/ignatov/intellij-erlang) `Java` 
+    - [Elixir](https://github.com/KronicDeth/intellij-elixir) `Kotlin` `Java`
+    - [Rust](https://github.com/intellij-rust/intellij-rust) `Kotlin`
+    - [Bash](https://github.com/BashSupport/BashSupport) `Java`
+    - [Zephir](https://github.com/zephir-lang/idea-plugin) `Kotlin`
+    - [IDEA sh](https://github.com/JetBrains/intellij-community/tree/master/plugins/sh) `Java`
+    - [IDEA properties](https://github.com/JetBrains/intellij-community/tree/master/plugins/properties) `Java` 
