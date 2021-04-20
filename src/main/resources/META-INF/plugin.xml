@@ -58,6 +58,8 @@
                 implementation="intellij_awk.SimpleLanguageCodeStyleSettingsProvider"/>
         <lang.commenter language="Simple" implementationClass="intellij_awk.SimpleCommenter"/>
         <lang.commenter language="AWK" implementationClass="intellij_awk.AwkCommenter"/>
+
+        <lang.braceMatcher language="AWK" implementationClass="intellij_awk.AwkBraceMatcher"/>
     </extensions>
 
     <actions>
