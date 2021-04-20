@@ -53,6 +53,7 @@ The idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/mast
 - Some other language plugins
     - [Zig](https://github.com/ice1000/intellij-zig)
     - [Solidity](https://github.com/intellij-solidity/intellij-solidity)
+    - [D language](https://github.com/intellij-dlanguage/intellij-dlanguage)
     - [Erlang](https://github.com/ignatov/intellij-erlang)
     - [Elixir](https://github.com/KronicDeth/intellij-elixir)
     - [Rust](https://github.com/intellij-rust/intellij-rust)
