@@ -13,7 +13,7 @@ public class AwkBraceMatcher implements PairedBraceMatcher {
 
   private static final BracePair[] PAIRS =
       new BracePair[] {
-        new BracePair(LBRACE, RBRACE, false),
+        new BracePair(LBRACE, RBRACE, true), // same as in Java
         new BracePair(LBRACKET, RBRACKET, false),
         new BracePair(LPAREN, RPAREN, false)
       };
