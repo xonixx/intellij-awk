@@ -288,11 +288,16 @@ non_unary_expr   ::= (
                          | lvalue SUB_ASSIGN expr
                          | lvalue ASSIGN expr
                          | lvalue
-                         | FUNC_NAME LPAREN expr_list_opt RPAREN
-                              /* no white space allowed before LPAREN */
+                         | function_call
                          | BUILTIN_FUNC_NAME [ LPAREN expr_list_opt RPAREN ]
                      )
                      non_unary_expr1
+
+function_call       ::= FUNC_NAME LPAREN expr_list_opt RPAREN /* no white space allowed before LPAREN */
+{
+    mixin="intellij_awk.psi.impl.AwkFunctionCallMixin"
+    implements="intellij_awk.psi.AwkNamedElement"
+}
 
 non_unary_expr1     ::= [
                           (     POW      expr
@@ -365,8 +370,7 @@ non_unary_print_expr ::= (
                      | lvalue SUB_ASSIGN print_expr
                      | lvalue ASSIGN     print_expr
                      | lvalue
-                     | FUNC_NAME LPAREN expr_list_opt RPAREN
-                         /* no white space allowed before LPAREN */
+                     | function_call
                      | BUILTIN_FUNC_NAME LPAREN expr_list_opt RPAREN
                      | BUILTIN_FUNC_NAME
                  )
