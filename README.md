@@ -12,19 +12,16 @@
 - [x] Support basic AWK code highlighting
 - [ ] Support basic AWK code navigations (go to declaration, show structure)
 - [x] Support only POSIX subset (aka BWK), w/o Gawk additions (this can be added later)
-
-## Goals v0.0.2
-
 - Refactoring support
   - [ ] rename variable
   - [ ] rename function
 
-## Goals v0.0.3
+## Goals v0.0.2
 
 - [ ] Showing documentation for built-in functions
 - [ ] Showing documentation for built-in variables (`NR`/`NF`/etc.)
 
-## Goals v0.0.4
+## Goals v0.0.3
 
 - [ ] Enforce variable naming convention
     - `Name` for global
