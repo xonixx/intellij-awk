@@ -3,17 +3,21 @@ package intellij_awk;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import intellij_awk.psi.AwkFile;
-import intellij_awk.psi.AwkFunctionName;
-import intellij_awk.psi.AwkItem;
+import intellij_awk.psi.AwkParamList;
+import intellij_awk.psi.AwkUserVarName;
+import intellij_awk.psi.impl.AwkItemImpl;
+import intellij_awk.psi.impl.AwkUserVarNameImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AwkReferenceVariable extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
+public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
+    implements PsiPolyVariantReference {
 
-  public AwkReferenceVariable(@NotNull PsiElement element, TextRange rangeInElement) {
+
+  public AwkReferenceVariable(@NotNull AwkUserVarNameImpl element, TextRange rangeInElement) {
     super(element, rangeInElement);
   }
 
@@ -21,19 +25,44 @@ public class AwkReferenceVariable extends PsiReferenceBase<PsiElement> implement
   public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
     List<ResolveResult> res = new ArrayList<>();
 
-    AwkFile awkFile = (AwkFile) myElement.getContainingFile();
+    PsiElement ref = resolveFunctionArgument(myElement);
+    if (ref == null) {
+      ref = resolveGlobalVariable(myElement);
+    }
+    if (ref != null) {
+      res.add(new PsiElementResolveResult(ref));
+    }
+    return res.toArray(new ResolveResult[0]);
+  }
 
-    for (PsiElement child : awkFile.getChildren()) {
-      if (child instanceof AwkItem) {
-        AwkItem awkItem = (AwkItem) child;
-        AwkFunctionName functionName = awkItem.getFunctionName();
-        if (functionName != null && myElement.getText().equals(functionName.getName())) {
-          res.add(new PsiElementResolveResult(functionName));
+  private PsiElement resolveFunctionArgument(AwkUserVarNameImpl userVarName) {
+    PsiElement parent = userVarName;
+    while (true) {
+      parent = parent.getParent();
+      if (parent == null || parent instanceof AwkFile) {
+        break;
+      }
+      if (parent instanceof AwkItemImpl) {
+        AwkItemImpl awkItem = (AwkItemImpl) parent;
+        if (awkItem.getFunctionName() != null) {
+          AwkParamList paramList = awkItem.getParamList();
+          if (paramList != null) {
+            List<AwkUserVarName> userVarNameList = paramList.getUserVarNameList();
+            for (AwkUserVarName awkUserVarName : userVarNameList) {
+              PsiElement varName = awkUserVarName.getVarName();
+              if (varName.getText().equals(userVarName.getName())) {
+                return varName;
+              }
+            }
+          }
         }
       }
     }
+    return null;
+  }
 
-    return res.toArray(new ResolveResult[0]);
+  private PsiElement resolveGlobalVariable(AwkUserVarNameImpl userVarName) {
+    return null;
   }
 
   /** Resolves references to a single result, or fails. */
