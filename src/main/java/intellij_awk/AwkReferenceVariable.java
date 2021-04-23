@@ -14,7 +14,6 @@ import java.util.List;
 public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
     implements PsiPolyVariantReference {
 
-
   public AwkReferenceVariable(@NotNull AwkUserVarNameImpl element, TextRange rangeInElement) {
     super(element, rangeInElement);
   }
@@ -69,11 +68,21 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
         if (pattern != null) {
           AwkBeginOrEnd beginOrEnd = pattern.getBeginOrEnd();
           if (beginOrEnd != null) {
-             if (AwkTypes.BEGIN.equals(beginOrEnd.getFirstChild().getNode().getElementType())) {
-               AwkAction action = awkItem.getAction();
+            if (AwkTypes.BEGIN.equals(beginOrEnd.getFirstChild().getNode().getElementType())) {
+              AwkAction action = awkItem.getAction();
 
-
-             }
+              PsiElement varDeclaration =
+                  AwkUtil.findFirstMatchedDeep(
+                      action,
+                      psiElement ->
+                          psiElement instanceof AwkUserVarName
+                              && ((AwkUserVarName) psiElement)
+                                  .getVarName()
+                                  .textMatches(userVarName.getName()));
+              if (varDeclaration != null) {
+                return varDeclaration;
+              }
+            }
           }
         }
       }
