@@ -41,6 +41,8 @@
                                  implementationClass="intellij_awk.SimpleRefactoringSupportProvider"/>
         <lang.findUsagesProvider language="Simple"
                                  implementationClass="intellij_awk.SimpleFindUsagesProvider"/>
+        <lang.findUsagesProvider language="AWK"
+                                 implementationClass="intellij_awk.AwkFindUsagesProvider"/>
         <lang.foldingBuilder language="JAVA"
                              implementationClass="intellij_awk.SimpleFoldingBuilder"/>
         <gotoSymbolContributor
