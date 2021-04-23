@@ -2,9 +2,7 @@ package intellij_awk;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import intellij_awk.psi.AwkFile;
-import intellij_awk.psi.AwkParamList;
-import intellij_awk.psi.AwkUserVarName;
+import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkItemImpl;
 import intellij_awk.psi.impl.AwkUserVarNameImpl;
 import org.jetbrains.annotations.NotNull;
@@ -62,6 +60,25 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
   }
 
   private PsiElement resolveGlobalVariable(AwkUserVarNameImpl userVarName) {
+    AwkFile awkFile = (AwkFile) userVarName.getContainingFile();
+
+    for (PsiElement child : awkFile.getChildren()) {
+      if (child instanceof AwkItem) {
+        AwkItem awkItem = (AwkItem) child;
+        AwkPattern pattern = awkItem.getPattern();
+        if (pattern != null) {
+          AwkBeginOrEnd beginOrEnd = pattern.getBeginOrEnd();
+          if (beginOrEnd != null) {
+             if (AwkTypes.BEGIN.equals(beginOrEnd.getFirstChild().getNode().getElementType())) {
+               AwkAction action = awkItem.getAction();
+
+
+             }
+          }
+        }
+      }
+    }
+
     return null;
   }
 

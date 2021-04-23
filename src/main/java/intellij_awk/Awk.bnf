@@ -147,7 +147,7 @@ program ::= newline_opt item* (terminator item)* newline_opt
 // function a() { ... }
 item             ::= FUNCTION function_name LPAREN param_list? RPAREN
                        newline_opt action
-                 | pattern action*
+                 | pattern action?
                  | action
 
 function_name    ::= FUNC_NAME | VAR_NAME {
