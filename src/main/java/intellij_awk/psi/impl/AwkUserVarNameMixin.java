@@ -19,6 +19,7 @@ public abstract class AwkUserVarNameMixin extends AwkNamedElementImpl implements
 
   @Override
   public PsiReference getReference() {
-    return new AwkReferenceVariable((AwkUserVarNameImpl) getNameIdentifier(), TextRange.from(0, getName().length()));
+    return new AwkReferenceVariable(
+        (AwkUserVarNameImpl) this, TextRange.from(0, getName().length()));
   }
 }

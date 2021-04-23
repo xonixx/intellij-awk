@@ -49,7 +49,7 @@ public abstract class AwkNamedElementImpl extends ASTWrapperPsiElement implement
 
       @Override
       public Icon getIcon(boolean unused) {
-        return AwkIcons.FILE;
+        return AwkNamedElementImpl.this.getIcon(1);
       }
     };
   }
