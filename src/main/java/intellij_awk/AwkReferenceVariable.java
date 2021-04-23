@@ -47,8 +47,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
             List<AwkUserVarName> userVarNameList = paramList.getUserVarNameList();
             for (AwkUserVarName awkUserVarName : userVarNameList) {
               PsiElement varName = awkUserVarName.getVarName();
-              if (varName.getText().equals(userVarName.getName())) {
-                return varName;
+              if (varName.textMatches(userVarName.getName())) {
+                return awkUserVarName;
               }
             }
           }
