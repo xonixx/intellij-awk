@@ -5,11 +5,13 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import intellij_awk.AwkReferenceFunction;
+import intellij_awk.AwkReferenceVariable;
 import intellij_awk.psi.AwkFunctionCall;
+import intellij_awk.psi.AwkUserVarName;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AwkFunctionCallMixin extends AwkNamedElementImpl implements AwkFunctionCall {
-  public AwkFunctionCallMixin(@NotNull ASTNode node) {
+public abstract class AwkUserVarNameMixin extends AwkNamedElementImpl implements AwkUserVarName {
+  public AwkUserVarNameMixin(@NotNull ASTNode node) {
     super(node);
   }
 
@@ -17,12 +19,8 @@ public abstract class AwkFunctionCallMixin extends AwkNamedElementImpl implement
     throw new UnsupportedOperationException("TBD");
   }
 
-  public PsiElement getNameIdentifier() {
-    return getFuncName();
-  }
-
   @Override
   public PsiReference getReference() {
-    return new AwkReferenceFunction(getNameIdentifier(), TextRange.from(0, getName().length()));
+    return new AwkReferenceVariable(getNameIdentifier(), TextRange.from(0, getName().length()));
   }
 }

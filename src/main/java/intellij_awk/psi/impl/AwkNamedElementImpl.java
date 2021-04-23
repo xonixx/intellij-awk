@@ -26,7 +26,7 @@ public abstract class AwkNamedElementImpl extends ASTWrapperPsiElement implement
 
   @Override
   public String getName() {
-    return getText();
+    return getNameIdentifier().getText();
   }
 
   @Override
