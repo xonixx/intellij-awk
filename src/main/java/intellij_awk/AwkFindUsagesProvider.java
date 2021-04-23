@@ -49,28 +49,6 @@ public class AwkFindUsagesProvider implements FindUsagesProvider {
 
 /*  @NotNull
   @Override
-  public String getDescriptiveName(@NotNull PsiElement psiElement) {
-    if (element instanceof SimpleProperty) {
-      return ((SimpleProperty) element).getKey();
-    } else {
-      return "";
-    }
-  }
-
-  @NotNull
-  @Override
-  public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-    if (element instanceof SimpleProperty) {
-      return ((SimpleProperty) element).getKey()
-          + SimpleAnnotator.SIMPLE_SEPARATOR_STR
-          + ((SimpleProperty) element).getValue();
-    } else {
-      return "";
-    }
-  }*/
-
-/*  @NotNull
-  @Override
   public String getType(@NotNull PsiElement element) {
     return ElementDescriptionUtil.getElementDescription(element, UsageViewTypeLocation.INSTANCE);
   }*/
