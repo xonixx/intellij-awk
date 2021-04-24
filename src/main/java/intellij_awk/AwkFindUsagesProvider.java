@@ -9,8 +9,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.usageView.UsageViewLongNameLocation;
 import com.intellij.usageView.UsageViewNodeTextLocation;
-import intellij_awk.psi.AwkFunctionName;
-import intellij_awk.psi.AwkTypes;
+import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +27,13 @@ public class AwkFindUsagesProvider implements FindUsagesProvider {
 
   @Override
   public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
-    return psiElement instanceof AwkFunctionName;
+    return psiElement instanceof AwkFunctionName || isConsideredVariableDeclaration(psiElement);
+  }
+
+  private boolean isConsideredVariableDeclaration(PsiElement psiElement) {
+    return psiElement instanceof AwkUserVarName
+        && (AwkUtil.isEnclosedBy(psiElement, AwkParamList.class)
+            || AwkUtil.isEnclosedBy(psiElement, AwkUtil::isAwkItemOfBegin));
   }
 
   @Nullable
@@ -42,12 +47,14 @@ public class AwkFindUsagesProvider implements FindUsagesProvider {
   public String getType(@NotNull PsiElement psiElement) {
     if (psiElement instanceof AwkFunctionName) {
       return "function";
+    } else if (psiElement instanceof AwkUserVarName) {
+      return "variable";
     } else {
       return "???";
     }
   }
 
-/*  @NotNull
+  /*  @NotNull
   @Override
   public String getType(@NotNull PsiElement element) {
     return ElementDescriptionUtil.getElementDescription(element, UsageViewTypeLocation.INSTANCE);
@@ -56,12 +63,14 @@ public class AwkFindUsagesProvider implements FindUsagesProvider {
   @NotNull
   @Override
   public String getDescriptiveName(@NotNull PsiElement element) {
-    return ElementDescriptionUtil.getElementDescription(element, UsageViewLongNameLocation.INSTANCE);
+    return ElementDescriptionUtil.getElementDescription(
+        element, UsageViewLongNameLocation.INSTANCE);
   }
 
   @NotNull
   @Override
   public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-    return ElementDescriptionUtil.getElementDescription(element, UsageViewNodeTextLocation.INSTANCE);
+    return ElementDescriptionUtil.getElementDescription(
+        element, UsageViewNodeTextLocation.INSTANCE);
   }
 }

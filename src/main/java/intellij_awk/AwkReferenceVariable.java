@@ -66,22 +66,19 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
         AwkItem awkItem = (AwkItem) child;
         AwkPattern pattern = awkItem.getPattern();
         if (pattern != null) {
-          AwkBeginOrEnd beginOrEnd = pattern.getBeginOrEnd();
-          if (beginOrEnd != null) {
-            if (AwkTypes.BEGIN.equals(beginOrEnd.getFirstChild().getNode().getElementType())) {
-              AwkAction action = awkItem.getAction();
+          if (AwkUtil.isAwkBegin(pattern.getBeginOrEnd())) {
+            AwkAction action = awkItem.getAction();
 
-              PsiElement varDeclaration =
-                  AwkUtil.findFirstMatchedDeep(
-                      action,
-                      psiElement ->
-                          psiElement instanceof AwkUserVarName
-                              && ((AwkUserVarName) psiElement)
-                                  .getVarName()
-                                  .textMatches(userVarName.getName()));
-              if (varDeclaration != null) {
-                return varDeclaration;
-              }
+            PsiElement varDeclaration =
+                AwkUtil.findFirstMatchedDeep(
+                    action,
+                    psiElement ->
+                        psiElement instanceof AwkUserVarName
+                            && ((AwkUserVarName) psiElement)
+                                .getVarName()
+                                .textMatches(userVarName.getName()));
+            if (varDeclaration != null) {
+              return varDeclaration;
             }
           }
         }

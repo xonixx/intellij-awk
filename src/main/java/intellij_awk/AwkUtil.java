@@ -6,9 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import intellij_awk.psi.AwkFile;
-import intellij_awk.psi.AwkFunctionName;
-import intellij_awk.psi.AwkItem;
+import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,6 +30,33 @@ public class AwkUtil {
       }
     }
     return null;
+  }
+
+  public static boolean isEnclosedBy(
+      PsiElement psiElement, Class<? extends PsiElement> enclosingClass) {
+    return isEnclosedBy(psiElement, enclosingClass::isInstance);
+  }
+
+  public static boolean isEnclosedBy(PsiElement psiElement, Predicate<PsiElement> predicate) {
+    PsiElement parent = psiElement.getParent();
+    if (parent instanceof AwkFile) {
+      return false;
+    }
+    return predicate.test(parent) || isEnclosedBy(parent, predicate);
+  }
+
+  public static boolean isAwkBegin(PsiElement candidate) {
+    if (candidate instanceof AwkBeginOrEnd) {
+      AwkBeginOrEnd beginOrEnd = (AwkBeginOrEnd) candidate;
+      return AwkTypes.BEGIN.equals(beginOrEnd.getFirstChild().getNode().getElementType());
+    }
+    return false;
+  }
+
+  public static boolean isAwkItemOfBegin(PsiElement candidate) {
+    return candidate instanceof AwkItem
+        && ((AwkItem) candidate).getPattern() != null
+        && isAwkBegin(((AwkItem) candidate).getPattern().getBeginOrEnd());
   }
 
   /**
