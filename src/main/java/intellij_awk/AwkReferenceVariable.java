@@ -48,6 +48,9 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
             for (AwkUserVarName awkUserVarName : userVarNameList) {
               PsiElement varName = awkUserVarName.getVarName();
               if (varName.textMatches(userVarName.getName())) {
+                if (awkUserVarName == userVarName) {
+                  return null; // no need to display a reference to itself
+                }
                 return awkUserVarName;
               }
             }
@@ -78,6 +81,9 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
                                 .getVarName()
                                 .textMatches(userVarName.getName()));
             if (varDeclaration != null) {
+              if (varDeclaration == userVarName) {
+                return null; // no need to display a reference to itself
+              }
               return varDeclaration;
             }
           }
