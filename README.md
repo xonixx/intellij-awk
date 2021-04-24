@@ -10,7 +10,10 @@
 ## Goals v0.0.1
 
 - [x] Support basic AWK code highlighting
-- [ ] Support basic AWK code navigations (go to declaration, show structure)
+- [x] Support basic AWK code navigations 
+  - [x] show structure
+  - [x] go to declaration
+  - [x] find usages
 - [x] Support only POSIX subset (aka BWK), w/o Gawk additions (this can be added later)
 - Refactoring support
   - [ ] rename variable
@@ -26,6 +29,7 @@
 - [ ] Enforce variable naming convention
     - `Name` for global
     - `name` for local
+- [ ] GAWK parsing mode
   
 The idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools)
     
