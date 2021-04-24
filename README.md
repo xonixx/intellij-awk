@@ -26,12 +26,10 @@
 
 ## Goals v0.0.3
 
-- [ ] Enforce variable naming convention
+- [ ] Enforce variable naming convention (the idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools))
     - `Name` for global
     - `name` for local
 - [ ] GAWK parsing mode
-  
-The idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools)
     
 ## Future ideas
 
