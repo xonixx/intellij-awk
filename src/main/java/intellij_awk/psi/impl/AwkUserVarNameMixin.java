@@ -18,8 +18,7 @@ public abstract class AwkUserVarNameMixin extends AwkNamedElementImpl implements
   }
 
   public PsiElement setName(String newName) {
-    replace(AwkElementFactory.createUserVarName(getProject(), newName));
-    return this;
+    return replaceNameNode(AwkElementFactory.createUserVarName(getProject(), newName));
   }
 
   @Override
