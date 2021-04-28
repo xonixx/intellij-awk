@@ -10,30 +10,33 @@
 ## Goals v0.0.1
 
 - [x] Support basic AWK code highlighting
-- [x] Support basic AWK code navigations 
+- Support basic AWK code navigations 
   - [x] show structure
   - [x] go to declaration
   - [x] find usages
+- Support completion
+  - [ ] function names 
+  - [ ] variable names 
 - [x] Support only POSIX subset (aka BWK), w/o Gawk additions (this can be added later)
 - Refactoring support
-  - [ ] rename variable
-  - [ ] rename function
+  - [x] rename variable
+  - [x] rename function
 
 ## Goals v0.0.2
 
-- [ ] Showing documentation for built-in functions
-- [ ] Showing documentation for built-in variables (`NR`/`NF`/etc.)
+- [ ] Enforce variable naming convention (the idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools))
+  - [ ] `Name` for global
+  - [ ] `name` for local
 
 ## Goals v0.0.3
 
-- [ ] Enforce variable naming convention (the idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools))
-    - `Name` for global
-    - `name` for local
-- [ ] GAWK parsing mode
+- [ ] Showing documentation for built-in functions
+- [ ] Showing documentation for built-in variables (`NR`/`NF`/etc.)
     
 ## Future ideas
 
-- Auto-format code via `gawk --pretty-print`
+- [ ] GAWK parsing mode
+- [ ] Auto-format code via `gawk --pretty-print`
 
 ## Useful links
 
