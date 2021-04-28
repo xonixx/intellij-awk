@@ -5,6 +5,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import intellij_awk.AwkReferenceVariable;
+import intellij_awk.psi.AwkElementFactory;
 import intellij_awk.psi.AwkUserVarName;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +18,8 @@ public abstract class AwkUserVarNameMixin extends AwkNamedElementImpl implements
   }
 
   public PsiElement setName(String newName) {
-    throw new UnsupportedOperationException("TBD");
+    replace(AwkElementFactory.createUserVarName(getProject(), newName));
+    return this;
   }
 
   @Override

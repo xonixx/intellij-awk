@@ -16,6 +16,10 @@ public class AwkElementFactory {
     return createAwkPsiElement(project, "function " + name + "(){}", AwkFunctionName.class);
   }
 
+  public static AwkUserVarName createUserVarName(Project project, String name) {
+    return createAwkPsiElement(project, "{ " + name + "= 1 }", AwkUserVarName.class);
+  }
+
   public static <T extends PsiElement> T createAwkPsiElement(
       Project project, String text, Class<T> klass) {
     return (T) AwkUtil.findFirstMatchedDeep(createFile(project, text), klass::isInstance);
