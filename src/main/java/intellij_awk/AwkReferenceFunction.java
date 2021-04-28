@@ -2,6 +2,7 @@ package intellij_awk;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.util.IncorrectOperationException;
 import intellij_awk.psi.AwkFile;
 import intellij_awk.psi.AwkFunctionName;
 import intellij_awk.psi.AwkItem;
@@ -42,5 +43,10 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkFunctionCallNameIm
   public @Nullable PsiElement resolve() {
     ResolveResult[] resolveResults = multiResolve(false);
     return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
+  }
+
+  @Override
+  public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
+    return myElement.setName(newElementName);
   }
 }

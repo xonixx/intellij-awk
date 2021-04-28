@@ -5,6 +5,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import intellij_awk.AwkReferenceFunction;
+import intellij_awk.psi.AwkElementFactory;
 import intellij_awk.psi.AwkFunctionCallName;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +19,8 @@ public abstract class AwkFunctionCallNameMixin extends AwkNamedElementImpl
   }
 
   public PsiElement setName(String newName) {
-    throw new UnsupportedOperationException("TBD");
+    replace(AwkElementFactory.createFunctionCallName(getProject(), newName));
+    return this;
   }
 
   @Override
