@@ -2,6 +2,7 @@ package intellij_awk;
 
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.openapi.editor.EditorModificationUtil;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.AwkExpr;
@@ -29,7 +30,12 @@ public class AwkCompletionContributor extends CompletionContributor {
               resultSet.addElement(
                   LookupElementBuilder.create(functionName.getName())
                       .withTailText("()")
-                      .withIcon(AwkIcons.FUNCTION));
+                      .withIcon(AwkIcons.FUNCTION)
+                      .withInsertHandler(
+                          (ctx, item) -> {
+                            ctx.getDocument().insertString(ctx.getSelectionEndOffset(), "()");
+                            EditorModificationUtil.moveCaretRelatively(ctx.getEditor(), 1);
+                          }));
             }
           }
         });
