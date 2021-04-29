@@ -34,18 +34,25 @@ public class AwkCompletionContributor extends CompletionContributor {
                 AwkUtil.findFunctions(parameters.getOriginalFile());
 
             for (String standardFunction : builtInFunctions) {
-              addFunctionCompletionCandidate(resultSet, standardFunction, true);
+              addFunctionCompletionCandidate(resultSet, standardFunction, true, "()");
             }
             for (AwkFunctionNameImpl functionName : functionNames) {
-              addFunctionCompletionCandidate(resultSet, functionName.getName(), false);
+              addFunctionCompletionCandidate(
+                  resultSet,
+                  functionName.getName(),
+                  false,
+                  "(" + String.join(", ", functionName.getArgumentNames()) + ")");
             }
           }
 
           private void addFunctionCompletionCandidate(
-              @NotNull CompletionResultSet resultSet, String fName, boolean isBuiltIn) {
+              @NotNull CompletionResultSet resultSet,
+              String fName,
+              boolean isBuiltIn,
+              String tailText) {
             resultSet.addElement(
                 LookupElementBuilder.create(fName)
-                    .withTailText("()")
+                    .withTailText(tailText)
                     .withIcon(AwkIcons.FUNCTION)
                     .withBoldness(isBuiltIn)
                     .withInsertHandler(
