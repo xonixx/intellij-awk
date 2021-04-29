@@ -1,9 +1,9 @@
 package intellij_awk.psi.impl;
 
-import com.intellij.icons.AllIcons;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
+import intellij_awk.AwkIcons;
 import intellij_awk.psi.AwkElementFactory;
 import intellij_awk.psi.AwkFunctionName;
 import org.jetbrains.annotations.NotNull;
@@ -39,13 +39,13 @@ public abstract class AwkFunctionNameMixin extends AwkNamedElementImpl implement
 
       @Override
       public Icon getIcon(boolean unused) {
-        return AllIcons.Nodes.Function;
+        return AwkIcons.FUNCTION;
       }
     };
   }
 
   @Override
   public @Nullable Icon getIcon(int flags) {
-    return AllIcons.Nodes.Function;
+    return AwkIcons.FUNCTION;
   }
 }
