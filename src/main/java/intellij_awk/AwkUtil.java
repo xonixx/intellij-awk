@@ -3,6 +3,7 @@ package intellij_awk;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -91,26 +92,29 @@ public class AwkUtil {
     return result;
   }
 
+  public static List<AwkFunctionNameImpl> findFunctions(PsiFile psiFile) {
+    List<AwkFunctionNameImpl> result = new ArrayList<>();
+    if (psiFile instanceof AwkFile) {
+      AwkFile awkFile = (AwkFile) psiFile;
+      for (PsiElement child : awkFile.getChildren()) {
+        if (child instanceof AwkItem) {
+          AwkItem awkItem = (AwkItem) child;
+          AwkFunctionName functionName = awkItem.getFunctionName();
+          if (functionName != null) {
+            result.add((AwkFunctionNameImpl) functionName);
+          }
+        }
+      }
+    }
+    return result;
+  }
+
   public static List<AwkFunctionNameImpl> findFunctions(Project project) {
     List<AwkFunctionNameImpl> result = new ArrayList<>();
     Collection<VirtualFile> virtualFiles =
         FileTypeIndex.getFiles(AwkFileType.INSTANCE, GlobalSearchScope.allScope(project));
     for (VirtualFile virtualFile : virtualFiles) {
-      AwkFile awkFile = (AwkFile) PsiManager.getInstance(project).findFile(virtualFile);
-      if (awkFile != null) {
-
-        for (PsiElement child : awkFile.getChildren()) {
-
-          if (child instanceof AwkItem) {
-            AwkItem awkItem = (AwkItem) child;
-
-            AwkFunctionName functionName = awkItem.getFunctionName();
-            if (functionName != null) {
-              result.add((AwkFunctionNameImpl) functionName);
-            }
-          }
-        }
-      }
+      result.addAll(findFunctions(PsiManager.getInstance(project).findFile(virtualFile)));
     }
     return result;
   }

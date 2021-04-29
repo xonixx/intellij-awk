@@ -26,7 +26,7 @@ public class AwkCompletionContributor extends CompletionContributor {
               @NotNull CompletionResultSet resultSet) {
 
             List<AwkFunctionNameImpl> functionNames =
-                AwkUtil.findFunctions(parameters.getPosition().getProject());
+                AwkUtil.findFunctions(parameters.getOriginalFile());
 
             for (AwkFunctionNameImpl functionName : functionNames) {
               resultSet.addElement(
