@@ -13,6 +13,13 @@ import java.util.List;
 
 public class AwkCompletionContributor extends CompletionContributor {
 
+  private static final String[] builtInFunctions =
+      new String[] {
+        "atan2", "cos", "sin", "exp", "log", "sqrt", "int", "rand", "srand", "gsub", "index",
+        "length", "match", "split", "sprintf", "sub", "substr", "tolower", "toupper", "close",
+        "system"
+      };
+
   public AwkCompletionContributor() {
     extend(
         CompletionType.BASIC,
@@ -26,17 +33,26 @@ public class AwkCompletionContributor extends CompletionContributor {
             List<AwkFunctionNameImpl> functionNames =
                 AwkUtil.findFunctions(parameters.getOriginalFile());
 
-            for (AwkFunctionNameImpl functionName : functionNames) {
-              resultSet.addElement(
-                  LookupElementBuilder.create(functionName.getName())
-                      .withTailText("()")
-                      .withIcon(AwkIcons.FUNCTION)
-                      .withInsertHandler(
-                          (ctx, item) -> {
-                            ctx.getDocument().insertString(ctx.getSelectionEndOffset(), "()");
-                            EditorModificationUtil.moveCaretRelatively(ctx.getEditor(), 1);
-                          }));
+            for (String standardFunction : builtInFunctions) {
+              addFunctionCompletionCandidate(resultSet, standardFunction, true);
             }
+            for (AwkFunctionNameImpl functionName : functionNames) {
+              addFunctionCompletionCandidate(resultSet, functionName.getName(), false);
+            }
+          }
+
+          private void addFunctionCompletionCandidate(
+              @NotNull CompletionResultSet resultSet, String fName, boolean isBuiltIn) {
+            resultSet.addElement(
+                LookupElementBuilder.create(fName)
+                    .withTailText("()")
+                    .withIcon(AwkIcons.FUNCTION)
+                    .withBoldness(isBuiltIn)
+                    .withInsertHandler(
+                        (ctx, item) -> {
+                          ctx.getDocument().insertString(ctx.getSelectionEndOffset(), "()");
+                          EditorModificationUtil.moveCaretRelatively(ctx.getEditor(), 1);
+                        }));
           }
         });
   }
