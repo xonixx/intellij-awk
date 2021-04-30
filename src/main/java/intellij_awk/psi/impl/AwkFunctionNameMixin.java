@@ -58,17 +58,32 @@ public abstract class AwkFunctionNameMixin extends AwkNamedElementImpl implement
     AwkItem awkItem = (AwkItem) getParent();
     AwkParamList awkParamList =
         (AwkParamList) AwkUtil.findFirstMatchedDeep(awkItem, AwkParamList.class::isInstance);
+    if_block:
     if (awkParamList != null) {
-      for (PsiElement psiElement : awkParamList.getChildren()) {
+      PsiElement prevSibling = awkParamList.getPrevSibling();
+      if (isWhitespaceBeforeLocals(prevSibling)) { // all args are local
+        break if_block;
+      }
+      PsiElement psiElement = awkParamList.getFirstChild();
+      while (psiElement != null) {
         if (psiElement instanceof AwkUserVarName) {
           result.add(psiElement.getText());
-        } else if (psiElement instanceof PsiWhiteSpace) {
-          if (psiElement.getTextLength() >= 3) { // locals started
-            break;
-          }
+        } else if (isWhitespaceBeforeLocals(psiElement)) { // locals started
+          break;
         }
+        psiElement = psiElement.getNextSibling();
       }
     }
     return result;
+  }
+
+  private boolean isWhitespaceBeforeLocals(PsiElement psiElement) {
+    if (psiElement instanceof PsiWhiteSpace) {
+      return psiElement.getTextLength() >= 3
+          || psiElement.textContains('\\')
+          || isWhitespaceBeforeLocals(psiElement.getPrevSibling());
+    }
+
+    return false;
   }
 }
