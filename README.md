@@ -5,6 +5,7 @@
 ## Motivation
 
 - At the moment there is no AWK plugin for IDEA, which is a pity.
+- Help me develop [some](https://github.com/xonixx/makesure) of my own projects in AWK.
 - Interested to sharpen my Java skills and learn some IDEA internals.
 
 ## Goals v0.0.1
