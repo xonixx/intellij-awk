@@ -54,7 +54,8 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
               @NotNull ProcessingContext context,
               @NotNull CompletionResultSet resultSet) {
 
-              // TODO: handle autocomplete while in `do {}while`
+            // TODO: handle autocomplete while in `do {}while`
+            // TODO: make `in` autocompletion work
             for (Map.Entry<String, Boolean> entry : KEYWORDS1.entrySet()) {
               boolean insertParens = entry.getValue();
               resultSet.addElement(

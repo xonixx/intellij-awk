@@ -27,6 +27,7 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
           AwkTypes.DO,
           AwkTypes.DELETE,
           AwkTypes.IF,
+          AwkTypes.IN,
           AwkTypes.ELSE,
           AwkTypes.PRINT,
           AwkTypes.PRINTF,
@@ -109,7 +110,8 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
   private static final TextAttributesKey[] BRACKETS_KEYS = new TextAttributesKey[] {BRACKETS};
   private static final TextAttributesKey[] PARENTHESES_KEYS = new TextAttributesKey[] {PARENTHESES};
 
-  private static final TextAttributesKey[] SPECIAL_VARIABLE_KEYS = new TextAttributesKey[] {SPECIAL_VARIABLE};
+  private static final TextAttributesKey[] SPECIAL_VARIABLE_KEYS =
+      new TextAttributesKey[] {SPECIAL_VARIABLE};
 
   private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[] {KEYWORD};
   private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[] {STRING};
