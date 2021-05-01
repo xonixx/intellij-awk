@@ -1,9 +1,11 @@
 package intellij_awk;
 
 import com.intellij.codeInsight.completion.*;
+import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.AwkPattern;
+import intellij_awk.psi.AwkTerminatableStatement;
 import intellij_awk.psi.AwkTerminatedStatement;
 import intellij_awk.psi.AwkUnterminatedStatement;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +19,31 @@ import static intellij_awk.AwkUtil.insertHandler;
 public class AwkCompletionContributorKeywords extends CompletionContributor {
 
   private static final String[] BEGIN_END = {"BEGIN", "END"};
-  private static final Map<String, Boolean> KEYWORDS1 =
-      Map.of("if", true, "else", false, "while", true, "for", true, "do", false, "in", false);
+  private static final InsertHandler<LookupElement> ihParens = insertHandler(" ()", 2);
+  private static final InsertHandler<LookupElement> ihSpace = insertHandler(" ", 1);
+  private static final InsertHandler<LookupElement> ihNone = insertHandler("", 0);
+  private static final Map<String, InsertHandler<LookupElement>> KEYWORDS1 =
+      Map.of(
+          "if", ihParens, "else", ihSpace, "while", ihParens, "for", ihParens, "do", ihSpace, "in",
+          ihSpace, "getline", ihNone);
+  private static final Map<String, InsertHandler<LookupElement>> KEYWORDS2 =
+      Map.of(
+          "break",
+          ihNone,
+          "continue",
+          ihNone,
+          "next",
+          ihNone,
+          "exit",
+          ihSpace,
+          "return",
+          ihNone,
+          "delete",
+          ihSpace,
+          "print",
+          ihSpace,
+          "printf",
+          ihSpace);
 
   public AwkCompletionContributorKeywords() {
     extend(
@@ -56,13 +81,28 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
 
             // TODO: handle autocomplete while in `do {}while`
             // TODO: make `in` autocompletion work
-            for (Map.Entry<String, Boolean> entry : KEYWORDS1.entrySet()) {
-              boolean insertParens = entry.getValue();
+            for (Map.Entry<String, InsertHandler<LookupElement>> entry : KEYWORDS1.entrySet()) {
               resultSet.addElement(
                   LookupElementBuilder.create(entry.getKey())
                       .withBoldness(true)
-                      .withInsertHandler(
-                          insertHandler(insertParens ? " ()" : " ", insertParens ? 2 : 1)));
+                      .withInsertHandler(entry.getValue()));
+            }
+          }
+        });
+    extend(
+        CompletionType.BASIC,
+        psiElement().inside(AwkTerminatableStatement.class),
+        new CompletionProvider<>() {
+          public void addCompletions(
+              @NotNull CompletionParameters parameters,
+              @NotNull ProcessingContext context,
+              @NotNull CompletionResultSet resultSet) {
+
+            for (Map.Entry<String, InsertHandler<LookupElement>> entry : KEYWORDS2.entrySet()) {
+              resultSet.addElement(
+                  LookupElementBuilder.create(entry.getKey())
+                      .withBoldness(true)
+                      .withInsertHandler(entry.getValue()));
             }
           }
         });
