@@ -1,5 +1,8 @@
 package intellij_awk;
 
+import com.intellij.codeInsight.completion.InsertHandler;
+import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.openapi.editor.EditorModificationUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -117,5 +120,12 @@ public class AwkUtil {
       result.addAll(findFunctions(PsiManager.getInstance(project).findFile(virtualFile)));
     }
     return result;
+  }
+
+  public static InsertHandler<LookupElement> insertHandler(String insertString, int caretShift) {
+    return (ctx, item) -> {
+      ctx.getDocument().insertString(ctx.getSelectionEndOffset(), insertString);
+      EditorModificationUtil.moveCaretRelatively(ctx.getEditor(), caretShift);
+    };
   }
 }
