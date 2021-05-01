@@ -37,7 +37,7 @@
         <completion.contributor language="Simple"
                                 implementationClass="intellij_awk.SimpleCompletionContributor"/>
         <completion.contributor language="AWK"
-                                implementationClass="intellij_awk.AwkCompletionContributor"/>
+                                implementationClass="intellij_awk.AwkCompletionContributorFunctions"/>
         <completion.contributor language="AWK"
                                 implementationClass="intellij_awk.AwkCompletionContributorKeywords"/>
         <psi.referenceContributor implementation="intellij_awk.SimpleReferenceContributor"/>

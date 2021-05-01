@@ -12,7 +12,7 @@ import java.util.List;
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static intellij_awk.AwkUtil.insertHandler;
 
-public class AwkCompletionContributor extends CompletionContributor {
+public class AwkCompletionContributorFunctions extends CompletionContributor {
 
   private static final String[] builtInFunctions =
       new String[] {
@@ -21,7 +21,7 @@ public class AwkCompletionContributor extends CompletionContributor {
         "system"
       };
 
-  public AwkCompletionContributor() {
+  public AwkCompletionContributorFunctions() {
     extend(
         CompletionType.BASIC,
         psiElement().inside(AwkExpr.class),
