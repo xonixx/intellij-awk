@@ -36,10 +36,12 @@
                                         implementationClass="intellij_awk.SimpleLineMarkerProvider"/>
         <completion.contributor language="Simple"
                                 implementationClass="intellij_awk.SimpleCompletionContributor"/>
+<!--        <completion.contributor language="AWK"-->
+<!--                                implementationClass="intellij_awk.AwkCompletionContributorKeywords"/>-->
         <completion.contributor language="AWK"
-                                implementationClass="intellij_awk.AwkCompletionContributorFunctions"/>
-        <completion.contributor language="AWK"
-                                implementationClass="intellij_awk.AwkCompletionContributorKeywords"/>
+                                implementationClass="intellij_awk.AwkCompletionContributorVariables"/>
+<!--        <completion.contributor language="AWK"-->
+<!--                                implementationClass="intellij_awk.AwkCompletionContributorFunctions"/>-->
         <psi.referenceContributor implementation="intellij_awk.SimpleReferenceContributor"/>
         <lang.refactoringSupport language="Simple"
                                  implementationClass="intellij_awk.SimpleRefactoringSupportProvider"/>
