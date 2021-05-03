@@ -2,15 +2,17 @@ package intellij_awk;
 
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.AwkExpr;
-import intellij_awk.psi.impl.AwkFunctionNameImpl;
+import intellij_awk.psi.AwkItem;
+import intellij_awk.psi.AwkParamList;
+import intellij_awk.psi.impl.AwkFunctionNameMixin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static intellij_awk.AwkUtil.insertHandler;
 
 public class AwkCompletionContributorVariables extends CompletionContributor {
 
@@ -31,32 +33,22 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
               @NotNull ProcessingContext context,
               @NotNull CompletionResultSet resultSet) {
 
-            List<AwkFunctionNameImpl> functionNames =
-                AwkUtil.findFunctions(parameters.getOriginalFile());
+            PsiElement psiElement = parameters.getPosition();
 
-            for (String standardFunction : builtInFunctions) {
-              addFunctionCompletionCandidate(resultSet, standardFunction, true, "()");
+            AwkItem awkItem = AwkUtil.findParent(psiElement, AwkItem.class);
+            if (awkItem != null) {
+              AwkParamList paramList = awkItem.getParamList();
+              if (paramList != null) {
+                AwkFunctionNameMixin functionName =
+                    (AwkFunctionNameMixin) awkItem.getFunctionName();
+                List<String> args = functionName.getArgumentNamesIncludingLocals();
+                for (String arg : args) {
+                  resultSet.addElement(
+                      LookupElementBuilder.create(arg)
+                          .withIcon(AwkIcons.PARAMETER));
+                }
+              }
             }
-            for (AwkFunctionNameImpl functionName : functionNames) {
-              addFunctionCompletionCandidate(
-                  resultSet,
-                  functionName.getName(),
-                  false,
-                  "(" + String.join(", ", functionName.getArgumentNames()) + ")");
-            }
-          }
-
-          private void addFunctionCompletionCandidate(
-              @NotNull CompletionResultSet resultSet,
-              String fName,
-              boolean isBuiltIn,
-              String tailText) {
-            resultSet.addElement(
-                LookupElementBuilder.create(fName)
-                    .withTailText(tailText)
-                    .withIcon(AwkIcons.FUNCTION)
-                    .withBoldness(isBuiltIn)
-                    .withInsertHandler(insertHandler("()", 1)));
           }
         });
   }

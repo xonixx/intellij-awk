@@ -128,4 +128,14 @@ public class AwkUtil {
       EditorModificationUtil.moveCaretRelatively(ctx.getEditor(), caretShift);
     };
   }
+
+  public static <T extends PsiElement> T findParent(PsiElement psiElement, Class<T> parentClass) {
+    PsiElement parent = psiElement;
+    while (!((parent = parent.getParent()) instanceof AwkFile)) {
+      if (parentClass.isInstance(parent)) {
+        return (T) parent;
+      }
+    }
+    return null;
+  }
 }

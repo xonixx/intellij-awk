@@ -56,8 +56,7 @@ public abstract class AwkFunctionNameMixin extends AwkNamedElementImpl implement
   public List<String> getArgumentNames() {
     List<String> result = new ArrayList<>();
     AwkItem awkItem = (AwkItem) getParent();
-    AwkParamList awkParamList =
-        (AwkParamList) AwkUtil.findFirstMatchedDeep(awkItem, AwkParamList.class::isInstance);
+    AwkParamList awkParamList = awkItem.getParamList();
     if_block:
     if (awkParamList != null) {
       PsiElement prevSibling = awkParamList.getPrevSibling();
@@ -70,6 +69,22 @@ public abstract class AwkFunctionNameMixin extends AwkNamedElementImpl implement
           result.add(psiElement.getText());
         } else if (isWhitespaceBeforeLocals(psiElement)) { // locals started
           break;
+        }
+        psiElement = psiElement.getNextSibling();
+      }
+    }
+    return result;
+  }
+
+  public List<String> getArgumentNamesIncludingLocals() {
+    List<String> result = new ArrayList<>();
+    AwkItem awkItem = (AwkItem) getParent();
+    AwkParamList awkParamList = awkItem.getParamList();
+    if (awkParamList != null) {
+      PsiElement psiElement = awkParamList.getFirstChild();
+      while (psiElement != null) {
+        if (psiElement instanceof AwkUserVarName) {
+          result.add(psiElement.getText());
         }
         psiElement = psiElement.getNextSibling();
       }

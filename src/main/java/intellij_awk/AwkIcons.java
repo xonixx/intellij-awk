@@ -9,4 +9,6 @@ public class AwkIcons {
 
   public static final Icon FILE = IconLoader.getIcon("/icons/a-16.png");
   public static final Icon FUNCTION = AllIcons.Nodes.Function;
+  public static final Icon VARIABLE = AllIcons.Nodes.Variable;
+  public static final Icon PARAMETER = AllIcons.Nodes.Parameter;
 }
