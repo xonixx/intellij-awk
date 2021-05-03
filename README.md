@@ -17,7 +17,7 @@
   - [x] find usages
 - Support completion
   - [x] function names 
-  - [ ] variable names 
+  - [x] variable names 
   - [x] keywords 
 - [x] Support only POSIX subset (aka BWK), w/o Gawk additions (this can be added later)
 - Refactoring support
