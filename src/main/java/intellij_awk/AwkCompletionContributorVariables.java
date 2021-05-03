@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
+import static com.intellij.patterns.StandardPatterns.or;
 
 public class AwkCompletionContributorVariables extends CompletionContributor {
 
@@ -38,7 +39,10 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
   public AwkCompletionContributorVariables() {
     extend(
         CompletionType.BASIC,
-        psiElement().inside(AwkExpr.class),
+        or(
+            psiElement().inside(AwkExpr.class),
+            psiElement(AwkTypes.SPECIAL_VAR_NAME),
+            psiElement(AwkTypes.VAR_NAME)),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
