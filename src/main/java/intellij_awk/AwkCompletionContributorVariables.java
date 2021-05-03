@@ -15,11 +15,24 @@ import static com.intellij.patterns.PlatformPatterns.psiElement;
 
 public class AwkCompletionContributorVariables extends CompletionContributor {
 
-  private static final String[] builtInFunctions =
+  private static final String[] builtInVariables =
       new String[] {
-        "atan2", "cos", "sin", "exp", "log", "sqrt", "int", "rand", "srand", "gsub", "index",
-        "length", "match", "split", "sprintf", "sub", "substr", "tolower", "toupper", "close",
-        "system"
+        "ARGC",
+        "ARGV",
+        "CONVFMT",
+        "ENVIRON",
+        "FILENAME",
+        "FNR",
+        "FS",
+        "NF",
+        "NR",
+        "OFMT",
+        "OFS",
+        "ORS",
+        "RLENGTH",
+        "RS",
+        "RSTART",
+        "SUBSEP"
       };
 
   public AwkCompletionContributorVariables() {
@@ -69,6 +82,14 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
                   }
                 }
               }
+            }
+
+            for (String builtInVariable : builtInVariables) {
+              resultSet.addElement(
+                  LookupElementBuilder.create(builtInVariable)
+                      .withBoldness(true)
+                      .withItemTextItalic(true)
+                      .withIcon(AwkIcons.VARIABLE));
             }
           }
         });
