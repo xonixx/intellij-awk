@@ -36,6 +36,17 @@ public class AwkUtil {
     return null;
   }
 
+  public static void findAllMatchedDeep(
+      PsiElement root, Predicate<PsiElement> predicate, Collection<PsiElement> result) {
+    PsiElement[] children = root.getChildren();
+    for (PsiElement child : children) {
+      if (predicate.test(child)) {
+        result.add(child);
+      }
+      findAllMatchedDeep(child, predicate, result);
+    }
+  }
+
   public static boolean isEnclosedBy(
       PsiElement psiElement, Class<? extends PsiElement> enclosingClass) {
     return isEnclosedBy(psiElement, enclosingClass::isInstance);
