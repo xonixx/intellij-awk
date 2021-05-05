@@ -63,6 +63,8 @@
                                       implementationClass="intellij_awk.AwkStructureViewFactory"/>
         <lang.formatter language="Simple"
                         implementationClass="intellij_awk.SimpleFormattingModelBuilder"/>
+        <lang.formatter language="AWK"
+                        implementationClass="intellij_awk.AwkFormattingModelBuilder"/>
         <codeStyleSettingsProvider implementation="intellij_awk.SimpleCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider
                 implementation="intellij_awk.SimpleLanguageCodeStyleSettingsProvider"/>
