@@ -1,0 +1,4 @@
+
+BEGIN {
+    delete arr
+}

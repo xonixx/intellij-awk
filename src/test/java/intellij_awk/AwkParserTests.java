@@ -54,6 +54,10 @@ public class AwkParserTests extends ParsingTestCase {
     ensureOnlyParsingNoErrors();
   }
 
+  public void testDeleteArr() {
+    ensureOnlyParsingNoErrors();
+  }
+
   private void ensureOnlyParsingNoErrors() {
     doTest(false);
     ensureNoErrorElements();
