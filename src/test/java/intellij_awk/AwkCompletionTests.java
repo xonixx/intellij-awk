@@ -53,19 +53,38 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void test7() {
-    checkCompletionExact("func<caret>", "function <caret>");
+    checkCompletionSingle("func<caret>", "function <caret>");
   }
 
   public void test8() {
-    checkCompletionExact("function aaa() { retu<caret> }", "function aaa() { return<caret> }");
+    checkCompletionSingle("BEG<caret>", "BEGIN { <caret>}");
+  }
+
+  public void test9() {
+    checkCompletionSingle("function f() { retu<caret> }", "function f() { return<caret> }");
+  }
+
+  public void test10() {
+    checkCompletionSingle("function f() { tolow<caret> }", "function f() { tolower(<caret>) }");
+  }
+
+  public void test11() {
+    checkCompletionExact(
+        Set.of("aaa1", "aaa2"),
+        "function aaa1(){}\nfunction bbb(){}\nfunction aaa2(){}\n{ aaa<caret> }");
   }
 
   public void testNoCompletion1() {
     String code = "function a(<caret>){}";
-    checkCompletionExact(code, code);
+    checkCompletionSingle(code, code);
   }
 
-  private void checkCompletionExact(String code, String expectedResult) {
+  public void testNoCompletion2() {
+    String code = "function a(){ BEG<caret> }";
+    checkCompletionSingle(code, code);
+  }
+
+  private void checkCompletionSingle(String code, String expectedResult) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();
     if (!(variants == null || variants.length == 0)) {
@@ -74,11 +93,20 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     myFixture.checkResult(expectedResult);
   }
 
+  private void checkCompletionExact(Set<String> expected, String code) {
+    setupCode(code);
+    LookupElement[] variants = myFixture.completeBasic();
+    assertNotNull(
+        "Expected completions that contain " + expected + ", but no completions found", variants);
+    Set<String> actual = toSet(variants);
+    assertEquals("expected = " + expected + ", actual = " + actual, expected, actual);
+  }
+
   private void checkCompletion(Set<String> required, Set<String> excluding, String code) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();
     assertNotNull(
-        "Expected completions that contain " + required + ", but no completions found", variants);
+            "Expected completions that contain " + required + ", but no completions found", variants);
     Set<String> actual = toSet(variants);
     assertTrue("required = " + required + ", actual = " + actual, actual.containsAll(required));
     for (String excl : excluding) {
