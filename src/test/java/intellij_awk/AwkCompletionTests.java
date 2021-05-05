@@ -1,7 +1,6 @@
 package intellij_awk;
 
 import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 
 import java.util.Arrays;
@@ -9,34 +8,59 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AwkCompletionTests extends BasePlatformTestCase {
-  private PsiFile psiFile;
 
   public void test1() {
     checkCompletion(
-        Set.of("f1", "f2", "tolower"),
-        "" + "function f1() {}\n" + "function f2(){}\n" + "{ <caret> }");
+        Set.of("f1", "f2", "NR", "tolower"),
+        Set.of(),
+        "function f1() {}\nfunction f2(){}\n{ <caret> }");
   }
 
-  private void checkCompletion(Set<String> required, String code) {
-    checkCompletion(required, code, false);
+  public void test2() {
+    checkCompletion(
+        Set.of("f1", "f2", "NR", "tolower"),
+        Set.of(),
+        "function f1() {}\nfunction f2(){}\n{ 1 + <caret> }");
   }
 
-  private void checkCompletion(Set<String> required, String code, boolean strict) {
+  public void test3() {
+    checkCompletion(
+        Set.of("f1", "f2", "NR", "tolower"),
+        Set.of(),
+        "function f1() {}\nfunction f2(){}\n{ print a[<caret>] }");
+  }
+
+  public void test4() {
+    checkCompletion(
+        Set.of("f1", "f2", "NR", "tolower"),
+        Set.of("return"),
+        "function f1() {}\nfunction f2(){}\n<caret>");
+  }
+
+  public void test5() {
+    checkCompletion(
+        Set.of("NR"),
+        Set.of("return", "f1", "f2", "tolower"),
+        "function f1() {}\nfunction f2(){}\n{ delete <caret> }");
+  }
+
+  private void checkCompletion(Set<String> required, Set<String> excluding, String code) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();
     assertNotNull(
         "Expected completions that contain " + required + ", but no completions found", variants);
     Set<String> actual =
         Arrays.stream(variants).map(LookupElement::getLookupString).collect(Collectors.toSet());
-    assertTrue(
-        "required = " + required + ", actual = " + actual,
-        strict ? actual.equals(required) : actual.containsAll(required));
+    assertTrue("required = " + required + ", actual = " + actual, actual.containsAll(required));
+    for (String excl : excluding) {
+      assertFalse(excl + " present in actual=" + actual, actual.contains(excl));
+    }
   }
 
   private void setupCode(String code) {
     if (!code.contains("<caret>")) {
       throw new IllegalArgumentException("Please, add `<caret>` marker to code");
     }
-    psiFile = myFixture.configureByText("a.awk", code);
+    myFixture.configureByText("a.awk", code);
   }
 }
