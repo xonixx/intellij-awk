@@ -2,6 +2,7 @@ package intellij_awk;
 
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -51,17 +52,42 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "BEGIN { var1=1\nsplit(\"\",var2)}\nfunction f1(arg1, arg2,     arg3) { <caret> }");
   }
 
+  public void test7() {
+    checkCompletionExact("func<caret>", "function <caret>");
+  }
+
+  public void test8() {
+    checkCompletionExact("function aaa() { retu<caret> }", "function aaa() { return<caret> }");
+  }
+
+  public void testNoCompletion1() {
+    checkCompletionExact("function a(<caret>){}", "function a(<caret>){}");
+  }
+
+  private void checkCompletionExact(String code, String expectedResult) {
+    setupCode(code);
+    LookupElement[] variants = myFixture.completeBasic();
+    if (!(variants == null || variants.length == 0)) {
+      fail("Should be empty completion: " + toSet(variants));
+    }
+    myFixture.checkResult(expectedResult);
+  }
+
   private void checkCompletion(Set<String> required, Set<String> excluding, String code) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();
     assertNotNull(
         "Expected completions that contain " + required + ", but no completions found", variants);
-    Set<String> actual =
-        Arrays.stream(variants).map(LookupElement::getLookupString).collect(Collectors.toSet());
+    Set<String> actual = toSet(variants);
     assertTrue("required = " + required + ", actual = " + actual, actual.containsAll(required));
     for (String excl : excluding) {
       assertFalse(excl + " present in actual=" + actual, actual.contains(excl));
     }
+  }
+
+  @NotNull
+  private static Set<String> toSet(LookupElement[] variants) {
+    return Arrays.stream(variants).map(LookupElement::getLookupString).collect(Collectors.toSet());
   }
 
   private void setupCode(String code) {
