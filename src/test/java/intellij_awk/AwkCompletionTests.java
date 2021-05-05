@@ -61,7 +61,8 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void testNoCompletion1() {
-    checkCompletionExact("function a(<caret>){}", "function a(<caret>){}");
+    String code = "function a(<caret>){}";
+    checkCompletionExact(code, code);
   }
 
   private void checkCompletionExact(String code, String expectedResult) {

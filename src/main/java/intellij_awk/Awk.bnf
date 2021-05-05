@@ -378,7 +378,7 @@ non_unary_print_expr ::= (
 
 non_unary_print_expr1 ::= [
                             (
-                                POW      print_expr
+                                  POW      print_expr
                                 | MUL      print_expr
                                 | DIV      print_expr
                                 | MOD      print_expr
