@@ -205,7 +205,7 @@ terminatable_statement ::= simple_statement
                  | RETURN expr_opt
                  | DO newline_opt terminated_statement WHILE LPAREN expr RPAREN
 
-simple_statement_opt ::= simple_statement?
+private simple_statement_opt ::= simple_statement?
 
 simple_statement ::= DELETE var_name [ LBRACKET expr_list RBRACKET ]
                  | expr
@@ -214,19 +214,19 @@ simple_statement ::= DELETE var_name [ LBRACKET expr_list RBRACKET ]
 print_statement  ::= simple_print_statement output_redirection?
 
 simple_print_statement ::=
-                   PRINT  (LPAREN multiple_expr_list RPAREN | print_expr_list_opt)
+                   PRINT  (LPAREN multiple_expr_list RPAREN | print_expr_list?)
                  | PRINTF (LPAREN multiple_expr_list RPAREN | print_expr_list)
 
 output_redirection ::= (GT|APPEND|PIPE) expr
 
-expr_list_opt    ::= expr_list?
+private expr_list_opt    ::= expr_list?
 
 expr_list        ::= multiple_expr_list
                  | expr // TODO do we need this line?
 
 multiple_expr_list ::= expr (COMMA newline_opt expr)*
 
-expr_opt         ::= expr?
+private expr_opt         ::= expr?
 
 expr             ::= unary_expr | non_unary_expr
 
@@ -323,8 +323,6 @@ non_unary_expr1     ::= [
                           )
                           non_unary_expr1
                       ]
-
-print_expr_list_opt ::= print_expr_list?
 
 print_expr_list  ::= print_expr (COMMA newline_opt print_expr)*
 
