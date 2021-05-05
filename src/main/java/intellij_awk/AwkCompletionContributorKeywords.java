@@ -4,10 +4,7 @@ import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.util.ProcessingContext;
-import intellij_awk.psi.AwkPattern;
-import intellij_awk.psi.AwkTerminatableStatement;
-import intellij_awk.psi.AwkTerminatedStatement;
-import intellij_awk.psi.AwkUnterminatedStatement;
+import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;

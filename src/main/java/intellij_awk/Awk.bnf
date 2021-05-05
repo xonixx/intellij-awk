@@ -207,7 +207,7 @@ terminatable_statement ::= simple_statement
 
 simple_statement_opt ::= simple_statement?
 
-simple_statement ::= DELETE var_name LBRACKET expr_list RBRACKET
+simple_statement ::= DELETE var_name [ LBRACKET expr_list RBRACKET ]
                  | expr
                  | print_statement
 
