@@ -4,7 +4,7 @@ import com.intellij.testFramework.ParsingTestCase;
 
 public class AwkParserTests extends ParsingTestCase {
   public AwkParserTests() {
-    super("", "awk", new AwkParserDefinition());
+    super("parser", "awk", new AwkParserDefinition());
   }
 
   @Override

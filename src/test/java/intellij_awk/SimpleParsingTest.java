@@ -5,7 +5,7 @@ import com.intellij.testFramework.ParsingTestCase;
 public class SimpleParsingTest extends ParsingTestCase {
 
   public SimpleParsingTest() {
-    super("", "simple", new SimpleParserDefinition());
+    super("parser", "simple", new SimpleParserDefinition());
   }
 
   public void testParsingTestData() {
