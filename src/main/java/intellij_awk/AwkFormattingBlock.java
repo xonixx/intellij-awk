@@ -4,6 +4,8 @@ import com.intellij.formatting.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.formatter.common.AbstractBlock;
+import intellij_awk.psi.AwkAction;
+import intellij_awk.psi.AwkTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +30,8 @@ public class AwkFormattingBlock extends AbstractBlock {
     List<Block> blocks = new ArrayList<>();
     ASTNode child = myNode.getFirstChildNode();
     while (child != null) {
-      if (child.getElementType() != TokenType.WHITE_SPACE) {
+      if (child.getElementType() != TokenType.WHITE_SPACE
+          && child.getElementType() != AwkTypes.NEWLINE) {
         Block block =
             new AwkFormattingBlock(
                 child,
@@ -51,6 +54,11 @@ public class AwkFormattingBlock extends AbstractBlock {
   @Override
   public Spacing getSpacing(@Nullable Block child1, @NotNull Block child2) {
     return spacingBuilder.getSpacing(this, child1, child2);
+  }
+
+  @Override
+  protected @Nullable Indent getChildIndent() {
+    return myNode instanceof AwkAction ? Indent.getNormalIndent() : null;
   }
 
   @Override

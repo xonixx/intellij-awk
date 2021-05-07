@@ -6,28 +6,28 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
-import intellij_awk.psi.SimpleTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AwkFormattingModelBuilder implements FormattingModelBuilder {
 
   private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
-    return new SpacingBuilder(settings, SimpleLanguage.INSTANCE)
+    return new SpacingBuilder(settings, AwkLanguage.INSTANCE) /*
         .around(SimpleTypes.SEPARATOR)
         .spaceIf(
             settings.getCommonSettings(SimpleLanguage.INSTANCE.getID())
                 .SPACE_AROUND_ASSIGNMENT_OPERATORS)
         .before(SimpleTypes.PROPERTY)
-        .none();
+        .none()*/;
   }
 
-  @NotNull
   @Override
-  public FormattingModel createModel(PsiElement element, CodeStyleSettings settings) {
+  public @NotNull FormattingModel createModel(@NotNull FormattingContext formattingContext) {
+    PsiElement element = formattingContext.getPsiElement();
+    CodeStyleSettings settings = formattingContext.getCodeStyleSettings();
     return FormattingModelProvider.createFormattingModelForPsiFile(
         element.getContainingFile(),
-        new SimpleBlock(
+        new AwkFormattingBlock(
             element.getNode(),
             Wrap.createWrap(WrapType.NONE, false),
             Alignment.createAlignment(),
