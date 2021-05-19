@@ -22,8 +22,7 @@ function test(sort, data, n) {
         hsort(A, n)
     else if (sort ~ /i.*sort/)
         isort(A, n)
-    else print
-        "illegal type of sort in", $0
+    else print "illegal type of sort in", $0
     print sort, data, n, comp, exch, comp+exch
 }
 
