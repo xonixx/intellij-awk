@@ -5,6 +5,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.formatter.common.AbstractBlock;
 import intellij_awk.psi.AwkAction;
+import intellij_awk.psi.AwkFile;
 import intellij_awk.psi.AwkTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,10 +35,7 @@ public class AwkFormattingBlock extends AbstractBlock {
           && child.getElementType() != AwkTypes.NEWLINE) {
         Block block =
             new AwkFormattingBlock(
-                child,
-                Wrap.createWrap(WrapType.NONE, false),
-                null,
-                spacingBuilder);
+                child, Wrap.createWrap(WrapType.NONE, false), null, spacingBuilder);
         blocks.add(block);
       }
       child = child.getTreeNext();
@@ -58,6 +56,9 @@ public class AwkFormattingBlock extends AbstractBlock {
 
   @Override
   public @NotNull ChildAttributes getChildAttributes(int newChildIndex) {
+    if (myNode.getPsi() instanceof AwkFile) {
+      return new ChildAttributes(Indent.getNoneIndent(), null);
+    }
     return new ChildAttributes(Indent.getNormalIndent(), null);
   }
 
