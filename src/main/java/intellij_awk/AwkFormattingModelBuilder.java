@@ -12,13 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public class AwkFormattingModelBuilder implements FormattingModelBuilder {
 
   private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
-    return new SpacingBuilder(settings, AwkLanguage.INSTANCE) /*
-        .around(SimpleTypes.SEPARATOR)
-        .spaceIf(
-            settings.getCommonSettings(SimpleLanguage.INSTANCE.getID())
-                .SPACE_AROUND_ASSIGNMENT_OPERATORS)
-        .before(SimpleTypes.PROPERTY)
-        .none()*/;
+    return new SpacingBuilder(settings, AwkLanguage.INSTANCE);
   }
 
   @Override
@@ -30,7 +24,7 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
         new AwkFormattingBlock(
             element.getNode(),
             Wrap.createWrap(WrapType.NONE, false),
-            Alignment.createAlignment(),
+            null,
             createSpaceBuilder(settings)),
         settings);
   }

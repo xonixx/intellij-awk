@@ -36,7 +36,7 @@ public class AwkFormattingBlock extends AbstractBlock {
             new AwkFormattingBlock(
                 child,
                 Wrap.createWrap(WrapType.NONE, false),
-                Alignment.createAlignment(),
+                null,
                 spacingBuilder);
         blocks.add(block);
       }
@@ -57,8 +57,8 @@ public class AwkFormattingBlock extends AbstractBlock {
   }
 
   @Override
-  protected @Nullable Indent getChildIndent() {
-    return myNode instanceof AwkAction ? Indent.getNormalIndent() : null;
+  public @NotNull ChildAttributes getChildAttributes(int newChildIndex) {
+    return new ChildAttributes(Indent.getNormalIndent(), null);
   }
 
   @Override
