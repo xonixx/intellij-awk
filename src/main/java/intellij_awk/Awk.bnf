@@ -185,36 +185,35 @@ terminated_statement ::= action newline_opt
                  | SEMICOLON newline_opt
                  | terminatable_statement (NEWLINE|SEMICOLON) newline_opt
 
+private terminated_statement_if ::= IF LPAREN expr RPAREN newline_opt terminated_statement
+                                        [ ELSE newline_opt terminated_statement ]
+private terminated_statement_while ::= WHILE LPAREN expr RPAREN newline_opt terminated_statement
 private terminated_statement_for ::=
                    FOR LPAREN (
                      simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
                       terminated_statement
                    | var_name IN var_name RPAREN newline_opt
                       terminated_statement
-                   ) 
-private terminated_statement_while ::= WHILE LPAREN expr RPAREN newline_opt terminated_statement 
-private terminated_statement_if ::= IF LPAREN expr RPAREN newline_opt terminated_statement
-                                        [ ELSE newline_opt terminated_statement ]
-                       
+                   )
 
 unterminated_statement ::= terminatable_statement
                  | unterminated_statement_if
                  | unterminated_statement_while
                  | unterminated_statement_for
 
+private unterminated_statement_if ::=
+                   IF LPAREN expr RPAREN newline_opt (
+                       terminated_statement ELSE newline_opt unterminated_statement
+                     | unterminated_statement
+                   ) 
+private unterminated_statement_while ::= WHILE LPAREN expr RPAREN newline_opt unterminated_statement
 private unterminated_statement_for ::=
                    FOR LPAREN (
                        simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
                           unterminated_statement
                      | var_name IN var_name RPAREN newline_opt
                           unterminated_statement
-                  ) 
-private unterminated_statement_while ::= WHILE LPAREN expr RPAREN newline_opt unterminated_statement 
-private unterminated_statement_if ::=
-                   IF LPAREN expr RPAREN newline_opt (
-                       terminated_statement ELSE newline_opt unterminated_statement
-                     | unterminated_statement
-                   ) 
+                  )
 
 terminatable_statement ::= simple_statement
                  | BREAK
