@@ -2,6 +2,10 @@ package intellij_awk;
 
 import com.intellij.formatting.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.text.LineColumn;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.formatter.common.AbstractBlock;
 import intellij_awk.psi.AwkAction;
@@ -57,6 +61,33 @@ public class AwkFormattingBlock extends AbstractBlock {
   @Override
   public @NotNull ChildAttributes getChildAttributes(int newChildIndex) {
     if (myNode.getPsi() instanceof AwkFile) {
+      if (newChildIndex > 0) {
+        // handle if(1)<ENTER>, while(1)<ENTER> etc
+        // below is hacky code, because in presence of uncompleted if(1) the file is not parsed to
+        // correct AST yet
+        List<Block> children = buildChildren();
+        AwkFormattingBlock block = (AwkFormattingBlock) children.get(newChildIndex - 1);
+        ASTNode prevNode = block.myNode;
+        PsiElement errElt;
+        if (prevNode.getElementType() == AwkTypes.RPAREN
+            || prevNode instanceof PsiErrorElement
+                && (errElt = ((PsiErrorElement) prevNode).getFirstChild()) != null
+                && errElt.getNode().getElementType() == AwkTypes.RPAREN) {
+          //          return new ChildAttributes(Indent.getNormalIndent(), null);
+          //          return new ChildAttributes(Indent.getSpaceIndent(10), null);
+          // search corresponding LPAREN
+          ASTNode node = prevNode;
+          while ((node = node.getTreePrev()) != null) {
+            if (node.getElementType() == AwkTypes.LPAREN) {
+              LineColumn column =
+                  StringUtil.offsetToLineColumn(
+                      this.myNode.getText(), node.getStartOffsetInParent());
+              return new ChildAttributes(Indent.getSpaceIndent(column.column), null);
+              //              break;
+            }
+          }
+        }
+      }
       return new ChildAttributes(Indent.getNoneIndent(), null);
     }
     return new ChildAttributes(Indent.getNormalIndent(), null);
