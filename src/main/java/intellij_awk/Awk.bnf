@@ -165,9 +165,11 @@ begin_or_end     ::= BEGIN | END {
     implements="intellij_awk.psi.AwkNamedElement"
 }
 
-action           ::= LBRACE newline_opt                             RBRACE
-                   | LBRACE newline_opt terminated_statement_list   RBRACE
-                   | LBRACE newline_opt unterminated_statement_list RBRACE
+action           ::= LBRACE newline_opt (
+                         RBRACE
+                       | terminated_statement_list   RBRACE
+                       | unterminated_statement_list RBRACE
+                   ) 
 
 terminator       ::= (NEWLINE|SEMICOLON)+
 
@@ -177,25 +179,42 @@ unterminated_statement_list ::= terminated_statement_list unterminated_statement
                  | unterminated_statement
 
 terminated_statement ::= action newline_opt
-                 | IF LPAREN expr RPAREN newline_opt terminated_statement
-                       [ ELSE newline_opt terminated_statement ]
-                 | WHILE LPAREN expr RPAREN newline_opt terminated_statement
-                 | FOR LPAREN simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
-                      terminated_statement
-                 | FOR LPAREN var_name IN var_name RPAREN newline_opt
-                      terminated_statement
+                 | terminated_statement_if
+                 | terminated_statement_while
+                 | terminated_statement_for
                  | SEMICOLON newline_opt
                  | terminatable_statement (NEWLINE|SEMICOLON) newline_opt
 
+private terminated_statement_for ::=
+                   FOR LPAREN (
+                     simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
+                      terminated_statement
+                   | var_name IN var_name RPAREN newline_opt
+                      terminated_statement
+                   ) 
+private terminated_statement_while ::= WHILE LPAREN expr RPAREN newline_opt terminated_statement 
+private terminated_statement_if ::= IF LPAREN expr RPAREN newline_opt terminated_statement
+                                        [ ELSE newline_opt terminated_statement ]
+                       
+
 unterminated_statement ::= terminatable_statement
-                 | IF LPAREN expr RPAREN newline_opt terminated_statement
-                      ELSE newline_opt unterminated_statement
-                 | IF LPAREN expr RPAREN newline_opt unterminated_statement
-                 | WHILE LPAREN expr RPAREN newline_opt unterminated_statement
-                 | FOR LPAREN simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
-                      unterminated_statement
-                 | FOR LPAREN var_name IN var_name RPAREN newline_opt
-                      unterminated_statement
+                 | unterminated_statement_if
+                 | unterminated_statement_while
+                 | unterminated_statement_for
+
+private unterminated_statement_for ::=
+                   FOR LPAREN (
+                       simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
+                          unterminated_statement
+                     | var_name IN var_name RPAREN newline_opt
+                          unterminated_statement
+                  ) 
+private unterminated_statement_while ::= WHILE LPAREN expr RPAREN newline_opt unterminated_statement 
+private unterminated_statement_if ::=
+                   IF LPAREN expr RPAREN newline_opt (
+                       terminated_statement ELSE newline_opt unterminated_statement
+                     | unterminated_statement
+                   ) 
 
 terminatable_statement ::= simple_statement
                  | BREAK
