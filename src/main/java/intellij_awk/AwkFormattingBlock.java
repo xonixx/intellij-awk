@@ -5,10 +5,9 @@ import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.text.LineColumn;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.formatter.common.AbstractBlock;
-import intellij_awk.psi.AwkAction;
+import com.intellij.psi.tree.TokenSet;
 import intellij_awk.psi.AwkFile;
 import intellij_awk.psi.AwkTypes;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +19,9 @@ import java.util.List;
 public class AwkFormattingBlock extends AbstractBlock {
 
   private final SpacingBuilder spacingBuilder;
+
+  private static final @NotNull TokenSet IF_FOR_WHILE =
+      TokenSet.create(AwkTypes.IF, AwkTypes.FOR, AwkTypes.WHILE);
 
   protected AwkFormattingBlock(
       @NotNull ASTNode node,
@@ -64,26 +66,27 @@ public class AwkFormattingBlock extends AbstractBlock {
       if (newChildIndex > 0) {
         // handle if(1)<ENTER>, while(1)<ENTER> etc
         // below is hacky code, because in presence of uncompleted if(1) the file is not parsed to
-        // correct AST yet
+        // correct AST yet and is rather a flat token list in a awk file node
         List<Block> children = buildChildren();
-        AwkFormattingBlock block = (AwkFormattingBlock) children.get(newChildIndex - 1);
-        ASTNode prevNode = block.myNode;
-        PsiElement errElt;
+        int blockIndex = newChildIndex - 1;
+        ASTNode prevNode = getChildBlockNode(children, blockIndex);
+        PsiElement errOrDummyBlockElt;
         if (prevNode.getElementType() == AwkTypes.RPAREN
-            || prevNode instanceof PsiErrorElement
-                && (errElt = ((PsiErrorElement) prevNode).getFirstChild()) != null
-                && errElt.getNode().getElementType() == AwkTypes.RPAREN) {
-          //          return new ChildAttributes(Indent.getNormalIndent(), null);
-          //          return new ChildAttributes(Indent.getSpaceIndent(10), null);
-          // search corresponding LPAREN
-          ASTNode node = prevNode;
-          while ((node = node.getTreePrev()) != null) {
+            || (errOrDummyBlockElt = prevNode.getPsi().getLastChild()) != null
+                && errOrDummyBlockElt.getNode().getElementType() == AwkTypes.RPAREN) {
+
+          // search corresponding LPAREN and then keyword before it
+          while (--blockIndex > 0) {
+            ASTNode node = getChildBlockNode(children, blockIndex);
             if (node.getElementType() == AwkTypes.LPAREN) {
-              LineColumn column =
-                  StringUtil.offsetToLineColumn(
-                      this.myNode.getText(), node.getStartOffsetInParent());
-              return new ChildAttributes(Indent.getSpaceIndent(column.column), null);
-              //              break;
+              node = getChildBlockNode(children, blockIndex - 1);
+              if (IF_FOR_WHILE.contains(node.getElementType())) {
+                LineColumn column =
+                    StringUtil.offsetToLineColumn(
+                        this.myNode.getText(), node.getStartOffsetInParent());
+                int TAB_SIZE = 4; // TODO
+                return new ChildAttributes(Indent.getSpaceIndent(column.column + TAB_SIZE), null);
+              }
             }
           }
         }
@@ -91,6 +94,10 @@ public class AwkFormattingBlock extends AbstractBlock {
       return new ChildAttributes(Indent.getNoneIndent(), null);
     }
     return new ChildAttributes(Indent.getNormalIndent(), null);
+  }
+
+  private static ASTNode getChildBlockNode(List<Block> children, int idx) {
+    return ((AwkFormattingBlock) children.get(idx)).myNode;
   }
 
   @Override
