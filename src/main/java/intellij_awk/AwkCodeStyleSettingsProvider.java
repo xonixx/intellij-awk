@@ -20,14 +20,14 @@ public class AwkCodeStyleSettingsProvider extends CodeStyleSettingsProvider {
   @Nullable
   @Override
   public String getConfigurableDisplayName() {
-    return "AWK";
+    return AwkLanguage.INSTANCE.getDisplayName();
   }
 
   @NotNull
   public CodeStyleConfigurable createConfigurable(
       @NotNull CodeStyleSettings settings, @NotNull CodeStyleSettings modelSettings) {
     return new CodeStyleAbstractConfigurable(
-        settings, modelSettings, this.getConfigurableDisplayName()) {
+        settings, modelSettings, getConfigurableDisplayName()) {
       @Override
       protected CodeStyleAbstractPanel createPanel(CodeStyleSettings settings) {
         return new AwkCodeStyleMainPanel(getCurrentSettings(), settings);
@@ -39,6 +39,11 @@ public class AwkCodeStyleSettingsProvider extends CodeStyleSettingsProvider {
 
     public AwkCodeStyleMainPanel(CodeStyleSettings currentSettings, CodeStyleSettings settings) {
       super(AwkLanguage.INSTANCE, currentSettings, settings);
+    }
+
+    @Override
+    protected void initTabs(CodeStyleSettings settings) {
+      addIndentOptionsTab(settings);
     }
   }
 }

@@ -1,9 +1,12 @@
 package intellij_awk;
 
+import com.intellij.application.options.IndentOptionsEditor;
+import com.intellij.application.options.SmartIndentOptionsEditor;
 import com.intellij.lang.Language;
 import com.intellij.psi.codeStyle.CodeStyleSettingsCustomizable;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class AwkCodeStyleSettingsProviderLanguage extends LanguageCodeStyleSettingsProvider {
 
@@ -15,14 +18,7 @@ public class AwkCodeStyleSettingsProviderLanguage extends LanguageCodeStyleSetti
 
   @Override
   public void customizeSettings(
-      @NotNull CodeStyleSettingsCustomizable consumer, @NotNull SettingsType settingsType) {
-    if (settingsType == SettingsType.SPACING_SETTINGS) {
-      consumer.showStandardOptions("SPACE_AROUND_ASSIGNMENT_OPERATORS");
-      consumer.renameStandardOption("SPACE_AROUND_ASSIGNMENT_OPERATORS", "Separator");
-    } else if (settingsType == SettingsType.BLANK_LINES_SETTINGS) {
-      consumer.showStandardOptions("KEEP_BLANK_LINES_IN_CODE");
-    }
-  }
+      @NotNull CodeStyleSettingsCustomizable consumer, @NotNull SettingsType settingsType) {}
 
   @Override
   public String getCodeSample(@NotNull SettingsType settingsType) {
@@ -35,5 +31,10 @@ public class AwkCodeStyleSettingsProviderLanguage extends LanguageCodeStyleSetti
         + "function inc(i) {\n"
         + "    return i+1\n"
         + "}\n";
+  }
+
+  @Override
+  public @Nullable IndentOptionsEditor getIndentOptionsEditor() {
+    return new SmartIndentOptionsEditor();
   }
 }
