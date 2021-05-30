@@ -19,12 +19,14 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
   public @NotNull FormattingModel createModel(@NotNull FormattingContext formattingContext) {
     PsiElement element = formattingContext.getPsiElement();
     CodeStyleSettings settings = formattingContext.getCodeStyleSettings();
+
     return FormattingModelProvider.createFormattingModelForPsiFile(
         element.getContainingFile(),
         new AwkFormattingBlock(
             element.getNode(),
             Wrap.createWrap(WrapType.NONE, false),
             null,
+            settings,
             createSpaceBuilder(settings)),
         settings);
   }

@@ -6,6 +6,7 @@ import com.intellij.openapi.util.text.LineColumn;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.TokenType;
+import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.formatter.common.AbstractBlock;
 import com.intellij.psi.tree.TokenSet;
 import intellij_awk.psi.AwkFile;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class AwkFormattingBlock extends AbstractBlock {
 
+  private final CodeStyleSettings codeStyleSettings;
   private final SpacingBuilder spacingBuilder;
 
   private static final @NotNull TokenSet IF_FOR_WHILE =
@@ -27,8 +29,10 @@ public class AwkFormattingBlock extends AbstractBlock {
       @NotNull ASTNode node,
       @Nullable Wrap wrap,
       @Nullable Alignment alignment,
+      CodeStyleSettings codeStyleSettings,
       SpacingBuilder spacingBuilder) {
     super(node, wrap, alignment);
+    this.codeStyleSettings = codeStyleSettings;
     this.spacingBuilder = spacingBuilder;
   }
 
@@ -39,10 +43,13 @@ public class AwkFormattingBlock extends AbstractBlock {
     while (child != null) {
       if (child.getElementType() != TokenType.WHITE_SPACE
           && child.getElementType() != AwkTypes.NEWLINE) {
-        Block block =
+        blocks.add(
             new AwkFormattingBlock(
-                child, Wrap.createWrap(WrapType.NONE, false), null, spacingBuilder);
-        blocks.add(block);
+                child,
+                Wrap.createWrap(WrapType.NONE, false),
+                null,
+                codeStyleSettings,
+                spacingBuilder));
       }
       child = child.getTreeNext();
     }
@@ -84,8 +91,12 @@ public class AwkFormattingBlock extends AbstractBlock {
                 LineColumn column =
                     StringUtil.offsetToLineColumn(
                         this.myNode.getText(), node.getStartOffsetInParent());
-                int TAB_SIZE = 4; // TODO
-                return new ChildAttributes(Indent.getSpaceIndent(column.column + TAB_SIZE), null);
+                int indentSize =
+                    codeStyleSettings
+                        .getCommonSettings(AwkLanguage.INSTANCE)
+                        .getIndentOptions()
+                        .INDENT_SIZE;
+                return new ChildAttributes(Indent.getSpaceIndent(column.column + indentSize), null);
               }
             }
           }
