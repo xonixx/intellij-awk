@@ -61,7 +61,7 @@ public class AwkFormattingBlock extends AbstractBlock {
   public Indent getIndent() {
     PsiElement psi = myNode.getPsi();
     PsiElement parent = psi.getParent();
-    return parent instanceof AwkAction && !(psi.equals(parent.getLastChild()))
+    return parent instanceof AwkAction && !(psi.equals(parent.getLastChild())) /* this is not closing '}' of action */
         ? Indent.getNormalIndent()
         : Indent.getNoneIndent();
   }
