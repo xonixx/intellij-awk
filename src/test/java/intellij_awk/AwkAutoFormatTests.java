@@ -2,6 +2,7 @@ package intellij_awk;
 
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.psi.codeStyle.CodeStyleManager;
+import com.intellij.psi.impl.DebugUtil;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 
 public class AwkAutoFormatTests extends BasePlatformTestCase {
@@ -26,6 +27,11 @@ public class AwkAutoFormatTests extends BasePlatformTestCase {
           CodeStyleManager.getInstance(getProject()).reformat(myFixture.getFile());
         });
 
-    myFixture.checkResultByFile(after, true);
+    try {
+      myFixture.checkResultByFile(after, true);
+    } catch (Throwable t) {
+      System.out.println(DebugUtil.psiToString(myFixture.getFile(), false, true));
+      throw t;
+    }
   }
 }
