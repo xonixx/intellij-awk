@@ -6,9 +6,9 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 
 public class AwkAutoFormatTests extends BasePlatformTestCase {
 
-  public void testFile1() {
-    checkByFile();
-  }
+  public void testFile1() { checkByFile(); }
+  public void testFile2() { checkByFile(); }
+  public void testFile3() { checkByFile(); }
 
   @Override
   protected String getTestDataPath() {
