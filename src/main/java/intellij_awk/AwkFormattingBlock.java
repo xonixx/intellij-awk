@@ -72,11 +72,24 @@ public class AwkFormattingBlock extends AbstractBlock {
     if (parent instanceof AwkTerminatedStatement
         && IF_FOR_WHILE.contains(parent.getFirstChild().getNode().getElementType())
         && psi instanceof AwkTerminatedStatement
-        /*&& psi.getFirstChild() instanceof AwkTerminatableStatement*/) {
+        && !isPrecededByElseOnSameLine(psi)) {
       return Indent.getNormalIndent();
     }
 
     return Indent.getNoneIndent();
+  }
+
+  private boolean isPrecededByElseOnSameLine(PsiElement psi) {
+    ASTNode node = psi.getNode();
+    ASTNode parent = node.getTreeParent();
+    PsiElement prevSibling = AwkUtil.getPrevNotWhitespace(psi);
+
+    if (prevSibling.getNode().getElementType() != AwkTypes.ELSE) {
+      return false;
+    }
+
+    return getLineColumnRelativeToParent(parent, node).line
+        == getLineColumnRelativeToParent(parent, prevSibling.getNode()).line;
   }
 
   @Override
@@ -111,15 +124,13 @@ public class AwkFormattingBlock extends AbstractBlock {
             if (node.getElementType() == AwkTypes.LPAREN) {
               node = getChildBlockNode(children, blockIndex - 1);
               if (IF_FOR_WHILE.contains(node.getElementType())) {
-                LineColumn column =
-                    StringUtil.offsetToLineColumn(
-                        this.myNode.getText(), node.getStartOffsetInParent());
                 int indentSize =
                     codeStyleSettings
                         .getCommonSettings(AwkLanguage.INSTANCE)
                         .getIndentOptions()
                         .INDENT_SIZE;
-                return new ChildAttributes(Indent.getSpaceIndent(column.column + indentSize), null);
+                int colNo = getLineColumnRelativeToParent(myNode, node).column;
+                return new ChildAttributes(Indent.getSpaceIndent(colNo + indentSize), null);
               }
             }
           }
@@ -128,6 +139,10 @@ public class AwkFormattingBlock extends AbstractBlock {
       return new ChildAttributes(Indent.getNoneIndent(), null);
     }
     return new ChildAttributes(Indent.getNormalIndent(), null);
+  }
+
+  private LineColumn getLineColumnRelativeToParent(ASTNode parent, ASTNode child) {
+    return StringUtil.offsetToLineColumn(parent.getText(), child.getStartOffsetInParent());
   }
 
   private static ASTNode getChildBlockNode(List<Block> children, int idx) {
