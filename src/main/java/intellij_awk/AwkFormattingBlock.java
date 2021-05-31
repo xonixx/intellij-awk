@@ -9,9 +9,7 @@ import com.intellij.psi.TokenType;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.formatter.common.AbstractBlock;
 import com.intellij.psi.tree.TokenSet;
-import intellij_awk.psi.AwkAction;
-import intellij_awk.psi.AwkFile;
-import intellij_awk.psi.AwkTypes;
+import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,23 +62,27 @@ public class AwkFormattingBlock extends AbstractBlock {
   private Indent calcIndent(ASTNode myNode) {
     PsiElement psi = myNode.getPsi();
     PsiElement parent = psi.getParent();
-    return parent instanceof AwkAction
-            && !(psi.equals(parent.getFirstChild())
-                || psi.equals(
-                    parent.getLastChild())) /* this is not opening '{' or closing '}' of action */
-        ? Indent.getNormalIndent()
-        : Indent.getNoneIndent();
+
+    if (parent instanceof AwkAction
+        /* this is not opening '{' or closing '}' of action */
+        && !(psi.equals(parent.getFirstChild()) || psi.equals(parent.getLastChild()))) {
+      return Indent.getNormalIndent();
+    }
+
+    if (parent instanceof AwkTerminatedStatement
+        && parent.getFirstChild().getNode().getElementType() == AwkTypes.IF
+        && psi instanceof AwkTerminatedStatement
+        && psi.getFirstChild() instanceof AwkTerminatableStatement) {
+      return Indent.getNormalIndent();
+    }
+
+    return Indent.getNoneIndent();
   }
 
   @Override
   public Indent getIndent() {
     return indent;
   }
-
-//  @Override
-//  public @Nullable Wrap getWrap() {
-//    return null;
-//  }
 
   @Nullable
   @Override
