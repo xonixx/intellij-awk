@@ -9,6 +9,7 @@ import com.intellij.psi.TokenType;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.formatter.common.AbstractBlock;
 import com.intellij.psi.tree.TokenSet;
+import intellij_awk.psi.AwkAction;
 import intellij_awk.psi.AwkFile;
 import intellij_awk.psi.AwkTypes;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,7 @@ public class AwkFormattingBlock extends AbstractBlock {
   private final CodeStyleSettings codeStyleSettings;
   private final SpacingBuilder spacingBuilder;
 
-  private static final @NotNull TokenSet IF_FOR_WHILE =
+  private static final TokenSet IF_FOR_WHILE =
       TokenSet.create(AwkTypes.IF, AwkTypes.FOR, AwkTypes.WHILE);
 
   protected AwkFormattingBlock(
@@ -58,7 +59,11 @@ public class AwkFormattingBlock extends AbstractBlock {
 
   @Override
   public Indent getIndent() {
-    return Indent.getNoneIndent();
+    PsiElement psi = myNode.getPsi();
+    PsiElement parent = psi.getParent();
+    return parent instanceof AwkAction && !(psi.equals(parent.getLastChild()))
+        ? Indent.getNormalIndent()
+        : Indent.getNoneIndent();
   }
 
   @Nullable
