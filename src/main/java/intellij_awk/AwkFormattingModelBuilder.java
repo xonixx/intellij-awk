@@ -25,6 +25,7 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
         new AwkFormattingBlock(
             element.getNode(),
             Wrap.createWrap(WrapType.NONE, false),
+            Indent.getNoneIndent(),
             null,
             settings,
             createSpaceBuilder(settings)),

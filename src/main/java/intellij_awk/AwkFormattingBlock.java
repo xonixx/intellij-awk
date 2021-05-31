@@ -22,6 +22,7 @@ public class AwkFormattingBlock extends AbstractBlock {
 
   private final CodeStyleSettings codeStyleSettings;
   private final SpacingBuilder spacingBuilder;
+  private final Indent indent;
 
   private static final TokenSet IF_FOR_WHILE =
       TokenSet.create(AwkTypes.IF, AwkTypes.FOR, AwkTypes.WHILE);
@@ -29,12 +30,14 @@ public class AwkFormattingBlock extends AbstractBlock {
   protected AwkFormattingBlock(
       @NotNull ASTNode node,
       @Nullable Wrap wrap,
+      Indent indent,
       @Nullable Alignment alignment,
       CodeStyleSettings codeStyleSettings,
       SpacingBuilder spacingBuilder) {
     super(node, wrap, alignment);
     this.codeStyleSettings = codeStyleSettings;
     this.spacingBuilder = spacingBuilder;
+    this.indent = indent;
   }
 
   @Override
@@ -48,6 +51,7 @@ public class AwkFormattingBlock extends AbstractBlock {
             new AwkFormattingBlock(
                 child,
                 Wrap.createWrap(WrapType.NONE, false),
+                calcIndent(child),
                 null,
                 codeStyleSettings,
                 spacingBuilder));
@@ -57,8 +61,7 @@ public class AwkFormattingBlock extends AbstractBlock {
     return blocks;
   }
 
-  @Override
-  public Indent getIndent() {
+  private Indent calcIndent(ASTNode myNode) {
     PsiElement psi = myNode.getPsi();
     PsiElement parent = psi.getParent();
     return parent instanceof AwkAction
@@ -67,6 +70,11 @@ public class AwkFormattingBlock extends AbstractBlock {
                     parent.getLastChild())) /* this is not opening '{' or closing '}' of action */
         ? Indent.getNormalIndent()
         : Indent.getNoneIndent();
+  }
+
+  @Override
+  public Indent getIndent() {
+    return indent;
   }
 
   @Nullable
