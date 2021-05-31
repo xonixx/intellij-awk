@@ -1,9 +1,12 @@
 package intellij_awk;
 
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.DebugUtil;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
+
+import java.util.List;
 
 public class AwkAutoFormatTests extends BasePlatformTestCase {
 
@@ -24,7 +27,9 @@ public class AwkAutoFormatTests extends BasePlatformTestCase {
     WriteCommandAction.runWriteCommandAction(
         getProject(),
         () -> {
-          CodeStyleManager.getInstance(getProject()).reformat(myFixture.getFile());
+          PsiFile psiFile = myFixture.getFile();
+          CodeStyleManager.getInstance(getProject())
+              .reformatText(psiFile, List.of(psiFile.getTextRange()));
         });
 
     try {

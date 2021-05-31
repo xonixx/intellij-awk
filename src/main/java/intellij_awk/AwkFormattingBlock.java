@@ -77,6 +77,11 @@ public class AwkFormattingBlock extends AbstractBlock {
     return indent;
   }
 
+//  @Override
+//  public @Nullable Wrap getWrap() {
+//    return null;
+//  }
+
   @Nullable
   @Override
   public Spacing getSpacing(@Nullable Block child1, @NotNull Block child2) {
