@@ -18,6 +18,7 @@ public class AwkAutoFormatTests extends BasePlatformTestCase {
   public void testFile6() { checkByFile(); }
   public void testFile7() { checkByFile(); }
   public void testFile8() { checkByFile(); }
+  public void testFile9() { checkByFile(); }
 
   @Override
   protected String getTestDataPath() {
