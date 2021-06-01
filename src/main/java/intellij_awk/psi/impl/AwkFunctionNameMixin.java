@@ -2,10 +2,10 @@ package intellij_awk.psi.impl;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiWhiteSpace;
 import intellij_awk.AwkIcons;
-import intellij_awk.AwkUtil;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -93,9 +93,9 @@ public abstract class AwkFunctionNameMixin extends AwkNamedElementImpl implement
   }
 
   private boolean isWhitespaceBeforeLocals(PsiElement psiElement) {
-    if (psiElement instanceof PsiWhiteSpace) {
-      return psiElement.getTextLength() >= 3
-          || psiElement.textContains('\\')
+    if (psiElement instanceof PsiWhiteSpace || psiElement instanceof PsiComment) {
+      return psiElement instanceof PsiWhiteSpace && psiElement.getTextLength() >= 3
+          || psiElement instanceof PsiComment && psiElement.textMatches("\\\n")
           || isWhitespaceBeforeLocals(psiElement.getPrevSibling());
     }
 
