@@ -1,12 +1,14 @@
 package intellij_awk;
 
 import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AwkCompletionTests extends BasePlatformTestCase {
 
@@ -73,6 +75,29 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionExact(
         Set.of("aaa1", "aaa2"),
         "function aaa1(){}\nfunction bbb(){}\nfunction aaa2(){}\n{ aaa<caret> }");
+  }
+
+  public void testFunctionArgs1() {
+    checkFunctionArgs(
+        "BEGIN { <caret> }\nfunction func1(arg1, arg2,     arg3) {}", "func1", "(arg1, arg2)");
+  }
+
+  public void testFunctionArgs2() {
+    checkFunctionArgs(
+        "BEGIN { <caret> }\nfunction func1(arg1, arg2,\\\narg3) {}", "func1", "(arg1, arg2)");
+  }
+
+  private void checkFunctionArgs(String code, String fName, String expectedArgs) {
+    setupCode(code);
+    LookupElement[] variants = myFixture.completeBasic();
+    LookupElement resLookupElem =
+        Stream.of(variants)
+            .filter(lookupElement -> fName.equals(lookupElement.getLookupString()))
+            .findAny()
+            .orElseThrow();
+    LookupElementPresentation presentation = new LookupElementPresentation();
+    resLookupElem.renderElement(presentation);
+    assertEquals(expectedArgs, presentation.getTailText());
   }
 
   public void testNoCompletion1() {
