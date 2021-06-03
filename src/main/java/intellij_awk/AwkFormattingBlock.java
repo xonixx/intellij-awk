@@ -105,7 +105,8 @@ public class AwkFormattingBlock extends AbstractBlock {
 
   @Override
   public @NotNull ChildAttributes getChildAttributes(int newChildIndex) {
-    if (myNode.getPsi() instanceof AwkFile) {
+    PsiElement psi = myNode.getPsi();
+    if (psi instanceof AwkFile) {
       if (newChildIndex > 0) {
         // handle if(1)<ENTER>, while(1)<ENTER> etc
         // below is hacky code, because in presence of uncompleted if(1) the file is not parsed to
@@ -136,6 +137,8 @@ public class AwkFormattingBlock extends AbstractBlock {
           }
         }
       }
+      return new ChildAttributes(Indent.getNoneIndent(), null);
+    } else if (psi instanceof AwkTerminatedStatementList) {
       return new ChildAttributes(Indent.getNoneIndent(), null);
     }
     return new ChildAttributes(Indent.getNormalIndent(), null);
