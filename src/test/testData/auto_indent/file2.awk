@@ -1,0 +1,4 @@
+
+BEGIN {}
+
+function f() {<caret>}

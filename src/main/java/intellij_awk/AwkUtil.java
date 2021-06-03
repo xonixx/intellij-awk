@@ -8,6 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import intellij_awk.psi.*;
@@ -37,7 +38,8 @@ public class AwkUtil {
   }
 
   public static void findAllMatchedDeep(
-      PsiElement root, Predicate<PsiElement> predicate, Collection<PsiElement> result) {
+      @Nullable PsiElement root, Predicate<PsiElement> predicate, Collection<PsiElement> result) {
+    if (root == null) return;
     PsiElement[] children = root.getChildren();
     for (PsiElement child : children) {
       if (predicate.test(child)) {
@@ -148,5 +150,11 @@ public class AwkUtil {
       }
     }
     return null;
+  }
+
+  public static PsiElement getPrevNotWhitespace(PsiElement element) {
+    while ((element = element.getPrevSibling()) instanceof PsiWhiteSpace)
+      ;
+    return element;
   }
 }
