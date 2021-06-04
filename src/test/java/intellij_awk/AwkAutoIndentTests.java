@@ -16,6 +16,7 @@ public class AwkAutoIndentTests extends BasePlatformTestCase {
   public void testFile10() { checkByFile(); }
   public void testFile11() { checkByFile(); }
   public void testFile12() { checkByFile(); }
+  public void testFile13() { checkByFile(); }
 
   @Override
   protected String getTestDataPath() {
