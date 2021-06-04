@@ -232,17 +232,14 @@ simple_statement ::= DELETE var_name [ LBRACKET expr_list RBRACKET ]
 print_statement  ::= simple_print_statement output_redirection?
 
 simple_print_statement ::=
-                   PRINT  (LPAREN multiple_expr_list RPAREN | print_expr_list?)
-                 | PRINTF (LPAREN multiple_expr_list RPAREN | print_expr_list)
+                   PRINT  (LPAREN expr_list RPAREN | print_expr_list?)
+                 | PRINTF (LPAREN expr_list RPAREN | print_expr_list)
 
 output_redirection ::= (GT|APPEND|PIPE) expr
 
 private expr_list_opt    ::= expr_list?
 
-expr_list        ::= multiple_expr_list
-                 | expr // TODO do we need this line?
-
-multiple_expr_list ::= expr (COMMA newline_opt expr)*
+expr_list ::= expr (COMMA newline_opt expr)*
 
 private expr_opt         ::= expr?
 
@@ -286,7 +283,7 @@ unary_expr1      ::= [
 
 non_unary_expr   ::= (
                            LPAREN expr RPAREN
-                         | LPAREN multiple_expr_list RPAREN IN var_name
+                         | LPAREN expr_list RPAREN IN var_name
                          | NOT expr
                          | simple_get (LT expr)?
                          | NUMBER
@@ -302,7 +299,7 @@ non_unary_expr   ::= (
                          | lvalue DIV_ASSIGN expr
                          | lvalue ADD_ASSIGN expr
                          | lvalue SUB_ASSIGN expr
-                         | lvalue ASSIGN expr
+                         | lvalue ASSIGN     expr
                          | lvalue
                          | function_call
                          | BUILTIN_FUNC_NAME [ LPAREN expr_list_opt RPAREN ]
@@ -370,7 +367,7 @@ unary_print_expr1  ::= [
 non_unary_print_expr ::= (
                        LPAREN expr RPAREN
                      | NOT print_expr
-                     | LPAREN multiple_expr_list RPAREN IN var_name
+                     | LPAREN expr_list RPAREN IN var_name
                      | NUMBER
                      | STRING
                      | ERE
@@ -387,8 +384,7 @@ non_unary_print_expr ::= (
                      | lvalue ASSIGN     print_expr
                      | lvalue
                      | function_call
-                     | BUILTIN_FUNC_NAME LPAREN expr_list_opt RPAREN
-                     | BUILTIN_FUNC_NAME
+                     | BUILTIN_FUNC_NAME [ LPAREN expr_list_opt RPAREN ]
                  )
                  non_unary_print_expr1
 
