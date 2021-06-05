@@ -225,21 +225,22 @@ terminatable_statement ::= simple_statement
 
 private simple_statement_opt ::= simple_statement?
 
-simple_statement ::= DELETE var_name [ LBRACKET expr_list RBRACKET ]
+simple_statement ::= DELETE var_name [ LBRACKET expr_lst RBRACKET ]
                  | expr
                  | print_statement
 
 print_statement  ::= simple_print_statement output_redirection?
 
 simple_print_statement ::=
-                   PRINT  (LPAREN expr_list RPAREN | print_expr_list?)
-                 | PRINTF (LPAREN expr_list RPAREN | print_expr_list)
+                   PRINT  (LPAREN expr_lst RPAREN | print_expr_list?)
+                 | PRINTF (LPAREN expr_lst RPAREN | print_expr_list)
 
 output_redirection ::= (GT|APPEND|PIPE) expr
 
-private expr_list_opt    ::= expr_list?
+private expr_lst_opt    ::= expr_lst?
 
-expr_list ::= expr (COMMA newline_opt expr)*
+// named so because of name clash during code generation
+expr_lst ::= expr (COMMA newline_opt expr)*
 
 private expr_opt         ::= expr?
 
@@ -256,7 +257,7 @@ expr             ::= unary_expr | non_unary_expr
 */
 unary_expr       ::= (ADD|SUB)  expr unary_expr1
 
-unary_expr1      ::= [
+private unary_expr1      ::= [
                         (    POW      expr
                            | MUL      expr
                            | DIV      expr
@@ -283,7 +284,7 @@ unary_expr1      ::= [
 
 non_unary_expr   ::= (
                            LPAREN expr RPAREN
-                         | LPAREN expr_list RPAREN IN var_name
+                         | LPAREN expr_lst RPAREN IN var_name
                          | NOT expr
                          | simple_get (LT expr)?
                          | NUMBER
@@ -302,11 +303,11 @@ non_unary_expr   ::= (
                          | lvalue ASSIGN     expr
                          | lvalue
                          | function_call
-                         | BUILTIN_FUNC_NAME [ LPAREN expr_list_opt RPAREN ]
+                         | BUILTIN_FUNC_NAME [ LPAREN expr_lst_opt RPAREN ]
                      )
                      non_unary_expr1
 
-private function_call       ::= function_call_name LPAREN expr_list_opt RPAREN /* no white space allowed before LPAREN */
+private function_call       ::= function_call_name LPAREN expr_lst_opt RPAREN /* no white space allowed before LPAREN */
 
 function_call_name          ::= FUNC_NAME
 {
@@ -314,7 +315,7 @@ function_call_name          ::= FUNC_NAME
     implements="intellij_awk.psi.AwkNamedElement"
 }
 
-non_unary_expr1     ::= [
+private non_unary_expr1     ::= [
                           (     POW      expr
                               | MUL      expr
                               | DIV      expr
@@ -345,7 +346,7 @@ print_expr       ::= unary_print_expr | non_unary_print_expr
 
 unary_print_expr ::= (ADD|SUB) print_expr unary_print_expr1
 
-unary_print_expr1  ::= [
+private unary_print_expr1  ::= [
                             (
                                   POW      print_expr
                                 | MUL      print_expr
@@ -367,7 +368,7 @@ unary_print_expr1  ::= [
 non_unary_print_expr ::= (
                        LPAREN expr RPAREN
                      | NOT print_expr
-                     | LPAREN expr_list RPAREN IN var_name
+                     | LPAREN expr_lst RPAREN IN var_name
                      | NUMBER
                      | STRING
                      | ERE
@@ -384,11 +385,11 @@ non_unary_print_expr ::= (
                      | lvalue ASSIGN     print_expr
                      | lvalue
                      | function_call
-                     | BUILTIN_FUNC_NAME [ LPAREN expr_list_opt RPAREN ]
+                     | BUILTIN_FUNC_NAME [ LPAREN expr_lst_opt RPAREN ]
                  )
                  non_unary_print_expr1
 
-non_unary_print_expr1 ::= [
+private non_unary_print_expr1 ::= [
                             (
                                   POW      print_expr
                                 | MUL      print_expr
@@ -407,7 +408,7 @@ non_unary_print_expr1 ::= [
                             non_unary_print_expr1
                           ]
 
-lvalue           ::= var_name (LBRACKET expr_list RBRACKET)* // XXX this covers a[1][2][3] like in Gawk
+lvalue           ::= var_name (LBRACKET expr_lst RBRACKET)* // XXX this covers a[1][2][3] like in Gawk
                  | DOLLAR expr
 
 private var_name ::= SPECIAL_VAR_NAME | user_var_name
