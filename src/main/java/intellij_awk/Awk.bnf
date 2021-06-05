@@ -255,7 +255,7 @@ expr             ::= unary_expr | non_unary_expr
     A --> β A'
     A' --> ε | α A'   <-->  A' --> (α A')?
 */
-unary_expr       ::= (ADD|SUB)  expr unary_expr1
+private unary_expr       ::= (ADD|SUB)  expr unary_expr1
 
 private unary_expr1      ::= [
                         (    POW      expr
@@ -282,7 +282,7 @@ private unary_expr1      ::= [
                        unary_expr1
                    ]
 
-non_unary_expr   ::= (
+private non_unary_expr   ::= (
                            LPAREN expr RPAREN
                          | LPAREN expr_lst RPAREN IN var_name
                          | NOT expr
@@ -344,7 +344,7 @@ print_expr_list  ::= print_expr (COMMA newline_opt print_expr)*
 
 print_expr       ::= unary_print_expr | non_unary_print_expr
 
-unary_print_expr ::= (ADD|SUB) print_expr unary_print_expr1
+private unary_print_expr ::= (ADD|SUB) print_expr unary_print_expr1
 
 private unary_print_expr1  ::= [
                             (
@@ -365,7 +365,7 @@ private unary_print_expr1  ::= [
                             unary_print_expr1
                         ]
 
-non_unary_print_expr ::= (
+private non_unary_print_expr ::= (
                        LPAREN expr RPAREN
                      | NOT print_expr
                      | LPAREN expr_lst RPAREN IN var_name
