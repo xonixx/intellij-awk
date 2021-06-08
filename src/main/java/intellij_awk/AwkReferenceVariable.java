@@ -27,10 +27,33 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
     if (ref == null) {
       ref = resolveGlobalVariable(myElement);
     }
+//    if (ref == null) {
+//      ref = resolveImplicitGlobalVar(myElement);
+//    }
     if (ref != null) {
       res.add(new PsiElementResolveResult(ref));
     }
     return res.toArray(new ResolveResult[0]);
+  }
+
+  private PsiElement resolveImplicitGlobalVar(AwkUserVarNameImpl userVarName) {
+    PsiElement parent = userVarName;
+    while (true) {
+      parent = parent.getParent();
+      if (parent == null || parent instanceof AwkFile) {
+        break;
+      }
+      if (parent instanceof AwkItemImpl) {
+        AwkItemImpl awkItem = (AwkItemImpl) parent;
+        if (awkItem.getFunctionName() != null) {
+          Resolved resolved = resolveInAction(awkItem.getAction(), userVarName);
+          if (resolved != null) {
+            return resolved.value;
+          }
+        }
+      }
+    }
+    return null;
   }
 
   private PsiElement resolveFunctionArgument(AwkUserVarNameImpl userVarName) {
@@ -71,25 +94,40 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
         AwkPattern pattern = awkItem.getPattern();
         if (pattern != null) {
           if (AwkUtil.isAwkBegin(pattern.getBeginOrEnd())) {
-            AwkAction action = awkItem.getAction();
-
-            PsiElement varDeclaration =
-                AwkUtil.findFirstMatchedDeep(
-                    action,
-                    psiElement ->
-                        psiElement instanceof AwkUserVarName
-                            && ((AwkUserVarName) psiElement)
-                                .getVarName()
-                                .textMatches(userVarName.getName()));
-            if (varDeclaration != null) {
-              if (varDeclaration == userVarName) {
-                return null; // no need to display a reference to itself
-              }
-              return varDeclaration;
+            Resolved resolved = resolveInAction(awkItem.getAction(), userVarName);
+            if (resolved != null) {
+              return resolved.value;
             }
           }
         }
       }
+    }
+
+    return null;
+  }
+
+  private class Resolved {
+    private final PsiElement value;
+
+    public Resolved(PsiElement value) {
+      this.value = value;
+    }
+  }
+
+  private @Nullable Resolved resolveInAction(AwkAction action, AwkUserVarNameImpl userVarName) {
+    PsiElement varDeclaration =
+        AwkUtil.findFirstMatchedDeep(
+            action,
+            psiElement ->
+                psiElement instanceof AwkUserVarName
+                    && ((AwkUserVarName) psiElement)
+                        .getVarName()
+                        .textMatches(userVarName.getName()));
+    if (varDeclaration != null) {
+      if (varDeclaration == userVarName) {
+        return new Resolved(null); // no need to display a reference to itself
+      }
+      return new Resolved(varDeclaration);
     }
 
     return null;
@@ -103,7 +141,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
   }
 
   @Override
-  public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
+  public PsiElement handleElementRename(@NotNull String newElementName)
+      throws IncorrectOperationException {
     return myElement.setName(newElementName);
   }
 }
