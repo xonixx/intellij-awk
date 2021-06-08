@@ -8,6 +8,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.formatter.common.AbstractBlock;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
@@ -73,9 +74,13 @@ public class AwkFormattingBlock extends AbstractBlock {
       return Indent.getNormalIndent();
     }
 
-    if (parent instanceof AwkExpr
-        && parent.getParent().getFirstChild().getNode().getElementType() == AwkTypes.RETURN) {
-      return Indent.getNormalIndent();
+    if (parent instanceof AwkExpr) {
+      IElementType elementType = parent.getParent().getFirstChild().getNode().getElementType();
+      if (elementType == AwkTypes.RETURN
+          || elementType == AwkTypes.WHILE
+          || elementType == AwkTypes.IF) {
+        return Indent.getNormalIndent();
+      }
     }
 
     if (parent instanceof AwkTerminatedStatement

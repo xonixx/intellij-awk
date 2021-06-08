@@ -10,21 +10,22 @@ import java.util.List;
 
 public class AwkAutoFormatTests extends BasePlatformTestCase {
 
-  public void testFile1() { checkByFile(); }
-  public void testFile2() { checkByFile(); }
+  public void testFile1()   { checkByFile(); }
+  public void testFile2_0() { checkByFile(); }
   public void testFile2_1() { checkByFile(); }
-  public void testFile3() { checkByFile(); }
-  public void testFile4() { checkByFile(); }
+  public void testFile3()   { checkByFile(); }
+  public void testFile4_0() { checkByFile(); }
   public void testFile4_1() { checkByFile(); }
-  public void testFile5() { checkByFile(); }
-  public void testFile6() { checkByFile(); }
-  public void testFile7() { checkByFile(); }
-  public void testFile8() { checkByFile(); }
-  public void testFile9() { checkByFile(); }
-  public void testFile10() { checkByFile(); }
-  public void testFile11() { checkByFile(); }
-  public void testFile12() { checkByFile(); }
-  public void testFile13() { checkByFile(); }
+  public void testFile5()   { checkByFile(); }
+  public void testFile6()   { checkByFile(); }
+  public void testFile7()   { checkByFile(); }
+  public void testFile8()   { checkByFile(); }
+  public void testFile9()   { checkByFile(); }
+  public void testFile10()  { checkByFile(); }
+  public void testFile11()  { checkByFile(); }
+  public void testFile12()  { checkByFile(); }
+  public void testFile13_0(){ checkByFile(); }
+  public void testFile13_1(){ checkByFile(); }
 
   @Override
   protected String getTestDataPath() {
