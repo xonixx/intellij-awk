@@ -17,6 +17,19 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     doTest("function f(a, b, c) {\n" + "<caret>b++\n" + "print b\n" + "return f2(b)\n" + "}", 3);
   }
 
+  public void test3() {
+    doTest(
+        "BEGIN {\n"
+            + "}\n"
+            + "\n"
+            + "function f(a,    i) {\n"
+            + "    f1(name<caret>)\n"
+            + "    name++\n"
+            + "    print \"name: \" name\n"
+            + "}\n",
+        2);
+  }
+
   private void doTest(String code, int expectedUsagesCount) {
     myFixture.configureByText("a.awk", code);
     PsiElement element = myFixture.getElementAtCaret();
