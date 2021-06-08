@@ -1,6 +1,6 @@
 function f() {
     while (a() &&
-        b()) {
+           b()) {
         print
     }
 }
