@@ -142,14 +142,19 @@ public class AwkUtil {
     };
   }
 
-  public static <T extends PsiElement> T findParent(PsiElement psiElement, Class<T> parentClass) {
+  public static <T extends PsiElement> T findParent(
+      PsiElement psiElement, Predicate<PsiElement> predicate) {
     PsiElement parent = psiElement;
     while (!((parent = parent.getParent()) instanceof AwkFile)) {
-      if (parentClass.isInstance(parent)) {
+      if (predicate.test(parent)) {
         return (T) parent;
       }
     }
     return null;
+  }
+
+  public static <T extends PsiElement> T findParent(PsiElement psiElement, Class<T> parentClass) {
+    return findParent(psiElement, parentClass::isInstance);
   }
 
   public static PsiElement getPrevNotWhitespace(PsiElement element) {

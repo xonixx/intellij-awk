@@ -12,8 +12,10 @@ public class AwkAutoFormatTests extends BasePlatformTestCase {
 
   public void testFile1() { checkByFile(); }
   public void testFile2() { checkByFile(); }
+  public void testFile2_1() { checkByFile(); }
   public void testFile3() { checkByFile(); }
   public void testFile4() { checkByFile(); }
+  public void testFile4_1() { checkByFile(); }
   public void testFile5() { checkByFile(); }
   public void testFile6() { checkByFile(); }
   public void testFile7() { checkByFile(); }
@@ -45,7 +47,7 @@ public class AwkAutoFormatTests extends BasePlatformTestCase {
     try {
       myFixture.checkResultByFile(after, true);
     } catch (Throwable t) {
-      System.out.println(DebugUtil.psiToString(myFixture.getFile(), false, true));
+//      System.out.println(DebugUtil.psiToString(myFixture.getFile(), false, true));
       throw t;
     }
   }

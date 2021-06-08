@@ -73,6 +73,11 @@ public class AwkFormattingBlock extends AbstractBlock {
       return Indent.getNormalIndent();
     }
 
+    if (parent instanceof AwkExpr
+        && parent.getParent().getFirstChild().getNode().getElementType() == AwkTypes.RETURN) {
+      return Indent.getNormalIndent();
+    }
+
     if (parent instanceof AwkTerminatedStatement
         && IF_FOR_WHILE.contains(parent.getFirstChild().getNode().getElementType())
         && psi instanceof AwkTerminatedStatement
