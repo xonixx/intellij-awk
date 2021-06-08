@@ -23,20 +23,20 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
   public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
     List<ResolveResult> res = new ArrayList<>();
 
-    PsiElement ref = resolveFunctionArgument(myElement);
+    Resolved ref = resolveFunctionArgument(myElement);
     if (ref == null) {
       ref = resolveGlobalVariable(myElement);
     }
-//    if (ref == null) {
-//      ref = resolveImplicitGlobalVar(myElement);
-//    }
-    if (ref != null) {
-      res.add(new PsiElementResolveResult(ref));
+    if (ref == null) {
+      ref = resolveImplicitGlobalVar(myElement);
+    }
+    if (ref != null && ref.value != null) {
+      res.add(new PsiElementResolveResult(ref.value));
     }
     return res.toArray(new ResolveResult[0]);
   }
 
-  private PsiElement resolveImplicitGlobalVar(AwkUserVarNameImpl userVarName) {
+  private Resolved resolveImplicitGlobalVar(AwkUserVarNameImpl userVarName) {
     PsiElement parent = userVarName;
     while (true) {
       parent = parent.getParent();
@@ -48,7 +48,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
         if (awkItem.getFunctionName() != null) {
           Resolved resolved = resolveInAction(awkItem.getAction(), userVarName);
           if (resolved != null) {
-            return resolved.value;
+            return resolved;
           }
         }
       }
@@ -56,7 +56,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
     return null;
   }
 
-  private PsiElement resolveFunctionArgument(AwkUserVarNameImpl userVarName) {
+  private @Nullable Resolved resolveFunctionArgument(AwkUserVarNameImpl userVarName) {
     PsiElement parent = userVarName;
     while (true) {
       parent = parent.getParent();
@@ -73,9 +73,9 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
               PsiElement varName = awkUserVarName.getVarName();
               if (varName.textMatches(userVarName.getName())) {
                 if (awkUserVarName == userVarName) {
-                  return null; // no need to display a reference to itself
+                  return new Resolved(null); // no need to display a reference to itself
                 }
-                return awkUserVarName;
+                return new Resolved(awkUserVarName);
               }
             }
           }
@@ -85,7 +85,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
     return null;
   }
 
-  private PsiElement resolveGlobalVariable(AwkUserVarNameImpl userVarName) {
+  private Resolved resolveGlobalVariable(AwkUserVarNameImpl userVarName) {
     AwkFile awkFile = (AwkFile) userVarName.getContainingFile();
 
     for (PsiElement child : awkFile.getChildren()) {
@@ -96,7 +96,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
           if (AwkUtil.isAwkBegin(pattern.getBeginOrEnd())) {
             Resolved resolved = resolveInAction(awkItem.getAction(), userVarName);
             if (resolved != null) {
-              return resolved.value;
+              return resolved;
             }
           }
         }
@@ -106,7 +106,12 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
     return null;
   }
 
-  private class Resolved {
+  /**
+   *
+   * <li>resolved == null : proceed resolution
+   * <li>resolved != null : use as resolved result
+   */
+  private static class Resolved {
     private final PsiElement value;
 
     public Resolved(PsiElement value) {
