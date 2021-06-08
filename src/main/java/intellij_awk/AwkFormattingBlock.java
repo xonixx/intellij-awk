@@ -74,8 +74,11 @@ public class AwkFormattingBlock extends AbstractBlock {
       return Indent.getNormalIndent();
     }
 
-    if (parent instanceof AwkExpr) {
-      IElementType elementType = parent.getParent().getFirstChild().getNode().getElementType();
+    if (parent instanceof AwkExpr && !(psi instanceof AwkExpr)) {
+      PsiElement p = parent;
+      while ((p = p.getParent()) instanceof AwkExpr)
+        ;
+      IElementType elementType = p.getFirstChild().getNode().getElementType();
       if (elementType == AwkTypes.RETURN
           || elementType == AwkTypes.WHILE
           || elementType == AwkTypes.IF) {
