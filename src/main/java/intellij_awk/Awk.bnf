@@ -133,6 +133,8 @@
     // support whitespaces
     livePreviewWs='regexp:[ \t]*(\\\n)*'
   ]
+
+  extends("unary_expr|non_unary_expr")=expr
 }
 
 // /pattern/
@@ -255,7 +257,7 @@ expr             ::= unary_expr | non_unary_expr
     A --> β A'
     A' --> ε | α A'   <-->  A' --> (α A')?
 */
-private unary_expr       ::= (ADD|SUB)  expr unary_expr1
+unary_expr       ::= (ADD|SUB)  expr unary_expr1
 
 private unary_expr1      ::= [
                         (    POW      expr
@@ -282,7 +284,7 @@ private unary_expr1      ::= [
                        unary_expr1
                    ]
 
-private non_unary_expr   ::= (
+non_unary_expr   ::= (
                            LPAREN expr RPAREN
                          | LPAREN expr_lst RPAREN IN var_name
                          | NOT expr
