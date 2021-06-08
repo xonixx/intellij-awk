@@ -6,6 +6,9 @@ import org.jetbrains.annotations.NotNull;
 public class AwkRenameTests extends BasePlatformTestCase {
 
   public void testVars1() { checkByFile("newName"); }
+  public void testVars2() { checkByFile("newName"); }
+  public void testVars3() { checkByFile("newName"); }
+  public void testVars4() { checkByFile("newName"); }
 
 
   @Override
