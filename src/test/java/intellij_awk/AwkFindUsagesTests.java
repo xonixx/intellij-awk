@@ -44,6 +44,30 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
         3);
   }
 
+  public void testVars5() {
+    doTest(
+        "END {\n"
+            + "split(\"\", name)\n"
+            + "}\n"
+            + "\n"
+            + "function f(a,    i) {\n"
+            + "    f1(<caret>name)\n"
+            + "    name++\n"
+            + "    print \"name: \" name\n"
+            + "}\n",
+        2);
+  }
+
+  public void testVars6() {
+    doTest(
+        "BEGIN { <caret>a=1 }\n"
+            + "a\n"
+            + "{ a++ }\n"
+            + "function inc() { a+=1 }\n"
+            + "END { print a }",
+        4);
+  }
+
   public void testFunc1() {
     doTest(
         "BEGIN {\n"
@@ -60,20 +84,6 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             + "    print f3(name()+1)\n"
             + "}",
         5);
-  }
-
-  public void test5() {
-    doTest(
-        "END {\n"
-            + "split(\"\", name)\n"
-            + "}\n"
-            + "\n"
-            + "function f(a,    i) {\n"
-            + "    f1(<caret>name)\n"
-            + "    name++\n"
-            + "    print \"name: \" name\n"
-            + "}\n",
-        2);
   }
 
   private void doTest(String code, int expectedUsagesCount) {
