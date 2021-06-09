@@ -42,7 +42,7 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
                   resultSet,
                   functionName.getName(),
                   false,
-                  "(" + String.join(", ", functionName.getArgumentNames()) + ")");
+                  functionName.getSignatureString());
             }
           }
 

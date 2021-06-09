@@ -32,7 +32,7 @@ public abstract class AwkFunctionNameMixin extends AwkNamedElementImpl implement
       @Nullable
       @Override
       public String getPresentableText() {
-        return getName();
+        return getName() + getSignatureString();
       }
 
       @Override
@@ -50,6 +50,10 @@ public abstract class AwkFunctionNameMixin extends AwkNamedElementImpl implement
   @Override
   public @Nullable Icon getIcon(int flags) {
     return AwkIcons.FUNCTION;
+  }
+
+  public String getSignatureString() {
+    return "(" + String.join(", ", getArgumentNames()) + ")";
   }
 
   /** @return argument names excluding "local" */
