@@ -2,7 +2,6 @@ package intellij_awk.psi;
 
 import com.intellij.psi.tree.IElementType;
 import intellij_awk.AwkLanguage;
-import intellij_awk.SimpleLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 

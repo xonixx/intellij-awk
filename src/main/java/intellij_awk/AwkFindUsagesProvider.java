@@ -19,7 +19,7 @@ public class AwkFindUsagesProvider implements FindUsagesProvider {
   @Override
   public WordsScanner getWordsScanner() {
     return new DefaultWordsScanner(
-        new SimpleLexerAdapter(),
+        new AwkLexerAdapter(),
         TokenSet.create(AwkTypes.VAR_NAME, AwkTypes.FUNC_NAME),
         TokenSet.create(AwkTypes.COMMENT),
         TokenSet.create(AwkTypes.STRING));
