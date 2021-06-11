@@ -10,6 +10,7 @@ public class AwkRenameTests extends BasePlatformTestCase {
   public void testVars4() { checkByFile(); }
   public void testVars5() { checkByFile(); }
   public void testVars6() { checkByFile(); }
+  public void testVars7() { checkByFile(); }
   public void testFunc1() { checkByFile(); }
 
   @Override
