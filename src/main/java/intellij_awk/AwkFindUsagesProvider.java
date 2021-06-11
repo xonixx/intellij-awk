@@ -27,20 +27,7 @@ public class AwkFindUsagesProvider implements FindUsagesProvider {
 
   @Override
   public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
-    return psiElement instanceof AwkFunctionName || isConsideredVariableDeclaration(psiElement);
-  }
-
-  private boolean isConsideredVariableDeclaration(PsiElement psiElement) {
-    return psiElement instanceof AwkUserVarName
-        && (AwkUtil.isEnclosedBy(psiElement, AwkParamList.class)
-            || AwkUtil.isEnclosedBy(psiElement, AwkUtil::isAwkItemOfBegin)
-            || isEnclosedByActionOfFunction(psiElement));
-  }
-
-  private boolean isEnclosedByActionOfFunction(PsiElement psiElement) {
-    return AwkUtil.isEnclosedBy(psiElement, AwkAction.class)
-        && AwkUtil.findParent(psiElement, AwkItem.class).getFirstChild().getNode().getElementType()
-            == AwkTypes.FUNCTION;
+    return psiElement instanceof AwkFunctionName || psiElement instanceof AwkUserVarName;
   }
 
   @Nullable

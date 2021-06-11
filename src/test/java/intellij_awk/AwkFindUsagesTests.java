@@ -49,13 +49,15 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
         "END {\n"
             + "split(\"\", name)\n"
             + "}\n"
+            + "{ print name name name }\n"
             + "\n"
             + "function f(a,    i) {\n"
             + "    f1(<caret>name)\n"
             + "    name++\n"
             + "    print \"name: \" name\n"
-            + "}\n",
-        2);
+            + "}\n"
+            + "function f2() { name = toupper(name) }\n",
+        8);
   }
 
   public void testVars6() {
