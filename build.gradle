@@ -24,8 +24,33 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+<p>
+    <b>v0.0.1</b>
+    <ul>
+        <li>Support basic AWK code highlighting</li>
+        <li>Support basic AWK code navigations
+            <ul>
+                <li>show structure</li>
+                <li>go to declaration</li>
+                <li>find usages</li>
+            </ul>
+        </li>
+        <li>Support completion
+            <ul>
+                <li>function names</li>
+                <li>variable names</li>
+                <li>keywords</li>
+            </ul>
+        </li>
+        <li>Support only POSIX subset (aka BWK), w/o Gawk additions (this can be added later)</li>
+        <li>Refactoring support
+            <ul>
+                <li>rename variable</li>
+                <li>rename function</li>
+            </ul>
+        </li>
+    </ul>
+</p>"""
 }
 test {
     useJUnitPlatform()
