@@ -52,6 +52,14 @@ patchPluginXml {
         <li>Implement basic auto-format</li>
     </ul>
 </p>"""
+    pluginDescription """
+<b>AWK Programming Language Support.</b>
+<br/><br/>
+Please note, currently only POSIX AWK subset (no Gawk additions) is supported. Support for Gawk is coming in next release. 
+Stay tuned!
+<br/><br/>
+More info at <a href="https://github.com/xonixx/intellij-awk">https://github.com/xonixx/intellij-awk</a>.
+"""
 }
 test {
     useJUnitPlatform()

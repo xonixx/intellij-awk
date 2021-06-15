@@ -3,11 +3,7 @@
     <name>AWK Support</name>
     <vendor email="xonixx@gmail.com" url="https://www.linkedin.com/in/gubarkovv/">Volodymyr Gubarkov</vendor>
 
-    <description><![CDATA[
-    AWK Programming Language Support. <br/>
-    More info at <a href="https://github.com/xonixx/intellij-awk">https://github.com/xonixx/intellij-awk</a>.
-    ]]></description>
-
+    <description>placeholder</description>
     <change-notes>placeholder</change-notes>
 
     <idea-version since-build="0.0.0"/>
