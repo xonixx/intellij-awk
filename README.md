@@ -1,6 +1,8 @@
 # intellij-awk
 
 [WiP] The missing IntelliJ IDEA language support plugin for [AWK](https://en.wikipedia.org/wiki/AWK)
+  
+![](screenshot1.png "Awk IDE")
 
 ## Motivation
 
