@@ -23,6 +23,7 @@
 - Refactoring support
   - [x] rename variable
   - [x] rename function
+- [x] Implement basic auto-format
 
 ## Goals v0.0.2
 
