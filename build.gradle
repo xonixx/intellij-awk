@@ -49,7 +49,7 @@ patchPluginXml {
                 <li>rename function</li>
             </ul>
         </li>
-        <li>Implement basic auto-format</li>
+        <li>Basic auto-format</li>
     </ul>
 </p>"""
     pluginDescription """
