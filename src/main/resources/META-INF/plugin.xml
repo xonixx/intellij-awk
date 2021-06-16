@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>intellij-awk.intellij-awk</id>
+    <id>intellij-awk</id>
     <name>AWK Support</name>
     <vendor email="xonixx@gmail.com" url="https://www.linkedin.com/in/gubarkovv/">Volodymyr Gubarkov</vendor>
 
