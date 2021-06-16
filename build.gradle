@@ -20,9 +20,11 @@ dependencies {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.3.3'
+//    version '2021.1.2'
     plugins = ['com.intellij.java']
 }
 patchPluginXml {
+    untilBuild '211.*'
     changeNotes """
 <p>
     <b>v0.0.1</b>
