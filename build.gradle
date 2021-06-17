@@ -25,6 +25,18 @@ intellij {
 }
 patchPluginXml {
     untilBuild '211.*'
+    pluginDescription """
+<b>AWK Programming Language Support</b>
+<br/><br/>
+This plugin adds to IntelliJ IDEA the native support for <a href='https://en.wikipedia.org/wiki/AWK'>AWK</a> programming language.
+Once installed, you'll be able to have syntax highlighted in your *.awk files as well as other usual code editing functionality like 
+variables and functions renaming, code completion, find usages and auto-formatting.
+More info at <a href="https://github.com/xonixx/intellij-awk">https://github.com/xonixx/intellij-awk</a>.
+<br/><br/>
+<i>Please note, currently only POSIX AWK subset (no Gawk additions) is supported. Support for Gawk is coming in next release. 
+Stay tuned!</i>
+<br/><br/>
+"""
     changeNotes """
 <p>
     <b>v0.0.1</b>
@@ -54,14 +66,6 @@ patchPluginXml {
         <li>Basic auto-format</li>
     </ul>
 </p>"""
-    pluginDescription """
-<b>AWK Programming Language Support.</b>
-<br/><br/>
-Please note, currently only POSIX AWK subset (no Gawk additions) is supported. Support for Gawk is coming in next release. 
-Stay tuned!
-<br/><br/>
-More info at <a href="https://github.com/xonixx/intellij-awk">https://github.com/xonixx/intellij-awk</a>.
-"""
 }
 test {
     useJUnitPlatform()
