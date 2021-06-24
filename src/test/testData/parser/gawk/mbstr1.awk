@@ -1,0 +1,4 @@
+BEGIN {
+	print length("\x81\x82\x83\x84")
+	print index("\x81\x82\x83\x84", "\x81\x82")
+}
