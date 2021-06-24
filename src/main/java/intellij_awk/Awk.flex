@@ -107,6 +107,7 @@ WHITE_SPACE=[ \t]+
   "?"                      { return QUESTION; }
   ":"                      { return COLON; }
   "="                      { return ASSIGN; }
+  "@"                      { return AT; }
 
   {COMMENT}                { return COMMENT; }
   {BUILTIN_FUNC_NAME}      { return BUILTIN_FUNC_NAME; }

@@ -120,7 +120,8 @@
     QUESTION='?'
     COLON=':'
     ASSIGN='='
-    
+    AT='@'
+
     /*
     The token VAR_NAME      consists of a word that is not a keyword or a name of a built-in function and is not followed immediately (without any delimiters) by the "(" character.
     The token FUNC_NAME consists of a word that is not a keyword or a name of a built-in function, followed immediately (without any delimiters) by the "(" character. The "(" character will not be included as part of the token.
@@ -311,7 +312,7 @@ non_unary_expr   ::= (
                      )
                      non_unary_expr1
 
-private function_call       ::= function_call_name LPAREN expr_lst_opt RPAREN /* no white space allowed before LPAREN */
+private function_call       ::= AT? function_call_name LPAREN expr_lst_opt RPAREN /* no white space allowed before LPAREN */
 
 function_call_name          ::= FUNC_NAME
 {
