@@ -101,6 +101,7 @@ WHITE_SPACE=[ \t]+
   "%"                      { return MOD; }
   "^"                      { return POW; }
   "~"                      { return MATCH; }
+  "|&"                     { return PIPE_AMP; }
   "|"                      { return PIPE; }
   "!"                      { return NOT; }
   "?"                      { return QUESTION; }

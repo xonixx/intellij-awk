@@ -114,6 +114,7 @@
     MOD='%'
     POW='^'
     MATCH='~'
+    PIPE_AMP='|&'
     PIPE='|'
     NOT='!'
     QUESTION='?'
@@ -237,7 +238,8 @@ simple_print_statement ::=
                    PRINT  (LPAREN expr_lst RPAREN | print_expr_list?)
                  | PRINTF (LPAREN expr_lst RPAREN | print_expr_list)
 
-output_redirection ::= (GT|APPEND|PIPE) expr
+private gawk_pipe ::= PIPE_AMP | PIPE
+output_redirection ::= (GT|APPEND|gawk_pipe) expr
 
 private expr_lst_opt    ::= expr_lst?
 
@@ -279,7 +281,7 @@ private unary_expr1      ::= [
                            | AND newline_opt expr
                            | OR  newline_opt expr
                            | QUESTION expr COLON expr
-                           | PIPE simple_get
+                           | gawk_pipe simple_get
                        )
                        unary_expr1
                    ]
@@ -337,7 +339,7 @@ private non_unary_expr1     ::= [
                               | AND newline_opt expr
                               | OR  newline_opt expr
                               | QUESTION expr COLON expr
-                              | PIPE simple_get
+                              | gawk_pipe simple_get
                           )
                           non_unary_expr1
                       ]

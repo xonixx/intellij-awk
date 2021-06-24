@@ -498,9 +498,9 @@ public class AwkParserTestsGawk extends ParsingTestCase {
   public void testSymtab7() { ensureOnlyParsingNoErrors(); }
   public void testSymtab8() { ensureOnlyParsingNoErrors(); }
   public void testSymtab9() { ensureOnlyParsingNoErrors(); }
-  public void testSynerr1() { ensureOnlyParsingNoErrors(); }
-  public void testSynerr2() { ensureOnlyParsingNoErrors(); }
-  public void testSynerr3() { ensureOnlyParsingNoErrors(); }
+//  public void testSynerr1() { ensureOnlyParsingNoErrors(); }
+//  public void testSynerr2() { ensureOnlyParsingNoErrors(); }
+//  public void testSynerr3() { ensureOnlyParsingNoErrors(); }
   public void testTailrecurse() { ensureOnlyParsingNoErrors(); }
   public void testTime() { ensureOnlyParsingNoErrors(); }
   public void testTimeout() { ensureOnlyParsingNoErrors(); }
