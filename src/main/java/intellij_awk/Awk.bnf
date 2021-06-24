@@ -194,7 +194,7 @@ private terminated_statement_for ::=
                    FOR LPAREN (
                      simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
                       terminated_statement
-                   | var_name IN var_name RPAREN newline_opt
+                   | var_name IN gawk_var_name RPAREN newline_opt
                       terminated_statement
                    )
 
@@ -213,7 +213,7 @@ private unterminated_statement_for ::=
                    FOR LPAREN (
                        simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
                           unterminated_statement
-                     | var_name IN var_name RPAREN newline_opt
+                     | var_name IN gawk_var_name RPAREN newline_opt
                           unterminated_statement
                   )
 
@@ -227,7 +227,7 @@ terminatable_statement ::= simple_statement
 
 private simple_statement_opt ::= simple_statement?
 
-simple_statement ::= DELETE var_name [ LBRACKET expr_lst RBRACKET ]
+simple_statement ::= DELETE gawk_var_name
                  | expr
                  | print_statement
 
@@ -275,7 +275,7 @@ private unary_expr1      ::= [
                            | GE       expr
                            | MATCH    expr
                            | NO_MATCH expr
-                           | IN var_name
+                           | IN gawk_var_name
                            | AND newline_opt expr
                            | OR  newline_opt expr
                            | QUESTION expr COLON expr
@@ -286,7 +286,7 @@ private unary_expr1      ::= [
 
 non_unary_expr   ::= (
                            LPAREN expr RPAREN
-                         | LPAREN expr_lst RPAREN IN var_name
+                         | LPAREN expr_lst RPAREN IN gawk_var_name
                          | NOT expr
                          | simple_get (LT expr)?
                          | NUMBER
@@ -333,7 +333,7 @@ private non_unary_expr1     ::= [
                               | GE       expr
                               | MATCH    expr
                               | NO_MATCH expr
-                              | IN var_name
+                              | IN gawk_var_name
                               | AND newline_opt expr
                               | OR  newline_opt expr
                               | QUESTION expr COLON expr
@@ -359,7 +359,7 @@ private unary_print_expr1  ::= [
                                 |          non_unary_print_expr
                                 | MATCH    print_expr
                                 | NO_MATCH print_expr
-                                | IN var_name
+                                | IN gawk_var_name
                                 | AND newline_opt print_expr
                                 | OR  newline_opt print_expr
                                 | QUESTION print_expr COLON print_expr
@@ -370,7 +370,7 @@ private unary_print_expr1  ::= [
 private non_unary_print_expr ::= (
                        LPAREN expr RPAREN
                      | NOT print_expr
-                     | LPAREN expr_lst RPAREN IN var_name
+                     | LPAREN expr_lst RPAREN IN gawk_var_name
                      | NUMBER
                      | STRING
                      | ERE
@@ -402,7 +402,7 @@ private non_unary_print_expr1 ::= [
                                 |          non_unary_print_expr
                                 | MATCH    print_expr
                                 | NO_MATCH print_expr
-                                | IN var_name
+                                | IN gawk_var_name
                                 | AND newline_opt print_expr
                                 | OR  newline_opt print_expr
                                 | QUESTION print_expr COLON print_expr
@@ -410,8 +410,11 @@ private non_unary_print_expr1 ::= [
                             non_unary_print_expr1
                           ]
 
-lvalue           ::= var_name (LBRACKET expr_lst RBRACKET)* // XXX this covers a[1][2][3] like in Gawk
-                 | DOLLAR expr
+lvalue           ::= gawk_var_name | DOLLAR expr
+
+// XXX this covers a[1][2][3] like in Gawk
+// XXX awk only supports a[1]
+private gawk_var_name ::= var_name (LBRACKET expr_lst RBRACKET)*
 
 private var_name ::= SPECIAL_VAR_NAME | user_var_name
 
