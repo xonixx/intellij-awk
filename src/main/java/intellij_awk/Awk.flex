@@ -67,6 +67,9 @@ WHITE_SPACE=[ \t]+
   "return"    /\(?         { return RETURN; }
   "while"     /\(?         { return WHILE; }
   "getline"   /\(?         { return GETLINE; }
+  "namespace"              { return NAMESPACE; }
+  "include"                { return INCLUDE; }
+  "load"                   { return LOAD; }
   "+="                     { return ADD_ASSIGN; }
   "-="                     { return SUB_ASSIGN; }
   "*="                     { return MUL_ASSIGN; }

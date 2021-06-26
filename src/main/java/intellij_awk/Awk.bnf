@@ -71,6 +71,11 @@
     PRINTF='printf'
     RETURN='return'
     WHILE='while'
+
+    NAMESPACE='namespace'
+    INCLUDE='include'
+    LOAD='load'
+
     BUILTIN_FUNC_NAME='regexp:atan2|cos|sin|exp|log|sqrt|int|rand|srand|gsub|index|length|match|split|sprintf|sub|substr|tolower|toupper|close|system'
     NUMBER='regexp:[0-9]+(?:\.[0-9]+)?(?:[eE][+-][0-9]+)?'
     STRING='regexp:(["]([^"\\]|\\.)*["])'
@@ -151,6 +156,7 @@ program ::= newline_opt item* (terminator item)* newline_opt
 // function a() { ... }
 item             ::= FUNCTION function_name LPAREN param_list? RPAREN
                        newline_opt action
+                 | AT (NAMESPACE | INCLUDE | LOAD) STRING
                  | pattern action?
                  | action
 
