@@ -148,7 +148,7 @@
 // /pattern/ { ... }
 // function f() { ... }
 // TODO this won't parse 'BEGIN {} ;;;'
-program ::= newline_opt item* (terminator item)* newline_opt
+program ::= newline_opt (item terminator?)* newline_opt
 
 // BEGIN { ... }
 // { ... }
@@ -156,9 +156,13 @@ program ::= newline_opt item* (terminator item)* newline_opt
 // function a() { ... }
 item             ::= FUNCTION function_name LPAREN param_list? RPAREN
                        newline_opt action
-                 | AT (NAMESPACE | INCLUDE | LOAD) STRING
-                 | pattern action?
-                 | action
+
+                     // TODO this leaves us too permissive: it will parse: @namespace "a" @namespace "b"
+                     // TODO but otherwise IDEA for some reason doesn't parse single @namespace "a"
+                   | AT (NAMESPACE | INCLUDE | LOAD) STRING /*terminator*/
+
+                   | pattern action?
+                   | action
 
 function_name    ::= FUNC_NAME | VAR_NAME {
     mixin="intellij_awk.psi.impl.AwkFunctionNameMixin"
@@ -181,7 +185,7 @@ action           ::= LBRACE newline_opt (
                        | unterminated_statement_list RBRACE
                    ) 
 
-terminator       ::= (NEWLINE|SEMICOLON)+
+private terminator       ::= (NEWLINE|SEMICOLON) newline_opt
 
 terminated_statement_list ::= terminated_statement+
 
