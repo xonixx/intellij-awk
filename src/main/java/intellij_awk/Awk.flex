@@ -23,7 +23,6 @@ import static intellij_awk.psi.AwkTypes.*;
 %unicode
 
 EOL=\R
-//WHITE_SPACE=\s+
 
 COMMENT=#.* | (\\\n)
 BUILTIN_FUNC_NAME=atan2|cos|sin|exp|log|sqrt|int|rand|srand|gsub|index|length|match|split|sprintf|sub|substr|tolower|toupper|close|system
@@ -31,9 +30,9 @@ NUMBER=[0-9]+(\.[0-9]+)?([eE][+-][0-9]+)?
 STRING=([\"]([^\"\\]|\\.)*[\"])
 ERE="/"([^\\\n/]|\\[^\n])*"/"
 NEWLINE=\r\n|\n
-FUNC_NAME=[a-zA-Z_]+[a-zA-Z_\d]*
-SPECIAL_VAR_NAME=ARGC|ARGV|CONVFMT|ENVIRON|FILENAME|FNR|FS|NF|NR|OFMT|OFS|ORS|RLENGTH|RS|RSTART|SUBSEP
-VAR_NAME=[a-zA-Z_]+[a-zA-Z_\d]*
+NS_PART=[a-zA-Z_]+[a-zA-Z_\d]*::
+SPECIAL_VAR_NAME = {NS_PART}? (ARGC|ARGV|CONVFMT|ENVIRON|FILENAME|FNR|FS|NF|NR|OFMT|OFS|ORS|RLENGTH|RS|RSTART|SUBSEP)
+VAR_NAME         = {NS_PART}? [a-zA-Z_]+[a-zA-Z_\d]*
 //LIVEPREVIEWWS=[ \t]*(\\\n)*
 WHITE_SPACE=[ \t]+
 
@@ -113,12 +112,12 @@ WHITE_SPACE=[ \t]+
   "@"                      { return AT; }
 
   {COMMENT}                { return COMMENT; }
-  {BUILTIN_FUNC_NAME}      { return BUILTIN_FUNC_NAME; }
   {NUMBER}                 { return NUMBER; }
   {STRING}                 { return STRING; }
   {ERE}                    { return ERE; }
   {NEWLINE}                { return NEWLINE; }
-  {FUNC_NAME}/\(           { return FUNC_NAME; }
+  {BUILTIN_FUNC_NAME}      { return BUILTIN_FUNC_NAME; }
+  {VAR_NAME}/\(            { return FUNC_NAME; }
   {SPECIAL_VAR_NAME}       { return SPECIAL_VAR_NAME; }
   {VAR_NAME}               { return VAR_NAME; }
 //  {LIVEPREVIEWWS}          { return LIVEPREVIEWWS; }
