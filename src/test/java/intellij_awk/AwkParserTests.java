@@ -58,6 +58,10 @@ public class AwkParserTests extends ParsingTestCase {
     ensureOnlyParsingNoErrors();
   }
 
+  public void testIssue63_1() { ensureOnlyParsingNoErrors(); }
+  public void testIssue63_2() { ensureOnlyParsingNoErrors(); }
+  public void testIssue63_3() { ensureOnlyParsingNoErrors(); }
+
   public void testBuiltInFuncSpace() { doTest(true); }
   public void testUserFuncSpace() { doTest(true); }
 
