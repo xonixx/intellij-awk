@@ -1,0 +1,1 @@
+function a (s) { print s } BEGIN { a  ("A") }
