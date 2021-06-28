@@ -1,0 +1,11 @@
+AWK File
+  AwkItemImpl(ITEM)
+    AwkActionImpl(ACTION)
+      PsiElement(AwkTokenType.{)('{')
+      PsiElement(AwkTokenType.})('}')
+  PsiElement(AwkTokenType.;)(';')
+  PsiErrorElement:<item> or AwkTokenType.NEWLINE expected, got ';'
+    PsiElement(AwkTokenType.;)(';')
+  PsiElement(DUMMY_BLOCK)
+    PsiElement(AwkTokenType.{)('{')
+    PsiElement(AwkTokenType.})('}')

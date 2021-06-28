@@ -62,6 +62,12 @@ public class AwkParserTests extends ParsingTestCase {
   public void testIssue63_2() { ensureOnlyParsingNoErrors(); }
   public void testIssue63_3() { ensureOnlyParsingNoErrors(); }
 
+  public void testSemi0() { ensureOnlyParsingNoErrors(); }
+  public void testSemi1() { ensureOnlyParsingNoErrors(); }
+  // TODO understand why this gives different results (DUMMY block) when running this class only vs all tests
+  //public void testSemi2() { doTest(true); }
+  public void testSemi3() { ensureOnlyParsingNoErrors(); }
+
   public void testBuiltInFuncSpace() { doTest(true); }
   public void testUserFuncSpace() { doTest(true); }
 
