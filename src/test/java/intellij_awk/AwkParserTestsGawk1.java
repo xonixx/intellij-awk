@@ -18,6 +18,7 @@ public class AwkParserTestsGawk1 extends ParsingTestCase {
   public void testNs3() { ensureOnlyParsingNoErrors(); }
 
   public void testBeginfileEndfileNextfile() { doTest(true); }
+  public void testEre1() { doTest(true); }
 
   private void ensureOnlyParsingNoErrors() {
     doTest(false);

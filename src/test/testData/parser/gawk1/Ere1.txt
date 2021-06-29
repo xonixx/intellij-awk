@@ -1,0 +1,5 @@
+AWK File
+  AwkItemImpl(ITEM)
+    AwkPatternImpl(PATTERN)
+      AwkNonUnaryExprImpl(NON_UNARY_EXPR)
+        PsiElement(AwkTokenType.ERE)('/.*[/][^/]/')
