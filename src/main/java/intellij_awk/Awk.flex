@@ -26,7 +26,7 @@ EOL=\R
 
 COMMENT=#.* | (\\\n)
 BUILTIN_FUNC_NAME=atan2|cos|sin|exp|log|sqrt|int|rand|srand|gsub|index|length|match|split|sprintf|sub|substr|tolower|toupper|close|system
-NUMBER=[0-9]+(\.[0-9]+)?([eE][+-][0-9]+)?
+NUMBER=[0-9]*(\.[0-9]+)?([eE][+-][0-9]+)?
 STRING=([\"]([^\"\\]|\\.)*[\"])
 ERE="/"((\[\^?\/)|[^\\\n/]|(\\[^\n]))*"/"
 NEWLINE=\r\n|\n
