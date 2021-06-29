@@ -29,6 +29,7 @@ BUILTIN_FUNC_NAME=atan2|cos|sin|exp|log|sqrt|int|rand|srand|gsub|index|length|ma
 NUMBER=[0-9]*(\.[0-9]+)?([eE][+-][0-9]+)?
 STRING=([\"]([^\"\\]|\\.)*[\"])
 ERE="/"((\[\^?\/)|[^\\\n/]|(\\[^\n]))*"/"
+TYPED_ERE=@{ERE}
 NEWLINE=\r\n|\n
 NS_PART=[a-zA-Z_]+[a-zA-Z_\d]*::
 SPECIAL_VAR_NAME = {NS_PART}? (ARGC|ARGV|CONVFMT|ENVIRON|FILENAME|FNR|FS|NF|NR|OFMT|OFS|ORS|RLENGTH|RS|RSTART|SUBSEP)
@@ -117,6 +118,7 @@ WHITE_SPACE=[ \t]+
   {COMMENT}                { return COMMENT; }
   {NUMBER}                 { return NUMBER; }
   {STRING}                 { return STRING; }
+  {TYPED_ERE}              { return TYPED_ERE; }
   {ERE}                    { return ERE; }
   {NEWLINE}                { return NEWLINE; }
   {BUILTIN_FUNC_NAME}      { return BUILTIN_FUNC_NAME; }

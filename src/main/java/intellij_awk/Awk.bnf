@@ -83,6 +83,7 @@
     NUMBER='regexp:[0-9]*(\.[0-9]+)?([eE][+-][0-9]+)?'
     STRING='regexp:(["]([^"\\]|\\.)*["])'
     ERE='regexp:/((\[\^?/)|[^\\\n/]|(\\[^\n]))*/'
+    TYPED_ERE='regexp:@/((\[\^?/)|[^\\\n/]|(\\[^\n]))*/'
     GETLINE='getline'
     ADD_ASSIGN='+='
     SUB_ASSIGN='-='
@@ -258,6 +259,10 @@ output_redirection ::= (GT|APPEND|gawk_pipe) expr
 
 private expr_lst_opt    ::= expr_lst?
 
+private gawk_expr     ::= TYPED_ERE | expr
+//gawk_func_call_list    ::= gawk_expr (COMMA newline_opt gawk_expr)*
+//private gawk_func_call_list_opt ::= gawk_func_call_list?
+
 // named so because of name clash during code generation
 expr_lst ::= expr (COMMA newline_opt expr)*
 
@@ -319,7 +324,7 @@ non_unary_expr   ::= (
                          | lvalue DIV_ASSIGN expr
                          | lvalue ADD_ASSIGN expr
                          | lvalue SUB_ASSIGN expr
-                         | lvalue ASSIGN     expr
+                         | lvalue ASSIGN     gawk_expr
                          | lvalue
                          | function_call
                          | BUILTIN_FUNC_NAME [ LPAREN expr_lst_opt RPAREN ]
