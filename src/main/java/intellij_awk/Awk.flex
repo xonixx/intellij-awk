@@ -48,6 +48,8 @@ WHITE_SPACE=[ \t]+
 <YYINITIAL> {
   {WHITE_SPACE}            { return WHITE_SPACE; }
 
+  "BEGINFILE" /\(?         { yybegin(AFTER_BEGIN_END); return BEGINFILE; }
+  "ENDFILE"   /\(?         { yybegin(AFTER_BEGIN_END); return ENDFILE; }
   "BEGIN"     /\(?         { yybegin(AFTER_BEGIN_END); return BEGIN; }
   "END"       /\(?         { yybegin(AFTER_BEGIN_END); return END; }
   "break"     /\(?         { return BREAK; }
@@ -60,6 +62,7 @@ WHITE_SPACE=[ \t]+
   "function"  /\(?         { return FUNCTION; }
   "if"        /\(?         { return IF; }
   "in"        /\(?         { return IN; }
+  "nextfile"  /\(?         { return NEXTFILE; }
   "next"      /\(?         { return NEXT; }
   "print"     /\(?         { return PRINT; }
   "printf"    /\(?         { return PRINTF; }

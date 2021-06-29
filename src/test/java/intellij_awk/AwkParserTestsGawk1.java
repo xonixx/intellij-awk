@@ -13,14 +13,11 @@ public class AwkParserTestsGawk1 extends ParsingTestCase {
     return "src/test/testData";
   }
 
-  @Override
-  protected @NotNull String getTestName(boolean lowercaseFirstLetter) {
-    return super.getTestName(lowercaseFirstLetter).toLowerCase();
-  }
-
   public void testNs1() { ensureOnlyParsingNoErrors(); }
   public void testNs2() { ensureOnlyParsingNoErrors(); }
   public void testNs3() { ensureOnlyParsingNoErrors(); }
+
+  public void testBeginfileEndfileNextfile() { doTest(true); }
 
   private void ensureOnlyParsingNoErrors() {
     doTest(false);

@@ -54,6 +54,8 @@
 
   tokens = [
     comment='regexp:#.*'
+    BEGINFILE='BEGINFILE'
+    ENDFILE='ENDFILE'
     BEGIN='BEGIN'
     END='END'
     BREAK='break'
@@ -66,6 +68,7 @@
     FUNCTION='function'
     IF='if'
     IN='in'
+    NEXTFILE='nextfile'
     NEXT='next'
     PRINT='print'
     PRINTF='printf'
@@ -171,7 +174,7 @@ function_name    ::= FUNC_NAME | VAR_NAME {
 
 param_list       ::= var_name (COMMA newline_opt var_name)*
 
-pattern          ::= begin_or_end
+pattern          ::= BEGINFILE | ENDFILE | begin_or_end
                  | expr (COMMA newline_opt expr)?
 
 begin_or_end     ::= BEGIN | END {
@@ -232,6 +235,7 @@ private unterminated_statement_for ::=
 terminatable_statement ::= simple_statement
                  | BREAK
                  | CONTINUE
+                 | NEXTFILE
                  | NEXT
                  | EXIT expr_opt
                  | RETURN expr_opt

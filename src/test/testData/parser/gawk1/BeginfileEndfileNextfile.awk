@@ -1,0 +1,5 @@
+BEGINFILE {
+    nextfile
+}
+
+ENDFILE {}
