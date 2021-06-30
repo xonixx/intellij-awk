@@ -421,6 +421,12 @@ private non_unary_print_expr1 ::= [
                                 | ADD      print_expr
                                 | SUB      print_expr
                                 |          non_unary_print_expr
+                                | LT       print_expr
+                                | LE       print_expr
+                                | NE       print_expr
+                                | EQ       print_expr
+                                //  no GT since in print context this is redirect
+                                | GE       print_expr
                                 | MATCH    print_expr
                                 | NO_MATCH print_expr
                                 | IN gawk_var_name
