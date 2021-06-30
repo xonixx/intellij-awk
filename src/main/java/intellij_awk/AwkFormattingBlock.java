@@ -70,7 +70,7 @@ public class AwkFormattingBlock extends AbstractBlock {
       return Indent.getNormalIndent();
     }
 
-    if (parent instanceof AwkExprLst) {
+    if (parent instanceof AwkExprLst || parent instanceof AwkGawkFuncCallList) {
       return Indent.getNormalIndent();
     }
 

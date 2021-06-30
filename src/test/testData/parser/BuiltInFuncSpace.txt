@@ -20,7 +20,7 @@ AWK File
                       PsiElement(AwkTokenType.BUILTIN_FUNC_NAME)('substr')
                       PsiWhiteSpace('  ')
                       PsiElement(AwkTokenType.()('(')
-                      AwkExprLstImpl(EXPR_LST)
+                      AwkGawkFuncCallListImpl(GAWK_FUNC_CALL_LIST)
                         AwkNonUnaryExprImpl(NON_UNARY_EXPR)
                           PsiElement(AwkTokenType.STRING)('"abc"')
                         PsiElement(AwkTokenType.,)(',')

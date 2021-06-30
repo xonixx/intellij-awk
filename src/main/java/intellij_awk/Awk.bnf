@@ -152,14 +152,14 @@
 // /pattern/ { ... }
 // function f() { ... }
 // TODO this won't parse 'BEGIN {} ;;;'
-program ::= newline_opt (item terminator?)* newline_opt
+program ::= newlines_opt (item terminator?)* newlines_opt
 
 // BEGIN { ... }
 // { ... }
 // 1
 // function a() { ... }
 item             ::= FUNCTION function_name LPAREN param_list? RPAREN
-                       newline_opt action
+                       newlines_opt action
 
                      // TODO this leaves us too permissive: it will parse: @namespace "a" @namespace "b"
                      // TODO but otherwise IDEA for some reason doesn't parse single @namespace "a"
@@ -173,44 +173,44 @@ function_name    ::= FUNC_NAME | VAR_NAME {
     implements="intellij_awk.psi.AwkNamedElement"
 }
 
-param_list       ::= var_name (COMMA newline_opt var_name)*
+param_list       ::= var_name (COMMA newlines_opt var_name)*
 
 pattern          ::= BEGINFILE | ENDFILE | begin_or_end
-                 | expr (COMMA newline_opt expr)?
+                 | expr (COMMA newlines_opt expr)?
 
 begin_or_end     ::= BEGIN | END {
     mixin="intellij_awk.psi.impl.AwkNamedElementImpl"
     implements="intellij_awk.psi.AwkNamedElement"
 }
 
-action           ::= LBRACE newline_opt (
+action           ::= LBRACE newlines_opt (
                          RBRACE
                        | terminated_statement_list   RBRACE
                        | unterminated_statement_list RBRACE
                    ) 
 
-private terminator       ::= (NEWLINE|SEMICOLON) newline_opt
+private terminator       ::= (NEWLINE|SEMICOLON) newlines_opt
 
 terminated_statement_list ::= terminated_statement+
 
 unterminated_statement_list ::= terminated_statement_list unterminated_statement
                  | unterminated_statement
 
-terminated_statement ::= action newline_opt
+terminated_statement ::= action newlines_opt
                  | terminated_statement_if
                  | terminated_statement_while
                  | terminated_statement_for
-                 | SEMICOLON newline_opt
-                 | terminatable_statement (NEWLINE|SEMICOLON) newline_opt
+                 | SEMICOLON newlines_opt
+                 | terminatable_statement (NEWLINE|SEMICOLON) newlines_opt
 
-private terminated_statement_if ::= IF LPAREN expr RPAREN newline_opt terminated_statement
-                                        [ ELSE newline_opt terminated_statement ]
-private terminated_statement_while ::= WHILE LPAREN expr RPAREN newline_opt terminated_statement
+private terminated_statement_if ::= IF LPAREN expr RPAREN newlines_opt terminated_statement
+                                        [ ELSE newlines_opt terminated_statement ]
+private terminated_statement_while ::= WHILE LPAREN expr RPAREN newlines_opt terminated_statement
 private terminated_statement_for ::=
                    FOR LPAREN (
-                     simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
+                     simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newlines_opt
                       terminated_statement
-                   | var_name IN gawk_var_name RPAREN newline_opt
+                   | var_name IN gawk_var_name RPAREN newlines_opt
                       terminated_statement
                    )
 
@@ -220,16 +220,16 @@ unterminated_statement ::= terminatable_statement
                  | unterminated_statement_for
 
 private unterminated_statement_if ::=
-                   IF LPAREN expr RPAREN newline_opt (
-                       terminated_statement ELSE newline_opt unterminated_statement
+                   IF LPAREN expr RPAREN newlines_opt (
+                       terminated_statement ELSE newlines_opt unterminated_statement
                      | unterminated_statement
                    ) 
-private unterminated_statement_while ::= WHILE LPAREN expr RPAREN newline_opt unterminated_statement
+private unterminated_statement_while ::= WHILE LPAREN expr RPAREN newlines_opt unterminated_statement
 private unterminated_statement_for ::=
                    FOR LPAREN (
-                       simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newline_opt
+                       simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newlines_opt
                           unterminated_statement
-                     | var_name IN gawk_var_name RPAREN newline_opt
+                     | var_name IN gawk_var_name RPAREN newlines_opt
                           unterminated_statement
                   )
 
@@ -240,7 +240,7 @@ terminatable_statement ::= simple_statement
                  | NEXT
                  | EXIT expr_opt
                  | RETURN expr_opt
-                 | DO newline_opt terminated_statement WHILE LPAREN expr RPAREN
+                 | DO newlines_opt terminated_statement WHILE LPAREN expr RPAREN
 
 private simple_statement_opt ::= simple_statement?
 
@@ -257,14 +257,13 @@ simple_print_statement ::=
 private gawk_pipe ::= PIPE_AMP | PIPE
 output_redirection ::= (GT|APPEND|gawk_pipe) expr
 
-private expr_lst_opt    ::= expr_lst?
-
 private gawk_expr     ::= TYPED_ERE | expr
-//gawk_func_call_list    ::= gawk_expr (COMMA newline_opt gawk_expr)*
-//private gawk_func_call_list_opt ::= gawk_func_call_list?
 
 // named so because of name clash during code generation
-expr_lst ::= expr (COMMA newline_opt expr)*
+expr_lst ::= expr (COMMA newlines_opt expr)*
+
+gawk_func_call_list    ::= gawk_expr (COMMA newlines_opt gawk_expr)*
+private gawk_func_call_list_opt ::= gawk_func_call_list?
 
 private expr_opt         ::= expr?
 
@@ -298,8 +297,8 @@ private unary_expr1      ::= [
                            | MATCH    expr
                            | NO_MATCH expr
                            | IN gawk_var_name
-                           | AND newline_opt expr
-                           | OR  newline_opt expr
+                           | AND newlines_opt expr
+                           | OR  newlines_opt expr
                            | QUESTION expr COLON expr
                            | gawk_pipe simple_get
                        )
@@ -327,11 +326,11 @@ non_unary_expr   ::= (
                          | lvalue ASSIGN     gawk_expr
                          | lvalue
                          | function_call
-                         | BUILTIN_FUNC_NAME [ LPAREN expr_lst_opt RPAREN ]
+                         | BUILTIN_FUNC_NAME [ LPAREN gawk_func_call_list_opt RPAREN ]
                      )
                      non_unary_expr1
 
-private function_call       ::= AT? function_call_name LPAREN expr_lst_opt RPAREN /* no white space allowed before LPAREN */
+private function_call       ::= AT? function_call_name LPAREN gawk_func_call_list_opt RPAREN /* no white space allowed before LPAREN */
 
 function_call_name          ::= FUNC_NAME
 {
@@ -356,15 +355,15 @@ private non_unary_expr1     ::= [
                               | MATCH    expr
                               | NO_MATCH expr
                               | IN gawk_var_name
-                              | AND newline_opt expr
-                              | OR  newline_opt expr
+                              | AND newlines_opt expr
+                              | OR  newlines_opt expr
                               | QUESTION expr COLON expr
                               | gawk_pipe simple_get
                           )
                           non_unary_expr1
                       ]
 
-print_expr_list  ::= print_expr (COMMA newline_opt print_expr)*
+print_expr_list  ::= print_expr (COMMA newlines_opt print_expr)*
 
 print_expr       ::= unary_print_expr | non_unary_print_expr
 
@@ -382,8 +381,8 @@ private unary_print_expr1  ::= [
                                 | MATCH    print_expr
                                 | NO_MATCH print_expr
                                 | IN gawk_var_name
-                                | AND newline_opt print_expr
-                                | OR  newline_opt print_expr
+                                | AND newlines_opt print_expr
+                                | OR  newlines_opt print_expr
                                 | QUESTION print_expr COLON print_expr
                             )
                             unary_print_expr1
@@ -409,7 +408,7 @@ private non_unary_print_expr ::= (
                      | lvalue ASSIGN     print_expr
                      | lvalue
                      | function_call
-                     | BUILTIN_FUNC_NAME [ LPAREN expr_lst_opt RPAREN ]
+                     | BUILTIN_FUNC_NAME [ LPAREN gawk_func_call_list_opt RPAREN ]
                  )
                  non_unary_print_expr1
 
@@ -425,8 +424,8 @@ private non_unary_print_expr1 ::= [
                                 | MATCH    print_expr
                                 | NO_MATCH print_expr
                                 | IN gawk_var_name
-                                | AND newline_opt print_expr
-                                | OR  newline_opt print_expr
+                                | AND newlines_opt print_expr
+                                | OR  newlines_opt print_expr
                                 | QUESTION print_expr COLON print_expr
                             )
                             non_unary_print_expr1
@@ -447,4 +446,4 @@ user_var_name ::= VAR_NAME {
 
 simple_get       ::= GETLINE lvalue?
 
-private newline_opt      ::= NEWLINE*
+private newlines_opt      ::= NEWLINE*
