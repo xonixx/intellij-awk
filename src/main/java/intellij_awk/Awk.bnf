@@ -251,8 +251,8 @@ simple_statement ::= DELETE gawk_var_name
 print_statement  ::= simple_print_statement output_redirection?
 
 simple_print_statement ::=
-                   PRINT  (LPAREN expr_lst RPAREN | print_expr_list?)
-                 | PRINTF (LPAREN expr_lst RPAREN | print_expr_list)
+                   PRINT  (print_expr_list | LPAREN expr_lst RPAREN)?
+                 | PRINTF (print_expr_list | LPAREN expr_lst RPAREN)
 
 private gawk_pipe ::= PIPE_AMP | PIPE
 output_redirection ::= (GT|APPEND|gawk_pipe) expr
