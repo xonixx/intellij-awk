@@ -138,7 +138,9 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
       return PARENTHESES_KEYS;
     } else if (OPERATORS.contains(tokenType)) {
       return OPERATION_SIGN_KEYS;
-    } else if (tokenType.equals(AwkTypes.STRING) || tokenType.equals(AwkTypes.ERE)) {
+    } else if (tokenType.equals(AwkTypes.STRING)
+        || tokenType.equals(AwkTypes.ERE)
+        || tokenType.equals(AwkTypes.TYPED_ERE)) {
       return STRING_KEYS;
     } else if (tokenType.equals(AwkTypes.NUMBER)) {
       return NUMBER_KEYS;
