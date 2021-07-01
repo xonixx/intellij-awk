@@ -27,6 +27,7 @@ public class AwkAutoFormatTests extends BasePlatformTestCase {
   public void testFile13_0(){ checkByFile(); }
   public void testFile13_1(){ checkByFile(); }
   public void testFile13_2(){ checkByFile(); }
+  public void testGawk_switch1(){ checkByFile(); }
 
   @Override
   protected String getTestDataPath() {
