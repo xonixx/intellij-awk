@@ -201,7 +201,7 @@ terminated_statement ::= action newlines_opt
                  | terminated_statement_while
                  | terminated_statement_for
                  | SEMICOLON newlines_opt
-                 | terminatable_statement (NEWLINE|SEMICOLON) newlines_opt
+                 | terminatable_statement terminator
 
 private terminated_statement_if ::= IF LPAREN expr RPAREN newlines_opt terminated_statement
                                         [ ELSE newlines_opt terminated_statement ]
