@@ -75,6 +75,10 @@
     RETURN='return'
     WHILE='while'
 
+    SWITCH='switch'
+    CASE='case'
+    DEFAULT='default'
+
     NAMESPACE='namespace'
     INCLUDE='include'
     LOAD='load'
@@ -200,6 +204,7 @@ terminated_statement ::= action newlines_opt
                  | terminated_statement_if
                  | terminated_statement_while
                  | terminated_statement_for
+                 | gawk_terminated_statement_switch
                  | SEMICOLON newlines_opt
                  | terminatable_statement terminator
 
@@ -214,10 +219,17 @@ private terminated_statement_for ::=
                       terminated_statement
                    )
 
+gawk_terminated_statement_switch ::= SWITCH LPAREN expr RPAREN newlines_opt LBRACE newlines_opt case_statement* newlines_opt RBRACE newlines_opt
+
+private case_statement  ::= (CASE case_value | DEFAULT) COLON newlines_opt [terminated_statement_list | unterminated_statement_list]
+
+private case_value      ::= ([ADD|SUB] NUMBER) | STRING | ERE | TYPED_ERE
+
 unterminated_statement ::= terminatable_statement
                  | unterminated_statement_if
                  | unterminated_statement_while
                  | unterminated_statement_for
+
 
 private unterminated_statement_if ::=
                    IF LPAREN expr RPAREN newlines_opt (

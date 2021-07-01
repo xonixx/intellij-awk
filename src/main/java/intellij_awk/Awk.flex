@@ -69,6 +69,9 @@ WHITE_SPACE=[ \t]+
   "printf"    /\(?         { return PRINTF; }
   "return"    /\(?         { return RETURN; }
   "while"     /\(?         { return WHILE; }
+  "switch"    /\(?         { return SWITCH; }
+  "case"                   { return CASE; }
+  "default"                { return DEFAULT; }
   "getline"   /\(?         { return GETLINE; }
   "namespace"              { return NAMESPACE; }
   "include"                { return INCLUDE; }
