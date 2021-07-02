@@ -221,7 +221,7 @@ private terminated_statement_for ::=
 
 gawk_terminated_statement_switch ::= SWITCH LPAREN expr RPAREN newlines_opt LBRACE newlines_opt case_statement* newlines_opt RBRACE newlines_opt
 
-private case_statement  ::= (CASE case_value | DEFAULT) COLON newlines_opt [terminated_statement_list | unterminated_statement_list]
+case_statement  ::= (CASE case_value | DEFAULT) COLON newlines_opt [ terminated_statement_list ]
 
 private case_value      ::= ([ADD|SUB] NUMBER) | STRING | ERE | TYPED_ERE
 
