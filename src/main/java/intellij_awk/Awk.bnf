@@ -306,8 +306,8 @@ private unary_expr1      ::= [
                            | EQ       expr
                            | GT       expr
                            | GE       expr
-                           | MATCH    expr
-                           | NO_MATCH expr
+                           | MATCH    gawk_expr
+                           | NO_MATCH gawk_expr
                            | IN gawk_var_name
                            | AND newlines_opt expr
                            | OR  newlines_opt expr
@@ -364,8 +364,8 @@ private non_unary_expr1     ::= [
                               | EQ       expr
                               | GT       expr
                               | GE       expr
-                              | MATCH    expr
-                              | NO_MATCH expr
+                              | MATCH    gawk_expr
+                              | NO_MATCH gawk_expr
                               | IN gawk_var_name
                               | AND newlines_opt expr
                               | OR  newlines_opt expr
