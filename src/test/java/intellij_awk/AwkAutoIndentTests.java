@@ -18,6 +18,14 @@ public class AwkAutoIndentTests extends BasePlatformTestCase {
   public void testFile12() { checkByFile(); }
   public void testFile13() { checkByFile(); }
 
+  public void testGawk_switch1(){ checkByFile(); }
+  public void testGawk_switch2(){ checkByFile(); }
+  public void testGawk_switch3(){ checkByFile(); }
+  public void testGawk_switch4(){ checkByFile(); }
+  public void testGawk_switch5(){ checkByFile(); }
+  public void testGawk_switch6(){ checkByFile(); }
+
+
   @Override
   protected String getTestDataPath() {
     return "src/test/testData/auto_indent";
