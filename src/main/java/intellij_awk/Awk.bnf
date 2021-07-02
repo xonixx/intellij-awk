@@ -379,6 +379,8 @@ print_expr_list  ::= print_expr (COMMA newlines_opt print_expr)*
 
 print_expr       ::= unary_print_expr | non_unary_print_expr
 
+private gawk_print_expr ::= TYPED_ERE | print_expr
+
 private unary_print_expr ::= (ADD|SUB) print_expr unary_print_expr1
 
 private unary_print_expr1  ::= [
@@ -390,8 +392,8 @@ private unary_print_expr1  ::= [
                                 | ADD      print_expr
                                 | SUB      print_expr
                                 |          non_unary_print_expr
-                                | MATCH    print_expr
-                                | NO_MATCH print_expr
+                                | MATCH    gawk_print_expr
+                                | NO_MATCH gawk_print_expr
                                 | IN gawk_var_name
                                 | AND newlines_opt print_expr
                                 | OR  newlines_opt print_expr
@@ -439,8 +441,8 @@ private non_unary_print_expr1 ::= [
                                 | EQ       print_expr
                                 //  no GT since in print context this is redirect
                                 | GE       print_expr
-                                | MATCH    print_expr
-                                | NO_MATCH print_expr
+                                | MATCH    gawk_print_expr
+                                | NO_MATCH gawk_print_expr
                                 | IN gawk_var_name
                                 | AND newlines_opt print_expr
                                 | OR  newlines_opt print_expr
