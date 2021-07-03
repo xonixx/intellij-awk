@@ -1,6 +1,6 @@
 AWK File
   AwkItemImpl(ITEM)
-    PsiElement(AwkTokenType.function)('function')
+    PsiElement(AwkTokenType.FUNCTION)('function')
     PsiWhiteSpace(' ')
     AwkFunctionNameImpl(FUNCTION_NAME)
       PsiElement(AwkTokenType.VAR_NAME)('a')

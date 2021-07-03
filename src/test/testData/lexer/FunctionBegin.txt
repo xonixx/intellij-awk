@@ -1,4 +1,4 @@
-AwkTokenType.function ('function')
+AwkTokenType.FUNCTION ('function')
 WHITE_SPACE (' ')
 AwkTokenType.BEGIN ('BEGIN')
 BAD_CHARACTER ('(')
