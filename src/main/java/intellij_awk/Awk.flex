@@ -61,6 +61,7 @@ WHITE_SPACE=[ \t]+
   "exit"      /\(?         { return EXIT; }
   "for"       /\(?         { return FOR; }
   "function"  /\(?         { return FUNCTION; }
+  "func"      /\(?         { return FUNCTION; }
   "if"        /\(?         { return IF; }
   "in"        /\(?         { return IN; }
   "nextfile"  /\(?         { return NEXTFILE; }

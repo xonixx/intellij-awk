@@ -65,7 +65,7 @@
     ELSE='else'
     EXIT='exit'
     FOR='for'
-    FUNCTION='function'
+    FUNCTION='regexp:function|func'
     IF='if'
     IN='in'
     NEXTFILE='nextfile'
