@@ -192,7 +192,7 @@ action           ::= LBRACE newlines_opt (
                          RBRACE
                        | terminated_statement_list   RBRACE
                        | unterminated_statement_list RBRACE
-                   ) 
+                   )
 
 private terminator       ::= (NEWLINE|SEMICOLON) newlines_opt
 
@@ -210,7 +210,10 @@ terminated_statement ::= action newlines_opt
                  | terminatable_statement terminator
 
 private terminated_statement_if ::= IF LPAREN expr RPAREN newlines_opt terminated_statement
-                                        [ ELSE newlines_opt terminated_statement ]
+                                  ( ELSE newlines_opt terminated_statement
+                                  | !ELSE
+                                  )
+
 private terminated_statement_while ::= WHILE LPAREN expr RPAREN newlines_opt terminated_statement
 private terminated_statement_for ::=
                    FOR LPAREN (
