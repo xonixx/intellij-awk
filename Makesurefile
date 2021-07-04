@@ -1,0 +1,34 @@
+
+@goal default
+@depends_on installed_bwk
+
+@goal soft_folder_created
+@reached_if [[ -d "soft" ]]
+  mkdir soft
+
+@goal installed_bwk
+@reached_if [[ -f soft/bwk ]]
+@depends_on soft_folder_created
+  echo
+  echo "Fetching BWK..."
+  echo
+
+  cd "soft"
+
+  wget https://github.com/onetrueawk/awk/archive/refs/heads/master.tar.gz -Obwk.tar.gz
+  tar xzvf bwk.tar.gz
+  rm bwk.tar.gz
+
+  echo
+  echo "Compile BWK..."
+  echo
+
+  cd "awk-master"
+
+  make
+
+  mv a.out ../bwk
+
+  cd ..
+  ./bwk -version
+  rm -r awk-master
