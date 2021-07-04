@@ -1,8 +1,6 @@
 package intellij_awk;
 
-import com.intellij.testFramework.ParsingTestCase;
-
-public class AwkParserTests extends ParsingTestCase {
+public class AwkParserTests extends ParsingTestCaseBase {
   public AwkParserTests() {
     super("parser", "awk", new AwkParserDefinition());
   }
@@ -64,8 +62,7 @@ public class AwkParserTests extends ParsingTestCase {
 
   public void testSemi0() { ensureOnlyParsingNoErrors(); }
   public void testSemi1() { ensureOnlyParsingNoErrors(); }
-  // TODO understand why this gives different results (DUMMY block) when running this class only vs all tests
-  //public void testSemi2() { doTest(true); }
+  public void testSemi2Err() { ensureParsingError(); }
   public void testSemi3() { ensureOnlyParsingNoErrors(); }
 
   public void testPrint1() { ensureOnlyParsingNoErrors(); }
@@ -78,9 +75,4 @@ public class AwkParserTests extends ParsingTestCase {
   public void testUserFuncSpace() { doTest(true); }
 
   public void testUnterminatedElse1() { ensureOnlyParsingNoErrors(); }
-
-  private void ensureOnlyParsingNoErrors() {
-    doTest(false);
-    ensureNoErrorElements();
-  }
 }
