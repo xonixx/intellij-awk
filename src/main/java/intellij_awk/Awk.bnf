@@ -150,7 +150,6 @@
   ]
 
   extends("unary_expr|non_unary_expr")=expr
-  extends("case_statement1|case_statement2")=case_statement
 }
 
 // /pattern/
@@ -224,12 +223,11 @@ private terminated_statement_for ::=
                    )
 
 gawk_terminated_statement_switch ::= SWITCH LPAREN expr RPAREN newlines_opt LBRACE newlines_opt
-                                                case_statement1* case_statement2? RBRACE newlines_opt
+                                                case_statement* RBRACE newlines_opt
 
-case_statement1  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ terminated_statement_list (&CASE | &RBRACE)
-case_statement2  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ [unterminated_statement_list]
-
-fake case_statement ::=
+case_statement  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ (
+                                        terminated_statement_list (&CASE | &DEFAULT | &RBRACE)
+                                      | [unterminated_statement_list] &RBRACE )
 
 private case_value      ::= ([ADD|SUB] NUMBER) | STRING | ERE | TYPED_ERE
 
