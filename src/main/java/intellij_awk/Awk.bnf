@@ -226,7 +226,7 @@ private terminated_statement_for ::=
 gawk_terminated_statement_switch ::= SWITCH LPAREN expr RPAREN newlines_opt LBRACE newlines_opt
                                                 case_statement1* case_statement2? RBRACE newlines_opt
 
-case_statement1  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ terminated_statement_list
+case_statement1  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ terminated_statement_list (&CASE | &RBRACE)
 case_statement2  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ [unterminated_statement_list]
 
 fake case_statement ::=
