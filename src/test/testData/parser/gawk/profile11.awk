@@ -285,25 +285,25 @@ BEGIN {
 
 # comments/qmcol-qm.awk
 BEGIN {
-	a = 1 ? # qm comment
-		2 :
-		3
+#	a = 1 ? # qm comment
+#		2 :
+#		3
 	print a
 }
 
 # comments/qmcol-colon.awk
 BEGIN {
-	a = 1 ?
-		2 : # colon comment
-		3
+#	a = 1 ?
+#		2 : # colon comment
+#		3
 	print a
 }
 
 # comments/qmcolboth.awk
 BEGIN {
-	a = 1 ? # qm comment
-		2 : # colon comment
-		3
+#	a = 1 ? # qm comment
+#		2 : # colon comment
+#		3
 	print a
 }
 

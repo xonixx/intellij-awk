@@ -216,7 +216,7 @@ private terminated_statement_if ::= IF LPAREN expr RPAREN newlines_opt terminate
 private terminated_statement_while ::= WHILE LPAREN expr RPAREN newlines_opt terminated_statement
 private terminated_statement_for ::=
                    FOR LPAREN (
-                     simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newlines_opt
+                     simple_statement_opt SEMICOLON newlines_opt expr_opt SEMICOLON newlines_opt simple_statement_opt RPAREN newlines_opt
                       terminated_statement
                    | var_name IN gawk_var_name RPAREN newlines_opt
                       terminated_statement
@@ -245,7 +245,7 @@ private unterminated_statement_if ::=
 private unterminated_statement_while ::= WHILE LPAREN expr RPAREN newlines_opt unterminated_statement
 private unterminated_statement_for ::=
                    FOR LPAREN (
-                       simple_statement_opt SEMICOLON expr_opt SEMICOLON simple_statement_opt RPAREN newlines_opt
+                       simple_statement_opt SEMICOLON newlines_opt expr_opt SEMICOLON newlines_opt simple_statement_opt RPAREN newlines_opt
                           unterminated_statement
                      | var_name IN gawk_var_name RPAREN newlines_opt
                           unterminated_statement
