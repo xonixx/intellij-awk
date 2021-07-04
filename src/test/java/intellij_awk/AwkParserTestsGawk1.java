@@ -29,4 +29,5 @@ public class AwkParserTestsGawk1 extends ParsingTestCaseBase {
   public void testSwitch4() { ensureOnlyParsingNoErrors(); }
   public void testSwitch5() { ensureOnlyParsingNoErrors(); }
   public void testSwitch6Err() { ensureParsingError(); }
+  public void testSwitch7() { ensureOnlyParsingNoErrors(); }
 }
