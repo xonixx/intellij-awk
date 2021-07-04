@@ -1,6 +1,7 @@
 
 @goal default
 @depends_on installed_bwk
+@depends_on installed_gawk51
 
 @goal soft_folder_created
 @reached_if [[ -d "soft" ]]
@@ -30,5 +31,33 @@
   mv a.out ../bwk
 
   cd ..
-  ./bwk -version
+  ./bwk --version
   rm -r awk-master
+
+@goal installed_gawk51
+@reached_if [[ -f soft/gawk51 ]]
+@depends_on soft_folder_created
+  echo
+  echo "Fetching Gawk-5.1.0..."
+  echo
+
+  cd "soft"
+
+  G=gawk-5.1.0.tar.gz
+  wget "http://git.savannah.gnu.org/cgit/gawk.git/snapshot/$G"
+  tar xzvf "$G"
+  rm "$G"
+
+  echo
+  echo "Compile Gawk-5.1.0..."
+  echo
+
+  cd "gawk-5.1.0"
+
+  ./configure && make && make check
+
+  mv gawk ../gawk51
+
+  cd ..
+  ./gawk51 --version
+  rm -r "gawk-5.1.0"
