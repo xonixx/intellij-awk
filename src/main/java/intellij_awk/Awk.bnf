@@ -150,6 +150,7 @@
   ]
 
   extends("unary_expr|non_unary_expr")=expr
+  extends("case_statement1|case_statement2")=case_statement
 }
 
 // /pattern/
@@ -219,10 +220,13 @@ private terminated_statement_for ::=
                       terminated_statement
                    )
 
-gawk_terminated_statement_switch ::= SWITCH LPAREN expr RPAREN newlines_opt LBRACE newlines_opt case_statement* RBRACE newlines_opt
+gawk_terminated_statement_switch ::= SWITCH LPAREN expr RPAREN newlines_opt LBRACE newlines_opt
+                                                case_statement1* case_statement2? RBRACE newlines_opt
 
-// TODO this works but is too permissive, it allows parsing `switch(1) { case 1 : print case 2: print }`
-case_statement  ::= (CASE case_value | DEFAULT) COLON newlines_opt [ terminated_statement_list | unterminated_statement_list ]
+case_statement1  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ terminated_statement_list
+case_statement2  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ [unterminated_statement_list]
+
+fake case_statement ::=
 
 private case_value      ::= ([ADD|SUB] NUMBER) | STRING | ERE | TYPED_ERE
 

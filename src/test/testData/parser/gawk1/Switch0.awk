@@ -1,0 +1,3 @@
+BEGIN {
+    switch(1) {}
+}
