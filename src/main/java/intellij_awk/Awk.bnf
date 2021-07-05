@@ -144,6 +144,7 @@
 
     // via https://pubs.opengroup.org/onlinepubs/9699919799/utilities/awk.html
     SPECIAL_VAR_NAME='regexp:([a-zA-Z_]+[a-zA-Z_\d]*::)?(ARGC|ARGV|CONVFMT|ENVIRON|FILENAME|FNR|FS|NF|NR|OFMT|OFS|ORS|RLENGTH|RS|RSTART|SUBSEP)'
+    SPECIAL_VAR_NAME_GAWK='regexp:([a-zA-Z_]+[a-zA-Z_\d]*::)?(BINMODE|FIELDWIDTHS|FPAT|IGNORECASE|LINT|PREC|ROUNDMODE|TEXTDOMAIN|ARGIND|ERRNO|FUNCTAB|PROCINFO|RT|SYMTAB)'
     VAR_NAME='regexp:([a-zA-Z_]+[a-zA-Z_\d]*::)?[a-zA-Z_]+[a-zA-Z_\d]*'
     // this is a special grammar for "preview only" because grammar-kit seems to not
     // support whitespaces
@@ -466,7 +467,7 @@ lvalue           ::= gawk_var_name | DOLLAR expr
 // XXX awk only supports a[1]
 private gawk_var_name ::= var_name (LBRACKET expr_lst RBRACKET)*
 
-private var_name ::= SPECIAL_VAR_NAME | user_var_name
+private var_name ::= SPECIAL_VAR_NAME | SPECIAL_VAR_NAME_GAWK | user_var_name
 
 user_var_name ::= VAR_NAME {
     mixin="intellij_awk.psi.impl.AwkUserVarNameMixin"
