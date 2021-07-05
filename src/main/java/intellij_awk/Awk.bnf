@@ -412,6 +412,7 @@ private non_unary_print_expr ::= (
                        LPAREN expr RPAREN
                      | NOT print_expr
                      | LPAREN expr_lst RPAREN IN gawk_var_name
+                     | simple_get
                      | NUMBER
                      | STRING
                      | ERE
