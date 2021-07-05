@@ -319,11 +319,15 @@ private unary_expr1      ::= [
                            | IN gawk_var_name
                            | AND newlines_opt expr
                            | OR  newlines_opt expr
-                           | QUESTION expr COLON expr
+                           | ternary_expr
                            | gawk_pipe simple_get
                        )
                        unary_expr1
                    ]
+
+// newlines in ternary are Gawk-only feature
+private ternary_expr       ::= QUESTION newlines_opt expr       COLON newlines_opt expr
+private ternary_print_expr ::= QUESTION newlines_opt print_expr COLON newlines_opt print_expr
 
 non_unary_expr   ::= (
                            LPAREN expr RPAREN
@@ -378,7 +382,7 @@ private non_unary_expr1     ::= [
                               | IN gawk_var_name
                               | AND newlines_opt expr
                               | OR  newlines_opt expr
-                              | QUESTION expr COLON expr
+                              | ternary_expr
                               | gawk_pipe simple_get
                           )
                           non_unary_expr1
@@ -406,7 +410,7 @@ private unary_print_expr1  ::= [
                                 | IN gawk_var_name
                                 | AND newlines_opt print_expr
                                 | OR  newlines_opt print_expr
-                                | QUESTION print_expr COLON print_expr
+                                | ternary_print_expr
                             )
                             unary_print_expr1
                         ]
@@ -456,7 +460,7 @@ private non_unary_print_expr1 ::= [
                                 | IN gawk_var_name
                                 | AND newlines_opt print_expr
                                 | OR  newlines_opt print_expr
-                                | QUESTION print_expr COLON print_expr
+                                | ternary_print_expr
                             )
                             non_unary_print_expr1
                           ]
