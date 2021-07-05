@@ -51,6 +51,9 @@ public class AwkParserTests extends ParsingTestCaseBase {
   public void testPrintWithParenProblem() {
     ensureOnlyParsingNoErrors();
   }
+  public void testPrintGetline() {
+    ensureOnlyParsingNoErrors();
+  }
 
   public void testDeleteArr() {
     ensureOnlyParsingNoErrors();
