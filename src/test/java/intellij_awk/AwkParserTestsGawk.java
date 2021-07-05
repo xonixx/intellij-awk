@@ -96,7 +96,8 @@ public class AwkParserTestsGawk extends ParsingTestCaseBase {
   public void testConcat4() { ensureOnlyParsingNoErrors(); }
   public void testConcat5() { ensureOnlyParsingNoErrors(); }
   public void testConvfmt() { ensureOnlyParsingNoErrors(); }
-  public void testCrlf() { ensureOnlyParsingNoErrors(); }
+  // XXX not supported by posix
+  //public void testCrlf() { ensureOnlyParsingNoErrors(); }
   public void testDatanonl() { ensureOnlyParsingNoErrors(); }
   public void testDbugeval2() { ensureOnlyParsingNoErrors(); }
   public void testDbugeval3() { ensureOnlyParsingNoErrors(); }
