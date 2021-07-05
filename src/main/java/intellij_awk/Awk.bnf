@@ -83,7 +83,8 @@
     INCLUDE='include'
     LOAD='load'
 
-    BUILTIN_FUNC_NAME='regexp:atan2|cos|sin|exp|log|sqrt|int|rand|srand|gsub|index|length|match|split|sprintf|sub|substr|tolower|toupper|close|system'
+    BUILTIN_FUNC_NAME='regexp:atan2|cos|sin|exp|log|sqrt|int|rand|srand|gsub|index|length|match|split|sprintf|sub|substr|tolower|toupper|close|fflush|system'
+    BUILTIN_FUNC_NAME_GAWK='regexp:asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext'
     NUMBER='regexp:(\d+|(\d*\.\d+)|(\d+\.\d*))([eE][+-]?\d+)?'
     STRING='regexp:(["]([^"\\]|\\.)*["])'
     ERE='regexp:/((\[\^?/)|[^\\\n/]|(\\[^\n]))*/'
@@ -344,11 +345,12 @@ non_unary_expr   ::= (
                          | lvalue ASSIGN     gawk_expr
                          | lvalue
                          | function_call
-                         | BUILTIN_FUNC_NAME [ LPAREN gawk_func_call_list_opt RPAREN ]
+                         | function_call_built_in
                      )
                      non_unary_expr1
 
 private function_call       ::= AT? function_call_name LPAREN gawk_func_call_list_opt RPAREN /* no white space allowed before LPAREN */
+private function_call_built_in ::= (BUILTIN_FUNC_NAME | BUILTIN_FUNC_NAME_GAWK) [ LPAREN gawk_func_call_list_opt RPAREN ]
 
 function_call_name          ::= FUNC_NAME
 {
@@ -429,7 +431,7 @@ private non_unary_print_expr ::= (
                      | lvalue ASSIGN     print_expr
                      | lvalue
                      | function_call
-                     | BUILTIN_FUNC_NAME [ LPAREN gawk_func_call_list_opt RPAREN ]
+                     | function_call_built_in
                  )
                  non_unary_print_expr1
 

@@ -26,6 +26,7 @@ EOL=\R
 
 COMMENT=#.* | (\\\n)
 BUILTIN_FUNC_NAME=atan2|cos|sin|exp|log|sqrt|int|rand|srand|gsub|index|length|match|split|sprintf|sub|substr|tolower|toupper|close|system
+BUILTIN_FUNC_NAME_GAWK=asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext
 NUMBER=( \d+ | (\d* \. \d+) | (\d+ \. \d*) ) ([eE] [+-]? \d+)?
 STRING=([\"]([^\"\\]|\\.)*[\"])
 ERE="/"((\[\^?\/)|[^\\\n/]|(\\[^\n]))*"/"
@@ -126,6 +127,7 @@ WHITE_SPACE=[ \t]+
   {ERE}                    { return ERE; }
   {NEWLINE}                { return NEWLINE; }
   {BUILTIN_FUNC_NAME}      { return BUILTIN_FUNC_NAME; }
+  {BUILTIN_FUNC_NAME_GAWK} { return BUILTIN_FUNC_NAME_GAWK; }
   {VAR_NAME}/\(            { return FUNC_NAME; }
   {SPECIAL_VAR_NAME}       { return SPECIAL_VAR_NAME; }
   {VAR_NAME}               { return VAR_NAME; }
