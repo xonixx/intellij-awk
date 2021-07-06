@@ -121,18 +121,18 @@ WHITE_SPACE=[ \t]+
   "="                      { return ASSIGN; }
   "@"                      { return AT; }
 
-  {COMMENT}                { return COMMENT; }
-  {NUMBER}                 { return NUMBER; }
-  {STRING}                 { return STRING; }
-  {TYPED_ERE}              { return TYPED_ERE; }
-  {ERE}                    { return ERE; }
-  {NEWLINE}                { return NEWLINE; }
-  {BUILTIN_FUNC_NAME}      { return BUILTIN_FUNC_NAME; }
-  {BUILTIN_FUNC_NAME_GAWK} { return BUILTIN_FUNC_NAME_GAWK; }
-  {VAR_NAME}/\(            { return FUNC_NAME; }
-  {SPECIAL_VAR_NAME}       { return SPECIAL_VAR_NAME; }
-  {SPECIAL_VAR_NAME_GAWK}  { return SPECIAL_VAR_NAME_GAWK; }
-  {VAR_NAME}               { return VAR_NAME; }
+  {COMMENT}                     { return COMMENT; }
+  {NUMBER}                      { return NUMBER; }
+  {STRING}                      { return STRING; }
+  {TYPED_ERE}                   { return TYPED_ERE; }
+  {ERE}                         { return ERE; }
+  {NEWLINE}                     { return NEWLINE; }
+  {BUILTIN_FUNC_NAME}      /\(? { return BUILTIN_FUNC_NAME; }
+  {BUILTIN_FUNC_NAME_GAWK} /\(? { return BUILTIN_FUNC_NAME_GAWK; }
+  {VAR_NAME}               /\(  { return FUNC_NAME; }
+  {SPECIAL_VAR_NAME}            { return SPECIAL_VAR_NAME; }
+  {SPECIAL_VAR_NAME_GAWK}       { return SPECIAL_VAR_NAME_GAWK; }
+  {VAR_NAME}                    { return VAR_NAME; }
 //  {LIVEPREVIEWWS}          { return LIVEPREVIEWWS; }
 
 }
