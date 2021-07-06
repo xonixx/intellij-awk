@@ -17,6 +17,7 @@ public class AwkColorSettingsPage implements ColorSettingsPage {
       new AttributesDescriptor[] {
         new AttributesDescriptor("Keyword", AwkSyntaxHighlighter.KEYWORD),
         new AttributesDescriptor("Special Variable", AwkSyntaxHighlighter.SPECIAL_VARIABLE),
+        new AttributesDescriptor("Builtin Function", AwkSyntaxHighlighter.BUILTIN_FUNCTION),
         new AttributesDescriptor("String", AwkSyntaxHighlighter.STRING),
         new AttributesDescriptor("Number", AwkSyntaxHighlighter.NUMBER),
         new AttributesDescriptor("Comment", AwkSyntaxHighlighter.COMMENT),
@@ -44,8 +45,8 @@ public class AwkColorSettingsPage implements ColorSettingsPage {
   @NotNull
   @Override
   public String getDemoText() {
-    return "@namespace \"ns\"\n" +
-            "BEGIN {\n"
+    return "@namespace \"ns\"\n"
+        + "BEGIN {\n"
         + "    Trace=\"Trace\" in ENVIRON\n"
         + "    Number=1.23E-12\n"
         + "    TypedRe=@/typed re/\n"

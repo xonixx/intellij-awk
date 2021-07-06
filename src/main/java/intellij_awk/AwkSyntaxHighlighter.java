@@ -91,6 +91,9 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
 
   public static final TextAttributesKey SPECIAL_VARIABLE =
       createTextAttributesKey("AWK_SPECIAL_VARIABLE", DefaultLanguageHighlighterColors.CONSTANT);
+  public static final TextAttributesKey BUILTIN_FUNCTION =
+      createTextAttributesKey(
+          "AWK_BUILTIN_FUNCTION", DefaultLanguageHighlighterColors.PREDEFINED_SYMBOL);
 
   public static final TextAttributesKey KEYWORD =
       createTextAttributesKey("AWK_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
@@ -116,6 +119,8 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
 
   private static final TextAttributesKey[] SPECIAL_VARIABLE_KEYS =
       new TextAttributesKey[] {SPECIAL_VARIABLE};
+  private static final TextAttributesKey[] BUILTIN_FUNCTION_KEYS =
+      new TextAttributesKey[] {BUILTIN_FUNCTION};
 
   private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[] {KEYWORD};
   private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[] {STRING};
@@ -157,6 +162,9 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
     } else if (tokenType.equals(AwkTypes.SPECIAL_VAR_NAME)
         || tokenType.equals(AwkTypes.SPECIAL_VAR_NAME_GAWK)) {
       return SPECIAL_VARIABLE_KEYS;
+    } else if (tokenType.equals(AwkTypes.BUILTIN_FUNC_NAME)
+        || tokenType.equals(AwkTypes.BUILTIN_FUNC_NAME_GAWK)) {
+      return BUILTIN_FUNCTION_KEYS;
     } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
       return BAD_CHAR_KEYS;
     }
