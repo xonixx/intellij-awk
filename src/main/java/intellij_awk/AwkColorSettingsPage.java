@@ -50,7 +50,7 @@ public class AwkColorSettingsPage implements ColorSettingsPage {
         + "    Trace=\"Trace\" in ENVIRON\n"
         + "    Number=1.23E-12\n"
         + "    TypedRe=@/typed re/\n"
-        + "    % # bad char\n"
+        + "    ``` # bad chars\n"
         + "    split(\"\", GronAsm); GronAsmLen=0; split(\"\", LineNums)\n"
         + "\n"
         + "    while (getline > 0) {\n"
