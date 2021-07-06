@@ -8,6 +8,6 @@ BEGIN { f() }
 
 # Using a built-in function name should manage the symbol table
 # correctly:
-function split(x) { return x }
+###function split(x) { return x }
 
 function x(a) { return a }
