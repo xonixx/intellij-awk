@@ -35,7 +35,11 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
           AwkTypes.RETURN,
           AwkTypes.BREAK,
           AwkTypes.CONTINUE,
-          AwkTypes.EXIT);
+          AwkTypes.EXIT,
+          AwkTypes.AT,
+          AwkTypes.INCLUDE,
+          AwkTypes.NAMESPACE,
+          AwkTypes.LOAD);
 
   public static final TokenSet OPERATORS =
       TokenSet.create(
@@ -150,7 +154,8 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
       return COMMA_KEYS;
     } else if (tokenType.equals(AwkTypes.SEMICOLON)) {
       return SEMICOLON_KEYS;
-    } else if (tokenType.equals(AwkTypes.SPECIAL_VAR_NAME)) {
+    } else if (tokenType.equals(AwkTypes.SPECIAL_VAR_NAME)
+        || tokenType.equals(AwkTypes.SPECIAL_VAR_NAME_GAWK)) {
       return SPECIAL_VARIABLE_KEYS;
     } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
       return BAD_CHAR_KEYS;

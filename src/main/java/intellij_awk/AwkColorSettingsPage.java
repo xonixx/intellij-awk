@@ -44,10 +44,12 @@ public class AwkColorSettingsPage implements ColorSettingsPage {
   @NotNull
   @Override
   public String getDemoText() {
-    return "BEGIN {\n"
+    return "@namespace \"ns\"\n" +
+            "BEGIN {\n"
         + "    Trace=\"Trace\" in ENVIRON\n"
         + "    Number=1.23E-12\n"
-        + "    @ # bad char\n"
+        + "    TypedRe=@/typed re/\n"
+        + "    % # bad char\n"
         + "    split(\"\", GronAsm); GronAsmLen=0; split(\"\", LineNums)\n"
         + "\n"
         + "    while (getline > 0) {\n"
