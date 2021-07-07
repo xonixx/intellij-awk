@@ -48,6 +48,9 @@ public class AwkLexerTests extends LexerTestCase {
   public void testBadChar() {
     doFileTest("awk");
   }
+  public void testEreAmbiguity1() {
+    doFileTest("awk");
+  }
 
   @Override
   protected Lexer createLexer() {
