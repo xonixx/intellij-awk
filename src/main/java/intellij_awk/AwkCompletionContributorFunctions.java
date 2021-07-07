@@ -8,40 +8,60 @@ import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static intellij_awk.AwkUtil.insertHandler;
+import static java.util.Map.entry;
 
 public class AwkCompletionContributorFunctions extends CompletionContributor {
 
-  private static final String[] builtInFunctions =
-      new String[] {
-        "atan2", "cos", "sin", "exp", "log", "sqrt", "int", "rand", "srand", "gsub", "index",
-        "length", "match", "split", "sprintf", "sub", "substr", "tolower", "toupper", "close",
-        "system"
-      };
-  private static final String[] gawkFunctions =
-      new String[] {
-        "asort",
-        "asorti",
-        "gensub",
-        "patsplit",
-        "strtonum",
-        "mktime",
-        "strftime",
-        "systime",
-        "and",
-        "compl",
-        "lshift",
-        "or",
-        "rshift",
-        "xor",
-        "isarray",
-        "typeof",
-        "bindtextdomain",
-        "dcgettext",
-        "dcngettext"
-      };
+  private static final Map<String, String> builtInFunctions =
+      Map.ofEntries(
+          entry("atan2", "(y, x)"),
+          entry("cos", "(x)"),
+          entry("sin", "(x)"),
+          entry("exp", "(x)"),
+          entry("log", "(x)"),
+          entry("sqrt", "(x)"),
+          entry("int", "(x)"),
+          entry("rand", "()"),
+          entry("srand", "([x])"),
+          entry("gsub", "(regexp, replacement [, target])"),
+          entry("index", "(in, find)"),
+          entry("length", "([string])"),
+          entry("match", "(string, regexp [, array])"),
+          entry("split", "(string, array [, fieldsep [, seps ] ])"),
+          entry("sprintf", "(format, expression1, …)"),
+          entry("sub", "(regexp, replacement [, target])"),
+          entry("substr", "(regexp, replacement [, target])"),
+          entry("tolower", "(string)"),
+          entry("toupper", "(string)"),
+          entry("close", "(filename [, how])"),
+          entry("fflush", "([filename])"),
+          entry("system", "(command)"));
+
+  private static final Map<String, String> gawkFunctions =
+      Map.ofEntries(
+          entry("asort", "(source [, dest [, how ] ])"),
+          entry("asorti", "(source [, dest [, how ] ])"),
+          entry("gensub", "(regexp, replacement, how [, target])"),
+          entry("patsplit", "(string, array [, fieldpat [, seps ] ])"),
+          entry("strtonum", "(str)"),
+          entry("mktime", "(datespec [, utc-flag ])"),
+          entry("strftime", "([format [, timestamp [, utc-flag] ] ])"),
+          entry("systime", "()"),
+          entry("and", "(v1, v2 [, …])"),
+          entry("compl", "(val)"),
+          entry("lshift", "(val, count)"),
+          entry("or", "(v1, v2 [, …])"),
+          entry("rshift", "(val, count)"),
+          entry("xor", "(v1, v2 [, …])"),
+          entry("isarray", "(x)"),
+          entry("typeof", "(x)"),
+          entry("bindtextdomain", "(directory [, domain])"),
+          entry("dcgettext", "(string [, domain [, category] ])"),
+          entry("dcngettext", "(string1, string2, number [, domain [, category] ])"));
 
   public AwkCompletionContributorFunctions() {
     extend(
@@ -53,11 +73,13 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
               @NotNull ProcessingContext context,
               @NotNull CompletionResultSet resultSet) {
 
-            for (String standardFunction : builtInFunctions) {
-              addFunctionCompletionCandidate(resultSet, standardFunction, true, "()");
+            for (Map.Entry<String, String> standardFunction : builtInFunctions.entrySet()) {
+              addFunctionCompletionCandidate(
+                  resultSet, standardFunction.getKey(), true, standardFunction.getValue());
             }
-            for (String standardFunction : gawkFunctions) {
-              addFunctionCompletionCandidate(resultSet, standardFunction, true, "()");
+            for (Map.Entry<String, String> standardFunction : gawkFunctions.entrySet()) {
+              addFunctionCompletionCandidate(
+                  resultSet, standardFunction.getKey(), true, standardFunction.getValue());
             }
 
             List<AwkFunctionNameImpl> functionNames =
