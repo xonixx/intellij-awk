@@ -61,7 +61,7 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void test7() {
-    checkCompletionSingle("funct<caret>", "function <caret>");
+    checkCompletionSingle("func<caret>", "function <caret>");
   }
 
   public void test8() {
@@ -90,6 +90,26 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   public void testFunctionArgs2() {
     checkFunctionArgs(
         "BEGIN { <caret> }\nfunction func1(arg1, arg2,\\\narg3) {}", "func1", "(arg1, arg2)");
+  }
+
+  public void testSwitch() {
+    checkCompletionSingle("{ sw<caret> }", "{ switch (<caret>) {} }");
+  }
+  public void testCase1() {
+    checkCompletionSingle("{ switch(1) { cas<caret> } }", "{ switch(1) { case <caret>: } }");
+  }
+  public void testCase2() {
+    checkCompletionSingle(
+        "{ switch(1) { case \"hello\": cas<caret> } }",
+        "{ switch(1) { case \"hello\": case <caret>: } }");
+  }
+  public void testDefault1() {
+    checkCompletionSingle("{ switch(1) { def<caret> } }", "{ switch(1) { default:<caret> } }");
+  }
+  public void testDefault2() {
+    checkCompletionSingle(
+        "{ switch(1) { case \"hello\": def<caret> } }",
+        "{ switch(1) { case \"hello\": default:<caret> } }");
   }
 
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
