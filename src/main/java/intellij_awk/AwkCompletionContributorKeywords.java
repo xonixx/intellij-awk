@@ -15,14 +15,37 @@ import static intellij_awk.AwkUtil.insertHandler;
 
 public class AwkCompletionContributorKeywords extends CompletionContributor {
 
-  private static final String[] BEGIN_END = {"BEGIN", "END"};
+  public static final InsertHandler<LookupElement> ihBeginEnd = insertHandler(" { }", 3);
+
+  private static final Map<String, InsertHandler<LookupElement>> KEYWORDS0 =
+      Map.of("function", insertHandler(" ", 1), "BEGIN", ihBeginEnd, "END", ihBeginEnd);
+
   private static final InsertHandler<LookupElement> ihParens = insertHandler(" ()", 2);
   private static final InsertHandler<LookupElement> ihSpace = insertHandler(" ", 1);
   private static final InsertHandler<LookupElement> ihNone = insertHandler("", 0);
+
   private static final Map<String, InsertHandler<LookupElement>> KEYWORDS1 =
       Map.of(
-          "if", ihParens, "else", ihSpace, "while", ihParens, "for", ihParens, "do", ihSpace, "in",
-          ihSpace, "getline", ihNone);
+          "if",
+          ihParens,
+          "else",
+          ihSpace,
+          "while",
+          ihParens,
+          "switch",
+          insertHandler(" () {}", 2),
+          "for",
+          ihParens,
+          "do",
+          ihSpace,
+          "in",
+          ihSpace,
+          "getline",
+          ihNone);
+  private static final Map<String, InsertHandler<LookupElement>> KEYWORDS_CASE_DEFAULT =
+      Map.of(
+          "case", insertHandler(" :", 1),
+          "default", insertHandler(":", 1));
   private static final Map<String, InsertHandler<LookupElement>> KEYWORDS2 =
       Map.of(
           "break",
@@ -52,17 +75,7 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
               @NotNull ProcessingContext context,
               @NotNull CompletionResultSet resultSet) {
 
-            resultSet.addElement(
-                LookupElementBuilder.create("function")
-                    .withBoldness(true)
-                    .withInsertHandler(insertHandler(" ", 1)));
-
-            for (String pattern : BEGIN_END) {
-              resultSet.addElement(
-                  LookupElementBuilder.create(pattern)
-                      .withBoldness(true)
-                      .withInsertHandler(insertHandler(" { }", 3)));
-            }
+            addContributionResults(resultSet, KEYWORDS0);
           }
         });
     extend(
@@ -78,12 +91,7 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
 
             // TODO: handle autocomplete while in `do {}while`
             // TODO: make `in` autocompletion work
-            for (Map.Entry<String, InsertHandler<LookupElement>> entry : KEYWORDS1.entrySet()) {
-              resultSet.addElement(
-                  LookupElementBuilder.create(entry.getKey())
-                      .withBoldness(true)
-                      .withInsertHandler(entry.getValue()));
-            }
+            addContributionResults(resultSet, KEYWORDS1);
           }
         });
     extend(
@@ -95,13 +103,31 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
               @NotNull ProcessingContext context,
               @NotNull CompletionResultSet resultSet) {
 
-            for (Map.Entry<String, InsertHandler<LookupElement>> entry : KEYWORDS2.entrySet()) {
-              resultSet.addElement(
-                  LookupElementBuilder.create(entry.getKey())
-                      .withBoldness(true)
-                      .withInsertHandler(entry.getValue()));
-            }
+            addContributionResults(resultSet, KEYWORDS2);
           }
         });
+    extend(
+        CompletionType.BASIC,
+        psiElement().inside(AwkGawkTerminatedStatementSwitch.class),
+        new CompletionProvider<>() {
+          @Override
+          protected void addCompletions(
+              @NotNull CompletionParameters parameters,
+              @NotNull ProcessingContext context,
+              @NotNull CompletionResultSet resultSet) {
+
+            addContributionResults(resultSet, KEYWORDS_CASE_DEFAULT);
+          }
+        });
+  }
+
+  private void addContributionResults(
+      @NotNull CompletionResultSet resultSet, Map<String, InsertHandler<LookupElement>> keywords2) {
+    for (Map.Entry<String, InsertHandler<LookupElement>> entry : keywords2.entrySet()) {
+      resultSet.addElement(
+          LookupElementBuilder.create(entry.getKey())
+              .withBoldness(true)
+              .withInsertHandler(entry.getValue()));
+    }
   }
 }
