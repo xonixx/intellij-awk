@@ -39,7 +39,10 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
           AwkTypes.AT,
           AwkTypes.INCLUDE,
           AwkTypes.NAMESPACE,
-          AwkTypes.LOAD);
+          AwkTypes.LOAD,
+          AwkTypes.SWITCH,
+          AwkTypes.CASE,
+          AwkTypes.DEFAULT);
 
   public static final TokenSet OPERATORS =
       TokenSet.create(
