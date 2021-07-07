@@ -40,6 +40,7 @@ VAR_NAME              = {NS_PART}? [a-zA-Z_]+[a-zA-Z_\d]*
 WHITE_SPACE=[ \t]+
 
 %state AFTER_BEGIN_END
+%state DIV_POSSIBLE
 
 %%
 // In AWK the '{' should go on the same line with BEGIN/END
@@ -48,93 +49,96 @@ WHITE_SPACE=[ \t]+
   "{"                      { yybegin(YYINITIAL); return LBRACE; }
 }
 
-<YYINITIAL> {
+<YYINITIAL, DIV_POSSIBLE> {
   {WHITE_SPACE}            { return WHITE_SPACE; }
 
   "BEGINFILE" /\(?         { yybegin(AFTER_BEGIN_END); return BEGINFILE; }
   "ENDFILE"   /\(?         { yybegin(AFTER_BEGIN_END); return ENDFILE; }
   "BEGIN"     /\(?         { yybegin(AFTER_BEGIN_END); return BEGIN; }
   "END"       /\(?         { yybegin(AFTER_BEGIN_END); return END; }
-  "break"     /\(?         { return BREAK; }
-  "continue"  /\(?         { return CONTINUE; }
-  "delete"    /\(?         { return DELETE; }
-  "do"        /\(?         { return DO; }
-  "else"      /\(?         { return ELSE; }
-  "exit"      /\(?         { return EXIT; }
-  "for"       /\(?         { return FOR; }
-  "function"  /\(?         { return FUNCTION; }
-  "func"      /\(?         { return FUNCTION; }
-  "if"        /\(?         { return IF; }
-  "in"        /\(?         { return IN; }
-  "nextfile"  /\(?         { return NEXTFILE; }
-  "next"      /\(?         { return NEXT; }
-  "print"     /\(?         { return PRINT; }
-  "printf"    /\(?         { return PRINTF; }
-  "return"    /\(?         { return RETURN; }
-  "while"     /\(?         { return WHILE; }
-  "switch"    /\(?         { return SWITCH; }
-  "case"                   { return CASE; }
-  "default"                { return DEFAULT; }
-  "getline"   /\(?         { return GETLINE; }
-  "namespace"              { return NAMESPACE; }
-  "include"                { return INCLUDE; }
-  "load"                   { return LOAD; }
-  "+="                     { return ADD_ASSIGN; }
-  "-="                     { return SUB_ASSIGN; }
-  "*="                     { return MUL_ASSIGN; }
-  "/="                     { return DIV_ASSIGN; }
-  "%="                     { return MOD_ASSIGN; }
-  "^="                     { return POW_ASSIGN; }
-  "||"                     { return OR; }
-  "&&"                     { return AND; }
-  "!~"                     { return NO_MATCH; }
-  "=="                     { return EQ; }
-  "<="                     { return LE; }
-  ">="                     { return GE; }
-  "!="                     { return NE; }
-  "++"                     { return INCR; }
-  "--"                     { return DECR; }
-  ">>"                     { return APPEND; }
-  "$"                      { return DOLLAR; }
-  "["                      { return LBRACKET; }
-  "]"                      { return RBRACKET; }
-  "{"                      { return LBRACE; }
-  "}"                      { return RBRACE; }
-  "("                      { return LPAREN; }
-  ")"                      { return RPAREN; }
-  ","                      { return COMMA; }
-  ";"                      { return SEMICOLON; }
-  "<"                      { return LT; }
-  ">"                      { return GT; }
-  "+"                      { return ADD; }
-  "-"                      { return SUB; }
-  "*"                      { return MUL; }
-  "/"                      { return DIV; }
-  "%"                      { return MOD; }
-  "^"                      { return POW; }
-  "~"                      { return MATCH; }
-  "|&"                     { return PIPE_AMP; }
-  "|"                      { return PIPE; }
-  "!"                      { return NOT; }
-  "?"                      { return QUESTION; }
-  ":"                      { return COLON; }
-  "="                      { return ASSIGN; }
-  "@"                      { return AT; }
+  "break"     /\(?         { yybegin(YYINITIAL); return BREAK; }
+  "continue"  /\(?         { yybegin(YYINITIAL); return CONTINUE; }
+  "delete"    /\(?         { yybegin(YYINITIAL); return DELETE; }
+  "do"        /\(?         { yybegin(YYINITIAL); return DO; }
+  "else"      /\(?         { yybegin(YYINITIAL); return ELSE; }
+  "exit"      /\(?         { yybegin(YYINITIAL); return EXIT; }
+  "for"       /\(?         { yybegin(YYINITIAL); return FOR; }
+  "function"  /\(?         { yybegin(YYINITIAL); return FUNCTION; }
+  "func"      /\(?         { yybegin(YYINITIAL); return FUNCTION; }
+  "if"        /\(?         { yybegin(YYINITIAL); return IF; }
+  "in"        /\(?         { yybegin(YYINITIAL); return IN; }
+  "nextfile"  /\(?         { yybegin(YYINITIAL); return NEXTFILE; }
+  "next"      /\(?         { yybegin(YYINITIAL); return NEXT; }
+  "print"     /\(?         { yybegin(YYINITIAL); return PRINT; }
+  "printf"    /\(?         { yybegin(YYINITIAL); return PRINTF; }
+  "return"    /\(?         { yybegin(YYINITIAL); return RETURN; }
+  "while"     /\(?         { yybegin(YYINITIAL); return WHILE; }
+  "switch"    /\(?         { yybegin(YYINITIAL); return SWITCH; }
+  "case"                   { yybegin(YYINITIAL); return CASE; }
+  "default"                { yybegin(YYINITIAL); return DEFAULT; }
+  "getline"   /\(?         { yybegin(DIV_POSSIBLE); return GETLINE; }
+  "namespace"              { yybegin(YYINITIAL); return NAMESPACE; }
+  "include"                { yybegin(YYINITIAL); return INCLUDE; }
+  "load"                   { yybegin(YYINITIAL); return LOAD; }
+  "+="                     { yybegin(YYINITIAL); return ADD_ASSIGN; }
+  "-="                     { yybegin(YYINITIAL); return SUB_ASSIGN; }
+  "*="                     { yybegin(YYINITIAL); return MUL_ASSIGN; }
+  "/="                     { yybegin(YYINITIAL); return DIV_ASSIGN; }
+  "%="                     { yybegin(YYINITIAL); return MOD_ASSIGN; }
+  "^="                     { yybegin(YYINITIAL); return POW_ASSIGN; }
+  "||"                     { yybegin(YYINITIAL); return OR; }
+  "&&"                     { yybegin(YYINITIAL); return AND; }
+  "!~"                     { yybegin(YYINITIAL); return NO_MATCH; }
+  "=="                     { yybegin(YYINITIAL); return EQ; }
+  "<="                     { yybegin(YYINITIAL); return LE; }
+  ">="                     { yybegin(YYINITIAL); return GE; }
+  "!="                     { yybegin(YYINITIAL); return NE; }
+  "++"                     { yybegin(YYINITIAL); return INCR; }
+  "--"                     { yybegin(YYINITIAL); return DECR; }
+  ">>"                     { yybegin(YYINITIAL); return APPEND; }
+  "$"                      { yybegin(YYINITIAL); return DOLLAR; }
+  "["                      { yybegin(YYINITIAL); return LBRACKET; }
+  "]"                      { yybegin(DIV_POSSIBLE); return RBRACKET; }
+  "{"                      { yybegin(YYINITIAL); return LBRACE; }
+  "}"                      { yybegin(YYINITIAL); return RBRACE; }
+  "("                      { yybegin(YYINITIAL); return LPAREN; }
+  ")"                      { yybegin(DIV_POSSIBLE); return RPAREN; }
+  ","                      { yybegin(YYINITIAL); return COMMA; }
+  ";"                      { yybegin(YYINITIAL); return SEMICOLON; }
+  "<"                      { yybegin(YYINITIAL); return LT; }
+  ">"                      { yybegin(YYINITIAL); return GT; }
+  "+"                      { yybegin(YYINITIAL); return ADD; }
+  "-"                      { yybegin(YYINITIAL); return SUB; }
+  "*"                      { yybegin(YYINITIAL); return MUL; }
+  "/"                      { yybegin(YYINITIAL); return DIV; }
+  "%"                      { yybegin(YYINITIAL); return MOD; }
+  "^"                      { yybegin(YYINITIAL); return POW; }
+  "~"                      { yybegin(YYINITIAL); return MATCH; }
+  "|&"                     { yybegin(YYINITIAL); return PIPE_AMP; }
+  "|"                      { yybegin(YYINITIAL); return PIPE; }
+  "!"                      { yybegin(YYINITIAL); return NOT; }
+  "?"                      { yybegin(YYINITIAL); return QUESTION; }
+  ":"                      { yybegin(YYINITIAL); return COLON; }
+  "="                      { yybegin(YYINITIAL); return ASSIGN; }
+  "@"                      { yybegin(YYINITIAL); return AT; }
 
   {COMMENT}                     { return COMMENT; }
-  {NUMBER}                      { return NUMBER; }
-  {STRING}                      { return STRING; }
-  {TYPED_ERE}                   { return TYPED_ERE; }
-  {ERE}                         { return ERE; }
-  {NEWLINE}                     { return NEWLINE; }
-  {BUILTIN_FUNC_NAME}      /\(? { return BUILTIN_FUNC_NAME; }
-  {BUILTIN_FUNC_NAME_GAWK} /\(? { return BUILTIN_FUNC_NAME_GAWK; }
-  {VAR_NAME}               /\(  { return FUNC_NAME; }
-  {SPECIAL_VAR_NAME}            { return SPECIAL_VAR_NAME; }
-  {SPECIAL_VAR_NAME_GAWK}       { return SPECIAL_VAR_NAME_GAWK; }
-  {VAR_NAME}                    { return VAR_NAME; }
+  {NUMBER}                      { yybegin(DIV_POSSIBLE); return NUMBER; }
+  {STRING}                      { yybegin(DIV_POSSIBLE); return STRING; }
+  {TYPED_ERE}                   { yybegin(YYINITIAL); return TYPED_ERE; }
+  {NEWLINE}                     { yybegin(YYINITIAL); return NEWLINE; }
+  {BUILTIN_FUNC_NAME}      /\(? { yybegin(YYINITIAL); return BUILTIN_FUNC_NAME; }
+  {BUILTIN_FUNC_NAME_GAWK} /\(? { yybegin(YYINITIAL); return BUILTIN_FUNC_NAME_GAWK; }
+  {VAR_NAME}               /\(  { yybegin(YYINITIAL); return FUNC_NAME; }
+  {SPECIAL_VAR_NAME}            { yybegin(DIV_POSSIBLE); return SPECIAL_VAR_NAME; }
+  {SPECIAL_VAR_NAME_GAWK}       { yybegin(DIV_POSSIBLE); return SPECIAL_VAR_NAME_GAWK; }
+  {VAR_NAME}                    { yybegin(DIV_POSSIBLE); return VAR_NAME; }
 //  {LIVEPREVIEWWS}          { return LIVEPREVIEWWS; }
 
+}
+
+<YYINITIAL> {
+  {ERE}                         { return ERE; }
 }
 
 [^] { return BAD_CHARACTER; }
