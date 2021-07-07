@@ -224,8 +224,15 @@ private terminated_statement_for ::=
                       terminated_statement
                    )
 
-gawk_terminated_statement_switch ::= SWITCH LPAREN expr RPAREN newlines_opt LBRACE newlines_opt
-                                                case_statement* RBRACE newlines_opt
+gawk_terminated_statement_switch ::= switch_start RBRACE newlines_opt
+
+private switch_start ::= SWITCH LPAREN expr RPAREN newlines_opt LBRACE newlines_opt case_statement*
+                        {
+                            pin=6
+                            recoverWhile=recover_switch
+                        }
+
+private recover_switch ::= !RBRACE
 
 case_statement  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ (
                                         terminated_statement_list (&CASE | &DEFAULT | &RBRACE)
