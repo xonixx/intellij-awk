@@ -20,6 +20,28 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
         "length", "match", "split", "sprintf", "sub", "substr", "tolower", "toupper", "close",
         "system"
       };
+  private static final String[] gawkFunctions =
+      new String[] {
+        "asort",
+        "asorti",
+        "gensub",
+        "patsplit",
+        "strtonum",
+        "mktime",
+        "strftime",
+        "systime",
+        "and",
+        "compl",
+        "lshift",
+        "or",
+        "rshift",
+        "xor",
+        "isarray",
+        "typeof",
+        "bindtextdomain",
+        "dcgettext",
+        "dcngettext"
+      };
 
   public AwkCompletionContributorFunctions() {
     extend(
@@ -31,18 +53,19 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
               @NotNull ProcessingContext context,
               @NotNull CompletionResultSet resultSet) {
 
-            List<AwkFunctionNameImpl> functionNames =
-                AwkUtil.findFunctions(parameters.getOriginalFile());
-
             for (String standardFunction : builtInFunctions) {
               addFunctionCompletionCandidate(resultSet, standardFunction, true, "()");
             }
+            for (String standardFunction : gawkFunctions) {
+              addFunctionCompletionCandidate(resultSet, standardFunction, true, "()");
+            }
+
+            List<AwkFunctionNameImpl> functionNames =
+                AwkUtil.findFunctions(parameters.getOriginalFile());
+
             for (AwkFunctionNameImpl functionName : functionNames) {
               addFunctionCompletionCandidate(
-                  resultSet,
-                  functionName.getName(),
-                  false,
-                  functionName.getSignatureString());
+                  resultSet, functionName.getName(), false, functionName.getSignatureString());
             }
           }
 

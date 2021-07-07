@@ -37,6 +37,24 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
         "SUBSEP"
       };
 
+  private static final String[] gawkVariables =
+      new String[] {
+        "BINMODE",
+        "FIELDWIDTHS",
+        "FPAT",
+        "IGNORECASE",
+        "LINT",
+        "PREC",
+        "ROUNDMODE",
+        "TEXTDOMAIN",
+        "ARGIND",
+        "ERRNO",
+        "FUNCTAB",
+        "PROCINFO",
+        "RT",
+        "SYMTAB"
+      };
+
   public AwkCompletionContributorVariables() {
     extend(
         CompletionType.BASIC,
@@ -90,6 +108,13 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
             }
 
             for (String builtInVariable : builtInVariables) {
+              resultSet.addElement(
+                  LookupElementBuilder.create(builtInVariable)
+                      .withBoldness(true)
+                      .withItemTextItalic(true)
+                      .withIcon(AwkIcons.VARIABLE));
+            }
+            for (String builtInVariable : gawkVariables) {
               resultSet.addElement(
                   LookupElementBuilder.create(builtInVariable)
                       .withBoldness(true)

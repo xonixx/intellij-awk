@@ -12,37 +12,42 @@ import java.util.stream.Stream;
 
 public class AwkCompletionTests extends BasePlatformTestCase {
 
+  public static final String POSIX_FUNC = "tolower";
+  public static final String GAWK_FUNC = "and";
+  public static final String POSIX_VAR = "NR";
+  public static final String GAWK_VAR = "ERRNO";
+
   public void test1() {
     checkCompletion(
-        Set.of("f1", "f2", "NR", "tolower"),
+        Set.of("f1", "f2", POSIX_VAR, GAWK_VAR, POSIX_FUNC, GAWK_FUNC),
         Set.of("BEGIN", "END"),
         "function f1() {}\nfunction f2(){}\n{ <caret> }");
   }
 
   public void test2() {
     checkCompletion(
-        Set.of("f1", "f2", "NR", "tolower"),
+        Set.of("f1", "f2", POSIX_VAR, GAWK_VAR, POSIX_FUNC, GAWK_FUNC),
         Set.of("BEGIN", "END"),
         "function f1() {}\nfunction f2(){}\n{ 1 + <caret> }");
   }
 
   public void test3() {
     checkCompletion(
-        Set.of("f1", "f2", "NR", "tolower"),
+        Set.of("f1", "f2", POSIX_VAR, GAWK_VAR, POSIX_FUNC, GAWK_FUNC),
         Set.of("BEGIN", "END"),
         "function f1() {}\nfunction f2(){}\n{ print a[<caret>] }");
   }
 
   public void test4() {
     checkCompletion(
-        Set.of("f1", "f2", "NR", "tolower", "BEGIN", "END"),
+        Set.of("f1", "f2", POSIX_VAR, GAWK_VAR, POSIX_FUNC, "BEGIN", "END"), // TODO do we want to autocomplete BEGINFILE/ENDFILE?
         Set.of("return"),
         "function f1() {}\nfunction f2(){}\n<caret>");
   }
 
   public void test5() {
     checkCompletion(
-        Set.of("NR"),
+        Set.of(POSIX_VAR, GAWK_VAR),
         //        Set.of("return", "f1", "f2", "tolower", "BEGIN", "END"), // TODO
         Set.of(),
         "function f1() {}\nfunction f2(){}\n{ delete <caret> }");
@@ -50,13 +55,13 @@ public class AwkCompletionTests extends BasePlatformTestCase {
 
   public void test6() {
     checkCompletion(
-        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf"),
+        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf", "next"),
         Set.of(),
         "BEGIN { var1=1\nsplit(\"\",var2)}\nfunction f1(arg1, arg2,     arg3) { <caret> }");
   }
 
   public void test7() {
-    checkCompletionSingle("func<caret>", "function <caret>");
+    checkCompletionSingle("funct<caret>", "function <caret>");
   }
 
   public void test8() {
