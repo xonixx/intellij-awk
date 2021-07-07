@@ -28,7 +28,7 @@ However, this makes some other (rare) cases to parse incorrectly:
 ```
 *(Note, only Gawk considers this syntax correct, not mawk or bwk)* 
 
-This will cause an error because it will try to recognise division in `1 /hello` part.
+This will cause an error because it will try to recognise division in `1 /=2` part.
 
 In case you'll need to use code similar to this just wrap the ERE in parentheses:
 ```awk
