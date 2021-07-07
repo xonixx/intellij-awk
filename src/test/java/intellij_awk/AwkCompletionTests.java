@@ -92,6 +92,16 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "BEGIN { <caret> }\nfunction func1(arg1, arg2,\\\narg3) {}", "func1", "(arg1, arg2)");
   }
 
+  public void testFunctionArgsBuiltin1() {
+    checkFunctionArgs(
+        "BEGIN { <caret> }", "gsub", "(regexp, replacement [, target])");
+  }
+
+  public void testFunctionArgsBuiltin2() {
+    checkFunctionArgs(
+        "BEGIN { <caret> }", "gensub", "(regexp, replacement, how [, target])");
+  }
+
   public void testSwitch() {
     checkCompletionSingle("{ sw<caret> }", "{ switch (<caret>) {} }");
   }
