@@ -5,6 +5,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.NlsSafe;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
 import intellij_awk.AwkIcons;
@@ -35,6 +36,10 @@ public abstract class AwkNamedElementImpl extends ASTWrapperPsiElement implement
   @Override
   public PsiElement setName(@NlsSafe @NotNull String name) throws IncorrectOperationException {
     throw new UnsupportedOperationException("Implement me in a mixin");
+  }
+
+  protected TextRange getNameTextRange() {
+    return TextRange.from(0, getName().length());
   }
 
   protected PsiElement replaceNameNode(PsiElement newNode) {

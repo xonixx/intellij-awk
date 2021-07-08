@@ -3,19 +3,21 @@ package intellij_awk;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
-import intellij_awk.psi.*;
+import intellij_awk.psi.AwkFile;
+import intellij_awk.psi.AwkParamList;
+import intellij_awk.psi.AwkUserVarName;
 import intellij_awk.psi.impl.AwkItemImpl;
-import intellij_awk.psi.impl.AwkUserVarNameImpl;
+import intellij_awk.psi.impl.AwkNamedElementImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
+public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElementImpl>
     implements PsiPolyVariantReference {
 
-  public AwkReferenceVariable(@NotNull AwkUserVarNameImpl element, TextRange rangeInElement) {
+  public AwkReferenceVariable(@NotNull AwkNamedElementImpl element, TextRange rangeInElement) {
     super(element, rangeInElement);
   }
 
@@ -33,7 +35,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
     return res.toArray(new ResolveResult[0]);
   }
 
-  private @Nullable Resolved resolveFunctionArgument(AwkUserVarNameImpl userVarName) {
+  private @Nullable Resolved resolveFunctionArgument(AwkNamedElementImpl userVarName) {
     PsiElement parent = userVarName;
     while (true) {
       parent = parent.getParent();
@@ -62,7 +64,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkUserVarNameImpl>
     return null;
   }
 
-  private Resolved resolveGlobalVariable(AwkUserVarNameImpl userVarName) {
+  private Resolved resolveGlobalVariable(AwkNamedElementImpl userVarName) {
     AwkFile awkFile = (AwkFile) userVarName.getContainingFile();
 
     Resolved resolved = null;

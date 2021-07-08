@@ -6,16 +6,16 @@ import com.intellij.util.IncorrectOperationException;
 import intellij_awk.psi.AwkFile;
 import intellij_awk.psi.AwkFunctionName;
 import intellij_awk.psi.AwkItem;
-import intellij_awk.psi.impl.AwkFunctionCallNameImpl;
+import intellij_awk.psi.impl.AwkNamedElementImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AwkReferenceFunction extends PsiReferenceBase<AwkFunctionCallNameImpl> implements PsiPolyVariantReference {
+public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElementImpl> implements PsiPolyVariantReference {
 
-  public AwkReferenceFunction(@NotNull AwkFunctionCallNameImpl element, TextRange rangeInElement) {
+  public AwkReferenceFunction(@NotNull AwkNamedElementImpl element, TextRange rangeInElement) {
     super(element, rangeInElement);
   }
 

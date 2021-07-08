@@ -1,12 +1,14 @@
 package intellij_awk.psi.impl;
 
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import intellij_awk.AwkReferenceFunction;
+import intellij_awk.AwkReferenceVariable;
+import intellij_awk.AwkUtil;
 import intellij_awk.psi.AwkElementFactory;
 import intellij_awk.psi.AwkFunctionCallName;
+import intellij_awk.psi.AwkTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,8 +26,10 @@ public abstract class AwkFunctionCallNameMixin extends AwkNamedElementImpl
 
   @Override
   public PsiReference getReference() {
-    return new AwkReferenceFunction(
-        (AwkFunctionCallNameImpl) this, TextRange.from(0, getName().length()));
+    PsiElement prevSibling = AwkUtil.getPrevNotWhitespace(this);
+    return prevSibling != null && prevSibling.getNode().getElementType().equals(AwkTypes.AT)
+        ? new AwkReferenceVariable(this, getNameTextRange())
+        : new AwkReferenceFunction(this, getNameTextRange());
   }
 
   @Override
