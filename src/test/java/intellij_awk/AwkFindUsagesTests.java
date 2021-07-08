@@ -88,6 +88,18 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
         5);
   }
 
+  public void testIndirect1() {
+    doTest(
+        "BEGIN {\n"
+            + "    a=\"fun\"\n"
+            + "    @a(123)\n"
+            + "    @  a<caret>()\n"
+            + "}\n"
+            + "a\n"
+            + "{ a++ }",
+        4);
+  }
+
   private void doTest(String code, int expectedUsagesCount) {
     myFixture.configureByText("a.awk", code);
     PsiElement element = myFixture.getElementAtCaret();
