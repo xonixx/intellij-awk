@@ -1,3 +1,3 @@
 
 @include "b.awk"
-@include "c"
+@include "c" # testing no ext
