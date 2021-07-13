@@ -1,0 +1,1 @@
+BEGIN { print "x2.awk" }
