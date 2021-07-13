@@ -11,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 public class AwkReferenceIncludePath extends PsiReferenceBase<AwkNamedElementImpl>
     implements PsiPolyVariantReference {
 
+  private static final String AWK_EXT = ".awk";
+
   public AwkReferenceIncludePath(@NotNull AwkNamedElementImpl element, TextRange rangeInElement) {
     super(element, rangeInElement);
   }
@@ -24,6 +26,9 @@ public class AwkReferenceIncludePath extends PsiReferenceBase<AwkNamedElementImp
     String path = importText.substring(1, importText.length() - 1);
     VirtualFile virtualFile = myElement.getContainingFile().getOriginalFile().getVirtualFile();
     VirtualFile includedFile = virtualFile.findFileByRelativePath("../" + path);
+    if (includedFile == null && !path.endsWith(AWK_EXT)) {
+      includedFile = virtualFile.findFileByRelativePath("../" + path + AWK_EXT);
+    }
     if (includedFile == null) {
       return ResolveResult.EMPTY_ARRAY;
     }
