@@ -24,10 +24,18 @@ public class AwkReferenceIncludePath extends PsiReferenceBase<AwkNamedElementImp
       return ResolveResult.EMPTY_ARRAY;
     }
     String path = importText.substring(1, importText.length() - 1);
+    if (!path.endsWith(AWK_EXT)) {
+      path = path + AWK_EXT;
+    }
     VirtualFile virtualFile = myElement.getContainingFile().getOriginalFile().getVirtualFile();
-    VirtualFile includedFile = virtualFile.findFileByRelativePath("../" + path);
-    if (includedFile == null && !path.endsWith(AWK_EXT)) {
-      includedFile = virtualFile.findFileByRelativePath("../" + path + AWK_EXT);
+    VirtualFile includedFile = null;
+
+    VirtualFile parent = virtualFile;
+    while ((parent = parent.findFileByRelativePath("..")) != null) {
+      includedFile = parent.findFileByRelativePath(path);
+      if (includedFile != null) {
+        break;
+      }
     }
     if (includedFile == null) {
       return ResolveResult.EMPTY_ARRAY;
