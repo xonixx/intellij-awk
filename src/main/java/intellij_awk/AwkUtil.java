@@ -162,6 +162,7 @@ public class AwkUtil {
     return element;
   }
 
+  /** "\"value\"" -> "value" */
   public static String stringValue(String str) {
     return str == null || str.length() < 2 ? null : str.substring(1, str.length() - 1);
   }

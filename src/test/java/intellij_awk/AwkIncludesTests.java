@@ -69,4 +69,14 @@ public class AwkIncludesTests extends BasePlatformTestCase {
   public void test10() {
     assertEquals(1, myFixture.findUsages(d).size());
   }
+
+  public void testRenameFile1() {
+    PsiFile f1 = myFixture.configureByText("f1.awk", "@include \"f2.awk\"\n@include \"f3\"");
+    PsiFile f2 = myFixture.configureByText("f2.awk", "");
+    PsiFile f3 = myFixture.configureByText("f3.awk", "");
+    myFixture.renameElement(f2, "f2Renamed.awk");
+    myFixture.renameElement(f3, "f3Renamed.awk");
+    myFixture.checkResult(
+        "f1.awk", "@include \"f2Renamed.awk\"\n@include \"f3Renamed.awk\"", false);
+  }
 }
