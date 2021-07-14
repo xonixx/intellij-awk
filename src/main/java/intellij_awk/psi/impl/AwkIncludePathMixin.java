@@ -22,7 +22,7 @@ public abstract class AwkIncludePathMixin extends AwkNamedElementImpl implements
     String[] parts = currentIncludePath.split("/");
     parts[parts.length - 1] = newName;
     String realNewName = String.join("/", parts);
-    return replaceNameNode(AwkElementFactory.createString(getProject(), realNewName));
+    return replaceNameNode(AwkElementFactory.createIncludePath(getProject(), realNewName));
   }
 
   @Override
