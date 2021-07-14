@@ -9,7 +9,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.usageView.UsageViewLongNameLocation;
 import com.intellij.usageView.UsageViewNodeTextLocation;
-import intellij_awk.psi.*;
+import intellij_awk.psi.AwkFunctionName;
+import intellij_awk.psi.AwkTypes;
+import intellij_awk.psi.AwkUserVarName;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

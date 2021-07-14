@@ -14,6 +14,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -58,8 +59,8 @@ public class AwkUtil {
   }
 
   /**
-   * Searches the entire project for Simple language files with instances of the Simple property
-   * with the given key.
+   * Searches the entire project for AWK language files with instances of the AWK function with the
+   * given key. TODO: this should rely on stubs
    *
    * @param project current project
    * @param name to check
@@ -67,8 +68,7 @@ public class AwkUtil {
    */
   public static List<AwkFunctionNameImpl> findFunctions(Project project, String name) {
     List<AwkFunctionNameImpl> result = new ArrayList<>();
-    Collection<VirtualFile> virtualFiles =
-        FileTypeIndex.getFiles(AwkFileType.INSTANCE, GlobalSearchScope.allScope(project));
+    Collection<VirtualFile> virtualFiles = getAwkFiles(project);
     for (VirtualFile virtualFile : virtualFiles) {
       AwkFile awkFile = (AwkFile) PsiManager.getInstance(project).findFile(virtualFile);
       if (awkFile != null) {
@@ -108,12 +108,16 @@ public class AwkUtil {
 
   public static List<AwkFunctionNameImpl> findFunctions(Project project) {
     List<AwkFunctionNameImpl> result = new ArrayList<>();
-    Collection<VirtualFile> virtualFiles =
-        FileTypeIndex.getFiles(AwkFileType.INSTANCE, GlobalSearchScope.allScope(project));
+    Collection<VirtualFile> virtualFiles = getAwkFiles(project);
     for (VirtualFile virtualFile : virtualFiles) {
       result.addAll(findFunctions(PsiManager.getInstance(project).findFile(virtualFile)));
     }
     return result;
+  }
+
+  @NotNull
+  private static Collection<VirtualFile> getAwkFiles(Project project) {
+    return FileTypeIndex.getFiles(AwkFileType.INSTANCE, GlobalSearchScope.allScope(project));
   }
 
   public static InsertHandler<LookupElement> insertHandler(String insertString, int caretShift) {
