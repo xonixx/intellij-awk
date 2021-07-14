@@ -24,8 +24,7 @@ public class AwkUtil {
 
   @Nullable
   public static PsiElement findFirstMatchedDeep(PsiElement root, Predicate<PsiElement> predicate) {
-    PsiElement[] children = root.getChildren();
-    for (PsiElement child : children) {
+    for (PsiElement child = root.getFirstChild(); child != null; child = child.getNextSibling()) {
       if (predicate.test(child)) {
         return child;
       }

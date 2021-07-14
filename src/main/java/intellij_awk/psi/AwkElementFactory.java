@@ -20,6 +20,12 @@ public class AwkElementFactory {
     return createAwkPsiElement(project, "{ " + name + "= 1 }", AwkUserVarName.class);
   }
 
+  public static PsiElement createString(Project project, String name) {
+    return AwkUtil.findFirstMatchedDeep(
+        createFile(project, "\"" + name + "\""),
+        psiElement -> psiElement.getNode().getElementType() == AwkTypes.STRING);
+  }
+
   public static <T extends PsiElement> T createAwkPsiElement(
       Project project, String text, Class<T> klass) {
     return (T) AwkUtil.findFirstMatchedDeep(createFile(project, text), klass::isInstance);

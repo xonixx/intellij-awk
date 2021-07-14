@@ -18,8 +18,7 @@ public abstract class AwkIncludePathMixin extends AwkNamedElementImpl implements
   }
 
   public PsiElement setName(String newName) {
-    throw new UnsupportedOperationException("TBD");
-//    return replaceNameNode(AwkElementFactory.createUserVarName(getProject(), newName));
+    return replaceNameNode(AwkElementFactory.createString(getProject(), newName));
   }
 
   @Override

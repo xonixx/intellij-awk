@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 public class AwkLexerTests extends LexerTestCase {
 
   public void testIf1() {
-    System.out.println(Paths.get("").toAbsolutePath());
+//    System.out.println(Paths.get("").toAbsolutePath());
     doFileTest("awk");
   }
 
