@@ -11,6 +11,7 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.util.PsiTreeUtil;
 import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.Nullable;
@@ -122,19 +123,8 @@ public class AwkUtil {
     };
   }
 
-  public static <T extends PsiElement> T findParent(
-      PsiElement psiElement, Predicate<PsiElement> predicate) {
-    PsiElement parent = psiElement;
-    while (!((parent = parent.getParent()) instanceof AwkFile)) {
-      if (predicate.test(parent)) {
-        return (T) parent;
-      }
-    }
-    return null;
-  }
-
   public static <T extends PsiElement> T findParent(PsiElement psiElement, Class<T> parentClass) {
-    return findParent(psiElement, parentClass::isInstance);
+    return PsiTreeUtil.getParentOfType(psiElement, parentClass);
   }
 
   public static PsiElement getPrevNotWhitespace(PsiElement element) {
