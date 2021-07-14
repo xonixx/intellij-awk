@@ -48,31 +48,12 @@ public class AwkUtil {
     }
   }
 
-  public static boolean isEnclosedBy(
-      PsiElement psiElement, Class<? extends PsiElement> enclosingClass) {
-    return isEnclosedBy(psiElement, enclosingClass::isInstance);
-  }
-
-  public static boolean isEnclosedBy(PsiElement psiElement, Predicate<PsiElement> predicate) {
-    PsiElement parent = psiElement.getParent();
-    if (parent instanceof AwkFile) {
-      return false;
-    }
-    return predicate.test(parent) || isEnclosedBy(parent, predicate);
-  }
-
   public static boolean isAwkBegin(PsiElement candidate) {
     if (candidate instanceof AwkBeginOrEnd) {
       AwkBeginOrEnd beginOrEnd = (AwkBeginOrEnd) candidate;
       return AwkTypes.BEGIN.equals(beginOrEnd.getFirstChild().getNode().getElementType());
     }
     return false;
-  }
-
-  public static boolean isAwkItemOfBegin(PsiElement candidate) {
-    return candidate instanceof AwkItem
-        && ((AwkItem) candidate).getPattern() != null
-        && isAwkBegin(((AwkItem) candidate).getPattern().getBeginOrEnd());
   }
 
   /**
