@@ -4,7 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import intellij_awk.AwkReferenceIncludePath;
-import intellij_awk.AwkReferenceVariable;
+import intellij_awk.AwkUtil;
 import intellij_awk.psi.AwkElementFactory;
 import intellij_awk.psi.AwkIncludePath;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +18,11 @@ public abstract class AwkIncludePathMixin extends AwkNamedElementImpl implements
   }
 
   public PsiElement setName(String newName) {
-    return replaceNameNode(AwkElementFactory.createString(getProject(), newName));
+    String currentIncludePath = AwkUtil.stringValue(getText());
+    String[] parts = currentIncludePath.split("/");
+    parts[parts.length - 1] = newName;
+    String realNewName = String.join("/", parts);
+    return replaceNameNode(AwkElementFactory.createString(getProject(), realNewName));
   }
 
   @Override

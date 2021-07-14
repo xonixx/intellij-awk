@@ -20,10 +20,10 @@ public class AwkReferenceIncludePath extends PsiReferenceBase<AwkNamedElementImp
   @Override
   public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
     String importText = myElement.getText();
-    if (importText.length() < 2) {
+    String path = AwkUtil.stringValue(importText);
+    if (path == null) {
       return ResolveResult.EMPTY_ARRAY;
     }
-    String path = importText.substring(1, importText.length() - 1);
     if (!path.endsWith(AWK_EXT)) {
       path = path + AWK_EXT;
     }
