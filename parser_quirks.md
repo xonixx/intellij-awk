@@ -54,7 +54,7 @@ a(1 / 2, 3 / 4)
 
 Because it parses as `a(1 (/ 2, 3 /) 4)` instead of correct `a((1/2), (3/4))`.
 
-Due to this our lexer was adjusted in such a way that it recognizes `/` in any position where it is syntactically possible in AWK. This makes the example above parse correctly.
+Due to this our lexer was adjusted in such a way that it recognizes `/` (DIV) in any position where it is syntactically possible in AWK. This makes the example above parse correctly.
 
 However, this makes some other (rare) cases to parse incorrectly: 
 
