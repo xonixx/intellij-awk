@@ -5,7 +5,44 @@ Due to very ad-hoc nature of AWK syntax (namely some inherent ambiguities in its
 
 If you find any of them too limiting, please file an issue with description of your use-case.
 
-### 1. ERE vs DIV lexing ambiguity
+### Glossary
+
+- **ERE** - Extended regular expressions - [the form of regexes](https://en.wikipedia.org/wiki/Regular_expression#Standards) supported by AWK
+
+### 1. Unescaped `/` inside ERE class (ex.: `/[/]/`)
+
+[Related issue](https://github.com/xonixx/intellij-awk/issues/60)
+                                             
+It appears Gawk parser is more permissive here compared to other AWK implementations:
+
+```
+$ gawk51 'BEGIN { print "a/aa" ~ /a[/]/ }'
+1
+```
+```
+$ bwk 'BEGIN { print "a/aa" ~ /a[x/y]/ }'
+./soft/bwk: nonterminated character class a[x
+ source line number 1
+ context is
+        BEGIN { print "a/aa" ~ >>>  /a[x/ <<< 
+```
+```
+$ mawk 'BEGIN { print "a/aa" ~ /a[x/y]/ }'
+mawk: line 1: regular expression compile failed (bad class -- [], [^] or [)
+a[x
+mawk: line 1: syntax error at or near ]
+```
+
+The reason is because as `/` marks the start and end of ERE those other AWK implementations stop parsing the ERE after the second `/` encountered, thus parsing only `/a[x/` part as ERE.
+Looks like Gawk has some [more complex logic](https://git.savannah.gnu.org/cgit/gawk.git/tree/awkgram.y?h=gawk-5.1.0#n3612) to parse regexes thus allowing more flexibility.
+
+We are not able to parse EREs with same flexibility in Intellij Idea plugin, because we are limited with JFlex lexing capabilities. Thus if you happen to use this form of regexes - will cause error. 
+
+#### Solution
+
+Just escape the `/` (like this `/[\/]/`) and Idea AWK will parse it happily. Also you make your script more portable.
+
+### 2. ERE vs DIV lexing ambiguity
 
 [Related issue](https://github.com/xonixx/intellij-awk/issues/11)
 
@@ -15,7 +52,7 @@ The problem resides in lexing ambiguity of tokens `/regex/` vs `/`. Naturally, l
 a(1 / 2, 3 / 4)
 ```
 
-Because it parses as `a(1, (/ 2, 3 /) 4)` instead of correct `a((1/2), (3/4))`.
+Because it parses as `a(1 (/ 2, 3 /) 4)` instead of correct `a((1/2), (3/4))`.
 
 Due to this our lexer was adjusted in such a way that it recognizes `/` in any position where it is syntactically possible in AWK. This makes the example above parse correctly.
 
@@ -30,6 +67,8 @@ However, this makes some other (rare) cases to parse incorrectly:
 
 This will cause an error because it will try to recognise division in `1 /=2` part.
 
+#### Solution
+
 In case you'll need to use code similar to this just wrap the ERE in parentheses:
 ```awk
 {
@@ -37,7 +76,7 @@ In case you'll need to use code similar to this just wrap the ERE in parentheses
 }
 ```
 
-### 2. Gawk built-in functions shadowing
+### 3. Gawk built-in functions shadowing
 
 [Related issue](https://github.com/xonixx/intellij-awk/issues/70)
 
