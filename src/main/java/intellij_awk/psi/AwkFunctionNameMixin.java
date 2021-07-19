@@ -26,6 +26,15 @@ public abstract class AwkFunctionNameMixin
     super(stub, nodeType);
   }
 
+  @Override
+  public String getName() {
+    AwkFunctionNameStub awkFunctionNameStub = getStub();
+    if (awkFunctionNameStub != null) {
+      return awkFunctionNameStub.getName();
+    }
+    return super.getName();
+  }
+
   public PsiElement setName(String newName) {
     return replaceNameNode(AwkElementFactory.createFunctionName(getProject(), newName));
   }
@@ -56,11 +65,15 @@ public abstract class AwkFunctionNameMixin
   }
 
   public String getSignatureString() {
+    AwkFunctionNameStub awkFunctionNameStub = getStub();
+    if (awkFunctionNameStub != null) {
+      return awkFunctionNameStub.getSignatureString();
+    }
     return "(" + String.join(", ", getArgumentNames()) + ")";
   }
 
   /** @return argument names excluding "local" */
-  public List<String> getArgumentNames() {
+  private List<String> getArgumentNames() {
     List<String> result = new ArrayList<>();
     AwkItem awkItem = (AwkItem) getParent();
     AwkParamList awkParamList = awkItem.getParamList();

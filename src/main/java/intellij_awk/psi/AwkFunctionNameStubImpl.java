@@ -9,14 +9,22 @@ public class AwkFunctionNameStubImpl extends StubBase<AwkFunctionName>
     implements AwkFunctionNameStub {
 
   private final String name;
+  private final String signatureString;
 
-  public AwkFunctionNameStubImpl(@Nullable StubElement parent, String name) {
+  public AwkFunctionNameStubImpl(
+      @Nullable StubElement parent, String name, String signatureString) {
     super(parent, (IStubElementType<?, ?>) AwkTypes.FUNCTION_NAME);
     this.name = name;
+    this.signatureString = signatureString;
   }
 
   @Override
   public String getName() {
     return name;
+  }
+
+  @Override
+  public String getSignatureString() {
+    return signatureString;
   }
 }

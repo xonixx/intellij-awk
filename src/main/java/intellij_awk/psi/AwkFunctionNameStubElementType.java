@@ -21,7 +21,8 @@ public class AwkFunctionNameStubElementType
   @Override
   public @NotNull AwkFunctionNameStub createStub(
       @NotNull AwkFunctionName psi, StubElement<?> parentStub) {
-    return new AwkFunctionNameStubImpl(parentStub, psi.getName());
+    return new AwkFunctionNameStubImpl(
+        parentStub, psi.getName(), ((AwkFunctionNameMixin) psi).getSignatureString());
   }
 
   @Override
@@ -33,12 +34,14 @@ public class AwkFunctionNameStubElementType
   public void serialize(@NotNull AwkFunctionNameStub stub, @NotNull StubOutputStream dataStream)
       throws IOException {
     dataStream.writeName(stub.getName());
+    dataStream.writeUTFFast(stub.getSignatureString());
   }
 
   @Override
   public @NotNull AwkFunctionNameStub deserialize(
       @NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
-    return new AwkFunctionNameStubImpl(parentStub, dataStream.readNameString());
+    return new AwkFunctionNameStubImpl(
+        parentStub, dataStream.readNameString(), dataStream.readUTFFast());
   }
 
   @Override
