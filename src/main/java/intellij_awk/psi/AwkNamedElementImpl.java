@@ -1,4 +1,4 @@
-package intellij_awk.psi.impl;
+package intellij_awk.psi;
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
@@ -9,7 +9,6 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
 import intellij_awk.AwkIcons;
-import intellij_awk.psi.AwkNamedElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

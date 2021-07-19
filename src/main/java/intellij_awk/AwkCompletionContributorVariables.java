@@ -5,7 +5,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.*;
-import intellij_awk.psi.impl.AwkFunctionNameMixin;
+import intellij_awk.psi.AwkFunctionNameMixin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
