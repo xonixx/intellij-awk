@@ -11,6 +11,7 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
@@ -60,33 +61,20 @@ public class AwkUtil {
 
   /**
    * Searches the entire project for AWK language files with instances of the AWK function with the
-   * given key. TODO: this should rely on stubs
+   * given key.
    *
    * @param project current project
    * @param name to check
    * @return matching properties
    */
-  public static List<AwkFunctionNameImpl> findFunctions(Project project, String name) {
-    List<AwkFunctionNameImpl> result = new ArrayList<>();
-    Collection<VirtualFile> virtualFiles = getAwkFiles(project);
-    for (VirtualFile virtualFile : virtualFiles) {
-      AwkFile awkFile = (AwkFile) PsiManager.getInstance(project).findFile(virtualFile);
-      if (awkFile != null) {
+  public static Collection<AwkFunctionNameImpl> findFunctions(Project project, String name) {
+    return findFunctions(project, name, GlobalSearchScope.projectScope(project));
+  }
 
-        for (PsiElement child : awkFile.getChildren()) {
-
-          if (child instanceof AwkItem) {
-            AwkItem awkItem = (AwkItem) child;
-
-            AwkFunctionName functionName = awkItem.getFunctionName();
-            if (functionName != null && name.equals(functionName.getName())) {
-              result.add((AwkFunctionNameImpl) functionName);
-            }
-          }
-        }
-      }
-    }
-    return result;
+  public static Collection<AwkFunctionNameImpl> findFunctions(
+      Project project, String name, GlobalSearchScope scope) {
+    return StubIndex.getElements(
+        AwkFunctionNameStubElementType.Index.KEY, name, project, scope, AwkFunctionNameImpl.class);
   }
 
   public static List<AwkFunctionNameImpl> findFunctions(PsiFile psiFile) {

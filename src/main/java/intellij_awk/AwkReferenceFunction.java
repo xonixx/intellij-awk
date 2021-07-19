@@ -2,17 +2,19 @@ package intellij_awk;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.IncorrectOperationException;
-import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import intellij_awk.psi.AwkNamedElementImpl;
+import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElementImpl>
-    implements PsiPolyVariantReference {
+        implements PsiPolyVariantReference {
 
   public AwkReferenceFunction(@NotNull AwkNamedElementImpl element, TextRange rangeInElement) {
     super(element, rangeInElement);
@@ -22,8 +24,16 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElementImpl>
   public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
     List<ResolveResult> res = new ArrayList<>();
 
-    List<AwkFunctionNameImpl> functionNames =
-        AwkUtil.findFunctions(myElement.getProject(), myElement.getText());
+    // should resolve to single function if defined in same file where used
+    Collection<AwkFunctionNameImpl> functionNames =
+            AwkUtil.findFunctions(
+                    myElement.getProject(),
+                    myElement.getText(),
+                    GlobalSearchScope.fileScope(myElement.getContainingFile()));
+
+    if (functionNames.isEmpty()) {
+      functionNames = AwkUtil.findFunctions(myElement.getProject(), myElement.getText());
+    }
 
     for (AwkFunctionNameImpl functionName : functionNames) {
       res.add(new PsiElementResolveResult(functionName));
@@ -41,7 +51,7 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElementImpl>
 
   @Override
   public PsiElement handleElementRename(@NotNull String newElementName)
-      throws IncorrectOperationException {
+          throws IncorrectOperationException {
     return myElement.setName(newElementName);
   }
 }
