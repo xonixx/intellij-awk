@@ -183,6 +183,8 @@ include_path     ::= STRING {
 function_name    ::= FUNC_NAME | VAR_NAME {
     mixin="intellij_awk.psi.AwkFunctionNameMixin"
     implements="intellij_awk.psi.AwkNamedElement"
+    stubClass="intellij_awk.psi.AwkFunctionNameStub"
+    elementTypeFactory="intellij_awk.psi.AwkElementType.getStubBasedElementType"
 }
 
 param_list       ::= var_name (COMMA newlines_opt var_name)*

@@ -5,6 +5,7 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiWhiteSpace;
+import com.intellij.psi.stubs.IStubElementType;
 import intellij_awk.AwkIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,17 +14,21 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AwkFunctionNameMixin extends AwkNamedElementImpl implements AwkFunctionName {
+public abstract class AwkFunctionNameMixin
+    extends AwkNamedStubBasedPsiElementBase<AwkFunctionNameStub>
+/*AwkNamedElementImpl*/
+/*implements AwkFunctionNameStubBased*/ {
   public AwkFunctionNameMixin(@NotNull ASTNode node) {
     super(node);
   }
 
-  public PsiElement setName(String newName) {
-    return replaceNameNode(AwkElementFactory.createFunctionName(getProject(), newName));
+  public AwkFunctionNameMixin(
+      @NotNull AwkFunctionNameStub stub, @NotNull IStubElementType nodeType) {
+    super(stub, nodeType);
   }
 
-  public PsiElement getNameIdentifier() {
-    return this;
+  public PsiElement setName(String newName) {
+    return replaceNameNode(AwkElementFactory.createFunctionName(getProject(), newName));
   }
 
   public ItemPresentation getPresentation() {

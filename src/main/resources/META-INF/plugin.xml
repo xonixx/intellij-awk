@@ -39,6 +39,8 @@
         <lang.commenter language="AWK" implementationClass="intellij_awk.AwkCommenter"/>
 
         <lang.braceMatcher language="AWK" implementationClass="intellij_awk.AwkBraceMatcher"/>
+
+        <stubIndex implementation="intellij_awk.psi.AwkFunctionNameStubElementType$Index"/>
     </extensions>
 
     <actions>
