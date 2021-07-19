@@ -105,6 +105,19 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             + "}");
   }
 
+  public void testFuncMultipleFiles2() {
+    doTest(
+        1,
+        "BEGIN {\n"
+            + "    name()\n"
+            + "}\n"
+            + "\n"
+            + "function name<caret>() {\n"
+            + "    print 1\n"
+            + "}\n",
+        "function name() {\n    print 2\n}");
+  }
+
   public void testIndirect1() {
     doTest(
         4,
