@@ -176,12 +176,12 @@ item             ::= FUNCTION function_name LPAREN param_list? RPAREN
                    | action
 
 include_path     ::= STRING {
-    mixin="intellij_awk.psi.impl.AwkIncludePathMixin"
+    mixin="intellij_awk.psi.AwkIncludePathMixin"
     implements="intellij_awk.psi.AwkNamedElement"
 }
 
 function_name    ::= FUNC_NAME | VAR_NAME {
-    mixin="intellij_awk.psi.impl.AwkFunctionNameMixin"
+    mixin="intellij_awk.psi.AwkFunctionNameMixin"
     implements="intellij_awk.psi.AwkNamedElement"
 }
 
@@ -191,7 +191,7 @@ pattern          ::= BEGINFILE | ENDFILE | begin_or_end
                  | expr (COMMA newlines_opt expr)?
 
 begin_or_end     ::= BEGIN | END {
-    mixin="intellij_awk.psi.impl.AwkNamedElementImpl"
+    mixin="intellij_awk.psi.AwkNamedElementImpl"
     implements="intellij_awk.psi.AwkNamedElement"
 }
 
@@ -372,7 +372,7 @@ private function_call_built_in ::= (BUILTIN_FUNC_NAME | BUILTIN_FUNC_NAME_GAWK) 
 
 function_call_name          ::= FUNC_NAME
 {
-    mixin="intellij_awk.psi.impl.AwkFunctionCallNameMixin"
+    mixin="intellij_awk.psi.AwkFunctionCallNameMixin"
     implements="intellij_awk.psi.AwkNamedElement"
 }
 
@@ -487,7 +487,7 @@ private gawk_var_name ::= var_name (LBRACKET expr_lst RBRACKET)*
 private var_name ::= SPECIAL_VAR_NAME | SPECIAL_VAR_NAME_GAWK | user_var_name
 
 user_var_name ::= VAR_NAME {
-    mixin="intellij_awk.psi.impl.AwkUserVarNameMixin"
+    mixin="intellij_awk.psi.AwkUserVarNameMixin"
     implements="intellij_awk.psi.AwkNamedElement"
 }
 

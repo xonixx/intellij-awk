@@ -1,12 +1,10 @@
-package intellij_awk.psi.impl;
+package intellij_awk.psi;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import intellij_awk.AwkReferenceIncludePath;
 import intellij_awk.AwkUtil;
-import intellij_awk.psi.AwkElementFactory;
-import intellij_awk.psi.AwkIncludePath;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

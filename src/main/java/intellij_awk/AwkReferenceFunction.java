@@ -4,7 +4,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
-import intellij_awk.psi.impl.AwkNamedElementImpl;
+import intellij_awk.psi.AwkNamedElementImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

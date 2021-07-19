@@ -7,7 +7,7 @@ import intellij_awk.psi.AwkFile;
 import intellij_awk.psi.AwkParamList;
 import intellij_awk.psi.AwkUserVarName;
 import intellij_awk.psi.impl.AwkItemImpl;
-import intellij_awk.psi.impl.AwkNamedElementImpl;
+import intellij_awk.psi.AwkNamedElementImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
