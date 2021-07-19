@@ -48,7 +48,7 @@ public class AwkFunctionNameStubElementType
 
   public static class Index extends StringStubIndexExtension<AwkFunctionName> {
     public static StubIndexKey<String, AwkFunctionName> KEY =
-        StubIndexKey.createIndexKey("FUNCTION_NAME");
+        StubIndexKey.createIndexKey(AwkFunctionName.class.getCanonicalName());
 
     @Override
     public @NotNull StubIndexKey<String, AwkFunctionName> getKey() {

@@ -15,9 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AwkFunctionNameMixin
-    extends AwkNamedStubBasedPsiElementBase<AwkFunctionNameStub>
-/*AwkNamedElementImpl*/
-/*implements AwkFunctionNameStubBased*/ {
+    extends AwkNamedStubBasedPsiElementBase<AwkFunctionNameStub> {
+
   public AwkFunctionNameMixin(@NotNull ASTNode node) {
     super(node);
   }

@@ -17,13 +17,6 @@ public interface AwkNamedElement extends PsiNameIdentifierOwner {
     return this;
   }
 
-/*
-  @Override
-  default String getName() {
-    return getNameIdentifier().getText();
-  }
-*/
-
   @Override
   default PsiElement setName(@NlsSafe @NotNull String name) throws IncorrectOperationException {
     throw new UnsupportedOperationException("Implement me in a mixin");

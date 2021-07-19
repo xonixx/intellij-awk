@@ -16,8 +16,6 @@ import javax.swing.*;
 
 public abstract class AwkNamedElementImpl extends ASTWrapperPsiElement implements AwkNamedElement {
 
-  //  private static final Logger LOG = Logger.getInstance(AwkNamedElementImpl.class);
-
   public AwkNamedElementImpl(@NotNull ASTNode node) {
     super(node);
   }
@@ -26,16 +24,6 @@ public abstract class AwkNamedElementImpl extends ASTWrapperPsiElement implement
   public String getName() {
     return getNameIdentifier().getText();
   }
-  /*
-    protected PsiElement replaceNameNode(PsiElement newNode) {
-      if (newNode != null) {
-        replace(newNode);
-      } else {
-        LOG.warn("Unable to replace renamed node, because it's null");
-      }
-      return this;
-    }
-  */
 
   public ItemPresentation getPresentation() {
     return new ItemPresentation() {

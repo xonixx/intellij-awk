@@ -4,7 +4,6 @@ import com.intellij.extapi.psi.StubBasedPsiElementBase;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
-import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
 public class AwkNamedStubBasedPsiElementBase<T extends StubElement>
@@ -15,15 +14,16 @@ public class AwkNamedStubBasedPsiElementBase<T extends StubElement>
     return getNameIdentifier().getText();
   }
 
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + "(" + getNode().getElementType() + ")";
+  }
+
   public AwkNamedStubBasedPsiElementBase(@NotNull T stub, @NotNull IStubElementType nodeType) {
     super(stub, nodeType);
   }
 
   public AwkNamedStubBasedPsiElementBase(@NotNull ASTNode node) {
     super(node);
-  }
-
-  public AwkNamedStubBasedPsiElementBase(T stub, IElementType nodeType, ASTNode node) {
-    super(stub, nodeType, node);
   }
 }
