@@ -3,12 +3,13 @@ package intellij_awk;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
-import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import intellij_awk.psi.AwkNamedElementImpl;
+import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElementImpl>
@@ -22,7 +23,7 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElementImpl>
   public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
     List<ResolveResult> res = new ArrayList<>();
 
-    List<AwkFunctionNameImpl> functionNames =
+    Collection<AwkFunctionNameImpl> functionNames =
         AwkUtil.findFunctions(myElement.getProject(), myElement.getText());
 
     for (AwkFunctionNameImpl functionName : functionNames) {

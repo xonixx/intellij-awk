@@ -49,12 +49,12 @@ public class AwkFunctionNameStubElementType
     sink.occurrence(Index.KEY, stub.getName());
   }
 
-  public static class Index extends StringStubIndexExtension<AwkFunctionName> {
-    public static StubIndexKey<String, AwkFunctionName> KEY =
+  public static class Index extends StringStubIndexExtension<AwkFunctionNameImpl> {
+    public static StubIndexKey<String, AwkFunctionNameImpl> KEY =
         StubIndexKey.createIndexKey(AwkFunctionName.class.getCanonicalName());
 
     @Override
-    public @NotNull StubIndexKey<String, AwkFunctionName> getKey() {
+    public @NotNull StubIndexKey<String, AwkFunctionNameImpl> getKey() {
       return KEY;
     }
   }
