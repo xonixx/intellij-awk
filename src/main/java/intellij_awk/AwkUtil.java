@@ -61,19 +61,20 @@ public class AwkUtil {
 
   /**
    * Searches the entire project for AWK language files with instances of the AWK function with the
-   * given key. TODO: this should rely on stubs
+   * given key.
    *
    * @param project current project
    * @param name to check
    * @return matching properties
    */
   public static Collection<AwkFunctionNameImpl> findFunctions(Project project, String name) {
+    return findFunctions(project, name, GlobalSearchScope.projectScope(project));
+  }
+
+  public static Collection<AwkFunctionNameImpl> findFunctions(
+      Project project, String name, GlobalSearchScope scope) {
     return StubIndex.getElements(
-        AwkFunctionNameStubElementType.Index.KEY,
-        name,
-        project,
-        GlobalSearchScope.projectScope(project),
-        AwkFunctionNameImpl.class);
+        AwkFunctionNameStubElementType.Index.KEY, name, project, scope, AwkFunctionNameImpl.class);
   }
 
   public static List<AwkFunctionNameImpl> findFunctions(PsiFile psiFile) {

@@ -2,6 +2,7 @@ package intellij_awk;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.IncorrectOperationException;
 import intellij_awk.psi.AwkNamedElementImpl;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
@@ -23,8 +24,16 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElementImpl>
   public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
     List<ResolveResult> res = new ArrayList<>();
 
+    // should resolve to single function if defined in same file where used
     Collection<AwkFunctionNameImpl> functionNames =
-        AwkUtil.findFunctions(myElement.getProject(), myElement.getText());
+        AwkUtil.findFunctions(
+            myElement.getProject(),
+            myElement.getText(),
+            GlobalSearchScope.fileScope(myElement.getContainingFile()));
+
+    if (functionNames.isEmpty()) {
+      functionNames = AwkUtil.findFunctions(myElement.getProject(), myElement.getText());
+    }
 
     for (AwkFunctionNameImpl functionName : functionNames) {
       res.add(new PsiElementResolveResult(functionName));
