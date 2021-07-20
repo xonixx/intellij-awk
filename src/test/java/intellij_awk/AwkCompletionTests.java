@@ -82,6 +82,13 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "function aaa1(){}\nfunction bbb(){}\nfunction aaa2(){}\n{ aaa<caret> }");
   }
 
+  public void testMultiFiles1() {
+    checkCompletionExact(
+        Set.of("aaa1", "aaa2"),
+        "function bbb(){}\nfunction aaa2(){}\n{ aaa<caret> }",
+        "function aaa1(){}\n");
+  }
+
   public void testFunctionArgs1() {
     checkFunctionArgs(
         "BEGIN { <caret> }\nfunction func1(arg1, arg2,     arg3) {}", "func1", "(arg1, arg2)");
@@ -154,8 +161,8 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     myFixture.checkResult(expectedResult);
   }
 
-  private void checkCompletionExact(Set<String> expected, String code) {
-    setupCode(code);
+  private void checkCompletionExact(Set<String> expected, String code, String... otherFiles) {
+    setupCode(code, otherFiles);
     LookupElement[] variants = myFixture.completeBasic();
     assertNotNull(
         "Expected completions that contain " + expected + ", but no completions found", variants);
@@ -180,10 +187,14 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     return Arrays.stream(variants).map(LookupElement::getLookupString).collect(Collectors.toSet());
   }
 
-  private void setupCode(String code) {
+  private void setupCode(String code, String... otherFiles) {
     if (!code.contains("<caret>")) {
       throw new IllegalArgumentException("Please, add `<caret>` marker to code");
     }
     myFixture.configureByText("a.awk", code);
+    for (int i = 0; i < otherFiles.length; i++) {
+      String otherFileCode = otherFiles[i];
+      myFixture.addFileToProject("f" + i + ".awk", otherFileCode);
+    }
   }
 }

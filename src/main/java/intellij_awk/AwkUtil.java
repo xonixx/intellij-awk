@@ -77,6 +77,26 @@ public class AwkUtil {
         AwkFunctionNameStubElementType.Index.KEY, name, project, scope, AwkFunctionNameImpl.class);
   }
 
+  public static List<AwkFunctionNameImpl> findFunctions(Project project) {
+    return findFunctions(project, GlobalSearchScope.projectScope(project));
+  }
+
+  public static List<AwkFunctionNameImpl> findFunctions(Project project, GlobalSearchScope scope) {
+    Collection<String> allKeys =
+        StubIndex.getInstance().getAllKeys(AwkFunctionNameStubElementType.Index.KEY, project);
+    List<AwkFunctionNameImpl> result = new ArrayList<>();
+    for (String key : allKeys) {
+      result.addAll(
+          StubIndex.getElements(
+              AwkFunctionNameStubElementType.Index.KEY,
+              key,
+              project,
+              scope,
+              AwkFunctionNameImpl.class));
+    }
+    return result;
+  }
+
   public static List<AwkFunctionNameImpl> findFunctions(PsiFile psiFile) {
     List<AwkFunctionNameImpl> result = new ArrayList<>();
     if (psiFile instanceof AwkFile) {
@@ -90,15 +110,6 @@ public class AwkUtil {
           }
         }
       }
-    }
-    return result;
-  }
-
-  public static List<AwkFunctionNameImpl> findFunctions(Project project) {
-    List<AwkFunctionNameImpl> result = new ArrayList<>();
-    Collection<VirtualFile> virtualFiles = getAwkFiles(project);
-    for (VirtualFile virtualFile : virtualFiles) {
-      result.addAll(findFunctions(PsiManager.getInstance(project).findFile(virtualFile)));
     }
     return result;
   }

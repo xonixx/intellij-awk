@@ -83,7 +83,7 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
             }
 
             List<AwkFunctionNameImpl> functionNames =
-                AwkUtil.findFunctions(parameters.getOriginalFile());
+                AwkUtil.findFunctions(parameters.getOriginalFile().getProject());
 
             for (AwkFunctionNameImpl functionName : functionNames) {
               addFunctionCompletionCandidate(
