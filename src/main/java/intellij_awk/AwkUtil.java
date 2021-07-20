@@ -82,8 +82,7 @@ public class AwkUtil {
   }
 
   public static List<AwkFunctionNameImpl> findFunctions(Project project, GlobalSearchScope scope) {
-    Collection<String> allKeys =
-        StubIndex.getInstance().getAllKeys(AwkFunctionNameStubElementType.Index.KEY, project);
+    Collection<String> allKeys = findFunctionNames(project);
     List<AwkFunctionNameImpl> result = new ArrayList<>();
     for (String key : allKeys) {
       result.addAll(
@@ -95,6 +94,11 @@ public class AwkUtil {
               AwkFunctionNameImpl.class));
     }
     return result;
+  }
+
+  @NotNull
+  public static Collection<String> findFunctionNames(Project project) {
+    return StubIndex.getInstance().getAllKeys(AwkFunctionNameStubElementType.Index.KEY, project);
   }
 
   public static List<AwkFunctionNameImpl> findFunctionsInFile(

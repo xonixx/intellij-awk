@@ -6,29 +6,18 @@ import com.intellij.openapi.project.Project;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class AwkChooseByNameContributor implements ChooseByNameContributor {
 
-  @NotNull
   @Override
-  public String[] getNames(Project project, boolean includeNonProjectItems) {
-    List<AwkFunctionNameImpl> functions = AwkUtil.findFunctions(project);
-    List<String> names = new ArrayList<>(functions.size());
-    for (AwkFunctionNameImpl function : functions) {
-      String name = function.getName();
-      if (name != null && name.length() > 0) {
-        names.add(name);
-      }
-    }
-    return names.toArray(new String[names.size()]);
+  public String @NotNull [] getNames(Project project, boolean includeNonProjectItems) {
+    // TODO: include non project items
+    return AwkUtil.findFunctionNames(project).toArray(new String[0]);
   }
 
-  @NotNull
   @Override
-  public NavigationItem[] getItemsByName(
+  public NavigationItem @NotNull [] getItemsByName(
       String name, String pattern, Project project, boolean includeNonProjectItems) {
     // TODO: include non project items
     Collection<AwkFunctionNameImpl> functions = AwkUtil.findFunctions(project, name);
