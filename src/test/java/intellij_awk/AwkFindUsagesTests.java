@@ -88,7 +88,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             + "}");
   }
 
-  public void testFuncMultipleFiles1() {
+  public void testMultipleFilesFunc1() {
     doTest(
         5,
         "BEGIN {\n"
@@ -105,7 +105,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             + "}");
   }
 
-  public void testFuncMultipleFiles2() {
+  public void testMultipleFilesFunc2() {
     doTest(
         1,
         "BEGIN {\n"
@@ -116,6 +116,26 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             + "    print 1\n"
             + "}\n",
         "function name() {\n    print 2\n}");
+  }
+
+  public void testMultipleFilesVars1() {
+    doTest(2, "BEGIN {\n  A<caret> = 1}\n", "A { print A }");
+  }
+
+  public void testMultipleFilesVars2() {
+    doTest(2, "A<caret> { print A }", "BEGIN {split(\"\",A)}\n");
+  }
+
+  public void testMultipleFilesVars3() {
+    doTest(1, "BEGIN {\n  A<caret> = 1 }\n", "function f() { print A }");
+  }
+
+  public void testMultipleFilesVars4() {
+    doTest(0, "BEGIN {\n  A<caret> = 1 }\n", "function f(A) { print A }");
+  }
+
+  public void testMultipleFilesVars5() {
+    doTest(1, "function f() { return A<caret>+1 }", "function f2() { print A }");
   }
 
   public void testIndirect1() {
