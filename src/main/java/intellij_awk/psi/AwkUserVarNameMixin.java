@@ -36,6 +36,37 @@ public abstract class AwkUserVarNameMixin
 
   /** <code>Var = ...</code> or <code>split("",Var)</code> */
   public boolean looksLikeDeclaration() {
-    throw new UnsupportedOperationException("TBD");
+    AwkUserVarNameStub stub = getStub();
+    if (stub != null) {
+      return stub.looksLikeDeclaration();
+    }
+
+    PsiElement parent0 = getParent();
+    PsiElement parent1 = parent0.getParent();
+    PsiElement[] childrenOfParent1 = parent1.getChildren();
+
+    if (parent0 instanceof AwkLvalue
+        && childrenOfParent1.length >= 2
+        && childrenOfParent1[1].getNode().getElementType().equals(AwkTypes.ASSIGN)) {
+      // `Var = 1` case
+      return true;
+    }
+    PsiElement p = parent1.getParent();
+    if (p != null) {
+      p = p.getParent();
+
+      ASTNode splitFunc;
+      if (p instanceof AwkNonUnaryExpr
+          && (splitFunc = p.getFirstChild().getNode())
+              .getElementType()
+              .equals(AwkTypes.BUILTIN_FUNC_NAME)
+          && splitFunc.getText().equals("split")
+          && p.getText().replace(" ", "").equals("split(\"\"," + getName() + ")")) {
+        // `split("",Var)` case
+        return true;
+      }
+    }
+
+    return false;
   }
 }
