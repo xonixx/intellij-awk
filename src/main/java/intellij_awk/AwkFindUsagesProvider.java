@@ -59,14 +59,16 @@ public class AwkFindUsagesProvider implements FindUsagesProvider {
   @NotNull
   @Override
   public String getDescriptiveName(@NotNull PsiElement element) {
-    return ElementDescriptionUtil.getElementDescription(
-        element, UsageViewLongNameLocation.INSTANCE);
+    return element.getText();
+//    return ElementDescriptionUtil.getElementDescription(
+//        element, UsageViewLongNameLocation.INSTANCE);
   }
 
   @NotNull
   @Override
   public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-    return ElementDescriptionUtil.getElementDescription(
-        element, UsageViewNodeTextLocation.INSTANCE);
+    return element.getText();
+//    return ElementDescriptionUtil.getElementDescription(
+//        element, UsageViewNodeTextLocation.INSTANCE);
   }
 }
