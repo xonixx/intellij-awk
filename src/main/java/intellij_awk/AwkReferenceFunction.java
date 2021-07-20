@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElementImpl>
-        implements PsiPolyVariantReference {
+    implements PsiPolyVariantReference {
 
   public AwkReferenceFunction(@NotNull AwkNamedElementImpl element, TextRange rangeInElement) {
     super(element, rangeInElement);
@@ -24,15 +24,14 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElementImpl>
   public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
     List<ResolveResult> res = new ArrayList<>();
 
+    String funcName = myElement.getName();
+
     // should resolve to single function if defined in same file where used
     Collection<AwkFunctionNameImpl> functionNames =
-            AwkUtil.findFunctions(
-                    myElement.getProject(),
-                    myElement.getText(),
-                    GlobalSearchScope.fileScope(myElement.getContainingFile()));
+        AwkUtil.findFunctionsInFile(myElement.getContainingFile(), funcName);
 
     if (functionNames.isEmpty()) {
-      functionNames = AwkUtil.findFunctions(myElement.getProject(), myElement.getText());
+      functionNames = AwkUtil.findFunctions(myElement.getProject(), funcName);
     }
 
     for (AwkFunctionNameImpl functionName : functionNames) {
@@ -51,7 +50,7 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElementImpl>
 
   @Override
   public PsiElement handleElementRename(@NotNull String newElementName)
-          throws IncorrectOperationException {
+      throws IncorrectOperationException {
     return myElement.setName(newElementName);
   }
 }

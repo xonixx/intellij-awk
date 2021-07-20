@@ -97,7 +97,8 @@ public class AwkUtil {
     return result;
   }
 
-  public static List<AwkFunctionNameImpl> findFunctions(PsiFile psiFile) {
+  public static List<AwkFunctionNameImpl> findFunctionsInFile(
+      PsiFile psiFile, @NotNull String name) {
     List<AwkFunctionNameImpl> result = new ArrayList<>();
     if (psiFile instanceof AwkFile) {
       AwkFile awkFile = (AwkFile) psiFile;
@@ -105,7 +106,7 @@ public class AwkUtil {
         if (child instanceof AwkItem) {
           AwkItem awkItem = (AwkItem) child;
           AwkFunctionName functionName = awkItem.getFunctionName();
-          if (functionName != null) {
+          if (functionName != null && name.equals(functionName.getName())) {
             result.add((AwkFunctionNameImpl) functionName);
           }
         }
