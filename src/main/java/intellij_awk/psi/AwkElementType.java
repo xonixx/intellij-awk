@@ -16,6 +16,8 @@ public class AwkElementType extends IElementType {
     switch (name) {
       case "FUNCTION_NAME":
         return new AwkFunctionNameStubElementType();
+      case "USER_VAR_NAME":
+        return new AwkUserVarNameStubElementType();
       default:
         throw new IllegalArgumentException(name);
     }

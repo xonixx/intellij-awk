@@ -41,6 +41,8 @@
         <lang.braceMatcher language="AWK" implementationClass="intellij_awk.AwkBraceMatcher"/>
 
         <stubIndex implementation="intellij_awk.psi.AwkFunctionNameStubElementType$Index"/>
+        <stubIndex implementation="intellij_awk.psi.AwkUserVarNameStubElementType$IndexVarDeclarations"/>
+        <stubIndex implementation="intellij_awk.psi.AwkUserVarNameStubElementType$IndexVarUsage"/>
     </extensions>
 
     <actions>
