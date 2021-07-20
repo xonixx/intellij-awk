@@ -3,15 +3,14 @@ package intellij_awk;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
-import intellij_awk.psi.AwkFile;
-import intellij_awk.psi.AwkNamedElement;
-import intellij_awk.psi.AwkParamList;
-import intellij_awk.psi.AwkUserVarName;
+import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkItemImpl;
+import intellij_awk.psi.impl.AwkUserVarNameImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
@@ -25,9 +24,19 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
   public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
     List<ResolveResult> res = new ArrayList<>();
 
+    // resolve current function argument
     Resolved ref = resolveFunctionArgument(myElement);
     if (ref == null) {
-      ref = resolveGlobalVariable(myElement);
+      // resolve `Var = ...` and `split("",Var)` in current file
+      ref = resolveGlobalVariableInCurrentFile(myElement);
+    }
+    if (ref == null) {
+      // resolve `Var = ...` and `split("",Var)` in other files (= in all files)
+      ref = resolveGlobalVariableInProjectFiles(true, myElement);
+    }
+    if (ref == null) {
+      // resolve `Var` across all files
+      ref = resolveGlobalVariableInProjectFiles(false, myElement);
     }
     if (ref != null && ref.value != null) {
       res.add(new PsiElementResolveResult(ref.value));
@@ -64,7 +73,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     return null;
   }
 
-  private Resolved resolveGlobalVariable(AwkNamedElement userVarName) {
+  private Resolved resolveGlobalVariableInCurrentFile(AwkNamedElement userVarName) {
     AwkFile awkFile = (AwkFile) userVarName.getContainingFile();
 
     Resolved resolved = null;
@@ -73,9 +82,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
             awkFile,
             psiElement ->
                 psiElement instanceof AwkUserVarName
-                    && ((AwkUserVarName) psiElement)
-                        .getVarName()
-                        .textMatches(userVarName.getName()));
+                    && ((AwkUserVarName) psiElement).getVarName().textMatches(userVarName.getName())
+                    && ((AwkUserVarNameMixin) psiElement).looksLikeDeclaration());
     if (varDeclaration != null) {
       if (varDeclaration == userVarName) {
         resolved = new Resolved(null); // no need to display a reference to itself
@@ -85,6 +93,15 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     }
 
     return resolved;
+  }
+
+  private @Nullable Resolved resolveGlobalVariableInProjectFiles(
+      boolean searchDeclarations, AwkNamedElement userVarName) {
+    Collection<AwkUserVarNameImpl> userVarDeclarations =
+        AwkUtil.findUserVars(searchDeclarations, userVarName.getProject(), userVarName.getName());
+    return userVarDeclarations.isEmpty()
+        ? null
+        : new Resolved(userVarDeclarations.iterator().next());
   }
 
   /**

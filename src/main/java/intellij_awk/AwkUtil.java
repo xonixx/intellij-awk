@@ -7,7 +7,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
@@ -15,6 +14,7 @@ import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
+import intellij_awk.psi.impl.AwkUserVarNameImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,6 +69,18 @@ public class AwkUtil {
    */
   public static Collection<AwkFunctionNameImpl> findFunctions(Project project, String name) {
     return findFunctions(project, name, GlobalSearchScope.projectScope(project));
+  }
+
+  public static Collection<AwkUserVarNameImpl> findUserVars(
+      boolean searchDeclarations, Project project, String name) {
+    return StubIndex.getElements(
+        searchDeclarations
+            ? AwkUserVarNameStubElementType.IndexVarDeclarations.KEY
+            : AwkUserVarNameStubElementType.IndexVarUsage.KEY,
+        name,
+        project,
+        GlobalSearchScope.projectScope(project),
+        AwkUserVarNameImpl.class);
   }
 
   public static Collection<AwkFunctionNameImpl> findFunctions(
