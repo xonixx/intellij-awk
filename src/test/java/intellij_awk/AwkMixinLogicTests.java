@@ -32,4 +32,24 @@ public class AwkMixinLogicTests extends BasePlatformTestCase {
   public void test5() {
     doTestLooksLikeDeclaration(false, "{ A++ }");
   }
+
+  public void test6() {
+    doTestLooksLikeDeclaration(false, "{ A+1 }");
+  }
+
+  public void test7() {
+    doTestLooksLikeDeclaration(true, "{ A[\"str\"] }");
+  }
+
+  public void test8() {
+    doTestLooksLikeDeclaration(true, "{ A[\"str\"] = 1 }");
+  }
+
+  public void test9() {
+    doTestLooksLikeDeclaration(false, "{ 1 + A[\"str\"] }");
+  }
+
+  public void test10() {
+    doTestLooksLikeDeclaration(false, "{ A[\"str\"]++ }");
+  }
 }

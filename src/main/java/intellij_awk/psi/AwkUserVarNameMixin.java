@@ -17,11 +17,21 @@ import static com.intellij.patterns.PlatformPatterns.psiElement;
 public abstract class AwkUserVarNameMixin
     extends AwkNamedStubBasedPsiElementBase<AwkUserVarNameStub> implements AwkUserVarName {
 
-  /** `Var = ...` */
-  private static final PsiElementPattern.@NotNull Capture<PsiElement> VAR_ASSIGN =
+  /**
+   *
+   * <li>Var = ...
+   * <li>Var["key"] = ...
+   * <li>Var["key"]
+   */
+  private static final PsiElementPattern.@NotNull Capture<PsiElement> LVALUE_ASSIGN =
       psiElement()
-          .inside(AwkLvalue.class)
-          .and(psiElement().beforeLeaf(psiElement(AwkTypes.ASSIGN)));
+          .withParent(
+              (psiElement(AwkLvalue.class).beforeLeaf(psiElement(AwkTypes.ASSIGN)))
+                  .withParent(
+                      psiElement(AwkNonUnaryExpr.class)
+                          .withParent(
+                              psiElement(AwkSimpleStatement.class)
+                              /*.withFirstChild(psiElement(AwkNonUnaryExpr.class))*/ )));
 
   public AwkUserVarNameMixin(@NotNull ASTNode node) {
     super(node);
@@ -45,15 +55,20 @@ public abstract class AwkUserVarNameMixin
     return null;
   }
 
-  /** <code>Var = ...</code> or <code>split("",Var)</code> */
+  /**
+   *
+   * <li>Var = ...
+   * <li>Var["key"] = ...
+   * <li>Var["key"]
+   * <li>split("",Var)
+   */
   public boolean looksLikeDeclaration() {
     AwkUserVarNameStub stub = getStub();
     if (stub != null) {
       return stub.looksLikeDeclaration();
     }
 
-    // `Var = ...`
-    if (VAR_ASSIGN.accepts(this)) {
+    if (LVALUE_ASSIGN.accepts(this)) {
       return true;
     }
 
@@ -61,7 +76,8 @@ public abstract class AwkUserVarNameMixin
     if (p != null) {
       p = p.getParent();
       ASTNode splitFunc;
-      if (p != null && (splitFunc = p.getFirstChild().getNode())
+      if (p != null
+          && (splitFunc = p.getFirstChild().getNode())
               .getElementType()
               .equals(AwkTypes.BUILTIN_FUNC_NAME)
           && splitFunc.getText().equals("split")

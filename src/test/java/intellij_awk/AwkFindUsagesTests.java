@@ -5,7 +5,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.usageView.UsageInfo;
 import intellij_awk.psi.AwkUserVarName;
-import intellij_awk.psi.AwkUserVarNameMixin;
 import org.junit.Assert;
 
 import java.util.ArrayList;
