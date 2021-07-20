@@ -1,10 +1,14 @@
 package intellij_awk;
 
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.usageView.UsageInfo;
+import intellij_awk.psi.AwkUserVarName;
+import intellij_awk.psi.AwkUserVarNameMixin;
 import org.junit.Assert;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class AwkFindUsagesTests extends BasePlatformTestCase {
@@ -68,6 +72,93 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             + "{ a++ }\n"
             + "function inc() { a+=1 }\n"
             + "END { print a }");
+  }
+
+  public void testVars7() {
+    doTest(0, "BEGIN { <caret>A=1 }\n");
+  }
+
+  public void testVars8() {
+    doTest(
+        2,
+        "BEGIN {\n"
+            + "\nShells<caret>[\"bash\"]"
+            + "\nShells[\"zsh\"]"
+            + "\nShells[\"sh\"]"
+            + "}\n");
+  }
+
+  public void testVars9() {
+    doTest(
+        2,
+        "BEGIN {\n"
+            + "\nShells[\"bash\"]=1"
+            + "\nShe<caret>lls[\"zsh\"]=1"
+            + "\nShells[\"sh\"]=1"
+            + "}\n");
+  }
+
+  public void testVars10() {
+    PsiFile psiFile =
+        myFixture.configureByText(
+            "a.awk",
+            "BEGIN {\n"
+                + "initShells()\n"
+                + "print A"
+                + "}\n"
+                + "function initShells() {"
+                + "\n  A = 1"
+                + "\n  A = 2"
+                + "\n  A = 3"
+                + "}");
+    ArrayList<PsiElement> userVars = new ArrayList<>();
+    AwkUtil.findAllMatchedDeep(
+        psiFile, psiElement -> psiElement instanceof AwkUserVarName, userVars);
+
+    assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertNull(userVars.get(1).getReference().resolve());
+  }
+
+  public void testVars11() {
+    PsiFile psiFile =
+        myFixture.configureByText(
+            "a.awk",
+            "BEGIN {\n"
+                + "initShells()\n"
+                + "print \"sh\" in Shells"
+                + "}\n"
+                + "function initShells() {"
+                + "\n  Shells[\"bash\"]"
+                + "\n  Shells[\"zsh\"]"
+                + "\n  Shells[\"sh\"]"
+                + "}");
+    ArrayList<PsiElement> userVars = new ArrayList<>();
+    AwkUtil.findAllMatchedDeep(
+        psiFile, psiElement -> psiElement instanceof AwkUserVarName, userVars);
+
+    assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertNull(userVars.get(1).getReference().resolve());
+  }
+
+  public void testVars12() {
+    PsiFile psiFile =
+        myFixture.configureByText(
+            "a.awk",
+            "BEGIN {\n"
+                + "initShells()\n"
+                + "print \"sh\" in Shells"
+                + "}\n"
+                + "function initShells() {"
+                + "\n  Shells[\"bash\"]=1"
+                + "\n  Shells[\"zsh\"] = \"string\""
+                + "\n  Shells[\"sh\"] = rand()"
+                + "}");
+    ArrayList<PsiElement> userVars = new ArrayList<>();
+    AwkUtil.findAllMatchedDeep(
+        psiFile, psiElement -> psiElement instanceof AwkUserVarName, userVars);
+
+    assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertNull(userVars.get(1).getReference().resolve());
   }
 
   public void testFunc1() {
