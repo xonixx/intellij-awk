@@ -1,6 +1,7 @@
 package intellij_awk.psi;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
@@ -10,8 +11,17 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
+import static com.intellij.patterns.PlatformPatterns.psiElement;
+
 public abstract class AwkUserVarNameMixin
     extends AwkNamedStubBasedPsiElementBase<AwkUserVarNameStub> implements AwkUserVarName {
+
+  /** `Var = ...` */
+  private static final PsiElementPattern.@NotNull Capture<PsiElement> VAR_ASSIGN =
+      psiElement()
+          .inside(AwkLvalue.class)
+          .and(psiElement().beforeLeaf(psiElement(AwkTypes.ASSIGN)));
+
   public AwkUserVarNameMixin(@NotNull ASTNode node) {
     super(node);
   }
@@ -45,12 +55,10 @@ public abstract class AwkUserVarNameMixin
     PsiElement parent1 = parent0.getParent();
     PsiElement[] childrenOfParent1 = parent1.getChildren();
 
-    if (parent0 instanceof AwkLvalue
-        && childrenOfParent1.length >= 2
-        && childrenOfParent1[1].getNode().getElementType().equals(AwkTypes.ASSIGN)) {
-      // `Var = 1` case
+    if (VAR_ASSIGN.accepts(this)) {
       return true;
     }
+
     PsiElement p = parent1.getParent();
     if (p != null) {
       p = p.getParent();
