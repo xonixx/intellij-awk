@@ -21,7 +21,6 @@ public abstract class AwkUserVarNameMixin
    *
    * <li>Var = ...
    * <li>Var["key"] = ...
-   * <li>Var["key"]
    */
   private static final PsiElementPattern.@NotNull Capture<PsiElement> LVALUE_ASSIGN =
       psiElement()
@@ -29,9 +28,19 @@ public abstract class AwkUserVarNameMixin
               (psiElement(AwkLvalue.class).beforeLeaf(psiElement(AwkTypes.ASSIGN)))
                   .withParent(
                       psiElement(AwkNonUnaryExpr.class)
-                          .withParent(
-                              psiElement(AwkSimpleStatement.class)
-                              /*.withFirstChild(psiElement(AwkNonUnaryExpr.class))*/ )));
+                          .withParent(psiElement(AwkSimpleStatement.class))));
+
+  /**
+   *
+   * <li>Var["key"]
+   */
+  private static final PsiElementPattern.@NotNull Capture<PsiElement> LVALUE_ASSIGN1 =
+      psiElement()
+          .withParent(
+              psiElement(AwkLvalue.class)
+                  .withParent(
+                      psiElement(AwkNonUnaryExpr.class)
+                          .withParent(psiElement(AwkSimpleStatement.class))));
 
   public AwkUserVarNameMixin(@NotNull ASTNode node) {
     super(node);
@@ -69,6 +78,12 @@ public abstract class AwkUserVarNameMixin
     }
 
     if (LVALUE_ASSIGN.accepts(this)) {
+      return true;
+    }
+
+    // TODO can this be done easier???
+    if (LVALUE_ASSIGN1.accepts(this)
+        && getParent().getParent().getFirstChild().getNextSibling() == null) {
       return true;
     }
 
