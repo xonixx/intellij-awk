@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import intellij_awk.AwkReferenceVariable;
+import intellij_awk.AwkUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,21 +52,16 @@ public abstract class AwkUserVarNameMixin
       return stub.looksLikeDeclaration();
     }
 
-    PsiElement parent0 = getParent();
-    PsiElement parent1 = parent0.getParent();
-    PsiElement[] childrenOfParent1 = parent1.getChildren();
-
+    // `Var = ...`
     if (VAR_ASSIGN.accepts(this)) {
       return true;
     }
 
-    PsiElement p = parent1.getParent();
+    PsiElement p = AwkUtil.findParent(this, AwkGawkFuncCallList.class);
     if (p != null) {
       p = p.getParent();
-
       ASTNode splitFunc;
-      if (p instanceof AwkNonUnaryExpr
-          && (splitFunc = p.getFirstChild().getNode())
+      if (p != null && (splitFunc = p.getFirstChild().getNode())
               .getElementType()
               .equals(AwkTypes.BUILTIN_FUNC_NAME)
           && splitFunc.getText().equals("split")
