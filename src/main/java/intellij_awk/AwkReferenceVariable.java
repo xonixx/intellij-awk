@@ -99,9 +99,16 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
       boolean searchDeclarations, AwkNamedElement userVarName) {
     Collection<AwkUserVarNameImpl> userVarDeclarations =
         AwkUtil.findUserVars(searchDeclarations, userVarName.getProject(), userVarName.getName());
-    return userVarDeclarations.isEmpty()
-        ? null
-        : new Resolved(userVarDeclarations.iterator().next());
+    Resolved resolved = null;
+    if (!userVarDeclarations.isEmpty()) {
+      AwkUserVarNameImpl found = userVarDeclarations.iterator().next();
+      if (found == userVarName) {
+        resolved = new Resolved(null); // no need to display a reference to itself
+      } else {
+        resolved = new Resolved(found);
+      }
+    }
+    return resolved;
   }
 
   /**
