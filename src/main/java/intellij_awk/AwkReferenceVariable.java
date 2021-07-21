@@ -27,7 +27,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     // resolve current function argument
     Resolved ref = resolveFunctionArgument(myElement);
     if (ref == null) {
-      // resolve `Var = ...` and `split("",Var)` in current file
+      // resolve `Var = ...` and `split("",Var)` in current file TODO shall this be inside begin?
       ref = resolveGlobalVariableInCurrentFile(myElement);
     }
     if (ref == null) {

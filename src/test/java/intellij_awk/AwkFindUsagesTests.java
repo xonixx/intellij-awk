@@ -228,6 +228,10 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     doTest(1, "function f() { return A<caret>+1 }", "function f2() { print A }");
   }
 
+  public void testMultipleFilesVars6() {
+    doTest(1, "function f() { A<caret> = 1 }", "function f2() { A = 2 }");
+  }
+
   public void testIndirect1() {
     doTest(
         4,
