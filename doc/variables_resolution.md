@@ -17,6 +17,7 @@ Obviously, the two goals above conflict with each other. We need to come up with
 
 - variable usages starting capital-case: `Var`
 - special treatment for variable occurrences in `BEGIN` blocks?
+- special treatment for variable occurrences in `init*()` functions?
 
 ### Let's implement next heuristic (in order of attempt):
 
