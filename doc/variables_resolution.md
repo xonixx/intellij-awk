@@ -1,10 +1,10 @@
 
 ### Goals
 
-- "Global" variables resolution. This means that it's desirable that variable defined in one file should be linked to usage of it in other file.
+- "Global" variables resolution. This means that it's desirable that variable defined in one file should be linked to usage of it in other file. Example: go to declaration, find all usages, auto-completion.
 - From the other side we don't want that single-file scripts suffer from contamination by variables defined in other unrelated files.
 
-Obviously, the two goals above conflict with each other.
+Obviously, the two goals above conflict with each other. We need to come up with good heuristics to handle both cases acceptably good and/or provide a way to structure a code in a way to hint the intellij-awk for desired behavior.
 
 ### Declaration-like cases
 
