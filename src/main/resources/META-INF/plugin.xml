@@ -42,7 +42,6 @@
 
         <stubIndex implementation="intellij_awk.psi.AwkFunctionNameStubElementType$Index"/>
         <stubIndex implementation="intellij_awk.psi.AwkUserVarNameStubElementType$IndexUserVarDeclarationsInsideInitializingContext"/>
-<!--        <stubIndex implementation="intellij_awk.psi.AwkUserVarNameStubElementType$IndexVarUsage"/>-->
     </extensions>
 
     <actions>

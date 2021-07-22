@@ -53,9 +53,6 @@ public class AwkUserVarNameStubElementType
 
   @Override
   public void indexStub(@NotNull AwkUserVarNameStub stub, @NotNull IndexSink sink) {
-    //    sink.occurrence(
-    //        stub.looksLikeDeclaration() ? IndexVarDeclarationsInInitializeContext.KEY :
-    // IndexVarUsage.KEY, stub.getName());
     if (stub.looksLikeDeclaration() && stub.isInsideInitializingContext()) {
       sink.occurrence(IndexUserVarDeclarationsInsideInitializingContext.KEY, stub.getName());
     }
@@ -71,14 +68,4 @@ public class AwkUserVarNameStubElementType
       return KEY;
     }
   }
-
-  /*public static class IndexVarUsage extends StringStubIndexExtension<AwkUserVarNameImpl> {
-    public static StubIndexKey<String, AwkUserVarNameImpl> KEY =
-        StubIndexKey.createIndexKey(AwkUserVarName.class.getCanonicalName() + "|Usage");
-
-    @Override
-    public @NotNull StubIndexKey<String, AwkUserVarNameImpl> getKey() {
-      return KEY;
-    }
-  }*/
 }

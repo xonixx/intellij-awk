@@ -159,6 +159,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
         configureTestFiles("function f() { A = 1 }\nfunction init() { A = 2 }\n");
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(0)).type);
     assertNull(userVars.get(1).getReference().resolve());
   }
 
@@ -166,6 +167,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     List<PsiElement> userVars = configureTestFiles("function f() { A = 1 }\nBEGIN { A = 2 }\n");
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(0)).type);
     assertNull(userVars.get(1).getReference().resolve());
   }
 
@@ -174,6 +176,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
         configureTestFiles("function f() { A = 1 }", "function init() { A = 2 }\n");
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertEquals("RESOLVE-ALL-INIT-DECL", getAwkResolved(userVars.get(0)).type);
     assertNull(userVars.get(1).getReference().resolve());
   }
 
@@ -181,6 +184,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     List<PsiElement> userVars = configureTestFiles("function f() { A = 1 }", "BEGIN { A = 2 }\n");
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertEquals("RESOLVE-ALL-INIT-DECL", getAwkResolved(userVars.get(0)).type);
     assertNull(userVars.get(1).getReference().resolve());
   }
 
@@ -192,7 +196,11 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
                 + "function init() { A = 2   }");
 
     assertEquals(userVars.get(2), userVars.get(0).getReference().resolve());
+    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(0)).type);
+
     assertEquals(userVars.get(2), userVars.get(1).getReference().resolve());
+    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(1)).type);
+
     assertNull(userVars.get(2).getReference().resolve());
   }
 
@@ -203,7 +211,11 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             "function f1()   { A = 1   }\nfunction init() { A = 2   }");
 
     assertEquals(userVars.get(2), userVars.get(0).getReference().resolve());
+    assertEquals("RESOLVE-ALL-INIT-DECL", getAwkResolved(userVars.get(0)).type);
+
     assertEquals(userVars.get(2), userVars.get(1).getReference().resolve());
+    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(1)).type);
+
     assertNull(userVars.get(2).getReference().resolve());
   }
 
