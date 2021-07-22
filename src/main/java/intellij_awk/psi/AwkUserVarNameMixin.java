@@ -3,7 +3,6 @@ package intellij_awk.psi;
 import com.intellij.lang.ASTNode;
 import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
 import intellij_awk.AwkReferenceVariable;
 import intellij_awk.AwkUtil;
@@ -121,6 +120,7 @@ public abstract class AwkUserVarNameMixin
       AwkItem awkItem = (AwkItem) parent;
 
       AwkPattern pattern = awkItem.getPattern();
+
       return pattern != null && pattern.getBeginOrEnd() instanceof AwkBeginBlock
           || awkItem.getFirstChild().getNode().getElementType().equals(AwkTypes.FUNCTION)
               && awkItem.getFunctionName().getName().startsWith("init");

@@ -26,7 +26,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
 
     Resolved ref = resolveFunctionArgument("RESOLVE-ARG", myElement);
     if (ref == null) {
-      ref = resolveGlobalVariableDeclarationsInCurrentFileInitCtx("RESOLVE-CUR-INIT-DECL", myElement);
+      ref =
+          resolveGlobalVariableDeclarationsInCurrentFileInitCtx("RESOLVE-CUR-INIT-DECL", myElement);
     }
     if (ref == null) {
       ref =
@@ -74,7 +75,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     return null;
   }
 
-  private Resolved resolveGlobalVariableDeclarationsInCurrentFileInitCtx(String type, AwkNamedElement userVarName) {
+  private Resolved resolveGlobalVariableDeclarationsInCurrentFileInitCtx(
+      String type, AwkNamedElement userVarName) {
     AwkFile awkFile = (AwkFile) userVarName.getContainingFile();
 
     Resolved resolved = null;
@@ -84,7 +86,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
             psiElement ->
                 psiElement instanceof AwkUserVarName
                     && ((AwkUserVarName) psiElement).getVarName().textMatches(userVarName.getName())
-                    && ((AwkUserVarNameMixin) psiElement).looksLikeDeclaration());
+                    && ((AwkUserVarNameMixin) psiElement).looksLikeDeclaration()
+                    && ((AwkUserVarNameMixin) psiElement).isInsideInitializingContext());
     if (varDeclaration != null) {
       if (varDeclaration == userVarName) {
         resolved = new Resolved(type, null); // no need to display a reference to itself
