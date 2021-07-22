@@ -26,7 +26,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
 
     Resolved ref = resolveFunctionArgument("RESOLVE-ARG", myElement);
     if (ref == null) {
-      ref = resolveGlobalVariableInCurrentFile("GlobalVariableInCurrentFile", myElement);
+      ref = resolveGlobalVariableDeclarationsInCurrentFileInitCtx("RESOLVE-CUR-INIT-DECL", myElement);
     }
     if (ref == null) {
       ref =
@@ -74,7 +74,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     return null;
   }
 
-  private Resolved resolveGlobalVariableInCurrentFile(String type, AwkNamedElement userVarName) {
+  private Resolved resolveGlobalVariableDeclarationsInCurrentFileInitCtx(String type, AwkNamedElement userVarName) {
     AwkFile awkFile = (AwkFile) userVarName.getContainingFile();
 
     Resolved resolved = null;

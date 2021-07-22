@@ -51,14 +51,6 @@ public class AwkUtil {
     }
   }
 
-  public static boolean isAwkBegin(PsiElement candidate) {
-    if (candidate instanceof AwkBeginOrEnd) {
-      AwkBeginOrEnd beginOrEnd = (AwkBeginOrEnd) candidate;
-      return AwkTypes.BEGIN.equals(beginOrEnd.getFirstChild().getNode().getElementType());
-    }
-    return false;
-  }
-
   /**
    * Searches the entire project for AWK language files with instances of the AWK function with the
    * given key.

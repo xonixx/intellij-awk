@@ -25,13 +25,14 @@ Obviously, the two goals above conflict with each other. We need to come up with
 
 ### Let's implement next heuristic (in order of attempt):
 
-1. resolve current function argument `// RESOLVE-ARG`
-2. resolve first of **Declaration-like cases** in current file in **Initializing context** `// RESOLVE-FIRST-CUR-INIT`
-3. resolve first of **Declaration-like cases** in all project files in **Initializing context** `// RESOLVE-DECL-ALL-INIT`
-4. resolve first of **Declaration-like cases** in current file `// RESOLVE-DECL-CUR`
-5. resolve *first variable occurrence* in current file `// RESOLVE-FIRST-CUR`
+1. `RESOLVE-ARG` resolve current function argument 
+2. `RESOLVE-CUR-INIT-DECL` resolve first of **Declaration-like cases** in current file in **Initializing context**
+3. `RESOLVE-ALL-INIT-DECL` resolve first of **Declaration-like cases** in all project files in **Initializing context** 
+4. `RESOLVE-CUR-INIT-VAR` resolve *first variable occurrence* in current file in **Initializing context** 
+    - cases like `function process() { print Line } BEGIN { while(getline Line) process() }`
+5. `RESOLVE-CUR-DECL` resolve first of **Declaration-like cases** in current file 
+6. `RESOLVE-CUR-VAR` resolve *first variable occurrence* in current file 
    - **why** this is backward-compatible
-   - cases like `BEGIN { while(getline Line) process() } function process() { print Line }`
 
 Bottom line: we don't try to resolve global var in other files unless it looks like declaration in initialization context.
 

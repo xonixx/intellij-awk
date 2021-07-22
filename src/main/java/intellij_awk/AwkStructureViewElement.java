@@ -7,10 +7,7 @@ import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.NavigatablePsiElement;
 import com.intellij.psi.PsiElement;
-import intellij_awk.psi.AwkFile;
-import intellij_awk.psi.AwkFunctionName;
-import intellij_awk.psi.AwkItem;
-import intellij_awk.psi.AwkPattern;
+import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkBeginOrEndImpl;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.NotNull;
@@ -84,8 +81,11 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
 
           } else {
             AwkPattern awkPattern = awkItem.getPattern();
-            if (awkPattern != null && awkPattern.getBeginOrEnd() != null) {
-              treeElements.add(new AwkStructureViewElement((NavigatablePsiElement) awkPattern.getBeginOrEnd()));
+            if (awkPattern != null) {
+              AwkBeginOrEnd beginOrEnd = awkPattern.getBeginOrEnd();
+              if (beginOrEnd != null) {
+                treeElements.add(new AwkStructureViewElement((NavigatablePsiElement) beginOrEnd));
+              }
             }
           }
         }

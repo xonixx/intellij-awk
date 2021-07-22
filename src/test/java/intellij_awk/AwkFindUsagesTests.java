@@ -114,7 +114,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
                 + "}");
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
-    assertEquals("RESOLVE-FIRST-CUR-INIT", getAwkResolved(userVars.get(0)).type);
+    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(0)).type);
     assertNull(userVars.get(1).getReference().resolve());
   }
 
@@ -132,7 +132,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
                 + "}");
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
-    assertEquals("RESOLVE-FIRST-CUR-INIT", getAwkResolved(userVars.get(0)).type);
+    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(0)).type);
     assertNull(userVars.get(1).getReference().resolve());
   }
 
@@ -150,7 +150,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
                 + "}");
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
-    assertEquals("RESOLVE-FIRST-CUR-INIT", getAwkResolved(userVars.get(0)).type);
+    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(0)).type);
     assertNull(userVars.get(1).getReference().resolve());
   }
 
@@ -213,22 +213,17 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             "BEGIN { while(getline Line) process() } function process() { print Line }");
 
     assertEquals(userVars.get(0), userVars.get(1).getReference().resolve());
-    assertEquals("RESOLVE-FIRST-CUR-INIT", getAwkResolved(userVars.get(1)).type);
+    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(1)).type);
     assertNull(userVars.get(0).getReference().resolve());
-  }
-
-  private static AwkReferenceVariable.Resolved.AwkResolvedResult getAwkResolved(
-      PsiElement userVar) {
-    return ((AwkUserVarNameMixin) userVar).getReference().resolveResult();
   }
 
   public void testVarRefs11() {
     List<PsiElement> userVars =
-        configureTestFiles(
-            "function process() { print Line } BEGIN { while(getline Line) process() }");
+            configureTestFiles(
+                    "function process() { print Line } BEGIN { while(getline Line) process() }");
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
-    assertEquals("RESOLVE-FIRST-CUR-INIT", getAwkResolved(userVars.get(1)).type);
+    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(1)).type);
     assertNull(userVars.get(1).getReference().resolve());
   }
 
@@ -314,6 +309,11 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             + "}\n"
             + "a\n"
             + "{ a++ }");
+  }
+
+  private static AwkReferenceVariable.Resolved.AwkResolvedResult getAwkResolved(
+          PsiElement userVar) {
+    return ((AwkUserVarNameMixin) userVar).getReference().resolveResult();
   }
 
   private void doTest(int expectedUsagesCount, String code, String... otherFiles) {

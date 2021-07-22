@@ -152,6 +152,7 @@
   ]
 
   extends("unary_expr|non_unary_expr")=expr
+  extends("begin_block|end_block")=begin_or_end
 }
 
 // /pattern/
@@ -192,10 +193,13 @@ param_list       ::= var_name (COMMA newlines_opt var_name)*
 pattern          ::= BEGINFILE | ENDFILE | begin_or_end
                  | expr (COMMA newlines_opt expr)?
 
-begin_or_end     ::= BEGIN | END {
+begin_or_end     ::= begin_block | end_block {
     mixin="intellij_awk.psi.AwkNamedElementImpl"
     implements="intellij_awk.psi.AwkNamedElement"
 }
+
+begin_block            ::= BEGIN
+end_block              ::= END
 
 action           ::= LBRACE newlines_opt (
                          RBRACE

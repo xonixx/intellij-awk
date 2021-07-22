@@ -100,7 +100,7 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
         AwkItem awkItem = (AwkItem) child;
         AwkPattern pattern = awkItem.getPattern();
         if (pattern != null) {
-          if (AwkUtil.isAwkBegin(pattern.getBeginOrEnd())) {
+          if (pattern.getBeginOrEnd() instanceof AwkBeginBlock) {
 
             ArrayList<PsiElement> globalVars = new ArrayList<>();
             AwkUtil.findAllMatchedDeep(

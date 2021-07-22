@@ -1,7 +1,7 @@
 AWK File
   AwkItemImpl(ITEM)
     AwkPatternImpl(PATTERN)
-      AwkBeginOrEndImpl(BEGIN_OR_END)
+      AwkBeginBlockImpl(BEGIN_BLOCK)
         PsiElement(AwkTokenType.BEGIN)('BEGIN')
     PsiWhiteSpace(' ')
     AwkActionImpl(ACTION)

@@ -42,6 +42,10 @@ public abstract class AwkUserVarNameMixin
                       psiElement(AwkNonUnaryExpr.class)
                           .withParent(psiElement(AwkSimpleStatement.class))));
 
+//  private static final PsiElementPattern.@NotNull Capture<PsiElement> INSIDE_BEGIN =
+//      psiElement()
+//          .inside(Awk);
+
   public AwkUserVarNameMixin(@NotNull ASTNode node) {
     super(node);
   }
@@ -104,4 +108,8 @@ public abstract class AwkUserVarNameMixin
 
     return false;
   }
+
+//  public boolean isInsideInitializingContext() {
+//
+//  }
 }
