@@ -4,6 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 import intellij_awk.AwkReferenceVariable;
 import intellij_awk.AwkUtil;
 import org.jetbrains.annotations.NotNull;
@@ -115,7 +116,7 @@ public abstract class AwkUserVarNameMixin
       return stub.isInsideInitializingContext();
     }
 
-    AwkAction action = AwkUtil.findParent(this, AwkAction.class);
+    AwkAction action = PsiTreeUtil.getTopmostParentOfType(this, AwkAction.class);
     if (action == null) {
       return false;
     }
