@@ -223,7 +223,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
                     "function process() { print Line } BEGIN { while(getline Line) process() }");
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
-    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(1)).type);
+    assertEquals("RESOLVE-CUR-INIT-VAR", getAwkResolved(userVars.get(0)).type);
     assertNull(userVars.get(1).getReference().resolve());
   }
 

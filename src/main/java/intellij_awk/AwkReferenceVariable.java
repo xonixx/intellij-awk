@@ -26,11 +26,13 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
 
     Resolved ref = resolveFunctionArgument("RESOLVE-ARG", myElement);
     if (ref == null) {
-      ref =
-          resolveGlobalVariableDeclarationsInCurrentFileInitCtx("RESOLVE-CUR-INIT-DECL", myElement);
+      ref = resolveInCurrentFileInInit("RESOLVE-CUR-INIT-DECL", true, myElement);
     }
     if (ref == null) {
-      ref = resolveGlobalVariableDeclarationsInAllFilesInitCtx("RESOLVE-ALL-INIT-DECL", myElement);
+      ref = resolveInAllFilesDeclarationsInInit("RESOLVE-ALL-INIT-DECL", myElement);
+    }
+    if (ref == null) {
+      ref = resolveInCurrentFileInInit("RESOLVE-CUR-INIT-VAR", false, myElement);
     }
     //    if (ref == null) {
     //      ref = resolveGlobalVariableInProjectFiles("GlobalVariableInProjectFiles-use",
@@ -74,8 +76,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     return null;
   }
 
-  private Resolved resolveGlobalVariableDeclarationsInCurrentFileInitCtx(
-      String type, AwkNamedElement userVarName) {
+  private Resolved resolveInCurrentFileInInit(
+      String type, boolean declarations, AwkNamedElement userVarName) {
     AwkFile awkFile = (AwkFile) userVarName.getContainingFile();
 
     Resolved resolved = null;
@@ -85,7 +87,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
             psiElement ->
                 psiElement instanceof AwkUserVarName
                     && ((AwkUserVarName) psiElement).getVarName().textMatches(userVarName.getName())
-                    && ((AwkUserVarNameMixin) psiElement).looksLikeDeclaration()
+                    && (!declarations || ((AwkUserVarNameMixin) psiElement).looksLikeDeclaration())
                     && ((AwkUserVarNameMixin) psiElement).isInsideInitializingContext());
     if (varDeclaration != null) {
       if (varDeclaration == userVarName) {
@@ -98,7 +100,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     return resolved;
   }
 
-  private @Nullable Resolved resolveGlobalVariableDeclarationsInAllFilesInitCtx(
+  private @Nullable Resolved resolveInAllFilesDeclarationsInInit(
       String type, AwkNamedElement userVarName) {
     Collection<AwkUserVarNameImpl> userVarDeclarations =
         AwkUtil.findUserVars(userVarName.getProject(), userVarName.getName());
