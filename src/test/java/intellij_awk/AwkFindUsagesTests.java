@@ -5,10 +5,12 @@ import com.intellij.psi.PsiFile;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.usageView.UsageInfo;
 import intellij_awk.psi.AwkUserVarName;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class AwkFindUsagesTests extends BasePlatformTestCase {
 
@@ -98,9 +100,8 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
   }
 
   public void testVars10() {
-    PsiFile psiFile =
-        myFixture.configureByText(
-            "a.awk",
+    List<PsiElement> userVars =
+        configureTestFiles(
             "BEGIN {\n"
                 + "initShells()\n"
                 + "print A"
@@ -110,18 +111,14 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
                 + "\n  A = 2"
                 + "\n  A = 3"
                 + "}");
-    ArrayList<PsiElement> userVars = new ArrayList<>();
-    AwkUtil.findAllMatchedDeep(
-        psiFile, psiElement -> psiElement instanceof AwkUserVarName, userVars);
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
     assertNull(userVars.get(1).getReference().resolve());
   }
 
   public void testVars11() {
-    PsiFile psiFile =
-        myFixture.configureByText(
-            "a.awk",
+    List<PsiElement> userVars =
+        configureTestFiles(
             "BEGIN {\n"
                 + "initShells()\n"
                 + "print \"sh\" in Shells"
@@ -131,18 +128,14 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
                 + "\n  Shells[\"zsh\"]"
                 + "\n  Shells[\"sh\"]"
                 + "}");
-    ArrayList<PsiElement> userVars = new ArrayList<>();
-    AwkUtil.findAllMatchedDeep(
-        psiFile, psiElement -> psiElement instanceof AwkUserVarName, userVars);
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
     assertNull(userVars.get(1).getReference().resolve());
   }
 
   public void testVars12() {
-    PsiFile psiFile =
-        myFixture.configureByText(
-            "a.awk",
+    List<PsiElement> userVars =
+        configureTestFiles(
             "BEGIN {\n"
                 + "initShells()\n"
                 + "print \"sh\" in Shells"
@@ -152,12 +145,32 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
                 + "\n  Shells[\"zsh\"] = \"string\""
                 + "\n  Shells[\"sh\"] = rand()"
                 + "}");
-    ArrayList<PsiElement> userVars = new ArrayList<>();
-    AwkUtil.findAllMatchedDeep(
-        psiFile, psiElement -> psiElement instanceof AwkUserVarName, userVars);
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
     assertNull(userVars.get(1).getReference().resolve());
+  }
+
+  public void testVars13() {
+    List<PsiElement> userVars =
+        configureTestFiles("function f() { A = 1 }\nfunction init() { A = 2 }\n");
+
+    assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertNull(userVars.get(1).getReference().resolve());
+  }
+
+  public void testVars14() {
+    List<PsiElement> userVars = configureTestFiles("function f() { A = 1 }\nBEGIN { A = 2 }\n");
+
+    assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertNull(userVars.get(1).getReference().resolve());
+  }
+
+  @NotNull
+  private ArrayList<PsiElement> getUserVars(PsiFile psiFile) {
+    ArrayList<PsiElement> userVars = new ArrayList<>();
+    AwkUtil.findAllMatchedDeep(
+        psiFile, psiElement -> psiElement instanceof AwkUserVarName, userVars);
+    return userVars;
   }
 
   public void testFunc1() {
@@ -229,8 +242,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
   }
 
   public void testMultipleFilesVars6() {
-    // TODO
-    doTest(1, "function f() { A<caret> = 1 }", "function f2() { A = 2 }");
+    doTest(0, "function f() { A<caret> = 1 }", "function f2() { A = 2 }");
   }
 
   public void testIndirect1() {
@@ -254,5 +266,15 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     PsiElement element = myFixture.getElementAtCaret();
     Collection<UsageInfo> usages = myFixture.findUsages(element);
     Assert.assertEquals(expectedUsagesCount, usages.size());
+  }
+
+  private List<PsiElement> configureTestFiles(String code, String... otherFiles) {
+    List<PsiElement> res = new ArrayList<>();
+    res.addAll(getUserVars(myFixture.configureByText("a.awk", code)));
+    for (int i = 0; i < otherFiles.length; i++) {
+      String otherFileCode = otherFiles[i];
+      res.addAll(getUserVars(myFixture.addFileToProject("f" + i + ".awk", otherFileCode)));
+    }
+    return res;
   }
 }
