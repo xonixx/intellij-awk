@@ -55,7 +55,7 @@ public abstract class AwkUserVarNameMixin
   }
 
   @Override
-  public PsiReference getReference() {
+  public AwkReferenceVariable getReference() {
     return new AwkReferenceVariable(this, getNameTextRange());
   }
 

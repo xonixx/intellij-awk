@@ -21,30 +21,31 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
   }
 
   @Override
-  public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
-    List<ResolveResult> res = new ArrayList<>();
+  public Resolved.AwkResolvedResult @NotNull [] multiResolve(boolean incompleteCode) {
+    List<Resolved.AwkResolvedResult> res = new ArrayList<>();
 
-    // resolve current function argument
-    Resolved ref = resolveFunctionArgument(myElement);
+    Resolved ref = resolveFunctionArgument("RESOLVE-ARG", myElement);
     if (ref == null) {
-      // resolve `Var = ...` and `split("",Var)` in current file TODO shall this be inside begin?
-      ref = resolveGlobalVariableInCurrentFile(myElement);
+      ref = resolveGlobalVariableInCurrentFile("GlobalVariableInCurrentFile", myElement);
     }
     if (ref == null) {
-      // resolve `Var = ...` and `split("",Var)` in other files (= in all files)
-      ref = resolveGlobalVariableInProjectFiles(true, myElement);
+      ref =
+          resolveGlobalVariableInProjectFiles("GlobalVariableInProjectFiles-decl", true, myElement);
     }
     if (ref == null) {
-      // resolve `Var` across all files
-      ref = resolveGlobalVariableInProjectFiles(false, myElement);
+      ref =
+          resolveGlobalVariableInProjectFiles("GlobalVariableInProjectFiles-use", false, myElement);
     }
-    if (ref != null && ref.value != null) {
-      res.add(new PsiElementResolveResult(ref.value));
+    if (ref != null) {
+      Resolved.AwkResolvedResult resolvedResult = ref.toResolvedResult();
+      if (resolvedResult != null) {
+        res.add(resolvedResult);
+      }
     }
-    return res.toArray(new ResolveResult[0]);
+    return res.toArray(new AwkReferenceVariable.Resolved.AwkResolvedResult[0]);
   }
 
-  private @Nullable Resolved resolveFunctionArgument(AwkNamedElement userVarName) {
+  private @Nullable Resolved resolveFunctionArgument(String type, AwkNamedElement userVarName) {
     PsiElement parent = userVarName;
     while (true) {
       parent = parent.getParent();
@@ -61,9 +62,9 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
               PsiElement varName = awkUserVarName.getVarName();
               if (varName.textMatches(userVarName.getName())) {
                 if (awkUserVarName == userVarName) {
-                  return new Resolved(null); // no need to display a reference to itself
+                  return new Resolved(type, null); // no need to display a reference to itself
                 }
-                return new Resolved(awkUserVarName);
+                return new Resolved(type, awkUserVarName);
               }
             }
           }
@@ -73,7 +74,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     return null;
   }
 
-  private Resolved resolveGlobalVariableInCurrentFile(AwkNamedElement userVarName) {
+  private Resolved resolveGlobalVariableInCurrentFile(String type, AwkNamedElement userVarName) {
     AwkFile awkFile = (AwkFile) userVarName.getContainingFile();
 
     Resolved resolved = null;
@@ -86,9 +87,9 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
                     && ((AwkUserVarNameMixin) psiElement).looksLikeDeclaration());
     if (varDeclaration != null) {
       if (varDeclaration == userVarName) {
-        resolved = new Resolved(null); // no need to display a reference to itself
+        resolved = new Resolved(type, null); // no need to display a reference to itself
       } else {
-        resolved = new Resolved(varDeclaration);
+        resolved = new Resolved(type, varDeclaration);
       }
     }
 
@@ -96,16 +97,16 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
   }
 
   private @Nullable Resolved resolveGlobalVariableInProjectFiles(
-      boolean searchDeclarations, AwkNamedElement userVarName) {
+      String type, boolean searchDeclarations, AwkNamedElement userVarName) {
     Collection<AwkUserVarNameImpl> userVarDeclarations =
         AwkUtil.findUserVars(searchDeclarations, userVarName.getProject(), userVarName.getName());
     Resolved resolved = null;
     if (!userVarDeclarations.isEmpty()) {
       AwkUserVarNameImpl found = userVarDeclarations.iterator().next();
       if (found == userVarName) {
-        resolved = new Resolved(null); // no need to display a reference to itself
+        resolved = new Resolved(type, null); // no need to display a reference to itself
       } else {
-        resolved = new Resolved(found);
+        resolved = new Resolved(type, found);
       }
     }
     return resolved;
@@ -115,12 +116,28 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
    *
    * <li>resolved == null : proceed resolution
    * <li>resolved != null : use as resolved result
+   * <li>resolved.value == null : meaning resolved to itself
    */
-  private static class Resolved {
-    private final PsiElement value;
+  public static class Resolved {
+    @Nullable private final PsiElement value;
+    private final String type;
 
-    public Resolved(PsiElement value) {
+    Resolved(String type, @Nullable PsiElement value) {
+      this.type = type;
       this.value = value;
+    }
+
+    private AwkResolvedResult toResolvedResult() {
+      return value == null ? null : new AwkResolvedResult(type, value);
+    }
+
+    public static class AwkResolvedResult extends PsiElementResolveResult {
+      public final String type;
+
+      public AwkResolvedResult(String type, @NotNull PsiElement element) {
+        super(element);
+        this.type = type;
+      }
     }
   }
 
@@ -129,6 +146,12 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
   public @Nullable PsiElement resolve() {
     ResolveResult[] resolveResults = multiResolve(false);
     return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
+  }
+
+  /** Resolves references to a single result, or fails. */
+  public @Nullable AwkReferenceVariable.Resolved.AwkResolvedResult resolveResult() {
+    Resolved.AwkResolvedResult[] resolveResults = multiResolve(false);
+    return resolveResults.length == 1 ? resolveResults[0] : null;
   }
 
   @Override
