@@ -120,8 +120,10 @@ public abstract class AwkUserVarNameMixin
     if (parent instanceof AwkItem) {
       AwkItem awkItem = (AwkItem) parent;
 
-      return awkItem.getPattern() instanceof AwkBeginBlock
-          || awkItem.getFirstChild().getNode().getElementType().equals(AwkTypes.FUNCTION);
+      AwkPattern pattern = awkItem.getPattern();
+      return pattern != null && pattern.getBeginOrEnd() instanceof AwkBeginBlock
+          || awkItem.getFirstChild().getNode().getElementType().equals(AwkTypes.FUNCTION)
+              && awkItem.getFunctionName().getName().startsWith("init");
     }
 
     return false;
