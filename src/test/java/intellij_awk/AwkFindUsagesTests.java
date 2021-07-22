@@ -99,7 +99,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             + "}\n");
   }
 
-  public void testVars10() {
+  public void testVarRefs1() {
     List<PsiElement> userVars =
         configureTestFiles(
             "BEGIN {\n"
@@ -116,7 +116,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     assertNull(userVars.get(1).getReference().resolve());
   }
 
-  public void testVars11() {
+  public void testVarRefs2() {
     List<PsiElement> userVars =
         configureTestFiles(
             "BEGIN {\n"
@@ -133,7 +133,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     assertNull(userVars.get(1).getReference().resolve());
   }
 
-  public void testVars12() {
+  public void testVarRefs3() {
     List<PsiElement> userVars =
         configureTestFiles(
             "BEGIN {\n"
@@ -150,7 +150,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     assertNull(userVars.get(1).getReference().resolve());
   }
 
-  public void testVars13() {
+  public void testVarRefs4() {
     List<PsiElement> userVars =
         configureTestFiles("function f() { A = 1 }\nfunction init() { A = 2 }\n");
 
@@ -158,19 +158,49 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     assertNull(userVars.get(1).getReference().resolve());
   }
 
-  public void testVars14() {
+  public void testVarRefs5() {
     List<PsiElement> userVars = configureTestFiles("function f() { A = 1 }\nBEGIN { A = 2 }\n");
 
     assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
     assertNull(userVars.get(1).getReference().resolve());
   }
 
-  @NotNull
-  private ArrayList<PsiElement> getUserVars(PsiFile psiFile) {
-    ArrayList<PsiElement> userVars = new ArrayList<>();
-    AwkUtil.findAllMatchedDeep(
-        psiFile, psiElement -> psiElement instanceof AwkUserVarName, userVars);
-    return userVars;
+  public void testVarRefs6() {
+    List<PsiElement> userVars =
+        configureTestFiles("function f() { A = 1 }", "function init() { A = 2 }\n");
+
+    assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertNull(userVars.get(1).getReference().resolve());
+  }
+
+  public void testVarRefs7() {
+    List<PsiElement> userVars = configureTestFiles("function f() { A = 1 }", "BEGIN { A = 2 }\n");
+
+    assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertNull(userVars.get(1).getReference().resolve());
+  }
+
+  public void testVarRefs8() {
+    List<PsiElement> userVars =
+        configureTestFiles(
+            "function f()    { print A }\n"
+                + "function f1()   { A = 1   }\n"
+                + "function init() { A = 2   }");
+
+    assertEquals(userVars.get(2), userVars.get(0).getReference().resolve());
+    assertEquals(userVars.get(2), userVars.get(1).getReference().resolve());
+    assertNull(userVars.get(2).getReference().resolve());
+  }
+
+  public void testVarRefs9() {
+    List<PsiElement> userVars =
+        configureTestFiles(
+            "function f()    { print A }\n",
+            "function f1()   { A = 1   }\nfunction init() { A = 2   }");
+
+    assertEquals(userVars.get(2), userVars.get(0).getReference().resolve());
+    assertEquals(userVars.get(2), userVars.get(1).getReference().resolve());
+    assertNull(userVars.get(2).getReference().resolve());
   }
 
   public void testFunc1() {
@@ -266,6 +296,14 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     PsiElement element = myFixture.getElementAtCaret();
     Collection<UsageInfo> usages = myFixture.findUsages(element);
     Assert.assertEquals(expectedUsagesCount, usages.size());
+  }
+
+  @NotNull
+  private ArrayList<PsiElement> getUserVars(PsiFile psiFile) {
+    ArrayList<PsiElement> userVars = new ArrayList<>();
+    AwkUtil.findAllMatchedDeep(
+        psiFile, psiElement -> psiElement instanceof AwkUserVarName, userVars);
+    return userVars;
   }
 
   private List<PsiElement> configureTestFiles(String code, String... otherFiles) {
