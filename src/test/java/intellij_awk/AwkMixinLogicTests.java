@@ -6,11 +6,19 @@ import intellij_awk.psi.AwkUserVarNameMixin;
 
 public class AwkMixinLogicTests extends BasePlatformTestCase {
 
+  private AwkUserVarNameMixin getUserVarName(String code) {
+    return AwkElementFactory.createAwkPsiElement(
+        myFixture.getProject(), code, AwkUserVarNameMixin.class);
+  }
+
   private void doTestLooksLikeDeclaration(boolean expectedResult, String code) {
-    AwkUserVarNameMixin awkUserVarNameMixin =
-        AwkElementFactory.createAwkPsiElement(
-            myFixture.getProject(), code, AwkUserVarNameMixin.class);
+    AwkUserVarNameMixin awkUserVarNameMixin = getUserVarName(code);
     assertEquals(expectedResult, awkUserVarNameMixin.looksLikeDeclaration());
+  }
+
+  private void doTestInInitContext(boolean expectedResult, String code) {
+    AwkUserVarNameMixin awkUserVarNameMixin = getUserVarName(code);
+    assertEquals(expectedResult, awkUserVarNameMixin.isInsideInitializingContext());
   }
 
   public void test1() {
@@ -51,5 +59,27 @@ public class AwkMixinLogicTests extends BasePlatformTestCase {
 
   public void test10() {
     doTestLooksLikeDeclaration(false, "{ A[\"str\"]++ }");
+  }
+
+  public void test11() {
+    doTestInInitContext(true, "BEGIN { A=1 }");
+  }
+  public void test12() {
+    doTestInInitContext(false, "END { A=1 }");
+  }
+  public void test13() {
+    doTestInInitContext(true, "function init() { A=1 }");
+  }
+  public void test14() {
+    doTestInInitContext(true, "function initSomething() { A=1 }");
+  }
+  public void test15() {
+    doTestInInitContext(false, "function f() { A=1 }");
+  }
+  public void test16() {
+    doTestInInitContext(false, "{ A=1 }");
+  }
+  public void test17() {
+    doTestInInitContext(false, "{ for(;;){ A=1 } }");
   }
 }

@@ -42,10 +42,6 @@ public abstract class AwkUserVarNameMixin
                       psiElement(AwkNonUnaryExpr.class)
                           .withParent(psiElement(AwkSimpleStatement.class))));
 
-//  private static final PsiElementPattern.@NotNull Capture<PsiElement> INSIDE_BEGIN =
-//      psiElement()
-//          .inside(Awk);
-
   public AwkUserVarNameMixin(@NotNull ASTNode node) {
     super(node);
   }
@@ -109,7 +105,25 @@ public abstract class AwkUserVarNameMixin
     return false;
   }
 
-//  public boolean isInsideInitializingContext() {
-//
-//  }
+  /**
+   *
+   * <li><code>BEGIN { here }</code>
+   * <li><code>function init*() { here }</code>
+   */
+  public boolean isInsideInitializingContext() {
+    AwkAction action = AwkUtil.findParent(this, AwkAction.class);
+    if (action == null) {
+      return false;
+    }
+
+    PsiElement parent = action.getParent();
+    if (parent instanceof AwkItem) {
+      AwkItem awkItem = (AwkItem) parent;
+
+      return awkItem.getPattern() instanceof AwkBeginBlock
+          || awkItem.getFirstChild().getNode().getElementType().equals(AwkTypes.FUNCTION);
+    }
+
+    return false;
+  }
 }
