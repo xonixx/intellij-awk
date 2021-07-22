@@ -9,12 +9,17 @@ public class AwkUserVarNameStubImpl extends StubBase<AwkUserVarName> implements 
 
   private final String name;
   private final boolean looksLikeDeclaration;
+  private final boolean insideInitializingContext;
 
   public AwkUserVarNameStubImpl(
-      @Nullable StubElement parent, String name, boolean looksLikeDeclaration) {
+      @Nullable StubElement parent,
+      String name,
+      boolean looksLikeDeclaration,
+      boolean insideInitializingContext) {
     super(parent, (IStubElementType<?, ?>) AwkTypes.USER_VAR_NAME);
     this.name = name;
     this.looksLikeDeclaration = looksLikeDeclaration;
+    this.insideInitializingContext = insideInitializingContext;
   }
 
   @Override
@@ -25,5 +30,10 @@ public class AwkUserVarNameStubImpl extends StubBase<AwkUserVarName> implements 
   @Override
   public boolean looksLikeDeclaration() {
     return looksLikeDeclaration;
+  }
+
+  @Override
+  public boolean isInsideInitializingContext() {
+    return insideInitializingContext;
   }
 }

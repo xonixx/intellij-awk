@@ -30,13 +30,12 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
           resolveGlobalVariableDeclarationsInCurrentFileInitCtx("RESOLVE-CUR-INIT-DECL", myElement);
     }
     if (ref == null) {
-      ref =
-          resolveGlobalVariableInProjectFiles("GlobalVariableInProjectFiles-decl", true, myElement);
+      ref = resolveGlobalVariableDeclarationsInAllFilesInitCtx("RESOLVE-ALL-INIT-DECL", myElement);
     }
-    if (ref == null) {
-      ref =
-          resolveGlobalVariableInProjectFiles("GlobalVariableInProjectFiles-use", false, myElement);
-    }
+    //    if (ref == null) {
+    //      ref = resolveGlobalVariableInProjectFiles("GlobalVariableInProjectFiles-use",
+    // myElement);
+    //    }
     if (ref != null) {
       Resolved.AwkResolvedResult resolvedResult = ref.toResolvedResult();
       if (resolvedResult != null) {
@@ -99,10 +98,10 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     return resolved;
   }
 
-  private @Nullable Resolved resolveGlobalVariableInProjectFiles(
-      String type, boolean searchDeclarations, AwkNamedElement userVarName) {
+  private @Nullable Resolved resolveGlobalVariableDeclarationsInAllFilesInitCtx(
+      String type, AwkNamedElement userVarName) {
     Collection<AwkUserVarNameImpl> userVarDeclarations =
-        AwkUtil.findUserVars(searchDeclarations, userVarName.getProject(), userVarName.getName());
+        AwkUtil.findUserVars(userVarName.getProject(), userVarName.getName());
     Resolved resolved = null;
     if (!userVarDeclarations.isEmpty()) {
       AwkUserVarNameImpl found = userVarDeclarations.iterator().next();

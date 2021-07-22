@@ -63,12 +63,9 @@ public class AwkUtil {
     return findFunctions(project, name, GlobalSearchScope.projectScope(project));
   }
 
-  public static Collection<AwkUserVarNameImpl> findUserVars(
-      boolean searchDeclarations, Project project, String name) {
+  public static Collection<AwkUserVarNameImpl> findUserVars(Project project, String name) {
     return StubIndex.getElements(
-        searchDeclarations
-            ? AwkUserVarNameStubElementType.IndexVarDeclarations.KEY
-            : AwkUserVarNameStubElementType.IndexVarUsage.KEY,
+        AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
         name,
         project,
         GlobalSearchScope.projectScope(project),

@@ -110,6 +110,11 @@ public abstract class AwkUserVarNameMixin
    * <li><code>function init*() { here }</code>
    */
   public boolean isInsideInitializingContext() {
+    AwkUserVarNameStub stub = getStub();
+    if (stub != null) {
+      return stub.isInsideInitializingContext();
+    }
+
     AwkAction action = AwkUtil.findParent(this, AwkAction.class);
     if (action == null) {
       return false;

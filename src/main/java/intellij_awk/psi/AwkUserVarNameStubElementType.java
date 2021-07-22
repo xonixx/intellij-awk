@@ -22,7 +22,10 @@ public class AwkUserVarNameStubElementType
   public @NotNull AwkUserVarNameStub createStub(
       @NotNull AwkUserVarName psi, StubElement<?> parentStub) {
     return new AwkUserVarNameStubImpl(
-        parentStub, psi.getName(), ((AwkUserVarNameMixin) psi).looksLikeDeclaration());
+        parentStub,
+        psi.getName(),
+        ((AwkUserVarNameMixin) psi).looksLikeDeclaration(),
+        ((AwkUserVarNameMixin) psi).isInsideInitializingContext());
   }
 
   @Override
@@ -35,24 +38,33 @@ public class AwkUserVarNameStubElementType
       throws IOException {
     dataStream.writeName(stub.getName());
     dataStream.writeBoolean(stub.looksLikeDeclaration());
+    dataStream.writeBoolean(stub.isInsideInitializingContext());
   }
 
   @Override
   public @NotNull AwkUserVarNameStub deserialize(
       @NotNull StubInputStream dataStream, StubElement parentStub) throws IOException {
     return new AwkUserVarNameStubImpl(
-        parentStub, dataStream.readNameString(), dataStream.readBoolean());
+        parentStub,
+        dataStream.readNameString(),
+        dataStream.readBoolean(),
+        dataStream.readBoolean());
   }
 
   @Override
   public void indexStub(@NotNull AwkUserVarNameStub stub, @NotNull IndexSink sink) {
-    sink.occurrence(
-        stub.looksLikeDeclaration() ? IndexVarDeclarations.KEY : IndexVarUsage.KEY, stub.getName());
+    //    sink.occurrence(
+    //        stub.looksLikeDeclaration() ? IndexVarDeclarationsInInitializeContext.KEY :
+    // IndexVarUsage.KEY, stub.getName());
+    if (stub.looksLikeDeclaration() && stub.isInsideInitializingContext()) {
+      sink.occurrence(IndexUserVarDeclarationsInsideInitializingContext.KEY, stub.getName());
+    }
   }
 
-  public static class IndexVarDeclarations extends StringStubIndexExtension<AwkUserVarNameImpl> {
+  public static class IndexUserVarDeclarationsInsideInitializingContext
+      extends StringStubIndexExtension<AwkUserVarNameImpl> {
     public static StubIndexKey<String, AwkUserVarNameImpl> KEY =
-        StubIndexKey.createIndexKey(AwkUserVarName.class.getCanonicalName() + "|Declarations");
+        StubIndexKey.createIndexKey(AwkUserVarName.class.getCanonicalName() + "|DeclInit");
 
     @Override
     public @NotNull StubIndexKey<String, AwkUserVarNameImpl> getKey() {
@@ -60,7 +72,7 @@ public class AwkUserVarNameStubElementType
     }
   }
 
-  public static class IndexVarUsage extends StringStubIndexExtension<AwkUserVarNameImpl> {
+  /*public static class IndexVarUsage extends StringStubIndexExtension<AwkUserVarNameImpl> {
     public static StubIndexKey<String, AwkUserVarNameImpl> KEY =
         StubIndexKey.createIndexKey(AwkUserVarName.class.getCanonicalName() + "|Usage");
 
@@ -68,5 +80,5 @@ public class AwkUserVarNameStubElementType
     public @NotNull StubIndexKey<String, AwkUserVarNameImpl> getKey() {
       return KEY;
     }
-  }
+  }*/
 }
