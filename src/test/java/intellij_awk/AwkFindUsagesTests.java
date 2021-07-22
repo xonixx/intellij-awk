@@ -229,6 +229,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
   }
 
   public void testMultipleFilesVars6() {
+    // RESOLVE-ANY-VAR
     doTest(1, "function f() { A<caret> = 1 }", "function f2() { A = 2 }");
   }
 
