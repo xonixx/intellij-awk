@@ -203,6 +203,24 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     assertNull(userVars.get(2).getReference().resolve());
   }
 
+  public void testVarRefs10() {
+    // RESOLVE-FIRST-CUR-INIT
+    List<PsiElement> userVars =
+        configureTestFiles("BEGIN { while(getline Line) process() } function process() { print Line }");
+
+    assertEquals(userVars.get(0), userVars.get(1).getReference().resolve());
+    assertNull(userVars.get(0).getReference().resolve());
+  }
+  
+  public void testVarRefs11() {
+    // RESOLVE-FIRST-CUR-INIT
+    List<PsiElement> userVars =
+        configureTestFiles("function process() { print Line } BEGIN { while(getline Line) process() }");
+
+    assertEquals(userVars.get(1), userVars.get(0).getReference().resolve());
+    assertNull(userVars.get(1).getReference().resolve());
+  }
+
   public void testFunc1() {
     doTest(
         5,
