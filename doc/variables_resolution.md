@@ -39,5 +39,6 @@ Bottom line: we don't try to resolve global var in other files unless it looks l
 ### TODO
                                                                        
 1. **Global resolution should exclude variables that resolve to function arguments**
-2. Handle `match(ARGV[pos], /^--?show-original(=(.*)?)?$/, group)` case
+   - handle case `function a(group) { print group } function b() { match(s,/s/,group) }`- should not resolve to arg
+2. Handle `match(STR, /ERE/, group)` case
 3. **idea** resolve `Option["opt_name"]` to `Option["opt_name"] = ...` 
