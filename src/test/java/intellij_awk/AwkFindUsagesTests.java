@@ -213,7 +213,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             "BEGIN { while(getline Line) process() } function process() { print Line }");
 
     assertEquals(userVars.get(0), userVars.get(1).getReference().resolve());
-    assertEquals("RESOLVE-CUR-INIT-DECL", getAwkResolved(userVars.get(1)).type);
+    assertEquals("RESOLVE-CUR-INIT-VAR", getAwkResolved(userVars.get(1)).type);
     assertNull(userVars.get(0).getReference().resolve());
   }
 
@@ -292,7 +292,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
   }
 
   public void testMultipleFilesVars5() {
-    doTest(1, "function f() { return A<caret>+1 }", "function f2() { print A }");
+    doTest(0, "function f() { return A<caret>+1 }", "function f2() { print A }");
   }
 
   public void testMultipleFilesVars6() {

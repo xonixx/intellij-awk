@@ -26,18 +26,20 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
 
     Resolved ref = resolveFunctionArgument("RESOLVE-ARG", myElement);
     if (ref == null) {
-      ref = resolveInCurrentFileInInit("RESOLVE-CUR-INIT-DECL", true, myElement);
+      ref = resolveInCurrentFile("RESOLVE-CUR-INIT-DECL", true, true, myElement);
     }
     if (ref == null) {
       ref = resolveInAllFilesDeclarationsInInit("RESOLVE-ALL-INIT-DECL", myElement);
     }
     if (ref == null) {
-      ref = resolveInCurrentFileInInit("RESOLVE-CUR-INIT-VAR", false, myElement);
+      ref = resolveInCurrentFile("RESOLVE-CUR-INIT-VAR", false, true, myElement);
     }
-    //    if (ref == null) {
-    //      ref = resolveGlobalVariableInProjectFiles("GlobalVariableInProjectFiles-use",
-    // myElement);
-    //    }
+    if (ref == null) {
+      ref = resolveInCurrentFile("RESOLVE-CUR-DECL", true, false, myElement);
+    }
+    if (ref == null) {
+      ref = resolveInCurrentFile("RESOLVE-CUR-VAR", false, false, myElement);
+    }
     if (ref != null) {
       Resolved.AwkResolvedResult resolvedResult = ref.toResolvedResult();
       if (resolvedResult != null) {
@@ -76,8 +78,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     return null;
   }
 
-  private Resolved resolveInCurrentFileInInit(
-      String type, boolean declarations, AwkNamedElement userVarName) {
+  private Resolved resolveInCurrentFile(
+      String type, boolean declarations, boolean insideInit, AwkNamedElement userVarName) {
     AwkFile awkFile = (AwkFile) userVarName.getContainingFile();
 
     Resolved resolved = null;
@@ -88,7 +90,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
                 psiElement instanceof AwkUserVarName
                     && ((AwkUserVarName) psiElement).getVarName().textMatches(userVarName.getName())
                     && (!declarations || ((AwkUserVarNameMixin) psiElement).looksLikeDeclaration())
-                    && ((AwkUserVarNameMixin) psiElement).isInsideInitializingContext());
+                    && (!insideInit
+                        || ((AwkUserVarNameMixin) psiElement).isInsideInitializingContext()));
     if (varDeclaration != null) {
       if (varDeclaration == userVarName) {
         resolved = new Resolved(type, null); // no need to display a reference to itself
