@@ -8,7 +8,7 @@ Obviously, the two goals above conflict with each other. We need to come up with
 
 ### Considerations
 
-- variable usages starting capital-case: `Var`. Usually thhis denotes global variable.
+- variable usages starting capital-case: `Var`. Usually this denotes global variable.
   - **resolution** let's not rely on this to be more universal
 
 ### Declaration-like cases
@@ -26,14 +26,17 @@ Obviously, the two goals above conflict with each other. We need to come up with
 ### Let's implement next heuristic (in order of attempt):
 
 1. resolve current function argument `// RESOLVE-ARG`
-2. resolve *any variable occurrence* in current file in **Initializing context** `// RESOLVE-ANY-CUR-INIT`
+2. resolve first of **Declaration-like cases** in current file in **Initializing context** `// RESOLVE-FIRST-CUR-INIT`
+3. resolve first of **Declaration-like cases** in all project files in **Initializing context** `// RESOLVE-DECL-ALL-INIT`
+4. resolve first of **Declaration-like cases** in current file `// RESOLVE-DECL-CUR`
+5. resolve *first variable occurrence* in current file `// RESOLVE-FIRST-CUR`
    - **why** this is backward-compatible
-3. resolve **Declaration-like cases** in other files (= in all project files) in **Initializing context** `// RESOLVE-DECL-ALL-INIT`
-4. resolve **Declaration-like cases** in other files (= in all project files) `// RESOLVE-DECL-ALL`
-5. resolve *any variable occurrence* across all files `// RESOLVE-ANY-VAR`
-   - **todo** this should exclude variables that resolve to function arguments
+   - cases like `BEGIN { while(getline Line) process() } function process() { print Line }`
+
+Bottom line: we don't try to resolve global var in other files unless it looks like declaration in initialization context.
 
 ### TODO
-
-1. Handle `match(ARGV[pos], /^--?show-original(=(.*)?)?$/, group)` case
-2. **idea** resolve `Option["opt_name"]` to `Option["opt_name"] = ...` 
+                                                                       
+1. **Global resolution should exclude variables that resolve to function arguments**
+2. Handle `match(ARGV[pos], /^--?show-original(=(.*)?)?$/, group)` case
+3. **idea** resolve `Option["opt_name"]` to `Option["opt_name"] = ...` 
