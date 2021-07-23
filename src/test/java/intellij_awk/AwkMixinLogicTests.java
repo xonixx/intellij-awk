@@ -92,4 +92,12 @@ public class AwkMixinLogicTests extends BasePlatformTestCase {
   public void test18() {
     doTestInInitContext(true, "BEGIN { while(1){ A=1 } }");
   }
+
+  public void test19() {
+    doTestLooksLikeDeclaration(
+        true,
+        "BEGIN {\n"
+            + "    if ((Instr = trim($0))!=\"\") {}\n"
+            + "}");
+  }
 }

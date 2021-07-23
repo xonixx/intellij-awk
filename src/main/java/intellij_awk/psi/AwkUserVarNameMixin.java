@@ -28,9 +28,7 @@ public abstract class AwkUserVarNameMixin
       psiElement()
           .withParent(
               (psiElement(AwkLvalue.class).beforeLeaf(psiElement(AwkTypes.ASSIGN)))
-                  .withParent(
-                      psiElement(AwkNonUnaryExpr.class)
-                          .withParent(psiElement(AwkSimpleStatement.class))));
+                  .withParent(psiElement(AwkNonUnaryExpr.class)));
 
   /**
    *
