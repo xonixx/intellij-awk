@@ -18,6 +18,7 @@ import java.util.*;
 public class AwkStructureViewElement implements StructureViewTreeElement, SortableTreeElement {
 
   private final NavigatablePsiElement myElement;
+  private static final Set<String> mostLikelyLocal = Set.of("i", "j");
 
   public AwkStructureViewElement(NavigatablePsiElement element) {
     this.myElement = element;
@@ -105,10 +106,9 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
           AwkUtil.findParent(myElement, AwkItem.class).getAction(),
           psiElement ->
               psiElement instanceof AwkUserVarNameMixin
+                  && !mostLikelyLocal.contains(((AwkUserVarNameMixin) psiElement).getName())
                   && ((AwkUserVarNameMixin) psiElement).isInsideInitializingContext()
-                  && (((AwkUserVarNameMixin) psiElement).looksLikeDeclaration()
-                      || Character.isUpperCase(
-                          ((AwkUserVarNameMixin) psiElement).getName().charAt(0))),
+                  && (((AwkUserVarNameMixin) psiElement).looksLikeDeclaration()),
           vars);
 
       for (PsiElement var : vars) {
