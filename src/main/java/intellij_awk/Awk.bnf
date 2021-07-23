@@ -194,7 +194,7 @@ pattern          ::= begin_or_end | BEGINFILE | ENDFILE
                  | expr (COMMA newlines_opt expr)?
 
 begin_or_end     ::= begin_block | end_block {
-    mixin="intellij_awk.psi.AwkNamedElementImpl"
+    mixin="intellij_awk.psi.AwkBeginEndMixin"
     implements="intellij_awk.psi.AwkNamedElement"
 }
 
