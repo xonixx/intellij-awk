@@ -40,7 +40,14 @@ public class AwkCompletionTests extends BasePlatformTestCase {
 
   public void test4() {
     checkCompletion(
-        Set.of("f1", "f2", POSIX_VAR, GAWK_VAR, POSIX_FUNC, "BEGIN", "END"), // TODO do we want to autocomplete BEGINFILE/ENDFILE?
+        Set.of(
+            "f1",
+            "f2",
+            POSIX_VAR,
+            GAWK_VAR,
+            POSIX_FUNC,
+            "BEGIN",
+            "END"), // TODO do we want to autocomplete BEGINFILE/ENDFILE?
         Set.of("return"),
         "function f1() {}\nfunction f2(){}\n<caret>");
   }
@@ -82,11 +89,30 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "function aaa1(){}\nfunction bbb(){}\nfunction aaa2(){}\n{ aaa<caret> }");
   }
 
-  public void testMultiFiles1() {
+  public void testMultiFilesFunc1() {
     checkCompletionExact(
         Set.of("aaa1", "aaa2"),
         "function bbb(){}\nfunction aaa2(){}\n{ aaa<caret> }",
         "function aaa1(){}\n");
+  }
+
+  public void testMultiFilesVars1() {
+    checkCompletionExact(
+        Set.of("aaa1", "aaa2"),
+        "function f() { aaa<caret> }; function init() { aaa1=1 }",
+        "BEGIN { aaa2 = 2 }");
+  }
+
+  public void testMultiFilesVars2() {
+    checkCompletionExact(
+        Set.of("aaa1", "aaa2"),
+        "function f() { aaa<caret> }; BEGIN { aaa2 = 2 }",
+        "function init() { aaa1=1 }");
+  }
+
+  public void testMultiFilesVars3() {
+    checkCompletionExact(
+        Set.of("aaa1"), "function f() { aaa<caret> }; function init() { aaa1=1 }", "{ aaa2 = 2 }");
   }
 
   public void testFunctionArgs1() {
@@ -100,29 +126,31 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void testFunctionArgsBuiltin1() {
-    checkFunctionArgs(
-        "BEGIN { <caret> }", "gsub", "(regexp, replacement [, target])");
+    checkFunctionArgs("BEGIN { <caret> }", "gsub", "(regexp, replacement [, target])");
   }
 
   public void testFunctionArgsBuiltin2() {
-    checkFunctionArgs(
-        "BEGIN { <caret> }", "gensub", "(regexp, replacement, how [, target])");
+    checkFunctionArgs("BEGIN { <caret> }", "gensub", "(regexp, replacement, how [, target])");
   }
 
   public void testSwitch() {
     checkCompletionSingle("{ sw<caret> }", "{ switch (<caret>) {} }");
   }
+
   public void testCase1() {
     checkCompletionSingle("{ switch(1) { cas<caret> } }", "{ switch(1) { case <caret>: } }");
   }
+
   public void testCase2() {
     checkCompletionSingle(
         "{ switch(1) { case \"hello\": cas<caret> } }",
         "{ switch(1) { case \"hello\": case <caret>: } }");
   }
+
   public void testDefault1() {
     checkCompletionSingle("{ switch(1) { def<caret> } }", "{ switch(1) { default:<caret> } }");
   }
+
   public void testDefault2() {
     checkCompletionSingle(
         "{ switch(1) { case \"hello\": def<caret> } }",
