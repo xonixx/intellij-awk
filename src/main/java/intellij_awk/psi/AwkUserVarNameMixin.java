@@ -5,6 +5,7 @@ import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
+import intellij_awk.AwkIcons;
 import intellij_awk.AwkReferenceVariable;
 import intellij_awk.AwkUtil;
 import org.jetbrains.annotations.NotNull;
@@ -61,7 +62,7 @@ public abstract class AwkUserVarNameMixin
 
   @Override
   public @Nullable Icon getIcon(int flags) {
-    return null;
+    return AwkIcons.VARIABLE;
   }
 
   /**

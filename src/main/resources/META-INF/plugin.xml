@@ -31,7 +31,10 @@
                                  implementationClass="intellij_awk.AwkRefactoringSupportProvider"/>
         <lang.findUsagesProvider language="AWK"
                                  implementationClass="intellij_awk.AwkFindUsagesProvider"/>
-        <gotoSymbolContributor implementation="intellij_awk.AwkChooseByNameContributor"/>
+
+        <gotoSymbolContributor implementation="intellij_awk.AwkChooseByNameContributorFunctions"/>
+        <gotoSymbolContributor implementation="intellij_awk.AwkChooseByNameContributorGlobalVars"/>
+
         <lang.psiStructureViewFactory language="AWK" implementationClass="intellij_awk.AwkStructureViewFactory"/>
         <lang.formatter language="AWK" implementationClass="intellij_awk.AwkFormattingModelBuilder"/>
         <codeStyleSettingsProvider implementation="intellij_awk.AwkCodeStyleSettingsProvider"/>

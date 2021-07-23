@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class AwkChooseByNameContributor implements ChooseByNameContributor {
+public class AwkChooseByNameContributorFunctions implements ChooseByNameContributor {
 
   @Override
   public String @NotNull [] getNames(Project project, boolean includeNonProjectItems) {
