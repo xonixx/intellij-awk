@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface AwkNamedElement extends PsiNameIdentifierOwner {
-  Logger LOG = Logger.getInstance(AwkNamedElementImpl.class);
+  Logger LOG = Logger.getInstance(AwkNamedElement.class);
 
   @Override
   default @Nullable PsiElement getNameIdentifier() {

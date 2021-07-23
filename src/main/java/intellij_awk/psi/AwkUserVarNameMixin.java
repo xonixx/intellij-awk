@@ -1,6 +1,7 @@
 package intellij_awk.psi;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
 import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
@@ -58,6 +59,26 @@ public abstract class AwkUserVarNameMixin
   @Override
   public AwkReferenceVariable getReference() {
     return new AwkReferenceVariable(this, getNameTextRange());
+  }
+
+  public ItemPresentation getPresentation() {
+    return new ItemPresentation() {
+      @Nullable
+      @Override
+      public String getPresentableText() {
+        return getName();
+      }
+
+      @Override
+      public String getLocationString() {
+        return getContainingFile().getName();
+      }
+
+      @Override
+      public Icon getIcon(boolean unused) {
+        return AwkUserVarNameMixin.this.getIcon(0);
+      }
+    };
   }
 
   @Override
@@ -133,7 +154,9 @@ public abstract class AwkUserVarNameMixin
       return pattern != null && pattern.getBeginOrEnd() instanceof AwkBeginBlock
           || awkItem.getFirstChild().getNode().getElementType().equals(AwkTypes.FUNCTION)
               && functionName.getName().startsWith("init")
-              && !functionName.getArgumentNamesIncludingLocals().contains(getName()) /* not local var */;
+              && !functionName
+                  .getArgumentNamesIncludingLocals()
+                  .contains(getName()) /* not local var */;
     }
 
     return false;

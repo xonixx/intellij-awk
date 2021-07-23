@@ -10,10 +10,10 @@ import com.intellij.psi.PsiElement;
 import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkBeginOrEndImpl;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
+import intellij_awk.psi.impl.AwkUserVarNameImpl;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class AwkStructureViewElement implements StructureViewTreeElement, SortableTreeElement {
 
@@ -49,9 +49,12 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
     if (myElement instanceof AwkBeginOrEndImpl) {
       AwkBeginOrEndImpl beginOrEnd = (AwkBeginOrEndImpl) myElement;
       return "001" + beginOrEnd.getName();
+    } else if (myElement instanceof AwkUserVarNameImpl) {
+      AwkUserVarNameImpl varName = (AwkUserVarNameImpl) myElement;
+      return "002" + varName.getName();
     } else if (myElement instanceof AwkFunctionNameImpl) {
       AwkFunctionNameImpl functionName = (AwkFunctionNameImpl) myElement;
-      return "002" + functionName.getName();
+      return "003" + functionName.getName();
     }
     return "???";
   }
@@ -90,6 +93,23 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
           }
         }
       }
+
+      Set<PsiElement> vars =
+          new TreeSet<>(Comparator.comparing(o -> ((AwkUserVarNameMixin) o).getName()));
+      AwkUtil.findAllMatchedDeep(
+          awkFile,
+          psiElement ->
+              psiElement instanceof AwkUserVarNameMixin
+                  && ((AwkUserVarNameMixin) psiElement).isInsideInitializingContext()
+                  && (((AwkUserVarNameMixin) psiElement).looksLikeDeclaration()
+                      || Character.isUpperCase(
+                          ((AwkUserVarNameMixin) psiElement).getName().charAt(0))),
+          vars);
+
+      for (PsiElement var : vars) {
+        treeElements.add(new AwkStructureViewElement((NavigatablePsiElement) var));
+      }
+
       return treeElements.toArray(new TreeElement[0]);
     }
     return EMPTY_ARRAY;
