@@ -5,6 +5,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.*;
+import intellij_awk.psi.impl.AwkUserVarNameImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -71,7 +72,9 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
 
             addFunctionArguments(resultSet, psiElement);
 
-            addGlobalVars(resultSet, psiElement);
+            addGlobalVarsInCurrentFile(resultSet, psiElement);
+
+            addGlobalVarsInProject(resultSet, psiElement);
 
             addBuiltIns(resultSet);
           }
@@ -92,7 +95,8 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
     }
   }
 
-  private void addGlobalVars(@NotNull CompletionResultSet resultSet, PsiElement psiElement) {
+  private void addGlobalVarsInCurrentFile(
+      @NotNull CompletionResultSet resultSet, PsiElement psiElement) {
     AwkFile awkFile = (AwkFile) psiElement.getContainingFile();
 
     for (PsiElement child : awkFile.getChildren()) {
@@ -112,6 +116,16 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
           }
         }
       }
+    }
+  }
+
+  private void addGlobalVarsInProject(
+      @NotNull CompletionResultSet resultSet, PsiElement psiElement) {
+    List<AwkUserVarNameImpl> projectGlobalVars = AwkUtil.findGlobalVars(psiElement.getProject());
+
+    for (AwkUserVarNameImpl projectGlobalVar : projectGlobalVars) {
+      resultSet.addElement(
+          LookupElementBuilder.create(projectGlobalVar.getText()).withIcon(AwkIcons.VARIABLE));
     }
   }
 

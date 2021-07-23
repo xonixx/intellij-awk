@@ -79,10 +79,6 @@ public class AwkUtil {
   }
 
   public static List<AwkFunctionNameImpl> findFunctions(Project project) {
-    return findFunctions(project, GlobalSearchScope.projectScope(project));
-  }
-
-  public static List<AwkFunctionNameImpl> findFunctions(Project project, GlobalSearchScope scope) {
     Collection<String> allKeys = findFunctionNames(project);
     List<AwkFunctionNameImpl> result = new ArrayList<>();
     for (String key : allKeys) {
@@ -91,8 +87,24 @@ public class AwkUtil {
               AwkFunctionNameStubElementType.Index.KEY,
               key,
               project,
-              scope,
+              GlobalSearchScope.projectScope(project),
               AwkFunctionNameImpl.class));
+    }
+    return result;
+  }
+
+  /** Let's only consider variable declarations in initializing context */
+  public static List<AwkUserVarNameImpl> findGlobalVars(Project project) {
+    Collection<String> allKeys = findGlobalVarNames(project);
+    List<AwkUserVarNameImpl> result = new ArrayList<>();
+    for (String key : allKeys) {
+      result.addAll(
+          StubIndex.getElements(
+              AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
+              key,
+              project,
+              GlobalSearchScope.projectScope(project),
+              AwkUserVarNameImpl.class));
     }
     return result;
   }
@@ -100,6 +112,15 @@ public class AwkUtil {
   @NotNull
   public static Collection<String> findFunctionNames(Project project) {
     return StubIndex.getInstance().getAllKeys(AwkFunctionNameStubElementType.Index.KEY, project);
+  }
+
+  /** Let's only consider variable declarations in initializing context */
+  @NotNull
+  public static Collection<String> findGlobalVarNames(Project project) {
+    return StubIndex.getInstance()
+        .getAllKeys(
+            AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
+            project);
   }
 
   public static List<AwkFunctionNameImpl> findFunctionsInFile(
