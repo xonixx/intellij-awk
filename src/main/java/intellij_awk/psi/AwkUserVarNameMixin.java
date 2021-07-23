@@ -152,8 +152,8 @@ public abstract class AwkUserVarNameMixin
       AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
 
       return pattern != null && pattern.getBeginOrEnd() instanceof AwkBeginBlock
-          || awkItem.getFirstChild().getNode().getElementType().equals(AwkTypes.FUNCTION)
-              && functionName.getName().startsWith("init")
+          || functionName != null
+              && functionName.isInitFunction()
               && !functionName
                   .getArgumentNamesIncludingLocals()
                   .contains(getName()) /* not local var */;

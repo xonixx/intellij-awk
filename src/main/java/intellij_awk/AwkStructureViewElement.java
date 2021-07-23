@@ -69,8 +69,9 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
   @NotNull
   @Override
   public TreeElement[] getChildren() {
+    List<TreeElement> treeElements = new ArrayList<>();
+
     if (myElement instanceof AwkFile) {
-      List<TreeElement> treeElements = new ArrayList<>();
       AwkFile awkFile = (AwkFile) myElement;
 
       for (PsiElement child : awkFile.getChildren()) {
@@ -93,11 +94,15 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
           }
         }
       }
+    } else if (myElement instanceof AwkBeginBlock
+        || myElement instanceof AwkFunctionNameMixin
+            && ((AwkFunctionNameMixin) myElement).isInitFunction()) {
 
       Set<PsiElement> vars =
           new TreeSet<>(Comparator.comparing(o -> ((AwkUserVarNameMixin) o).getName()));
+
       AwkUtil.findAllMatchedDeep(
-          awkFile,
+          AwkUtil.findParent(myElement, AwkItem.class).getAction(),
           psiElement ->
               psiElement instanceof AwkUserVarNameMixin
                   && ((AwkUserVarNameMixin) psiElement).isInsideInitializingContext()
@@ -109,9 +114,8 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
       for (PsiElement var : vars) {
         treeElements.add(new AwkStructureViewElement((NavigatablePsiElement) var));
       }
-
-      return treeElements.toArray(new TreeElement[0]);
     }
-    return EMPTY_ARRAY;
+
+    return treeElements.toArray(new TreeElement[0]);
   }
 }

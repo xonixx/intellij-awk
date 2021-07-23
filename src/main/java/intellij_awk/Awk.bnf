@@ -190,7 +190,7 @@ function_name    ::= FUNC_NAME | VAR_NAME {
 
 param_list       ::= var_name (COMMA newlines_opt var_name)*
 
-pattern          ::= BEGINFILE | ENDFILE | begin_or_end
+pattern          ::= begin_or_end | BEGINFILE | ENDFILE
                  | expr (COMMA newlines_opt expr)?
 
 begin_or_end     ::= begin_block | end_block {

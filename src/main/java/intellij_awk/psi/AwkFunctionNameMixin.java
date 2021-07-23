@@ -121,4 +121,8 @@ public abstract class AwkFunctionNameMixin
 
     return false;
   }
+
+  public boolean isInitFunction() {
+    return getName().startsWith("init");
+  }
 }
