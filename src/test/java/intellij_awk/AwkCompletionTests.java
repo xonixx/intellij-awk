@@ -112,7 +112,16 @@ public class AwkCompletionTests extends BasePlatformTestCase {
 
   public void testMultiFilesVars3() {
     checkCompletionExact(
-        Set.of("aaa1"), "function f() { aaa<caret> }; function init() { aaa1=1 }", "{ aaa2 = 2 }");
+        Set.of("aaa1", "aaa3"),
+        "function f(aaa3) { aaa<caret> }; function init() { aaa1=1 }",
+        "{ aaa2 = 2 }");
+  }
+
+  public void testMultiFilesVars4() {
+    checkCompletionExact(
+        Set.of("aaa1", "aaa3"),
+        "function f(aaa3) { aaa<caret> }; function init() { \"ls\" | getline aaa1 }",
+        "{ aaa2 = 2 }");
   }
 
   public void testFunctionArgs1() {
@@ -190,6 +199,11 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   private void checkCompletionExact(Set<String> expected, String code, String... otherFiles) {
+    if (expected.size() < 2) {
+      throw new IllegalArgumentException(
+          "Should only check for 2 or more expected values. "
+              + "For single value it will apply completion inline instead of returning values.");
+    }
     setupCode(code, otherFiles);
     LookupElement[] variants = myFixture.completeBasic();
     assertNotNull(

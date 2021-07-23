@@ -99,23 +99,17 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
       @NotNull CompletionResultSet resultSet, PsiElement psiElement) {
     AwkFile awkFile = (AwkFile) psiElement.getContainingFile();
 
-    for (PsiElement child : awkFile.getChildren()) {
-      if (child instanceof AwkItem) {
-        AwkItem awkItem = (AwkItem) child;
-        AwkPattern pattern = awkItem.getPattern();
-        if (pattern != null) {
-          if (pattern.getBeginOrEnd() instanceof AwkBeginBlock) {
+    ArrayList<PsiElement> globalVars = new ArrayList<>();
+    AwkUtil.findAllMatchedDeep(
+        awkFile,
+        psiEl ->
+            psiEl instanceof AwkUserVarNameMixin
+                && ((AwkUserVarNameMixin) psiEl).isInsideInitializingContext(),
+        globalVars);
 
-            ArrayList<PsiElement> globalVars = new ArrayList<>();
-            AwkUtil.findAllMatchedDeep(
-                awkItem.getAction(), psiEl -> psiEl instanceof AwkUserVarName, globalVars);
-            for (PsiElement globalVar : globalVars) {
-              resultSet.addElement(
-                  LookupElementBuilder.create(globalVar.getText()).withIcon(AwkIcons.VARIABLE));
-            }
-          }
-        }
-      }
+    for (PsiElement globalVar : globalVars) {
+      resultSet.addElement(
+          LookupElementBuilder.create(globalVar.getText()).withIcon(AwkIcons.VARIABLE));
     }
   }
 
