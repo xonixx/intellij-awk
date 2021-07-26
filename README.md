@@ -27,21 +27,21 @@ The missing IntelliJ IDEA language support plugin for [AWK](https://en.wikipedia
   - [x] rename function
 - [x] Basic auto-format
 
-## Goals v0.2.0
+## Goals v0.2.0 \[done]
 
-- [ ] Add GAWK parsing mode
+- [x] Add GAWK parsing mode
 
 ## Goals v0.3.0
 
 - [ ] Enforce variable naming convention (the idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools))
   - [ ] `Name` for global
   - [ ] `name` for local
-- [ ] Add settings switch to select Awk dialect (Posix vs Gawk)
 - [ ] Showing documentation for built-in functions
 - [ ] Showing documentation for built-in variables (`NR`/`NF`/etc.)
     
 ## Future ideas
 
+- [ ] Add settings switch to select Awk dialect (Posix vs Gawk)
 - [ ] Auto-format code via `gawk --pretty-print`
           
 ## Parser quirks
