@@ -1,0 +1,1 @@
+/.*/ { gsub ("·½", "ERROR"); print; }

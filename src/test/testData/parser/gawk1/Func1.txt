@@ -1,0 +1,12 @@
+AWK File
+  AwkItemImpl(ITEM)
+    PsiElement(AwkTokenType.FUNCTION)('func')
+    PsiWhiteSpace(' ')
+    AwkFunctionNameImpl(FUNCTION_NAME)
+      PsiElement(AwkTokenType.FUNC_NAME)('f')
+    PsiElement(AwkTokenType.()('(')
+    PsiElement(AwkTokenType.))(')')
+    PsiWhiteSpace(' ')
+    AwkActionImpl(ACTION)
+      PsiElement(AwkTokenType.{)('{')
+      PsiElement(AwkTokenType.})('}')

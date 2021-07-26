@@ -43,6 +43,16 @@ The missing IntelliJ IDEA language support plugin for [AWK](https://en.wikipedia
 ## Future ideas
 
 - [ ] Auto-format code via `gawk --pretty-print`
+          
+## Parser quirks
+               
+Please note, due to very ad-hoc nature of AWK syntax (namely some inherent ambiguities in its grammar) the implemented IntelliJ IDEA AWK parser has some minor limitations.
+
+More details in [parser_quirks.md](doc/parser_quirks.md)
+
+## Implementation details
+
+The chosen approach to variables resolution described in [variables_resolution.md](doc/variables_resolution.md) 
 
 ## Useful links
 

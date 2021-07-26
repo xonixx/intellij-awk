@@ -9,7 +9,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.usageView.UsageViewLongNameLocation;
 import com.intellij.usageView.UsageViewNodeTextLocation;
-import intellij_awk.psi.*;
+import intellij_awk.psi.AwkFunctionName;
+import intellij_awk.psi.AwkTypes;
+import intellij_awk.psi.AwkUserVarName;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,14 +59,16 @@ public class AwkFindUsagesProvider implements FindUsagesProvider {
   @NotNull
   @Override
   public String getDescriptiveName(@NotNull PsiElement element) {
-    return ElementDescriptionUtil.getElementDescription(
-        element, UsageViewLongNameLocation.INSTANCE);
+    return element.getText();
+//    return ElementDescriptionUtil.getElementDescription(
+//        element, UsageViewLongNameLocation.INSTANCE);
   }
 
   @NotNull
   @Override
   public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-    return ElementDescriptionUtil.getElementDescription(
-        element, UsageViewNodeTextLocation.INSTANCE);
+    return element.getText();
+//    return ElementDescriptionUtil.getElementDescription(
+//        element, UsageViewNodeTextLocation.INSTANCE);
   }
 }

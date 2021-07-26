@@ -5,7 +5,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.*;
-import intellij_awk.psi.impl.AwkFunctionNameMixin;
+import intellij_awk.psi.impl.AwkUserVarNameImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -37,6 +37,24 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
         "SUBSEP"
       };
 
+  private static final String[] gawkVariables =
+      new String[] {
+        "BINMODE",
+        "FIELDWIDTHS",
+        "FPAT",
+        "IGNORECASE",
+        "LINT",
+        "PREC",
+        "ROUNDMODE",
+        "TEXTDOMAIN",
+        "ARGIND",
+        "ERRNO",
+        "FUNCTAB",
+        "PROCINFO",
+        "RT",
+        "SYMTAB"
+      };
+
   public AwkCompletionContributorVariables() {
     extend(
         CompletionType.BASIC,
@@ -51,52 +69,74 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
               @NotNull CompletionResultSet resultSet) {
 
             final PsiElement psiElement = parameters.getPosition();
-            {
-              AwkItem awkItem = AwkUtil.findParent(psiElement, AwkItem.class);
-              if (awkItem != null) {
-                AwkParamList paramList = awkItem.getParamList();
-                if (paramList != null) {
-                  AwkFunctionNameMixin functionName =
-                      (AwkFunctionNameMixin) awkItem.getFunctionName();
-                  List<String> args = functionName.getArgumentNamesIncludingLocals();
-                  for (String arg : args) {
-                    resultSet.addElement(
-                        LookupElementBuilder.create(arg).withIcon(AwkIcons.PARAMETER));
-                  }
-                }
-              }
-            }
 
-            AwkFile awkFile = (AwkFile) psiElement.getContainingFile();
+            addFunctionArguments(resultSet, psiElement);
 
-            for (PsiElement child : awkFile.getChildren()) {
-              if (child instanceof AwkItem) {
-                AwkItem awkItem = (AwkItem) child;
-                AwkPattern pattern = awkItem.getPattern();
-                if (pattern != null) {
-                  if (AwkUtil.isAwkBegin(pattern.getBeginOrEnd())) {
+            addGlobalVarsInCurrentFile(resultSet, psiElement);
 
-                    ArrayList<PsiElement> globalVars = new ArrayList<>();
-                    AwkUtil.findAllMatchedDeep(
-                        awkItem.getAction(), psiEl -> psiEl instanceof AwkUserVarName, globalVars);
-                    for (PsiElement globalVar : globalVars) {
-                      resultSet.addElement(
-                          LookupElementBuilder.create(globalVar.getText())
-                              .withIcon(AwkIcons.VARIABLE));
-                    }
-                  }
-                }
-              }
-            }
+            addGlobalVarsInProject(resultSet, psiElement);
 
-            for (String builtInVariable : builtInVariables) {
-              resultSet.addElement(
-                  LookupElementBuilder.create(builtInVariable)
-                      .withBoldness(true)
-                      .withItemTextItalic(true)
-                      .withIcon(AwkIcons.VARIABLE));
-            }
+            addBuiltIns(resultSet);
           }
         });
+  }
+
+  private void addFunctionArguments(@NotNull CompletionResultSet resultSet, PsiElement psiElement) {
+    AwkItem awkItem = AwkUtil.findParent(psiElement, AwkItem.class);
+    if (awkItem != null) {
+      AwkParamList paramList = awkItem.getParamList();
+      if (paramList != null) {
+        AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
+        List<String> args = functionName.getArgumentNamesIncludingLocals();
+        for (String arg : args) {
+          resultSet.addElement(LookupElementBuilder.create(arg).withIcon(AwkIcons.PARAMETER));
+        }
+      }
+    }
+  }
+
+  private void addGlobalVarsInCurrentFile(
+      @NotNull CompletionResultSet resultSet, PsiElement psiElement) {
+    AwkFile awkFile = (AwkFile) psiElement.getContainingFile();
+
+    ArrayList<PsiElement> globalVars = new ArrayList<>();
+    AwkUtil.findAllMatchedDeep(
+        awkFile,
+        psiEl ->
+            psiEl instanceof AwkUserVarNameMixin
+                && ((AwkUserVarNameMixin) psiEl).isInsideInitializingContext(),
+        globalVars);
+
+    for (PsiElement globalVar : globalVars) {
+      resultSet.addElement(
+          LookupElementBuilder.create(globalVar.getText()).withIcon(AwkIcons.VARIABLE));
+    }
+  }
+
+  private void addGlobalVarsInProject(
+      @NotNull CompletionResultSet resultSet, PsiElement psiElement) {
+    List<AwkUserVarNameImpl> projectGlobalVars = AwkUtil.findGlobalVars(psiElement.getProject());
+
+    for (AwkUserVarNameImpl projectGlobalVar : projectGlobalVars) {
+      resultSet.addElement(
+          LookupElementBuilder.create(projectGlobalVar.getText()).withIcon(AwkIcons.VARIABLE));
+    }
+  }
+
+  private void addBuiltIns(@NotNull CompletionResultSet resultSet) {
+    for (String builtInVariable : builtInVariables) {
+      resultSet.addElement(
+          LookupElementBuilder.create(builtInVariable)
+              .withBoldness(true)
+              .withItemTextItalic(true)
+              .withIcon(AwkIcons.VARIABLE));
+    }
+    for (String builtInVariable : gawkVariables) {
+      resultSet.addElement(
+          LookupElementBuilder.create(builtInVariable)
+              .withBoldness(true)
+              .withItemTextItalic(true)
+              .withIcon(AwkIcons.VARIABLE));
+    }
   }
 }

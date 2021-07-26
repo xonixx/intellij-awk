@@ -1,9 +1,8 @@
 package intellij_awk;
 
-import com.intellij.testFramework.ParsingTestCase;
 import org.jetbrains.annotations.NotNull;
 
-public class AwkParserTestsAwkBook extends ParsingTestCase {
+public class AwkParserTestsAwkBook extends ParsingTestCaseBase {
   public AwkParserTestsAwkBook() {
     super("parser/awk_book", "awk", new AwkParserDefinition());
   }
@@ -221,9 +220,4 @@ public class AwkParserTestsAwkBook extends ParsingTestCase {
   public void testTest197() { ensureOnlyParsingNoErrors(); }
   public void testTest198() { ensureOnlyParsingNoErrors(); }
   public void testTest199() { ensureOnlyParsingNoErrors(); }
-
-  private void ensureOnlyParsingNoErrors() {
-    doTest(false);
-    ensureNoErrorElements();
-  }
 }

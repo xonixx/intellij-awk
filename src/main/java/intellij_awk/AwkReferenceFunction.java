@@ -3,19 +3,19 @@ package intellij_awk;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
-import intellij_awk.psi.AwkFile;
-import intellij_awk.psi.AwkFunctionName;
-import intellij_awk.psi.AwkItem;
-import intellij_awk.psi.impl.AwkFunctionCallNameImpl;
+import intellij_awk.psi.AwkNamedElement;
+import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class AwkReferenceFunction extends PsiReferenceBase<AwkFunctionCallNameImpl> implements PsiPolyVariantReference {
+public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElement>
+    implements PsiPolyVariantReference {
 
-  public AwkReferenceFunction(@NotNull AwkFunctionCallNameImpl element, TextRange rangeInElement) {
+  public AwkReferenceFunction(@NotNull AwkNamedElement element, TextRange rangeInElement) {
     super(element, rangeInElement);
   }
 
@@ -23,16 +23,18 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkFunctionCallNameIm
   public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
     List<ResolveResult> res = new ArrayList<>();
 
-    AwkFile awkFile = (AwkFile) myElement.getContainingFile();
+    String funcName = myElement.getName();
 
-    for (PsiElement child : awkFile.getChildren()) {
-      if (child instanceof AwkItem) {
-        AwkItem awkItem = (AwkItem) child;
-        AwkFunctionName functionName = awkItem.getFunctionName();
-        if (functionName != null && myElement.getText().equals(functionName.getName())) {
-          res.add(new PsiElementResolveResult(functionName));
-        }
-      }
+    // should resolve to single function if defined in same file where used
+    Collection<AwkFunctionNameImpl> functionNames =
+        AwkUtil.findFunctionsInFile(myElement.getContainingFile(), funcName);
+
+    if (functionNames.isEmpty()) {
+      functionNames = AwkUtil.findFunctions(myElement.getProject(), funcName);
+    }
+
+    for (AwkFunctionNameImpl functionName : functionNames) {
+      res.add(new PsiElementResolveResult(functionName));
     }
 
     return res.toArray(new ResolveResult[0]);
@@ -46,7 +48,8 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkFunctionCallNameIm
   }
 
   @Override
-  public PsiElement handleElementRename(@NotNull String newElementName) throws IncorrectOperationException {
+  public PsiElement handleElementRename(@NotNull String newElementName)
+      throws IncorrectOperationException {
     return myElement.setName(newElementName);
   }
 }

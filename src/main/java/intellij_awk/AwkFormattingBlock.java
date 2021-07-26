@@ -70,7 +70,15 @@ public class AwkFormattingBlock extends AbstractBlock {
       return Indent.getNormalIndent();
     }
 
-    if (parent instanceof AwkExprLst) {
+    if (parent instanceof AwkGawkTerminatedStatementSwitch && psi instanceof AwkCaseStatement) {
+      return Indent.getNormalIndent();
+    }
+
+    if (parent instanceof AwkCaseStatement && psi instanceof AwkTerminatedStatementList) {
+      return Indent.getNormalIndent();
+    }
+
+    if (parent instanceof AwkExprLst || parent instanceof AwkGawkFuncCallList) {
       return Indent.getNormalIndent();
     }
 
@@ -121,6 +129,28 @@ public class AwkFormattingBlock extends AbstractBlock {
     return spacingBuilder.getSpacing(this, child1, child2);
   }
 
+  /**
+   * Excerpt from docs:
+   *
+   * <p>An important special case in using the formatter is the smart indent performed when the user
+   * presses the Enter key in a source code file. To determine the indent for the new line, the
+   * formatter engine calls the method getChildAttributes() on either the block immediately before
+   * the caret or the parent of that block, depending on the return value of the isIncomplete()
+   * method for the block before the caret. If the block before the cursor is incomplete (contains
+   * elements that the user will probably type but has not yet typed, like a closing parenthesis of
+   * the parameter list or the trailing semicolon of a statement), getChildAttributes() is called on
+   * the block before the caret; otherwise, it's called on the parent block.
+   */
+  @Override
+  public boolean isIncomplete() {
+    if (myNode.getPsi() instanceof AwkCaseStatement) {
+      // The idea is that when we click ENTER at the end of case block statements - it still
+      // considers the current case node block for new indent determination, not the parent switch
+      return true;
+    }
+    return super.isIncomplete();
+  }
+
   @Override
   public @NotNull ChildAttributes getChildAttributes(int newChildIndex) {
     PsiElement psi = myNode.getPsi();
@@ -158,6 +188,8 @@ public class AwkFormattingBlock extends AbstractBlock {
       return new ChildAttributes(Indent.getNoneIndent(), null);
     } else if (psi instanceof AwkTerminatedStatementList) {
       return new ChildAttributes(Indent.getNoneIndent(), null);
+    } else if (psi instanceof AwkCaseStatement) {
+      return new ChildAttributes(Indent.getNormalIndent(true), null);
     }
     return new ChildAttributes(Indent.getNormalIndent(), null);
   }

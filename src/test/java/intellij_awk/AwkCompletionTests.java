@@ -12,37 +12,49 @@ import java.util.stream.Stream;
 
 public class AwkCompletionTests extends BasePlatformTestCase {
 
+  public static final String POSIX_FUNC = "tolower";
+  public static final String GAWK_FUNC = "and";
+  public static final String POSIX_VAR = "NR";
+  public static final String GAWK_VAR = "ERRNO";
+
   public void test1() {
     checkCompletion(
-        Set.of("f1", "f2", "NR", "tolower"),
+        Set.of("f1", "f2", POSIX_VAR, GAWK_VAR, POSIX_FUNC, GAWK_FUNC),
         Set.of("BEGIN", "END"),
         "function f1() {}\nfunction f2(){}\n{ <caret> }");
   }
 
   public void test2() {
     checkCompletion(
-        Set.of("f1", "f2", "NR", "tolower"),
+        Set.of("f1", "f2", POSIX_VAR, GAWK_VAR, POSIX_FUNC, GAWK_FUNC),
         Set.of("BEGIN", "END"),
         "function f1() {}\nfunction f2(){}\n{ 1 + <caret> }");
   }
 
   public void test3() {
     checkCompletion(
-        Set.of("f1", "f2", "NR", "tolower"),
+        Set.of("f1", "f2", POSIX_VAR, GAWK_VAR, POSIX_FUNC, GAWK_FUNC),
         Set.of("BEGIN", "END"),
         "function f1() {}\nfunction f2(){}\n{ print a[<caret>] }");
   }
 
   public void test4() {
     checkCompletion(
-        Set.of("f1", "f2", "NR", "tolower", "BEGIN", "END"),
+        Set.of(
+            "f1",
+            "f2",
+            POSIX_VAR,
+            GAWK_VAR,
+            POSIX_FUNC,
+            "BEGIN",
+            "END"), // TODO do we want to autocomplete BEGINFILE/ENDFILE?
         Set.of("return"),
         "function f1() {}\nfunction f2(){}\n<caret>");
   }
 
   public void test5() {
     checkCompletion(
-        Set.of("NR"),
+        Set.of(POSIX_VAR, GAWK_VAR),
         //        Set.of("return", "f1", "f2", "tolower", "BEGIN", "END"), // TODO
         Set.of(),
         "function f1() {}\nfunction f2(){}\n{ delete <caret> }");
@@ -50,7 +62,7 @@ public class AwkCompletionTests extends BasePlatformTestCase {
 
   public void test6() {
     checkCompletion(
-        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf"),
+        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf", "next"),
         Set.of(),
         "BEGIN { var1=1\nsplit(\"\",var2)}\nfunction f1(arg1, arg2,     arg3) { <caret> }");
   }
@@ -77,6 +89,48 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "function aaa1(){}\nfunction bbb(){}\nfunction aaa2(){}\n{ aaa<caret> }");
   }
 
+  public void testMultiFilesFunc1() {
+    checkCompletionExact(
+        Set.of("aaa1", "aaa2"),
+        "function bbb(){}\nfunction aaa2(){}\n{ aaa<caret> }",
+        "function aaa1(){}\n");
+  }
+
+  public void testMultiFilesVars1() {
+    checkCompletionExact(
+        Set.of("aaa1", "aaa2"),
+        "function f() { aaa<caret> }; function init() { aaa1=1 }",
+        "BEGIN { aaa2 = 2 }");
+  }
+
+  public void testMultiFilesVars2() {
+    checkCompletionExact(
+        Set.of("aaa1", "aaa2"),
+        "function f() { aaa<caret> }; BEGIN { aaa2 = 2 }",
+        "function init() { aaa1=1 }");
+  }
+
+  public void testMultiFilesVars3() {
+    checkCompletionExact(
+        Set.of("aaa1", "aaa3"),
+        "function f(aaa3) { aaa<caret> }; function init() { aaa1=1 }",
+        "{ aaa2 = 2 }");
+  }
+
+  public void testMultiFilesVars4() {
+    checkCompletionExact(
+        Set.of("aaa1", "aaa3"),
+        "function f(aaa3) { aaa<caret> }; function init() { \"ls\" | getline aaa1 }",
+        "{ aaa2 = 2 }");
+  }
+
+  public void testMultiFilesVars5() {
+    checkCompletionExact(
+        Set.of("aaa1", "aaa3"),
+        "function f(aaa3) { aaa<caret> }; function init(aaa4) { print aaa1; print aaa4 }",
+        "{ aaa2 = 2 }");
+  }
+
   public void testFunctionArgs1() {
     checkFunctionArgs(
         "BEGIN { <caret> }\nfunction func1(arg1, arg2,     arg3) {}", "func1", "(arg1, arg2)");
@@ -85,6 +139,38 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   public void testFunctionArgs2() {
     checkFunctionArgs(
         "BEGIN { <caret> }\nfunction func1(arg1, arg2,\\\narg3) {}", "func1", "(arg1, arg2)");
+  }
+
+  public void testFunctionArgsBuiltin1() {
+    checkFunctionArgs("BEGIN { <caret> }", "gsub", "(regexp, replacement [, target])");
+  }
+
+  public void testFunctionArgsBuiltin2() {
+    checkFunctionArgs("BEGIN { <caret> }", "gensub", "(regexp, replacement, how [, target])");
+  }
+
+  public void testSwitch() {
+    checkCompletionSingle("{ sw<caret> }", "{ switch (<caret>) {} }");
+  }
+
+  public void testCase1() {
+    checkCompletionSingle("{ switch(1) { cas<caret> } }", "{ switch(1) { case <caret>: } }");
+  }
+
+  public void testCase2() {
+    checkCompletionSingle(
+        "{ switch(1) { case \"hello\": cas<caret> } }",
+        "{ switch(1) { case \"hello\": case <caret>: } }");
+  }
+
+  public void testDefault1() {
+    checkCompletionSingle("{ switch(1) { def<caret> } }", "{ switch(1) { default:<caret> } }");
+  }
+
+  public void testDefault2() {
+    checkCompletionSingle(
+        "{ switch(1) { case \"hello\": def<caret> } }",
+        "{ switch(1) { case \"hello\": default:<caret> } }");
   }
 
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
@@ -119,8 +205,13 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     myFixture.checkResult(expectedResult);
   }
 
-  private void checkCompletionExact(Set<String> expected, String code) {
-    setupCode(code);
+  private void checkCompletionExact(Set<String> expected, String code, String... otherFiles) {
+    if (expected.size() < 2) {
+      throw new IllegalArgumentException(
+          "Should only check for 2 or more expected values. "
+              + "For single value it will apply completion inline instead of returning values.");
+    }
+    setupCode(code, otherFiles);
     LookupElement[] variants = myFixture.completeBasic();
     assertNotNull(
         "Expected completions that contain " + expected + ", but no completions found", variants);
@@ -145,10 +236,14 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     return Arrays.stream(variants).map(LookupElement::getLookupString).collect(Collectors.toSet());
   }
 
-  private void setupCode(String code) {
+  private void setupCode(String code, String... otherFiles) {
     if (!code.contains("<caret>")) {
       throw new IllegalArgumentException("Please, add `<caret>` marker to code");
     }
     myFixture.configureByText("a.awk", code);
+    for (int i = 0; i < otherFiles.length; i++) {
+      String otherFileCode = otherFiles[i];
+      myFixture.addFileToProject("f" + i + ".awk", otherFileCode);
+    }
   }
 }

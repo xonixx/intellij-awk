@@ -7,20 +7,18 @@ import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.NavigatablePsiElement;
 import com.intellij.psi.PsiElement;
-import intellij_awk.psi.AwkFile;
-import intellij_awk.psi.AwkFunctionName;
-import intellij_awk.psi.AwkItem;
-import intellij_awk.psi.AwkPattern;
+import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkBeginOrEndImpl;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
+import intellij_awk.psi.impl.AwkUserVarNameImpl;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class AwkStructureViewElement implements StructureViewTreeElement, SortableTreeElement {
 
   private final NavigatablePsiElement myElement;
+  private static final Set<String> mostLikelyLocal = Set.of("i", "j");
 
   public AwkStructureViewElement(NavigatablePsiElement element) {
     this.myElement = element;
@@ -52,9 +50,12 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
     if (myElement instanceof AwkBeginOrEndImpl) {
       AwkBeginOrEndImpl beginOrEnd = (AwkBeginOrEndImpl) myElement;
       return "001" + beginOrEnd.getName();
+    } else if (myElement instanceof AwkUserVarNameImpl) {
+      AwkUserVarNameImpl varName = (AwkUserVarNameImpl) myElement;
+      return "002" + varName.getName();
     } else if (myElement instanceof AwkFunctionNameImpl) {
       AwkFunctionNameImpl functionName = (AwkFunctionNameImpl) myElement;
-      return "002" + functionName.getName();
+      return "003" + functionName.getName();
     }
     return "???";
   }
@@ -69,8 +70,9 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
   @NotNull
   @Override
   public TreeElement[] getChildren() {
+    List<TreeElement> treeElements = new ArrayList<>();
+
     if (myElement instanceof AwkFile) {
-      List<TreeElement> treeElements = new ArrayList<>();
       AwkFile awkFile = (AwkFile) myElement;
 
       for (PsiElement child : awkFile.getChildren()) {
@@ -84,14 +86,36 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
 
           } else {
             AwkPattern awkPattern = awkItem.getPattern();
-            if (awkPattern != null && awkPattern.getBeginOrEnd() != null) {
-              treeElements.add(new AwkStructureViewElement((NavigatablePsiElement) awkPattern.getBeginOrEnd()));
+            if (awkPattern != null) {
+              AwkBeginOrEnd beginOrEnd = awkPattern.getBeginOrEnd();
+              if (beginOrEnd != null) {
+                treeElements.add(new AwkStructureViewElement((NavigatablePsiElement) beginOrEnd));
+              }
             }
           }
         }
       }
-      return treeElements.toArray(new TreeElement[0]);
+    } else if (myElement instanceof AwkBeginBlock
+        || myElement instanceof AwkFunctionNameMixin
+            && ((AwkFunctionNameMixin) myElement).isInitFunction()) {
+
+      Set<PsiElement> vars =
+          new TreeSet<>(Comparator.comparing(o -> ((AwkUserVarNameMixin) o).getName()));
+
+      AwkUtil.findAllMatchedDeep(
+          AwkUtil.findParent(myElement, AwkItem.class).getAction(),
+          psiElement ->
+              psiElement instanceof AwkUserVarNameMixin
+                  && !mostLikelyLocal.contains(((AwkUserVarNameMixin) psiElement).getName())
+                  && ((AwkUserVarNameMixin) psiElement).isInsideInitializingContext()
+                  && (((AwkUserVarNameMixin) psiElement).looksLikeDeclaration()),
+          vars);
+
+      for (PsiElement var : vars) {
+        treeElements.add(new AwkStructureViewElement((NavigatablePsiElement) var));
+      }
     }
-    return EMPTY_ARRAY;
+
+    return treeElements.toArray(new TreeElement[0]);
   }
 }

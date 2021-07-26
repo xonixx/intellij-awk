@@ -10,9 +10,11 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
+import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import intellij_awk.psi.AwkFile;
 import intellij_awk.psi.AwkTypes;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 public class AwkParserDefinition implements ParserDefinition {
@@ -20,7 +22,18 @@ public class AwkParserDefinition implements ParserDefinition {
   public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
   public static final TokenSet COMMENTS = TokenSet.create(AwkTypes.COMMENT);
 
-  public static final IFileElementType FILE = new IFileElementType(AwkLanguage.INSTANCE);
+  public static final IFileElementType FILE = new IStubFileElementType<>(AwkLanguage.INSTANCE) {
+    @Override
+    public int getStubVersion() {
+      return 9;
+    }
+
+    @Override
+    public @NonNls
+    @NotNull String getExternalId() {
+      return "AWK.file";
+    }
+  };
 
   @NotNull
   @Override

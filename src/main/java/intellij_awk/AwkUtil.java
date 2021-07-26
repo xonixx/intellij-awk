@@ -7,12 +7,15 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.stubs.StubIndex;
+import com.intellij.psi.util.PsiTreeUtil;
 import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
+import intellij_awk.psi.impl.AwkUserVarNameImpl;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -24,8 +27,7 @@ public class AwkUtil {
 
   @Nullable
   public static PsiElement findFirstMatchedDeep(PsiElement root, Predicate<PsiElement> predicate) {
-    PsiElement[] children = root.getChildren();
-    for (PsiElement child : children) {
+    for (PsiElement child = root.getFirstChild(); child != null; child = child.getNextSibling()) {
       if (predicate.test(child)) {
         return child;
       }
@@ -49,66 +51,80 @@ public class AwkUtil {
     }
   }
 
-  public static boolean isEnclosedBy(
-      PsiElement psiElement, Class<? extends PsiElement> enclosingClass) {
-    return isEnclosedBy(psiElement, enclosingClass::isInstance);
-  }
-
-  public static boolean isEnclosedBy(PsiElement psiElement, Predicate<PsiElement> predicate) {
-    PsiElement parent = psiElement.getParent();
-    if (parent instanceof AwkFile) {
-      return false;
-    }
-    return predicate.test(parent) || isEnclosedBy(parent, predicate);
-  }
-
-  public static boolean isAwkBegin(PsiElement candidate) {
-    if (candidate instanceof AwkBeginOrEnd) {
-      AwkBeginOrEnd beginOrEnd = (AwkBeginOrEnd) candidate;
-      return AwkTypes.BEGIN.equals(beginOrEnd.getFirstChild().getNode().getElementType());
-    }
-    return false;
-  }
-
-  public static boolean isAwkItemOfBegin(PsiElement candidate) {
-    return candidate instanceof AwkItem
-        && ((AwkItem) candidate).getPattern() != null
-        && isAwkBegin(((AwkItem) candidate).getPattern().getBeginOrEnd());
-  }
-
   /**
-   * Searches the entire project for Simple language files with instances of the Simple property
-   * with the given key.
+   * Searches the entire project for AWK language files with instances of the AWK function with the
+   * given key.
    *
    * @param project current project
    * @param name to check
    * @return matching properties
    */
-  public static List<AwkFunctionNameImpl> findFunctions(Project project, String name) {
+  public static Collection<AwkFunctionNameImpl> findFunctions(Project project, String name) {
+    return findFunctions(project, name, GlobalSearchScope.projectScope(project));
+  }
+
+  public static Collection<AwkUserVarNameImpl> findUserVars(Project project, String name) {
+    return StubIndex.getElements(
+        AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
+        name,
+        project,
+        GlobalSearchScope.projectScope(project),
+        AwkUserVarNameImpl.class);
+  }
+
+  public static Collection<AwkFunctionNameImpl> findFunctions(
+      Project project, String name, GlobalSearchScope scope) {
+    return StubIndex.getElements(
+        AwkFunctionNameStubElementType.Index.KEY, name, project, scope, AwkFunctionNameImpl.class);
+  }
+
+  public static List<AwkFunctionNameImpl> findFunctions(Project project) {
+    Collection<String> allKeys = findFunctionNames(project);
     List<AwkFunctionNameImpl> result = new ArrayList<>();
-    Collection<VirtualFile> virtualFiles =
-        FileTypeIndex.getFiles(AwkFileType.INSTANCE, GlobalSearchScope.allScope(project));
-    for (VirtualFile virtualFile : virtualFiles) {
-      AwkFile awkFile = (AwkFile) PsiManager.getInstance(project).findFile(virtualFile);
-      if (awkFile != null) {
-
-        for (PsiElement child : awkFile.getChildren()) {
-
-          if (child instanceof AwkItem) {
-            AwkItem awkItem = (AwkItem) child;
-
-            AwkFunctionName functionName = awkItem.getFunctionName();
-            if (functionName != null && name.equals(functionName.getName())) {
-              result.add((AwkFunctionNameImpl) functionName);
-            }
-          }
-        }
-      }
+    for (String key : allKeys) {
+      result.addAll(
+          StubIndex.getElements(
+              AwkFunctionNameStubElementType.Index.KEY,
+              key,
+              project,
+              GlobalSearchScope.projectScope(project),
+              AwkFunctionNameImpl.class));
     }
     return result;
   }
 
-  public static List<AwkFunctionNameImpl> findFunctions(PsiFile psiFile) {
+  /** Let's only consider variable declarations in initializing context */
+  public static List<AwkUserVarNameImpl> findGlobalVars(Project project) {
+    Collection<String> allKeys = findGlobalVarNames(project);
+    List<AwkUserVarNameImpl> result = new ArrayList<>();
+    for (String key : allKeys) {
+      result.addAll(
+          StubIndex.getElements(
+              AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
+              key,
+              project,
+              GlobalSearchScope.projectScope(project),
+              AwkUserVarNameImpl.class));
+    }
+    return result;
+  }
+
+  @NotNull
+  public static Collection<String> findFunctionNames(Project project) {
+    return StubIndex.getInstance().getAllKeys(AwkFunctionNameStubElementType.Index.KEY, project);
+  }
+
+  /** Let's only consider variable declarations in initializing context */
+  @NotNull
+  public static Collection<String> findGlobalVarNames(Project project) {
+    return StubIndex.getInstance()
+        .getAllKeys(
+            AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
+            project);
+  }
+
+  public static List<AwkFunctionNameImpl> findFunctionsInFile(
+      PsiFile psiFile, @NotNull String name) {
     List<AwkFunctionNameImpl> result = new ArrayList<>();
     if (psiFile instanceof AwkFile) {
       AwkFile awkFile = (AwkFile) psiFile;
@@ -116,7 +132,7 @@ public class AwkUtil {
         if (child instanceof AwkItem) {
           AwkItem awkItem = (AwkItem) child;
           AwkFunctionName functionName = awkItem.getFunctionName();
-          if (functionName != null) {
+          if (functionName != null && name.equals(functionName.getName())) {
             result.add((AwkFunctionNameImpl) functionName);
           }
         }
@@ -125,14 +141,9 @@ public class AwkUtil {
     return result;
   }
 
-  public static List<AwkFunctionNameImpl> findFunctions(Project project) {
-    List<AwkFunctionNameImpl> result = new ArrayList<>();
-    Collection<VirtualFile> virtualFiles =
-        FileTypeIndex.getFiles(AwkFileType.INSTANCE, GlobalSearchScope.allScope(project));
-    for (VirtualFile virtualFile : virtualFiles) {
-      result.addAll(findFunctions(PsiManager.getInstance(project).findFile(virtualFile)));
-    }
-    return result;
+  @NotNull
+  private static Collection<VirtualFile> getAwkFiles(Project project) {
+    return FileTypeIndex.getFiles(AwkFileType.INSTANCE, GlobalSearchScope.allScope(project));
   }
 
   public static InsertHandler<LookupElement> insertHandler(String insertString, int caretShift) {
@@ -142,24 +153,18 @@ public class AwkUtil {
     };
   }
 
-  public static <T extends PsiElement> T findParent(
-      PsiElement psiElement, Predicate<PsiElement> predicate) {
-    PsiElement parent = psiElement;
-    while (!((parent = parent.getParent()) instanceof AwkFile)) {
-      if (predicate.test(parent)) {
-        return (T) parent;
-      }
-    }
-    return null;
-  }
-
   public static <T extends PsiElement> T findParent(PsiElement psiElement, Class<T> parentClass) {
-    return findParent(psiElement, parentClass::isInstance);
+    return PsiTreeUtil.getParentOfType(psiElement, parentClass);
   }
 
   public static PsiElement getPrevNotWhitespace(PsiElement element) {
     while ((element = element.getPrevSibling()) instanceof PsiWhiteSpace)
       ;
     return element;
+  }
+
+  /** "\"value\"" -> "value" */
+  public static String stringValue(String str) {
+    return str == null || str.length() < 2 ? null : str.substring(1, str.length() - 1);
   }
 }
