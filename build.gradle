@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'intellij-awk'
-version '0.0.1.1'
+version '0.2.0'
 
 repositories {
     mavenCentral()
@@ -33,11 +33,41 @@ Once installed, you'll be able to have syntax highlighted in your *.awk files as
 variables/functions renaming, code completion, go to declaration, find usages, auto-formatting and more.
 Find more info at <a href="https://github.com/xonixx/intellij-awk">https://github.com/xonixx/intellij-awk</a>.
 <br/><br/>
-<i>Please note, currently only POSIX AWK subset (no Gawk additions) is supported. Support for Gawk is coming in next release. 
-Stay tuned!</i>
+<i>Preliminary support for Gawk features is added!</i>
+<br/>
+<br/>
+<a href="https://github.com/xonixx/intellij-awk/milestone/2?closed=1">Items delivered in v0.2.0 release</a>
+<br/>
+<a href="https://github.com/xonixx/intellij-awk/milestone/1?closed=1">Items delivered in v0.0.1 release</a>
 <br/><br/>
 """
     changeNotes """
+<p>
+    <b>v0.2.0</b>
+    <ul>
+        <li>Gawk features support added!
+            <ul>
+                <li>namespaces support</li>
+                <li>@fun</li>
+                <li>@/ERE/</li>
+                <li>switch statement</li>
+                <li>|&amp;</li>
+                <li>multi-dimensional arrays</li>
+                <li>Gawk-specific functions</li>
+                <li>etc.</li>
+            </ul>
+        </li>
+        <li>Lots of other improvement to all areas of plugin:
+            <ul>
+                <li>Improvements/fixes to lexer and parser</li>
+                <li>Cross-file functions and variables navigation added</li>
+                <li>Speed-up due to stubs usage</li>
+                <li>Add variables to Structure View</li>
+                <li>more...</li>
+            </ul>
+        </li>
+    </ul>
+</p>
 <p>
     <b>v0.0.1</b>
     <ul>
