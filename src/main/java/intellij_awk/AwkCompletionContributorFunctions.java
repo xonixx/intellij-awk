@@ -34,7 +34,7 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
           entry("split", "(string, array [, fieldsep [, seps ] ])"),
           entry("sprintf", "(format, expression1, …)"),
           entry("sub", "(regexp, replacement [, target])"),
-          entry("substr", "(regexp, replacement [, target])"),
+          entry("substr", "(string, start [, length ])"),
           entry("tolower", "(string)"),
           entry("toupper", "(string)"),
           entry("close", "(filename [, how])"),
