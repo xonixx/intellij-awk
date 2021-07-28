@@ -2,8 +2,11 @@ package intellij_awk;
 
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.patterns.PsiElementPattern;
+import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.AwkExpr;
+import intellij_awk.psi.AwkTypes;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,6 +18,10 @@ import static intellij_awk.AwkUtil.insertHandler;
 import static java.util.Map.entry;
 
 public class AwkCompletionContributorFunctions extends CompletionContributor {
+
+  private static final PsiElementPattern.@NotNull Capture<PsiElement> FOLLOWED_BY_LPAREN =
+      psiElement().beforeLeaf(psiElement(AwkTypes.LPAREN));
+
   @Override
   public void beforeCompletion(@NotNull CompletionInitializationContext context) {
     /*
@@ -85,11 +92,19 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
 
             for (Map.Entry<String, String> standardFunction : builtInFunctions.entrySet()) {
               addFunctionCompletionCandidate(
-                  resultSet, standardFunction.getKey(), true, standardFunction.getValue());
+                  parameters,
+                  resultSet,
+                  standardFunction.getKey(),
+                  true,
+                  standardFunction.getValue());
             }
             for (Map.Entry<String, String> standardFunction : gawkFunctions.entrySet()) {
               addFunctionCompletionCandidate(
-                  resultSet, standardFunction.getKey(), true, standardFunction.getValue());
+                  parameters,
+                  resultSet,
+                  standardFunction.getKey(),
+                  true,
+                  standardFunction.getValue());
             }
 
             List<AwkFunctionNameImpl> functionNames =
@@ -97,11 +112,16 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
 
             for (AwkFunctionNameImpl functionName : functionNames) {
               addFunctionCompletionCandidate(
-                  resultSet, functionName.getName(), false, functionName.getSignatureString());
+                  parameters,
+                  resultSet,
+                  functionName.getName(),
+                  false,
+                  functionName.getSignatureString());
             }
           }
 
           private void addFunctionCompletionCandidate(
+              @NotNull CompletionParameters parameters,
               @NotNull CompletionResultSet resultSet,
               String fName,
               boolean isBuiltIn,
@@ -111,7 +131,9 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
                     .withTailText(tailText)
                     .withIcon(AwkIcons.FUNCTION)
                     .withBoldness(isBuiltIn)
-                    .withInsertHandler(insertHandler("()", 1)));
+                    .withInsertHandler(
+                        insertHandler(
+                            FOLLOWED_BY_LPAREN.accepts(parameters.getPosition()) ? "" : "()", 1)));
           }
         });
   }
