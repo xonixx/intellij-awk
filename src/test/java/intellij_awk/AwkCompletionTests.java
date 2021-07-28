@@ -83,6 +83,27 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionSingle("function f() { tolow<caret> }", "function f() { tolower(<caret>) }");
   }
 
+  public void test10_1() {
+    checkCompletionSingle("function f() { tolow<caret>() }", "function f() { tolower(<caret>) }");
+  }
+
+  public void test10_2() {
+    checkCompletionSingle(
+        "function f() { tolow<caret>(\"A\") }", "function f() { tolower(<caret>\"A\") }");
+  }
+
+  public void test10_3() {
+    checkCompletionSingle(
+        "function f() { fff1<caret>() } function fff123(){}",
+        "function f() { fff123(<caret>) } function fff123(){}");
+  }
+
+  public void test10_4() {
+    checkCompletionSingle(
+        "function f() { fff1<caret>(\"A\") } function fff123(){}",
+        "function f() { fff123(<caret>\"A\") } function fff123(){}");
+  }
+
   public void test11() {
     checkCompletionExact(
         Set.of("aaa1", "aaa2"),
