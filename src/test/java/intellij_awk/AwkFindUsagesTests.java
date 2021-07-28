@@ -4,7 +4,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.usageView.UsageInfo;
-import intellij_awk.psi.AwkUserVarName;
 import intellij_awk.psi.AwkUserVarNameMixin;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
@@ -338,10 +337,7 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
 
   @NotNull
   private static List<PsiElement> getUserVars(PsiFile psiFile) {
-    ArrayList<PsiElement> userVars = new ArrayList<>();
-    AwkUtil.findAllMatchedDeep(
-        psiFile, psiElement -> psiElement instanceof AwkUserVarName, userVars);
-    return userVars;
+    return AwkUtil.findUserVars(psiFile);
   }
 
   private List<PsiElement> configureTestFiles(String code, String... otherFiles) {
