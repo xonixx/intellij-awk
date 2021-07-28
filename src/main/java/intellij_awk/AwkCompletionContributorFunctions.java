@@ -15,6 +15,16 @@ import static intellij_awk.AwkUtil.insertHandler;
 import static java.util.Map.entry;
 
 public class AwkCompletionContributorFunctions extends CompletionContributor {
+  @Override
+  public void beforeCompletion(@NotNull CompletionInitializationContext context) {
+    /*
+     By default `DUMMY_IDENTIFIER` is used which is "IntellijIdeaRulezzz ".
+     This causes problem for completion for the case `tolow<caret>()` because during completion this will try to parse
+     as `tolowIntellijIdeaRulezzz ()`. But in awk the space not allowed in function call before `()`.
+     This will cause it erroneous parsing to tokens only, not to PSI tree.
+    */
+    context.setDummyIdentifier(CompletionInitializationContext.DUMMY_IDENTIFIER_TRIMMED);
+  }
 
   private static final Map<String, String> builtInFunctions =
       Map.ofEntries(
