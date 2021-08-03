@@ -70,7 +70,7 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
 
             final PsiElement psiElement = parameters.getPosition();
 
-            addFunctionArguments(resultSet, psiElement);
+            addFunctionArgumentsAndVarsInBody(resultSet, psiElement);
 
             addGlobalVarsInCurrentFile(resultSet, psiElement);
 
@@ -81,15 +81,24 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
         });
   }
 
-  private void addFunctionArguments(@NotNull CompletionResultSet resultSet, PsiElement psiElement) {
+  private void addFunctionArgumentsAndVarsInBody(
+      @NotNull CompletionResultSet resultSet, PsiElement psiElement) {
     AwkItem awkItem = AwkUtil.findParent(psiElement, AwkItem.class);
     if (awkItem != null) {
       AwkParamList paramList = awkItem.getParamList();
+      AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
+      AwkAction action = awkItem.getAction();
       if (paramList != null) {
-        AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
         List<String> args = functionName.getArgumentNamesIncludingLocals();
         for (String arg : args) {
           resultSet.addElement(LookupElementBuilder.create(arg).withIcon(AwkIcons.PARAMETER));
+        }
+      }
+      if (functionName != null) {
+        List<PsiElement> varsInBody = AwkUtil.findUserVars(action);
+        for (PsiElement var : varsInBody) {
+          resultSet.addElement(
+              LookupElementBuilder.create(var.getText()).withIcon(AwkIcons.VARIABLE));
         }
       }
     }

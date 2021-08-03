@@ -83,10 +83,45 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionSingle("function f() { tolow<caret> }", "function f() { tolower(<caret>) }");
   }
 
+  public void test10_1() {
+    checkCompletionSingle("function f() { tolow<caret>() }", "function f() { tolower(<caret>) }");
+  }
+
+  public void test10_2() {
+    checkCompletionSingle("BEGIN { tolow<caret>() }", "BEGIN { tolower(<caret>) }");
+  }
+
+  public void test10_3() {
+    checkCompletionExact(Set.of("tolower"), "BEGIN { tolo<caret>w() }");
+  }
+
+  public void test10_4() {
+    checkCompletionSingle(
+        "function f() { tolow<caret>(\"A\") }", "function f() { tolower(<caret>\"A\") }");
+  }
+
+  public void test10_5() {
+    checkCompletionSingle(
+        "function f() { fff1<caret>() } function fff123(){}",
+        "function f() { fff123(<caret>) } function fff123(){}");
+  }
+
+  public void test10_6() {
+    checkCompletionSingle(
+        "function f() { fff1<caret>(\"A\") } function fff123(){}",
+        "function f() { fff123(<caret>\"A\") } function fff123(){}");
+  }
+
   public void test11() {
     checkCompletionExact(
         Set.of("aaa1", "aaa2"),
         "function aaa1(){}\nfunction bbb(){}\nfunction aaa2(){}\n{ aaa<caret> }");
+  }
+
+  public void test12() {
+    checkCompletionSingle(
+        "function f() {\n    BBBB = 1\n    print BB<caret> \n}",
+        "function f() {\n    BBBB = 1\n    print BBBB<caret> \n}");
   }
 
   public void testMultiFilesFunc1() {
@@ -206,11 +241,6 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   private void checkCompletionExact(Set<String> expected, String code, String... otherFiles) {
-    if (expected.size() < 2) {
-      throw new IllegalArgumentException(
-          "Should only check for 2 or more expected values. "
-              + "For single value it will apply completion inline instead of returning values.");
-    }
     setupCode(code, otherFiles);
     LookupElement[] variants = myFixture.completeBasic();
     assertNotNull(
