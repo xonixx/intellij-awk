@@ -131,7 +131,8 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
               String tailText) {
             PsiElement position = parameters.getPosition();
             boolean followedByLparen = FOLLOWED_BY_LPAREN.accepts(position);
-            boolean hasTextBeforeLparen = position.getText().split(dummyIdentifier)[1].length() > 0;
+            String[] parts = position.getText().split(dummyIdentifier);
+            boolean hasTextBeforeLparen = parts.length==2 && parts[1].length() > 0;
             resultSet.addElement(
                 LookupElementBuilder.create(fName)
                     .withTailText(tailText)
