@@ -6,6 +6,7 @@ import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.AwkExpr;
+import intellij_awk.psi.AwkPrintExpr;
 import intellij_awk.psi.AwkTypes;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
+import static com.intellij.patterns.StandardPatterns.or;
 import static intellij_awk.AwkUtil.insertHandler;
 import static java.util.Map.entry;
 
@@ -86,7 +88,7 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
   public AwkCompletionContributorFunctions() {
     extend(
         CompletionType.BASIC,
-        psiElement().inside(AwkExpr.class),
+        or(psiElement().inside(AwkExpr.class), psiElement().inside(AwkPrintExpr.class)),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
