@@ -147,12 +147,21 @@ public class AwkUtil {
     return FileTypeIndex.getFiles(AwkFileType.INSTANCE, GlobalSearchScope.allScope(project));
   }
 
+  public static InsertHandler<LookupElement> insertHandler(
+      InsertHandler<LookupElement> replaceCherInsertHandler,
+      InsertHandler<LookupElement> insertHandler) {
+
+    return (ctx, item) ->
+        (ctx.getCompletionChar() == Lookup.REPLACE_SELECT_CHAR
+                ? replaceCherInsertHandler
+                : insertHandler)
+            .handleInsert(ctx, item);
+  }
+
   public static InsertHandler<LookupElement> insertHandler(String insertString, int caretShift) {
     return (ctx, item) -> {
-//      if (ctx.getCompletionChar() != Lookup.REPLACE_SELECT_CHAR) {
-        ctx.getDocument().insertString(ctx.getSelectionEndOffset(), insertString);
-        EditorModificationUtil.moveCaretRelatively(ctx.getEditor(), caretShift);
-//      }
+      ctx.getDocument().insertString(ctx.getSelectionEndOffset(), insertString);
+      EditorModificationUtil.moveCaretRelatively(ctx.getEditor(), caretShift);
     };
   }
 

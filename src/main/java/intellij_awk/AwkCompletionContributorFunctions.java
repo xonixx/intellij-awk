@@ -141,7 +141,9 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
                     .withInsertHandler(
                         followedByLparen
                             ? (hasTextBeforeLparen
-                                ? insertHandler("();", 3) // aaa<caret>bbb()
+                                ? insertHandler(
+                                    insertHandler("", 1),
+                                    insertHandler("();", 3)) // aaa<caret>bbb()
                                 : insertHandler("", 1)) // aaa<caret>()
                             : insertHandler("()", 1))); // aaa<caret>
           }
