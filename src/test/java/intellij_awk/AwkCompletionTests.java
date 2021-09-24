@@ -139,6 +139,18 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "function f() {\n    BBBB = 1\n    print BBBB<caret> \n}");
   }
 
+  public void test12_1() {
+    checkCompletionAuto(
+        "BEGIN {\n    BBBB = 1\n} function f() { print BB<caret> \n}",
+        "BEGIN {\n    BBBB = 1\n} function f() { print BBBB<caret> \n}");
+  }
+
+  public void test12_2() {
+    checkCompletionAuto(
+        "function bbbb(){} function f() { print bb<caret> }",
+        "function bbbb(){} function f() { print bbbb(<caret>) }");
+  }
+
   public void testMultiFilesFunc1() {
     checkCompletionExact(
         Set.of("aaa1", "aaa2"),
