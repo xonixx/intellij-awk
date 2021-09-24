@@ -132,16 +132,18 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
             PsiElement position = parameters.getPosition();
             boolean followedByLparen = FOLLOWED_BY_LPAREN.accepts(position);
             String[] parts = position.getText().split(dummyIdentifier);
-            boolean hasTextBeforeLparen = parts.length==2 && parts[1].length() > 0;
+            boolean hasTextBeforeLparen = parts.length == 2 && parts[1].length() > 0;
             resultSet.addElement(
                 LookupElementBuilder.create(fName)
                     .withTailText(tailText)
                     .withIcon(AwkIcons.FUNCTION)
                     .withBoldness(isBuiltIn)
                     .withInsertHandler(
-                        followedByLparen && hasTextBeforeLparen
-                            ? insertHandler("();", 3) // aaa<caret>bbb() case
-                            : insertHandler(followedByLparen ? "" : "()", 1)));
+                        followedByLparen
+                            ? (hasTextBeforeLparen
+                                ? insertHandler("();", 3) // aaa<caret>bbb()
+                                : insertHandler("", 1)) // aaa<caret>()
+                            : insertHandler("()", 1))); // aaa<caret>
           }
         });
   }
