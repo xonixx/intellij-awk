@@ -69,27 +69,27 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void test7() {
-    checkCompletionSingle("func<caret>", "function <caret>");
+    checkCompletionAuto("func<caret>", "function <caret>");
   }
 
   public void test8() {
-    checkCompletionSingle("BEG<caret>", "BEGIN { <caret>}");
+    checkCompletionAuto("BEG<caret>", "BEGIN { <caret>}");
   }
 
   public void test9() {
-    checkCompletionSingle("function f() { retu<caret> }", "function f() { return<caret> }");
+    checkCompletionAuto("function f() { retu<caret> }", "function f() { return<caret> }");
   }
 
   public void test10() {
-    checkCompletionSingle("function f() { tolow<caret> }", "function f() { tolower(<caret>) }");
+    checkCompletionAuto("function f() { tolow<caret> }", "function f() { tolower(<caret>) }");
   }
 
   public void test10_1() {
-    checkCompletionSingle("function f() { tolow<caret>() }", "function f() { tolower(<caret>) }");
+    checkCompletionAuto("function f() { tolow<caret>() }", "function f() { tolower(<caret>) }");
   }
 
   public void test10_2() {
-    checkCompletionSingle("BEGIN { tolow<caret>() }", "BEGIN { tolower(<caret>) }");
+    checkCompletionAuto("BEGIN { tolow<caret>() }", "BEGIN { tolower(<caret>) }");
   }
 
   public void test10_3() {
@@ -97,26 +97,34 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void test10_4() {
-    checkCompletionSingle(
+    checkCompletionAuto(
         "function f() { tolow<caret>(\"A\") }", "function f() { tolower(<caret>\"A\") }");
   }
 
   public void test10_5() {
-    checkCompletionSingle(
+    checkCompletionAuto(
         "function f() { fff1<caret>() } function fff123(){}",
         "function f() { fff123(<caret>) } function fff123(){}");
   }
 
   public void test10_6() {
-    checkCompletionSingle(
+    checkCompletionAuto(
         "function f() { fff1<caret>(\"A\") } function fff123(){}",
         "function f() { fff123(<caret>\"A\") } function fff123(){}");
   }
 
   public void test10_7() {
     checkCompletionSingle(
+        Lookup.NORMAL_SELECT_CHAR,
         "function f() { fff1<caret>aaa() } function fff123(){}",
         "function f() { fff123();<caret>aaa() } function fff123(){}");
+  }
+
+  public void test10_8() {
+    checkCompletionSingle(
+        Lookup.REPLACE_SELECT_CHAR,
+        "function f() { fff1<caret>aaa() } function fff123(){}",
+        "function f() { fff123(<caret>) } function fff123(){}");
   }
 
   public void test11() {
@@ -126,7 +134,7 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void test12() {
-    checkCompletionSingle(
+    checkCompletionAuto(
         "function f() {\n    BBBB = 1\n    print BB<caret> \n}",
         "function f() {\n    BBBB = 1\n    print BBBB<caret> \n}");
   }
@@ -192,25 +200,25 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void testSwitch() {
-    checkCompletionSingle("{ sw<caret> }", "{ switch (<caret>) {} }");
+    checkCompletionAuto("{ sw<caret> }", "{ switch (<caret>) {} }");
   }
 
   public void testCase1() {
-    checkCompletionSingle("{ switch(1) { cas<caret> } }", "{ switch(1) { case <caret>: } }");
+    checkCompletionAuto("{ switch(1) { cas<caret> } }", "{ switch(1) { case <caret>: } }");
   }
 
   public void testCase2() {
-    checkCompletionSingle(
+    checkCompletionAuto(
         "{ switch(1) { case \"hello\": cas<caret> } }",
         "{ switch(1) { case \"hello\": case <caret>: } }");
   }
 
   public void testDefault1() {
-    checkCompletionSingle("{ switch(1) { def<caret> } }", "{ switch(1) { default:<caret> } }");
+    checkCompletionAuto("{ switch(1) { def<caret> } }", "{ switch(1) { default:<caret> } }");
   }
 
   public void testDefault2() {
-    checkCompletionSingle(
+    checkCompletionAuto(
         "{ switch(1) { case \"hello\": def<caret> } }",
         "{ switch(1) { case \"hello\": default:<caret> } }");
   }
@@ -230,21 +238,30 @@ public class AwkCompletionTests extends BasePlatformTestCase {
 
   public void testNoCompletion1() {
     String code = "function a(<caret>){}";
-    checkCompletionSingle(code, code);
+    checkCompletionAuto(code, code);
   }
 
   public void testNoCompletion2() {
     String code = "function a(){ BEG<caret> }";
-    checkCompletionSingle(code, code);
+    checkCompletionAuto(code, code);
   }
 
-  private void checkCompletionSingle(String code, String expectedResult) {
+  private void checkCompletionAuto(String code, String expectedResult) {
+    setupCode(code);
+    LookupElement[] variants = myFixture.completeBasic();
+    if (!(variants == null || variants.length == 0)) {
+      fail("Should be empty completion: " + toSet(variants));
+    }
+    myFixture.checkResult(expectedResult);
+  }
+
+  private void checkCompletionSingle(char completionChar, String code, String expectedResult) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();
     if (variants != null && variants.length == 1) {
-      myFixture.finishLookup(Lookup.NORMAL_SELECT_CHAR);
-    } else if (!(variants == null || variants.length == 0)) {
-      fail("Should be empty completion: " + toSet(variants));
+      myFixture.finishLookup(completionChar);
+    } else {
+      fail("Should be single completion: " + toSet(variants));
     }
     myFixture.checkResult(expectedResult);
   }

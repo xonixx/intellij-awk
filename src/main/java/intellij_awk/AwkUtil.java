@@ -1,6 +1,7 @@
 package intellij_awk;
 
 import com.intellij.codeInsight.completion.InsertHandler;
+import com.intellij.codeInsight.lookup.Lookup;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.openapi.editor.EditorModificationUtil;
 import com.intellij.openapi.project.Project;
@@ -148,8 +149,10 @@ public class AwkUtil {
 
   public static InsertHandler<LookupElement> insertHandler(String insertString, int caretShift) {
     return (ctx, item) -> {
-      ctx.getDocument().insertString(ctx.getSelectionEndOffset(), insertString);
-      EditorModificationUtil.moveCaretRelatively(ctx.getEditor(), caretShift);
+//      if (ctx.getCompletionChar() != Lookup.REPLACE_SELECT_CHAR) {
+        ctx.getDocument().insertString(ctx.getSelectionEndOffset(), insertString);
+        EditorModificationUtil.moveCaretRelatively(ctx.getEditor(), caretShift);
+//      }
     };
   }
 
