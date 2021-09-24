@@ -22,15 +22,18 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
   private static final PsiElementPattern.@NotNull Capture<PsiElement> FOLLOWED_BY_LPAREN =
       psiElement().beforeLeaf(psiElement(AwkTypes.LPAREN));
 
+  private static final String dummyIdentifier =
+      CompletionInitializationContext.DUMMY_IDENTIFIER_TRIMMED;
+
   @Override
   public void beforeCompletion(@NotNull CompletionInitializationContext context) {
     /*
-     By default `DUMMY_IDENTIFIER` is used which is "IntellijIdeaRulezzz ".
+     By default, `DUMMY_IDENTIFIER` is used which is "IntellijIdeaRulezzz ".
      This causes problem for completion for the case `tolow<caret>()` because during completion this will try to parse
      as `tolowIntellijIdeaRulezzz ()`. But in awk the space not allowed in function call before `()`.
      This will cause it erroneous parsing to tokens only, not to PSI tree.
     */
-    context.setDummyIdentifier(CompletionInitializationContext.DUMMY_IDENTIFIER_TRIMMED);
+    context.setDummyIdentifier(dummyIdentifier);
   }
 
   private static final Map<String, String> builtInFunctions =
@@ -126,14 +129,18 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
               String fName,
               boolean isBuiltIn,
               String tailText) {
+            PsiElement position = parameters.getPosition();
+            boolean followedByLparen = FOLLOWED_BY_LPAREN.accepts(position);
+            boolean hasTextBeforeLparen = position.getText().split(dummyIdentifier)[1].length() > 0;
             resultSet.addElement(
                 LookupElementBuilder.create(fName)
                     .withTailText(tailText)
                     .withIcon(AwkIcons.FUNCTION)
                     .withBoldness(isBuiltIn)
                     .withInsertHandler(
-                        insertHandler(
-                            FOLLOWED_BY_LPAREN.accepts(parameters.getPosition()) ? "" : "()", 1)));
+                        followedByLparen && hasTextBeforeLparen
+                            ? insertHandler("();", 3) // aaa<caret>bbb() case
+                            : insertHandler(followedByLparen ? "" : "()", 1)));
           }
         });
   }

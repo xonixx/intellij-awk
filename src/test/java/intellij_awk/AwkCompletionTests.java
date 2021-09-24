@@ -1,5 +1,6 @@
 package intellij_awk;
 
+import com.intellij.codeInsight.lookup.Lookup;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
@@ -110,6 +111,12 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionSingle(
         "function f() { fff1<caret>(\"A\") } function fff123(){}",
         "function f() { fff123(<caret>\"A\") } function fff123(){}");
+  }
+
+  public void test10_7() {
+    checkCompletionSingle(
+        "function f() { fff1<caret>aaa() } function fff123(){}",
+        "function f() { fff123();<caret>aaa() } function fff123(){}");
   }
 
   public void test11() {
@@ -234,7 +241,9 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   private void checkCompletionSingle(String code, String expectedResult) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();
-    if (!(variants == null || variants.length == 0)) {
+    if (variants != null && variants.length == 1) {
+      myFixture.finishLookup(Lookup.NORMAL_SELECT_CHAR);
+    } else if (!(variants == null || variants.length == 0)) {
       fail("Should be empty completion: " + toSet(variants));
     }
     myFixture.checkResult(expectedResult);
