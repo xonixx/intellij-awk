@@ -68,6 +68,13 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "BEGIN { var1=1\nsplit(\"\",var2)}\nfunction f1(arg1, arg2,     arg3) { <caret> }");
   }
 
+  public void test6_1() {
+    checkCompletion(
+        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf", "next"),
+        Set.of(),
+        "BEGIN { var1=1\nsplit(\"\",var2)}\nfunction f1(arg1, arg2,     arg3) { print <caret> }");
+  }
+
   public void test7() {
     checkCompletionAuto("func<caret>", "function <caret>");
   }
@@ -149,6 +156,12 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionAuto(
         "function bbbb(){} function f() { print bb<caret> }",
         "function bbbb(){} function f() { print bbbb(<caret>) }");
+  }
+
+  public void test12_3() {
+    checkCompletionAuto(
+        "function bbbb(){} function f() { printf bb<caret> }",
+        "function bbbb(){} function f() { printf bbbb(<caret>) }");
   }
 
   public void testMultiFilesFunc1() {
