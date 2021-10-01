@@ -2,6 +2,7 @@ package intellij_awk;
 
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
@@ -18,14 +19,15 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
       public void visitItem(@NotNull AwkItem awkItem) {
         AwkParamList paramList = awkItem.getParamList();
         if (paramList != null) {
-          List<AwkUserVarName> userVarNameList = paramList.getUserVarNameList();
-          for (AwkUserVarName varName : userVarNameList) {
-            AwkUserVarNameMixin varNameMixin = (AwkUserVarNameMixin) varName;
-            AwkReferenceVariable reference = varNameMixin.getReference();
-            if (reference != null && reference.multiResolve(false).length == 0) {
-              holder.registerProblem(
-                  varNameMixin, "Parameter '" + varNameMixin.getName() + "' is never used");
+          List<AwkUserVarName> paramNameList = paramList.getUserVarNameList();
+          for (AwkUserVarName paramName : paramNameList) {
+            List<PsiElement> userVars = AwkUtil.findUserVars(awkItem.getAction());
+            for (PsiElement userVar : userVars) {
+              if (userVar.getText().equals(paramName.getName())) return;
             }
+
+            holder.registerProblem(
+                paramName, "Parameter '" + paramName.getName() + "' is never used");
           }
         }
       }
