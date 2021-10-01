@@ -6,7 +6,7 @@ The missing IntelliJ IDEA language support plugin for [AWK](https://en.wikipedia
 
 ## Motivation
 
-- At the moment there is no AWK plugin for IDEA, which is a pity.
+- At the moment there ~~is~~was no AWK plugin for IDEA, which ~~is~~was a pity.
 - Help me develop [some](https://github.com/xonixx/makesure) of my own projects in AWK.
 - Interested to sharpen my Java skills and learn some IDEA internals.
 
