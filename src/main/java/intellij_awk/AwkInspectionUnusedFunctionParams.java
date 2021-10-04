@@ -1,7 +1,8 @@
 package intellij_awk;
 
-import com.intellij.codeInspection.LocalInspectionTool;
-import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.codeInspection.*;
+import com.intellij.codeInspection.util.IntentionFamilyName;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import intellij_awk.psi.*;
@@ -10,6 +11,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
+
+  private static final DeleteUnusedFunctionParamQuickFix deleteUnusedFunctionParamQuickFix =
+      new DeleteUnusedFunctionParamQuickFix();
 
   @Override
   public @NotNull PsiElementVisitor buildVisitor(
@@ -27,11 +31,28 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
             }
 
             holder.registerProblem(
-                paramName, "Parameter '" + paramName.getName() + "' is never used");
+                paramName,
+                "Parameter '" + paramName.getName() + "' is never used",
+                ProblemHighlightType.LIKE_UNUSED_SYMBOL,
+                deleteUnusedFunctionParamQuickFix);
           }
         }
       }
     };
+  }
+
+  private static class DeleteUnusedFunctionParamQuickFix implements LocalQuickFix {
+
+    @Override
+    public @IntentionFamilyName @NotNull String getFamilyName() {
+      return "Delete unused function param";
+    }
+
+    @Override
+    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
+      AwkUserVarNameMixin paramName = (AwkUserVarNameMixin) descriptor.getPsiElement();
+      paramName.delete();
+    }
   }
 
   private void bbb() {
