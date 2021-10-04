@@ -14,7 +14,10 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   public void testTest2() {
     checkByFile();
   }
-  public void testTest3() {
+  public void testTest3_0() {
+    checkByFile();
+  }
+  public void testTest3_1() {
     checkByFile();
   }
   public void testTest4() {
