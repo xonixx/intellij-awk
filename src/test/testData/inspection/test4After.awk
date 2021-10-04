@@ -6,6 +6,7 @@ function f() {
     a()
 }
 
-function a(unused1    ) {
+function a(  unused1\
+    ) {
     print "hello"
 }

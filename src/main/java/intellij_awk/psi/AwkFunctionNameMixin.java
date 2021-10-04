@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.stubs.IStubElementType;
 import intellij_awk.AwkIcons;
+import intellij_awk.AwkUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -115,7 +116,7 @@ public abstract class AwkFunctionNameMixin
   private boolean isWhitespaceBeforeLocals(PsiElement psiElement) {
     if (psiElement instanceof PsiWhiteSpace || psiElement instanceof PsiComment) {
       return psiElement instanceof PsiWhiteSpace && psiElement.getTextLength() >= 3
-          || psiElement instanceof PsiComment && psiElement.textMatches("\\\n")
+          || AwkUtil.isLineContinuation(psiElement)
           || isWhitespaceBeforeLocals(psiElement.getPrevSibling());
     }
 

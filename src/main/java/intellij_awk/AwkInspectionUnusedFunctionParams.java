@@ -101,29 +101,13 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
   }
 
   private static void deleteWithNeighborComma(PsiElement element) {
-    PsiElement nextSibling = element.getNextSibling();
-    if (nextSibling != null) {
-      if (isType(nextSibling, AwkTypes.COMMA)) {
-        nextSibling.delete();
-      } else if (nextSibling instanceof PsiWhiteSpace) {
-        PsiElement nextNextSibling = nextSibling.getNextSibling();
-        if (isType(nextNextSibling, AwkTypes.COMMA)) {
-          nextSibling.delete();
-          nextNextSibling.delete();
-        }
-      }
+    PsiElement next = AwkUtil.getNextNotWhitespace(element);
+    if (isType(next, AwkTypes.COMMA)) {
+      next.delete();
     } else {
-      PsiElement prevSibling = element.getPrevSibling();
-      if (prevSibling != null) {
-        if (isType(prevSibling, AwkTypes.COMMA)) {
-          prevSibling.delete();
-        } else if (prevSibling instanceof PsiWhiteSpace) {
-          PsiElement prevPrevSibling = prevSibling.getPrevSibling();
-          if (isType(prevPrevSibling, AwkTypes.COMMA)) {
-            prevSibling.delete();
-            prevPrevSibling.delete();
-          }
-        }
+      PsiElement prev = AwkUtil.getPrevNotWhitespace(element);
+      if (isType(prev, AwkTypes.COMMA)) {
+        prev.delete();
       }
     }
     element.delete();

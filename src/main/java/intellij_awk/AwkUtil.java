@@ -7,6 +7,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.openapi.editor.EditorModificationUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiWhiteSpace;
@@ -172,14 +173,22 @@ public class AwkUtil {
   }
 
   public static PsiElement getPrevNotWhitespace(PsiElement element) {
-    while ((element = element.getPrevSibling()) instanceof PsiWhiteSpace)
+    while ((element = element.getPrevSibling()) instanceof PsiWhiteSpace
+        || isLineContinuation(element))
       ;
     return element;
   }
+
   public static PsiElement getNextNotWhitespace(PsiElement element) {
-    while ((element = element.getNextSibling()) instanceof PsiWhiteSpace)
+    while ((element = element.getNextSibling()) instanceof PsiWhiteSpace
+        || isLineContinuation(element))
       ;
     return element;
+  }
+
+  /** Line continuation is '\' followed by newline */
+  public static boolean isLineContinuation(PsiElement element) {
+    return element instanceof PsiComment && element.textMatches("\\\n");
   }
 
   /** "\"value\"" -> "value" */
