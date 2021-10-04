@@ -20,6 +20,7 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
 
   private static final DeleteUnusedFunctionParamQuickFix deleteUnusedFunctionParamQuickFix =
       new DeleteUnusedFunctionParamQuickFix();
+  public static final String QUICK_FIX_NAME = "Delete unused parameter";
 
   @Override
   public @NotNull PsiElementVisitor buildVisitor(
@@ -51,7 +52,7 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
 
     @Override
     public @IntentionFamilyName @NotNull String getFamilyName() {
-      return "Delete unused parameter";
+      return QUICK_FIX_NAME;
     }
 
     @Override
@@ -79,12 +80,10 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
           AwkFunctionCallNameMixin functionCallName =
               (AwkFunctionCallNameMixin) functionCallRef.getElement();
 
-          //          System.out.println(functionCallName);
           PsiElement possiblyCallArgs =
               functionCallName.getNextSibling() /* ( */.getNextSibling() /* args? || ) */;
           if (possiblyCallArgs instanceof AwkGawkFuncCallList) {
             AwkGawkFuncCallList funcCallList = (AwkGawkFuncCallList) possiblyCallArgs;
-            //            System.out.println(funcCallList);
             List<AwkExpr> exprList = funcCallList.getExprList();
             if (paramIndex < exprList.size()) {
               AwkExpr expr = exprList.get(paramIndex);
