@@ -51,6 +51,4 @@ public class AwkInspectionUnusedFunction extends LocalInspectionTool {
       AwkUtil.findParent(descriptor.getPsiElement(), AwkItem.class).delete();
     }
   }
-
-  private void unused1() {}
 }

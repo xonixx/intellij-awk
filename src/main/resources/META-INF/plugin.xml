@@ -50,7 +50,7 @@
                          displayName="Unused parameter"
                          enabledByDefault="true"
                          level="WARNING"
-                         implementationClass="intellij_awk.AwkInspectionUnusedFunctionParams"/>
+                         implementationClass="intellij_awk.AwkInspectionUnusedFunctionParam"/>
         <localInspection language="AWK" groupName="AWK"
                          displayName="Unused function"
                          enabledByDefault="true"

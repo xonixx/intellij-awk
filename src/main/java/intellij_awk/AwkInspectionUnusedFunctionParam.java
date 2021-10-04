@@ -16,7 +16,7 @@ import java.util.List;
 
 import static intellij_awk.AwkUtil.isType;
 
-public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
+public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
 
   private static final DeleteUnusedFunctionParamQuickFix deleteUnusedFunctionParamQuickFix =
       new DeleteUnusedFunctionParamQuickFix();
