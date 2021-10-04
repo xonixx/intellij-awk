@@ -76,24 +76,40 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
           AwkFunctionCallNameMixin functionCallName =
               (AwkFunctionCallNameMixin) functionCallRef.getElement();
 
-//          System.out.println(functionCallName);
-          PsiElement possiblyCallArgs = functionCallName.getNextSibling()/* ( */.getNextSibling()/* args? || ) */;
+          //          System.out.println(functionCallName);
+          PsiElement possiblyCallArgs =
+              functionCallName.getNextSibling() /* ( */.getNextSibling() /* args? || ) */;
           if (possiblyCallArgs instanceof AwkGawkFuncCallList) {
             AwkGawkFuncCallList funcCallList = (AwkGawkFuncCallList) possiblyCallArgs;
             //            System.out.println(funcCallList);
             AwkExpr expr = funcCallList.getExprList().get(paramIndex);
-            expr.delete();
+            deleteWithNeighborComma(expr);
           }
         }
       }
 
-      paramName.delete();
+      deleteWithNeighborComma(paramName);
     }
   }
 
-  private void bbb() {
-    aaa("sadf");
+  private static void deleteWithNeighborComma(PsiElement element) {
+    PsiElement nextSibling = element.getNextSibling();
+    if (nextSibling != null) {
+      if (nextSibling.getNode().getElementType() == AwkTypes.COMMA) {
+        nextSibling.delete();
+      }
+    } else {
+      PsiElement prevSibling = element.getPrevSibling();
+      if (prevSibling != null && prevSibling.getNode().getElementType() == AwkTypes.COMMA) {
+        prevSibling.delete();
+      }
+    }
+    element.delete();
   }
 
-  private void aaa(String a) {}
+  private void bbb() {
+    aaa("aaaaa", "bbb");
+  }
+
+  private void aaa(String a, String b) {}
 }
