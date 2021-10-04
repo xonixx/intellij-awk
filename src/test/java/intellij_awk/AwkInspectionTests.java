@@ -35,6 +35,10 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(unusedFunctionParam);
   }
 
+  public void testUnusedFunction1() {
+    checkByFile(unusedFunction);
+  }
+
   @Override
   protected String getTestDataPath() {
     return "src/test/testData/inspection";
