@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static intellij_awk.AwkUtil.isType;
+
 public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
 
   private static final DeleteUnusedFunctionParamQuickFix deleteUnusedFunctionParamQuickFix =
@@ -95,14 +97,15 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
   private static void deleteWithNeighborComma(PsiElement element) {
     PsiElement nextSibling = element.getNextSibling();
     if (nextSibling != null) {
-      if (nextSibling.getNode().getElementType() == AwkTypes.COMMA) {
+      if (isType(nextSibling, AwkTypes.COMMA)) {
         nextSibling.delete();
       }
     } else {
       PsiElement prevSibling = element.getPrevSibling();
-      if (prevSibling != null && prevSibling.getNode().getElementType() == AwkTypes.COMMA) {
-        prevSibling.delete();
-      }
+      if (prevSibling != null)
+        if (isType(prevSibling, AwkTypes.COMMA)) {
+          prevSibling.delete();
+        }
     }
     element.delete();
   }

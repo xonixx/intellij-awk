@@ -3,6 +3,7 @@ package intellij_awk;
 import com.intellij.codeInsight.completion.InsertHandler;
 import com.intellij.codeInsight.lookup.Lookup;
 import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.lang.ASTNode;
 import com.intellij.openapi.editor.EditorModificationUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -12,6 +13,7 @@ import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
@@ -185,5 +187,17 @@ public class AwkUtil {
     List<PsiElement> userVars = new ArrayList<>();
     findAllMatchedDeep(psiElement, psiEl -> psiEl instanceof AwkUserVarNameMixin, userVars);
     return userVars;
+  }
+
+  public static boolean isNotType(PsiElement psiElement, IElementType elementType) {
+    return !isType(psiElement, elementType);
+  }
+
+  public static boolean isType(PsiElement psiElement, IElementType elementType) {
+    if (psiElement == null) {
+      return false;
+    }
+    ASTNode node = psiElement.getNode();
+    return node != null && elementType.equals(node.getElementType());
   }
 }
