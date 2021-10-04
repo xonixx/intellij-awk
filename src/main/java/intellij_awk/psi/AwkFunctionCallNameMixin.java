@@ -11,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
+import static intellij_awk.AwkUtil.isType;
+
 public abstract class AwkFunctionCallNameMixin extends AwkNamedElementImpl
     implements AwkFunctionCallName {
   public AwkFunctionCallNameMixin(@NotNull ASTNode node) {
@@ -24,7 +26,7 @@ public abstract class AwkFunctionCallNameMixin extends AwkNamedElementImpl
   @Override
   public PsiReference getReference() {
     PsiElement prevSibling = AwkUtil.getPrevNotWhitespace(this);
-    return prevSibling != null && prevSibling.getNode().getElementType().equals(AwkTypes.AT)
+    return isType(prevSibling, AwkTypes.AT)
         ? new AwkReferenceVariable(this, getNameTextRange())
         : new AwkReferenceFunction(this, getNameTextRange());
   }

@@ -17,6 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static intellij_awk.AwkUtil.isNotType;
+import static intellij_awk.AwkUtil.isType;
+
 public class AwkFormattingBlock extends AbstractBlock {
 
   private final CodeStyleSettings codeStyleSettings;
@@ -110,7 +113,7 @@ public class AwkFormattingBlock extends AbstractBlock {
     ASTNode parent = node.getTreeParent();
     PsiElement prevSibling = AwkUtil.getPrevNotWhitespace(psi);
 
-    if (prevSibling.getNode().getElementType() != AwkTypes.ELSE) {
+    if (isNotType(prevSibling, AwkTypes.ELSE)) {
       return false;
     }
 
@@ -165,7 +168,7 @@ public class AwkFormattingBlock extends AbstractBlock {
         PsiElement errOrDummyBlockElt;
         if (prevNode.getElementType() == AwkTypes.RPAREN
             || (errOrDummyBlockElt = prevNode.getPsi().getLastChild()) != null
-                && errOrDummyBlockElt.getNode().getElementType() == AwkTypes.RPAREN) {
+                && isType(errOrDummyBlockElt, AwkTypes.RPAREN)) {
 
           // search corresponding LPAREN and then keyword before it
           while (--blockIndex > 0) {
