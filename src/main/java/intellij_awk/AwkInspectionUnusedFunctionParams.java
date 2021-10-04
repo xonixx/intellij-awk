@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.util.Query;
 import intellij_awk.psi.*;
@@ -84,8 +85,11 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
           if (possiblyCallArgs instanceof AwkGawkFuncCallList) {
             AwkGawkFuncCallList funcCallList = (AwkGawkFuncCallList) possiblyCallArgs;
             //            System.out.println(funcCallList);
-            AwkExpr expr = funcCallList.getExprList().get(paramIndex);
-            deleteWithNeighborComma(expr);
+            List<AwkExpr> exprList = funcCallList.getExprList();
+            if (paramIndex < exprList.size()) {
+              AwkExpr expr = exprList.get(paramIndex);
+              deleteWithNeighborComma(expr);
+            }
           }
         }
       }
@@ -99,13 +103,26 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
     if (nextSibling != null) {
       if (isType(nextSibling, AwkTypes.COMMA)) {
         nextSibling.delete();
+      } else if (nextSibling instanceof PsiWhiteSpace) {
+        PsiElement nextNextSibling = nextSibling.getNextSibling();
+        if (isType(nextNextSibling, AwkTypes.COMMA)) {
+          nextSibling.delete();
+          nextNextSibling.delete();
+        }
       }
     } else {
       PsiElement prevSibling = element.getPrevSibling();
-      if (prevSibling != null)
+      if (prevSibling != null) {
         if (isType(prevSibling, AwkTypes.COMMA)) {
           prevSibling.delete();
+        } else if (prevSibling instanceof PsiWhiteSpace) {
+          PsiElement prevPrevSibling = prevSibling.getPrevSibling();
+          if (isType(prevPrevSibling, AwkTypes.COMMA)) {
+            prevSibling.delete();
+            prevPrevSibling.delete();
+          }
         }
+      }
     }
     element.delete();
   }
