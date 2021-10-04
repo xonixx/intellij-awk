@@ -5,6 +5,9 @@ import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.search.searches.ReferencesSearch;
+import com.intellij.util.Query;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,12 +48,38 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
 
     @Override
     public @IntentionFamilyName @NotNull String getFamilyName() {
-      return "Delete unused function param";
+      return "Delete unused parameter";
     }
 
     @Override
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
       AwkUserVarNameMixin paramName = (AwkUserVarNameMixin) descriptor.getPsiElement();
+      AwkParamList paramList = (AwkParamList) paramName.getParent();
+      List<AwkUserVarName> varNameList = paramList.getUserVarNameList();
+
+      int paramIndex = -1;
+      for (int i = 0; i < varNameList.size(); i++) {
+        AwkUserVarName varName = varNameList.get(i);
+        if (varName.equals(paramName)) {
+          paramIndex = i;
+          break;
+        }
+      }
+
+      AwkItem awkItem = AwkUtil.findParent(paramName, AwkItem.class);
+      AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
+
+      if (functionName != null) {
+        Query<PsiReference> functionCallRefs = ReferencesSearch.search(functionName);
+        for (PsiReference functionCallRef_ : functionCallRefs) {
+          AwkReferenceFunction functionCallRef = (AwkReferenceFunction) functionCallRef_;
+          AwkFunctionCallNameMixin functionCallName =
+              (AwkFunctionCallNameMixin) functionCallRef.getElement();
+
+          System.out.println(functionCallName);
+        }
+      }
+
       paramName.delete();
     }
   }
