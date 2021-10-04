@@ -176,6 +176,11 @@ public class AwkUtil {
       ;
     return element;
   }
+  public static PsiElement getNextNotWhitespace(PsiElement element) {
+    while ((element = element.getNextSibling()) instanceof PsiWhiteSpace)
+      ;
+    return element;
+  }
 
   /** "\"value\"" -> "value" */
   public static String stringValue(String str) {
