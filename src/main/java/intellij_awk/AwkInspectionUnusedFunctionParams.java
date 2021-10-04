@@ -76,7 +76,14 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
           AwkFunctionCallNameMixin functionCallName =
               (AwkFunctionCallNameMixin) functionCallRef.getElement();
 
-          System.out.println(functionCallName);
+//          System.out.println(functionCallName);
+          PsiElement possiblyCallArgs = functionCallName.getNextSibling()/* ( */.getNextSibling()/* args? || ) */;
+          if (possiblyCallArgs instanceof AwkGawkFuncCallList) {
+            AwkGawkFuncCallList funcCallList = (AwkGawkFuncCallList) possiblyCallArgs;
+            //            System.out.println(funcCallList);
+            AwkExpr expr = funcCallList.getExprList().get(paramIndex);
+            expr.delete();
+          }
         }
       }
 
