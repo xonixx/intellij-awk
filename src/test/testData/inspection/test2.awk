@@ -6,6 +6,6 @@ function f() {
     a()
 }
 
-function a(<caret>unused1  , unused2    ) {
+function a(unused1  , <caret>unused2    ) {
     print "hello"
 }
