@@ -14,6 +14,12 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   public void testTest2() {
     checkByFile();
   }
+  public void testTest3() {
+    checkByFile();
+  }
+  public void testTest4() {
+    checkByFile();
+  }
 
   @Override
   protected String getTestDataPath() {

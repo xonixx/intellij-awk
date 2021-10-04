@@ -34,7 +34,9 @@ public class AwkInspectionUnusedFunctionParams extends LocalInspectionTool {
           for (AwkUserVarName paramName : paramNameList) {
             List<PsiElement> userVars = AwkUtil.findUserVars(awkItem.getAction());
             for (PsiElement userVar : userVars) {
-              if (userVar.getText().equals(paramName.getName())) return;
+              if (userVar.getText().equals(paramName.getName())) {
+                return;
+              }
             }
 
             holder.registerProblem(
