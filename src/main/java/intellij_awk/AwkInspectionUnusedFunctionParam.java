@@ -6,13 +6,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
-import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.util.Query;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static intellij_awk.AwkUtil.isType;
 
@@ -31,19 +32,17 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
         AwkParamList paramList = awkItem.getParamList();
         if (paramList != null) {
           List<AwkUserVarName> paramNameList = paramList.getUserVarNameList();
+          List<PsiElement> userVars = AwkUtil.findUserVars(awkItem.getAction());
+          Set<String> varsInFunctionBody =
+              userVars.stream().map(PsiElement::getText).collect(Collectors.toSet());
           for (AwkUserVarName paramName : paramNameList) {
-            List<PsiElement> userVars = AwkUtil.findUserVars(awkItem.getAction());
-            for (PsiElement userVar : userVars) {
-              if (userVar.getText().equals(paramName.getName())) {
-                return;
-              }
+            if (!varsInFunctionBody.contains(paramName.getName())) {
+              holder.registerProblem(
+                  paramName,
+                  "Parameter '" + paramName.getName() + "' is never used",
+                  ProblemHighlightType.LIKE_UNUSED_SYMBOL,
+                  deleteUnusedFunctionParamQuickFix);
             }
-
-            holder.registerProblem(
-                paramName,
-                "Parameter '" + paramName.getName() + "' is never used",
-                ProblemHighlightType.LIKE_UNUSED_SYMBOL,
-                deleteUnusedFunctionParamQuickFix);
           }
         }
       }
