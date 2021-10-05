@@ -51,7 +51,15 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(declareLocalInspection);
   }
 
-  public void testDeclareLocal2() {
+  public void testDeclareLocal2_0() {
+    checkByFile(declareLocalInspection);
+  }
+
+  public void testDeclareLocal2_1() {
+    checkByFile(declareLocalInspection);
+  }
+
+  public void testDeclareLocal2_2() {
     checkByFile(declareLocalInspection);
   }
 
