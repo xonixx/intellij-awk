@@ -6,6 +6,7 @@ import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 
 import java.util.List;
+import java.util.Optional;
 
 public class AwkInspectionTests extends BasePlatformTestCase {
 
@@ -17,7 +18,8 @@ public class AwkInspectionTests extends BasePlatformTestCase {
       new Inspection(new AwkInspectionUnusedFunction(), AwkInspectionUnusedFunction.QUICK_FIX_NAME);
 
   private final Inspection declareLocalInspection =
-      new Inspection(new AwkInspectionVariablesNaming(), AwkInspectionVariablesNaming.QUICK_FIX_DECLARE_LOCAL);
+      new Inspection(
+          new AwkInspectionVariablesNaming(), AwkInspectionVariablesNaming.QUICK_FIX_DECLARE_LOCAL);
 
   public void testUnusedFunctionParam1() {
     checkByFile(unusedFunctionParam);
@@ -47,8 +49,13 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(unusedFunction);
   }
 
-  public void testDeclareLocal1() {
+  public void testDeclareLocal1_0() {
     checkByFile(declareLocalInspection);
+  }
+
+  public void testDeclareLocal1_1() {
+    // checks that we only report on first same variable occurrence
+    checkByFileNoProblemAtCaret(declareLocalInspection);
   }
 
   public void testDeclareLocal2_0() {
@@ -66,6 +73,27 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   @Override
   protected String getTestDataPath() {
     return "src/test/testData/inspection";
+  }
+
+  private void checkByFileNoProblemAtCaret(Inspection inspection) {
+    String before = getTestName(true) + ".awk";
+    myFixture.configureByFile(before);
+
+    myFixture.enableInspections(inspection.inspection);
+
+    List<HighlightInfo> highlightInfos = myFixture.doHighlighting();
+
+    int caretOffset = myFixture.getCaretOffset();
+
+    Optional<HighlightInfo> highlightInfoAtCaretOpt =
+        highlightInfos.stream()
+            .filter(
+                highlightInfo ->
+                    highlightInfo.startOffset <= caretOffset
+                        && highlightInfo.endOffset >= caretOffset)
+            .findAny();
+
+    assertTrue(highlightInfoAtCaretOpt.isEmpty());
   }
 
   private void checkByFile(Inspection inspection) {
