@@ -3,6 +3,7 @@ package intellij_awk.psi;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.PsiWhiteSpace;
 import intellij_awk.AwkFileType;
 import intellij_awk.AwkUtil;
 
@@ -26,6 +27,11 @@ public class AwkElementFactory {
 
   public static AwkParamList createParamList(Project project, String paramsAsText) {
     return createAwkPsiElement(project, "function f(" + paramsAsText + "){}", AwkParamList.class);
+  }
+
+  public static PsiWhiteSpace createWhiteSpaces(Project project, int n) {
+    String whitespaces = " ".repeat(n);
+    return createAwkPsiElement(project, "a" + whitespaces + "b", PsiWhiteSpace.class);
   }
 
   public static <T extends PsiElement> T createAwkPsiElement(

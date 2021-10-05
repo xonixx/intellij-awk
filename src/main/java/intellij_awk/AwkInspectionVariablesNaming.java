@@ -96,7 +96,13 @@ public class AwkInspectionVariablesNaming extends LocalInspectionTool {
             AwkElementFactory.createParamList(varName.getProject(), newParamsAsText);
         paramList.replace(newParamList);
       } else {
-        // TODO
+        AwkParamList newParamList =
+            AwkElementFactory.createParamList(varName.getProject(), varName.getName());
+        PsiElement e = awkItem.getFirstChild();
+        while (AwkUtil.isNotType(e = e.getNextSibling(), AwkTypes.LPAREN))
+          ;
+        awkItem.addAfter(newParamList, e);
+        awkItem.addAfter(AwkElementFactory.createWhiteSpaces(varName.getProject(), 3), e);
       }
     }
   }
