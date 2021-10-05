@@ -56,6 +56,11 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="intellij_awk.AwkInspectionUnusedFunction"/>
+        <localInspection language="AWK" groupName="AWK"
+                         displayName="Variables naming"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="intellij_awk.AwkInspectionVariablesNaming"/>
 
     </extensions>
 
