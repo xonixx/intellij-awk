@@ -12,8 +12,12 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   private final Inspection unusedFunctionParam =
       new Inspection(
           new AwkInspectionUnusedFunctionParam(), AwkInspectionUnusedFunctionParam.QUICK_FIX_NAME);
+
   private final Inspection unusedFunction =
       new Inspection(new AwkInspectionUnusedFunction(), AwkInspectionUnusedFunction.QUICK_FIX_NAME);
+
+  private final Inspection declareLocalInspection =
+      new Inspection(new AwkInspectionVariablesNaming(), AwkInspectionVariablesNaming.QUICK_FIX_DECLARE_LOCAL);
 
   public void testUnusedFunctionParam1() {
     checkByFile(unusedFunctionParam);
@@ -41,6 +45,14 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
   public void testUnusedFunction1() {
     checkByFile(unusedFunction);
+  }
+
+  public void testDeclareLocal1() {
+    checkByFile(declareLocalInspection);
+  }
+
+  public void testDeclareLocal2() {
+    checkByFile(declareLocalInspection);
   }
 
   @Override
