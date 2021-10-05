@@ -24,6 +24,10 @@ public class AwkElementFactory {
     return createAwkPsiElement(project, "@include \"" + name + "\"", AwkIncludePath.class);
   }
 
+  public static AwkParamList createParamList(Project project, String paramsAsText) {
+    return createAwkPsiElement(project, "function f(" + paramsAsText + "){}", AwkParamList.class);
+  }
+
   public static <T extends PsiElement> T createAwkPsiElement(
       Project project, String text, Class<T> klass) {
     return (T) AwkUtil.findFirstMatchedDeep(createFile(project, text), klass::isInstance);

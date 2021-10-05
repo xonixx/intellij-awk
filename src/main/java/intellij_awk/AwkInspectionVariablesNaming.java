@@ -84,6 +84,20 @@ public class AwkInspectionVariablesNaming extends LocalInspectionTool {
     @Override
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
       AwkUserVarNameMixin varName = (AwkUserVarNameMixin) descriptor.getPsiElement();
+
+      AwkItem awkItem = AwkUtil.findParent(varName, AwkItem.class);
+
+      AwkParamList paramList = awkItem.getParamList();
+
+      if (paramList != null) {
+        String paramsAsText = paramList.getText();
+        String newParamsAsText = paramsAsText + ", " + varName.getName();
+        AwkParamList newParamList =
+            AwkElementFactory.createParamList(varName.getProject(), newParamsAsText);
+        paramList.replace(newParamList);
+      } else {
+        // TODO
+      }
     }
   }
 }
