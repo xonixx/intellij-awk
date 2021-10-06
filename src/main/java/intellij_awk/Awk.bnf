@@ -153,6 +153,7 @@
 
   extends("unary_expr|non_unary_expr")=expr
   extends("begin_block|end_block")=begin_or_end
+  extends("function_call_user|function_call_built_in")=function_call
 }
 
 // /pattern/
@@ -369,12 +370,13 @@ non_unary_expr   ::= (
                          | lvalue ASSIGN     gawk_expr
                          | lvalue
                          | function_call
-                         | function_call_built_in
                      )
                      non_unary_expr1
 
-private function_call       ::= AT? function_call_name LPAREN gawk_func_call_list_opt RPAREN /* no white space allowed before LPAREN */
-private function_call_built_in ::= (BUILTIN_FUNC_NAME | BUILTIN_FUNC_NAME_GAWK) [ LPAREN gawk_func_call_list_opt RPAREN ]
+function_call               ::= function_call_user | function_call_built_in
+
+function_call_user       ::= AT? function_call_name LPAREN gawk_func_call_list_opt RPAREN /* no white space allowed before LPAREN */
+function_call_built_in ::= (BUILTIN_FUNC_NAME | BUILTIN_FUNC_NAME_GAWK) [ LPAREN gawk_func_call_list_opt RPAREN ]
 
 function_call_name          ::= FUNC_NAME
 {
@@ -455,7 +457,6 @@ private non_unary_print_expr ::= (
                      | lvalue ASSIGN     print_expr
                      | lvalue
                      | function_call
-                     | function_call_built_in
                  )
                  non_unary_print_expr1
 
