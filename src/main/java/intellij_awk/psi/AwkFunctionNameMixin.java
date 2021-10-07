@@ -74,7 +74,7 @@ public abstract class AwkFunctionNameMixin
   }
 
   /** @return argument names excluding "local" */
-  private List<String> getArgumentNames() {
+  public List<String> getArgumentNames() {
     List<String> result = new ArrayList<>();
     AwkItem awkItem = (AwkItem) getParent();
     AwkParamList awkParamList = awkItem.getParamList();
