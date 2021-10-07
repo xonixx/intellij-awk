@@ -106,12 +106,15 @@ public class AwkParameterInfoHandler
       return null;
     }
 
-    public TextRange getArgumentRange(int currentParameterIndex) {
+    public TextRange getArgumentRange(int index) {
+      if (index < 0 || index >= argumentNames.size()) {
+        return TextRange.EMPTY_RANGE;
+      }
       int skip = 0;
-      for (int i = 0; i < currentParameterIndex && i < argumentNames.size(); i++) {
+      for (int i = 0; i < index; i++) {
         skip += argumentNames.get(i).length() + 2;
       }
-      return new TextRange(skip, skip + argumentNames.get(currentParameterIndex).length());
+      return new TextRange(skip, skip + argumentNames.get(index).length());
     }
 
     public String getPresentText() {
