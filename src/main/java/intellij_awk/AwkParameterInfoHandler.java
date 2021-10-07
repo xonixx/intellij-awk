@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+// TODO handle the case f(1, 2,<cursor>) - for this, prob, need to adjust grammar with pins
 public class AwkParameterInfoHandler
     implements ParameterInfoHandler<AwkFunctionCall, AwkParameterInfoHandler.AwkParameterInfo> {
 
@@ -21,6 +22,7 @@ public class AwkParameterInfoHandler
 
     PsiElement elementAtCaret = file.findElementAt(offset);
 
+    // TODO redo with com.intellij.lang.parameterInfo.ParameterInfoUtils.findParentOfType
     return AwkUtil.findParent(elementAtCaret, AwkFunctionCall.class);
   }
 
@@ -54,13 +56,22 @@ public class AwkParameterInfoHandler
       context.removeHint();
       return;
     }
+    AwkGawkFuncCallList funcCallList = awkFunctionCall.getGawkFuncCallList();
+    int caretPos = context.getOffset();
+    int funcCallStartOffset = awkFunctionCall.getTextRange().getStartOffset();
+    PsiElement lParen =
+        AwkUtil.findFirstMatchedDeep(
+            awkFunctionCall, psiElement -> AwkUtil.isType(psiElement, AwkTypes.LPAREN));
+    PsiElement rParen =
+        AwkUtil.findFirstMatchedDeep(
+            awkFunctionCall, psiElement -> AwkUtil.isType(psiElement, AwkTypes.RPAREN));
     int currentParameterIndex =
-        awkFunctionCall.getTextRange().getStartOffset() == context.getOffset()
+        funcCallStartOffset == caretPos
             ? -1
-            : ParameterInfoUtils.getCurrentParameterIndex(
-                /*TODO*/ awkFunctionCall.getGawkFuncCallList().getNode(),
-                context.getOffset(),
-                AwkTypes.COMMA);
+            : funcCallList == null /* function call with no args */
+                ? (caretPos > lParen.getTextOffset() && caretPos <= rParen.getTextOffset() ? 0 : -1)
+                : ParameterInfoUtils.getCurrentParameterIndex(
+                    funcCallList.getNode(), caretPos, AwkTypes.COMMA);
     context.setCurrentParameter(currentParameterIndex);
   }
 
@@ -74,16 +85,14 @@ public class AwkParameterInfoHandler
         !context.isUIComponentEnabled(),
         false,
         false,
-        context.getDefaultParameterColor().brighter()
+        context.getDefaultParameterColor() /*.brighter()*/
         /*if (p.valid) context.defaultParameterColor.brighter() else context.defaultParameterColor*/ );
   }
 
   static class AwkParameterInfo {
-    private final AwkFunctionNameMixin functionName;
     private final List<String> argumentNames;
 
     AwkParameterInfo(AwkFunctionNameMixin functionName) {
-      this.functionName = functionName;
       argumentNames = functionName.getArgumentNames();
     }
 
@@ -98,7 +107,6 @@ public class AwkParameterInfoHandler
           PsiElement psiElement = referenceFunction.resolve();
           if (psiElement instanceof AwkFunctionNameMixin) {
             AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) psiElement;
-            //            List<String> argumentNames = functionName.getArgumentNames();
             return new AwkParameterInfo(functionName);
           }
         }
@@ -118,7 +126,12 @@ public class AwkParameterInfoHandler
     }
 
     public String getPresentText() {
-      return String.join(", ", argumentNames);
+      return argumentNames.isEmpty() ? "<no parameters>" : String.join(", ", argumentNames);
+    }
+
+    @Override
+    public String toString() {
+      return getPresentText();
     }
   }
 }
