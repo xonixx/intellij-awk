@@ -56,11 +56,13 @@ public class AwkParameterInfoHandler
     AwkGawkFuncCallList funcCallList = awkFunctionCall.getGawkFuncCallList();
     int caretPos = context.getOffset();
     int funcCallStartOffset = awkFunctionCall.getTextOffset();
+    PsiElement lParen;
     int currentParameterIndex =
         funcCallStartOffset == caretPos
             ? -1
             : funcCallList == null /* function call with no args */
-                ? (caretPos > findFirstMatchedDeep(awkFunctionCall, AwkTypes.LPAREN).getTextOffset()
+                ? ((lParen = findFirstMatchedDeep(awkFunctionCall, AwkTypes.LPAREN)) != null
+                        && caretPos > lParen.getTextOffset()
                         && caretPos
                             <= findFirstMatchedDeep(awkFunctionCall, AwkTypes.RPAREN)
                                 .getTextOffset()
