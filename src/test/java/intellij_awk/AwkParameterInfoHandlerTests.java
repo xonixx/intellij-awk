@@ -36,6 +36,27 @@ public class AwkParameterInfoHandlerTests extends BasePlatformTestCase {
     checkByText("{ f(<caret>) } function f(x,y) {}", "x, y", 0);
   }
 
+  public void test6() {
+    checkByTextShouldNotShowParamsHint("{ unknownFunc(<caret>) }");
+  }
+
+  private void checkByTextShouldNotShowParamsHint(String code) {
+    myFixture.configureByText("a.awk", code);
+    AwkParameterInfoHandler handler = new AwkParameterInfoHandler();
+    var createContext =
+        new MockCreateParameterInfoContext(myFixture.getEditor(), myFixture.getFile());
+
+    var el = handler.findElementForParameterInfo(createContext);
+    if (el == null) {
+      fail("Hint not found");
+    }
+    handler.showParameterInfo(el, createContext);
+    var items = createContext.getItemsToShow();
+    if (items != null && items.length > 0) {
+      fail("Parameters are shown");
+    }
+  }
+
   private void checkByText(String code, String hint, int index) {
     myFixture.configureByText("a.awk", code);
     AwkParameterInfoHandler handler = new AwkParameterInfoHandler();
