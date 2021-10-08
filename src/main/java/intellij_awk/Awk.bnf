@@ -6,6 +6,9 @@
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
+// TODO maybe this can be of use
+//  implements="intellij_awk.psi.AwkBaseElement"
+
   psiClassPrefix="Awk"
   psiImplClassSuffix="Impl"
   psiPackage="intellij_awk.psi"

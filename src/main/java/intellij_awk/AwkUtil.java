@@ -43,6 +43,11 @@ public class AwkUtil {
     return null;
   }
 
+  @Nullable
+  public static PsiElement findFirstMatchedDeep(PsiElement root, IElementType elementType) {
+    return findFirstMatchedDeep(root, psiElement -> isType(psiElement, elementType));
+  }
+
   public static void findAllMatchedDeep(
       @Nullable PsiElement root, Predicate<PsiElement> predicate, Collection<PsiElement> result) {
     if (root == null) return;

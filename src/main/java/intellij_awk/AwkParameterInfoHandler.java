@@ -3,13 +3,14 @@ package intellij_awk;
 import com.intellij.lang.parameterInfo.*;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import static intellij_awk.AwkUtil.findFirstMatchedDeep;
 
 // TODO handle the case f(1, 2,<cursor>) - for this, prob, need to adjust grammar with pins
 // TODO can we better handle case f(  <caret> 1,2 ) ?
@@ -18,13 +19,8 @@ public class AwkParameterInfoHandler
 
   private @Nullable AwkFunctionCall findElementForParameterInfoContext(
       @NotNull ParameterInfoContext context) {
-    PsiFile file = context.getFile();
-    int offset = context.getOffset();
-
-    PsiElement elementAtCaret = file.findElementAt(offset);
-
-    // TODO redo with com.intellij.lang.parameterInfo.ParameterInfoUtils.findParentOfType
-    return AwkUtil.findParent(elementAtCaret, AwkFunctionCall.class);
+    return ParameterInfoUtils.findParentOfType(
+        context.getFile(), context.getOffset(), AwkFunctionCall.class);
   }
 
   @Override
@@ -41,7 +37,7 @@ public class AwkParameterInfoHandler
   @Override
   public void showParameterInfo(
       @NotNull AwkFunctionCall element, @NotNull CreateParameterInfoContext context) {
-    context.showHint(element, element.getTextRange().getStartOffset()/* TODO rfct after test */, this);
+    context.showHint(element, element.getTextOffset(), this);
   }
 
   @Override
@@ -59,18 +55,17 @@ public class AwkParameterInfoHandler
     }
     AwkGawkFuncCallList funcCallList = awkFunctionCall.getGawkFuncCallList();
     int caretPos = context.getOffset();
-    int funcCallStartOffset = awkFunctionCall.getTextRange().getStartOffset()/* TODO rfct after test */;
-    PsiElement lParen =
-        AwkUtil.findFirstMatchedDeep(
-            awkFunctionCall, psiElement -> AwkUtil.isType(psiElement, AwkTypes.LPAREN));
-    PsiElement rParen =
-        AwkUtil.findFirstMatchedDeep(
-            awkFunctionCall, psiElement -> AwkUtil.isType(psiElement, AwkTypes.RPAREN));// TODO optimize
+    int funcCallStartOffset = awkFunctionCall.getTextOffset();
     int currentParameterIndex =
         funcCallStartOffset == caretPos
             ? -1
             : funcCallList == null /* function call with no args */
-                ? (caretPos > lParen.getTextOffset() && caretPos <= rParen.getTextOffset() ? 0 : -1)
+                ? (caretPos > findFirstMatchedDeep(awkFunctionCall, AwkTypes.LPAREN).getTextOffset()
+                        && caretPos
+                            <= findFirstMatchedDeep(awkFunctionCall, AwkTypes.RPAREN)
+                                .getTextOffset()
+                    ? 0
+                    : -1)
                 : ParameterInfoUtils.getCurrentParameterIndex(
                     funcCallList.getNode(), caretPos, AwkTypes.COMMA);
     context.setCurrentParameter(currentParameterIndex);
