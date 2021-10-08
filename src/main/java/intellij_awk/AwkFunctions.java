@@ -91,8 +91,8 @@ public final class AwkFunctions {
           signatureNoSpaceNoParensNoCloseBrackets.substring(0, lBracketFirstPos);
       optionalsStarting = mandatoryParams.split(",").length;
     }
-    return new ParametersHint(
-        List.of(signatureNoSpaceNoParensNoCloseBrackets.split("\\[?,")), optionalsStarting);
+    final String signatureOnlyCommas = signatureNoSpaceNoParensNoCloseBrackets.replace("[", "");
+    return new ParametersHint(List.of(signatureOnlyCommas.split(",")), optionalsStarting);
   }
 
   static class ParametersHint {

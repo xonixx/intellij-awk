@@ -126,7 +126,7 @@ public class AwkParameterInfoHandler
         } else {
           List<AwkParameterInfo> res = new ArrayList<>();
           for (int i = parametersHint.optionalsStarting;
-              i < parametersHint.parameterNames.size();
+              i <= parametersHint.parameterNames.size();
               i++) {
             res.add(new AwkParameterInfo(parametersHint.parameterNames.subList(0, i)));
           }
