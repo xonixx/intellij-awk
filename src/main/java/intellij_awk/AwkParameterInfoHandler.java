@@ -41,7 +41,7 @@ public class AwkParameterInfoHandler
   @Override
   public void showParameterInfo(
       @NotNull AwkFunctionCall element, @NotNull CreateParameterInfoContext context) {
-    context.showHint(element, element.getTextRange().getStartOffset(), this);
+    context.showHint(element, element.getTextRange().getStartOffset()/* TODO rfct after test */, this);
   }
 
   @Override
@@ -59,7 +59,7 @@ public class AwkParameterInfoHandler
     }
     AwkGawkFuncCallList funcCallList = awkFunctionCall.getGawkFuncCallList();
     int caretPos = context.getOffset();
-    int funcCallStartOffset = awkFunctionCall.getTextRange().getStartOffset();
+    int funcCallStartOffset = awkFunctionCall.getTextRange().getStartOffset()/* TODO rfct after test */;
     PsiElement lParen =
         AwkUtil.findFirstMatchedDeep(
             awkFunctionCall, psiElement -> AwkUtil.isType(psiElement, AwkTypes.LPAREN));
