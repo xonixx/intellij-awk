@@ -46,10 +46,15 @@ public class AwkParameterInfoHandlerTests extends BasePlatformTestCase {
 
   public void testBuiltIn2() {
     checkByText(
-        "{ sub(/aaa/<caret>, \"<caret>BBB\") }",
-        1,
-        "regexp, replacement",
-        "regexp, replacement, target");
+        "{ sub(/aaa/, \"<caret>BBB\") }", 1, "regexp, replacement", "regexp, replacement, target");
+  }
+
+  public void testBuiltIn3() {
+    checkByText("{ print le<caret>ngth + 100 }", -1, "<no parameters>", "string");
+  }
+
+  public void testBuiltIn4() {
+    checkByText("{ print length(<caret>) + 100 }", 0, "<no parameters>", "string");
   }
 
   private void checkByTextShouldNotShowParamsHint(String code) {
@@ -79,7 +84,7 @@ public class AwkParameterInfoHandlerTests extends BasePlatformTestCase {
     if (items == null || items.length == 0) {
       fail("Parameters are not shown");
     }
-    
+
     assertEquals(hints.length, items.length);
 
     for (int i = 0; i < hints.length; i++) {
