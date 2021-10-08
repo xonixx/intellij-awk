@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 // TODO handle the case f(1, 2,<cursor>) - for this, prob, need to adjust grammar with pins
+// TODO can we better handle case f(  <caret> 1,2 ) ?
 public class AwkParameterInfoHandler
     implements ParameterInfoHandler<AwkFunctionCall, AwkParameterInfoHandler.AwkParameterInfo> {
 
