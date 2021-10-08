@@ -65,7 +65,7 @@ public class AwkParameterInfoHandler
             awkFunctionCall, psiElement -> AwkUtil.isType(psiElement, AwkTypes.LPAREN));
     PsiElement rParen =
         AwkUtil.findFirstMatchedDeep(
-            awkFunctionCall, psiElement -> AwkUtil.isType(psiElement, AwkTypes.RPAREN));
+            awkFunctionCall, psiElement -> AwkUtil.isType(psiElement, AwkTypes.RPAREN));// TODO optimize
     int currentParameterIndex =
         funcCallStartOffset == caretPos
             ? -1

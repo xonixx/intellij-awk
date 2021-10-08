@@ -16,6 +16,26 @@ public class AwkParameterInfoHandlerTests extends BasePlatformTestCase {
     checkByText("{ f(1, 2<caret>) } function f(a, bbb,  ccc,   i,j,k) {}", "a, bbb, ccc", 1);
   }
 
+  public void test2_1() {
+    checkByText("{ f(1, 2<caret>) } function f(a, bbb,  ccc,\\\ni,j,k) {}", "a, bbb, ccc", 1);
+  }
+
+  public void test3() {
+    checkByText("BEGIN { f(1,   \"2<caret>\"  ) } function f() {}", "<no parameters>", 1);
+  }
+
+  public void test4() {
+    checkByText("{ f<caret>(1, 2) } function f(    i,j,k) {}", "<no parameters>", -1);
+  }
+
+  public void test4_1() {
+    checkByText("{ f(1<caret>, 2) } function f(\\\ni,j,k) {}", "<no parameters>", 0);
+  }
+
+  public void test5() {
+    checkByText("{ f(<caret>) } function f(x,y) {}", "x, y", 0);
+  }
+
   private void checkByText(String code, String hint, int index) {
     myFixture.configureByText("a.awk", code);
     AwkParameterInfoHandler handler = new AwkParameterInfoHandler();
@@ -32,13 +52,9 @@ public class AwkParameterInfoHandlerTests extends BasePlatformTestCase {
       fail("Parameters are not shown");
     }
     assertEquals(1, items.length);
-    //        for (hint in hints.withIndex()) {
-    var context = new MockParameterInfoUIContext<PsiElement>(el); /* {
-                    override fun getDefaultParameterColor(): Color = Color.GRAY
-      }*/
+    var context = new MockParameterInfoUIContext<PsiElement>(el);
     handler.updateUI((AwkParameterInfoHandler.AwkParameterInfo) items[0], context);
     assertEquals(hint, context.getText());
-    //        }
 
     var updateContext =
         new MockUpdateParameterInfoContext(myFixture.getEditor(), myFixture.getFile());
