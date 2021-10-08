@@ -70,11 +70,11 @@ public abstract class AwkFunctionNameMixin
     if (awkFunctionNameStub != null) {
       return awkFunctionNameStub.getSignatureString();
     }
-    return "(" + String.join(", ", getArgumentNames()) + ")";
+    return "(" + String.join(", ", getParameterNames()) + ")";
   }
 
-  /** @return argument names excluding "local" */
-  public List<String> getArgumentNames() {
+  /** @return parameter names excluding "local" */
+  public List<String> getParameterNames() {
     List<String> result = new ArrayList<>();
     AwkItem awkItem = (AwkItem) getParent();
     AwkParamList awkParamList = awkItem.getParamList();
@@ -97,7 +97,7 @@ public abstract class AwkFunctionNameMixin
     return result;
   }
 
-  public List<String> getArgumentNamesIncludingLocals() {
+  public List<String> getParameterNamesIncludingLocals() {
     List<String> result = new ArrayList<>();
     AwkItem awkItem = (AwkItem) getParent();
     AwkParamList awkParamList = awkItem.getParamList();

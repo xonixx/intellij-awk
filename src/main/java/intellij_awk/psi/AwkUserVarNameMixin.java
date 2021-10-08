@@ -153,7 +153,7 @@ public abstract class AwkUserVarNameMixin
           || functionName != null
               && functionName.isInitFunction()
               && !functionName
-                  .getArgumentNamesIncludingLocals()
+                  .getParameterNamesIncludingLocals()
                   .contains(getName()) /* not local var */;
     }
 

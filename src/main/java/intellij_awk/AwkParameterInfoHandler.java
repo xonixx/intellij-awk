@@ -8,6 +8,7 @@ import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static intellij_awk.AwkUtil.findFirstMatchedDeep;
@@ -28,8 +29,7 @@ public class AwkParameterInfoHandler
       @NotNull CreateParameterInfoContext context) {
     AwkFunctionCall awkFunctionCall = findElementForParameterInfoContext(context);
 
-    AwkParameterInfo awkParameterInfo = AwkParameterInfo.resolveFor(awkFunctionCall);
-    context.setItemsToShow(awkParameterInfo == null ? null : new Object[] {awkParameterInfo});
+    context.setItemsToShow(AwkParameterInfo.resolveFor(awkFunctionCall));
 
     return awkFunctionCall;
   }
@@ -73,7 +73,7 @@ public class AwkParameterInfoHandler
 
   @Override
   public void updateUI(AwkParameterInfo p, @NotNull ParameterInfoUIContext context) {
-    TextRange range = p.getArgumentRange(context.getCurrentParameterIndex());
+    TextRange range = p.getParameterRange(context.getCurrentParameterIndex());
     context.setupUIComponentPresentation(
         p.getPresentText(),
         range.getStartOffset(),
@@ -86,13 +86,17 @@ public class AwkParameterInfoHandler
   }
 
   static class AwkParameterInfo {
-    private final List<String> argumentNames;
+    private final List<String> parameterNames;
 
     AwkParameterInfo(AwkFunctionNameMixin functionName) {
-      argumentNames = functionName.getArgumentNames();
+      this(functionName.getParameterNames());
     }
 
-    public static AwkParameterInfo resolveFor(AwkFunctionCall awkFunctionCall) {
+    public AwkParameterInfo(List<String> parameterNames) {
+      this.parameterNames = parameterNames;
+    }
+
+    public static AwkParameterInfo[] resolveFor(AwkFunctionCall awkFunctionCall) {
       if (awkFunctionCall instanceof AwkFunctionCallUser) {
         AwkFunctionCallUser functionCallUser = (AwkFunctionCallUser) awkFunctionCall;
         AwkFunctionCallNameMixin functionCallName =
@@ -103,26 +107,48 @@ public class AwkParameterInfoHandler
           PsiElement psiElement = referenceFunction.resolve();
           if (psiElement instanceof AwkFunctionNameMixin) {
             AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) psiElement;
-            return new AwkParameterInfo(functionName);
+            return new AwkParameterInfo[] {new AwkParameterInfo(functionName)};
           }
+        }
+      } else if (awkFunctionCall instanceof AwkFunctionCallBuiltIn) {
+        AwkFunctionCallBuiltIn functionCallBuiltIn = (AwkFunctionCallBuiltIn) awkFunctionCall;
+        PsiElement nameElement = functionCallBuiltIn.getBuiltinFuncName();
+        if (nameElement == null) {
+          nameElement = functionCallBuiltIn.getBuiltinFuncNameGawk();
+        }
+        if (nameElement == null) {
+          throw new IllegalArgumentException("no function name");
+        }
+        AwkFunctions.ParametersHint parametersHint =
+            AwkFunctions.resolveParameterHints(nameElement.getText());
+        if (parametersHint.optionalsStarting == null) {
+          return new AwkParameterInfo[] {new AwkParameterInfo(parametersHint.parameterNames)};
+        } else {
+          List<AwkParameterInfo> res = new ArrayList<>();
+          for (int i = parametersHint.optionalsStarting;
+              i < parametersHint.parameterNames.size();
+              i++) {
+            res.add(new AwkParameterInfo(parametersHint.parameterNames.subList(0, i)));
+          }
+          return res.toArray(new AwkParameterInfo[0]);
         }
       }
       return null;
     }
 
-    public TextRange getArgumentRange(int index) {
-      if (index < 0 || index >= argumentNames.size()) {
+    public TextRange getParameterRange(int index) {
+      if (index < 0 || index >= parameterNames.size()) {
         return TextRange.EMPTY_RANGE;
       }
       int skip = 0;
       for (int i = 0; i < index; i++) {
-        skip += argumentNames.get(i).length() + 2;
+        skip += parameterNames.get(i).length() + 2;
       }
-      return new TextRange(skip, skip + argumentNames.get(index).length());
+      return new TextRange(skip, skip + parameterNames.get(index).length());
     }
 
     public String getPresentText() {
-      return argumentNames.isEmpty() ? "<no parameters>" : String.join(", ", argumentNames);
+      return parameterNames.isEmpty() ? "<no parameters>" : String.join(", ", parameterNames);
     }
 
     @Override
