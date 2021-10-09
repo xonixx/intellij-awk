@@ -57,6 +57,10 @@ public class AwkParameterInfoHandlerTests extends BasePlatformTestCase {
     checkByText("{ print length(<caret>) + 100 }", 0, "<no parameters>", "string");
   }
 
+  public void testBuiltIn5() {
+    checkByText("{ fflush(<caret>) }", 0, "<no parameters>", "filename");
+  }
+
   private void checkByTextShouldNotShowParamsHint(String code) {
     checkByText(code, -100);
   }
