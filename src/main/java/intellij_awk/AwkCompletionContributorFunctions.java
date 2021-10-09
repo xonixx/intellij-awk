@@ -38,53 +38,6 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
     context.setDummyIdentifier(dummyIdentifier);
   }
 
-  private static final Map<String, String> builtInFunctions =
-      Map.ofEntries(
-          entry("atan2", "(y, x)"),
-          entry("cos", "(x)"),
-          entry("sin", "(x)"),
-          entry("exp", "(x)"),
-          entry("log", "(x)"),
-          entry("sqrt", "(x)"),
-          entry("int", "(x)"),
-          entry("rand", "()"),
-          entry("srand", "([x])"),
-          entry("gsub", "(regexp, replacement [, target])"),
-          entry("index", "(in, find)"),
-          entry("length", "([string])"),
-          entry("match", "(string, regexp [, array])"),
-          entry("split", "(string, array [, fieldsep [, seps ] ])"),
-          entry("sprintf", "(format, expression1, …)"),
-          entry("sub", "(regexp, replacement [, target])"),
-          entry("substr", "(string, start [, length ])"),
-          entry("tolower", "(string)"),
-          entry("toupper", "(string)"),
-          entry("close", "(filename [, how])"),
-          entry("fflush", "([filename])"),
-          entry("system", "(command)"));
-
-  private static final Map<String, String> gawkFunctions =
-      Map.ofEntries(
-          entry("asort", "(source [, dest [, how ] ])"),
-          entry("asorti", "(source [, dest [, how ] ])"),
-          entry("gensub", "(regexp, replacement, how [, target])"),
-          entry("patsplit", "(string, array [, fieldpat [, seps ] ])"),
-          entry("strtonum", "(str)"),
-          entry("mktime", "(datespec [, utc-flag ])"),
-          entry("strftime", "([format [, timestamp [, utc-flag] ] ])"),
-          entry("systime", "()"),
-          entry("and", "(v1, v2 [, …])"),
-          entry("compl", "(val)"),
-          entry("lshift", "(val, count)"),
-          entry("or", "(v1, v2 [, …])"),
-          entry("rshift", "(val, count)"),
-          entry("xor", "(v1, v2 [, …])"),
-          entry("isarray", "(x)"),
-          entry("typeof", "(x)"),
-          entry("bindtextdomain", "(directory [, domain])"),
-          entry("dcgettext", "(string [, domain [, category] ])"),
-          entry("dcngettext", "(string1, string2, number [, domain [, category] ])"));
-
   public AwkCompletionContributorFunctions() {
     extend(
         CompletionType.BASIC,
@@ -95,7 +48,8 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
               @NotNull ProcessingContext context,
               @NotNull CompletionResultSet resultSet) {
 
-            for (Map.Entry<String, String> standardFunction : builtInFunctions.entrySet()) {
+            for (Map.Entry<String, String> standardFunction :
+                AwkFunctions.builtInFunctions.entrySet()) {
               addFunctionCompletionCandidate(
                   parameters,
                   resultSet,
@@ -103,7 +57,8 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
                   true,
                   standardFunction.getValue());
             }
-            for (Map.Entry<String, String> standardFunction : gawkFunctions.entrySet()) {
+            for (Map.Entry<String, String> standardFunction :
+                AwkFunctions.gawkFunctions.entrySet()) {
               addFunctionCompletionCandidate(
                   parameters,
                   resultSet,

@@ -62,6 +62,9 @@
                          level="WARNING"
                          implementationClass="intellij_awk.AwkInspectionVariablesNaming"/>
 
+        <codeInsight.parameterInfo language="AWK"
+                                   implementationClass="intellij_awk.AwkParameterInfoHandler"/>
+
     </extensions>
 
     <actions>
