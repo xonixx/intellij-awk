@@ -18,6 +18,13 @@ public class AwkEnsurePinsTests extends BasePlatformTestCase {
     checkByText("function f(b,c,){}");
   }
 
+  // XXX for some reason fixing below makes it terribly slow or hanging on profile5.awk
+/*
+  public void test3() {
+    checkByText("{ a[b,c,] }");
+  }
+*/
+
   private void checkByText(String code) {
     String code1 = code + "\nfunction f1(){}";
     PsiFile psiFile = myFixture.configureByText("a.awk", code1);

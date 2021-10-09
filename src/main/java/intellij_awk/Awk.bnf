@@ -508,6 +508,14 @@ lvalue           ::= gawk_var_name | DOLLAR expr
 // XXX awk only supports a[1]
 private gawk_var_name ::= var_name (LBRACKET expr_lst RBRACKET)*
 
+// XXX for some reason the below makes it terribly slow or hanging on profile5.awk
+/*private gawk_var_name ::= var_name (subscript_start RBRACKET)*
+private subscript_start ::= LBRACKET expr_lst {
+    pin=1
+    recoverWhile=recover_on_rbracket
+}
+private recover_on_rbracket ::= !RBRACKET*/
+
 private var_name ::= SPECIAL_VAR_NAME | SPECIAL_VAR_NAME_GAWK | user_var_name
 
 user_var_name ::= VAR_NAME {
