@@ -169,7 +169,7 @@ program ::= newlines_opt (item terminator?)* newlines_opt
 // { ... }
 // 1
 // function a() { ... }
-item             ::= FUNCTION function_name LPAREN param_list? RPAREN
+item             ::= FUNCTION function_name param_list_start RPAREN
                        newlines_opt action
 
                      // TODO this leaves us too permissive: it will parse: @namespace "a" @namespace "b"
@@ -179,6 +179,11 @@ item             ::= FUNCTION function_name LPAREN param_list? RPAREN
 
                    | pattern action?
                    | action
+
+private param_list_start ::= LPAREN param_list? {
+    pin=1
+    recoverWhile=recover_on_rparen
+}
 
 include_path     ::= STRING {
     mixin="intellij_awk.psi.AwkIncludePathMixin"
@@ -384,9 +389,9 @@ function_call_expr               ::= function_call_user | function_call_built_in
 
 private func_call_args_start ::= LPAREN gawk_func_call_list_opt {
     pin=1
-    recoverWhile=recover_func_call_args
+    recoverWhile=recover_on_rparen
 }
-private recover_func_call_args ::= !RPAREN
+private recover_on_rparen ::= !RPAREN
 function_call_user       ::= AT? function_call_name func_call_args_start RPAREN /* no white space allowed before LPAREN */
 function_call_built_in ::= (BUILTIN_FUNC_NAME | BUILTIN_FUNC_NAME_GAWK) [ func_call_args_start RPAREN ]
 
