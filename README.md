@@ -33,14 +33,16 @@ The missing IntelliJ IDEA language support plugin for [AWK](https://en.wikipedia
 
 ## Goals v0.3.0
 
-- [ ] Enforce variable naming convention (the idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools))
-  - [ ] `Name` for global
+- [x] Enforce variable naming convention (the idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools))
   - [x] `name` for local
+- [x] Showing parameter hints for functions (Ctrl-P)
 - [ ] Showing documentation for built-in functions
 - [ ] Showing documentation for built-in variables (`NR`/`NF`/etc.)
     
 ## Future ideas
 
+- [ ] Enforce variable naming convention (the idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools))
+  - [ ] `Name` for global
 - [ ] Add settings switch to select Awk dialect (Posix vs Gawk)
 - [ ] Auto-format code via `gawk --pretty-print`
           
