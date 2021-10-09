@@ -61,6 +61,14 @@ public class AwkParameterInfoHandlerTests extends BasePlatformTestCase {
     checkByText("{ fflush(<caret>) }", 0, "<no parameters>", "filename");
   }
 
+  public void testBuiltIn6() {
+    checkByText(
+        "{ substr(\"abc\",<caret>) }",
+        0 /* TODO should be 1 but it's not due to ParameterInfoUtils.getCurrentParameterIndex() */,
+        "string, start",
+        "string, start, length");
+  }
+
   private void checkByTextShouldNotShowParamsHint(String code) {
     checkByText(code, -100);
   }

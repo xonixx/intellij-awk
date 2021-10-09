@@ -382,8 +382,13 @@ function_call_expr               ::= function_call_user | function_call_built_in
     elementType=function_call
 }
 
-function_call_user       ::= AT? function_call_name LPAREN gawk_func_call_list_opt RPAREN /* no white space allowed before LPAREN */
-function_call_built_in ::= (BUILTIN_FUNC_NAME | BUILTIN_FUNC_NAME_GAWK) [ LPAREN gawk_func_call_list_opt RPAREN ]
+private func_call_args_start ::= LPAREN gawk_func_call_list_opt {
+    pin=1
+    recoverWhile=recover_func_call_args
+}
+private recover_func_call_args ::= !RPAREN
+function_call_user       ::= AT? function_call_name func_call_args_start RPAREN /* no white space allowed before LPAREN */
+function_call_built_in ::= (BUILTIN_FUNC_NAME | BUILTIN_FUNC_NAME_GAWK) [ func_call_args_start RPAREN ]
 
 function_call_name          ::= FUNC_NAME
 {

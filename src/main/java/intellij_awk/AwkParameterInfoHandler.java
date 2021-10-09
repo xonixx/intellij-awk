@@ -13,7 +13,6 @@ import java.util.List;
 
 import static intellij_awk.AwkUtil.findFirstMatchedDeep;
 
-// TODO handle the case f(1, 2,<cursor>) - for this, prob, need to adjust grammar with pins
 // TODO can we better handle case f(  <caret> 1,2 ) ?
 // TODO handle printf
 // TODO handle ... last param
