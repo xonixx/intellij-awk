@@ -1,0 +1,39 @@
+{
+  print $2 == "index" \
+              && $6 != "(created_time" \
+              && $6 != "(updated_time" \
+              && $6 != "(scheduled_time" \
+              && $6 != "(inst_no" \
+              && $6 != "(multi_ref" \
+              && $6 != "(sps_status" \
+              && $6 != "(num_studies" \
+              && $6 != "(msg_status" \
+              && $6 != "(completeness" \
+              && $6 != "(rejection_state" \
+              && $6 != "(expiration_state" \
+              && $6 != "(study_size" \
+              && $6 != "(series_no" \
+              && $6 != "(failed_retrieves" \
+              && $6 != "(stgver_time" \
+              && $6 != "(stgver_failures" \
+              && $6 != "(compress_time" \
+              && $6 != "(compress_failures" \
+              && $6 != "(sx_pn_comp" \
+              && $6 != "(sx_pn_comp_part" \
+              && $6 != "(stgcmt_status" \
+              && $6 != "(access_time" \
+              && $6 != "(metadata_update_time" \
+              && $6 != "(metadata_update_failures" \
+              && $6 != "(inst_purge_time" \
+              && $6 != "(inst_purge_state" \
+              && $6 != "(check_missing" \
+              && $6 != "(check_different" \
+              && $6 != "(verification_status" \
+              && $6 != "(verification_time" \
+              && $6 != "(ups_priority" \
+              && $6 != "(input_readiness_state" \
+              && $6 != "(ups_state" \
+              && $6 != "(task_status" \
+              && $6 != "(task_type" \
+              && $6 != "(task_fk"
+}

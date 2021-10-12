@@ -365,19 +365,19 @@ non_unary_expr   ::= (
                          | NUMBER
                          | STRING
                          | ERE
-                         | lvalue INCR
-                         | lvalue DECR
                          | INCR lvalue
                          | DECR lvalue
-                         | lvalue POW_ASSIGN expr
-                         | lvalue MOD_ASSIGN expr
-                         | lvalue MUL_ASSIGN expr
-                         | lvalue DIV_ASSIGN expr
-                         | lvalue ADD_ASSIGN expr
-                         | lvalue SUB_ASSIGN expr
-                         | lvalue ASSIGN     gawk_expr
-                         | lvalue
                          | function_call_expr
+                         | lvalue [   INCR
+                                    | DECR
+                                    | POW_ASSIGN expr
+                                    | MOD_ASSIGN expr
+                                    | MUL_ASSIGN expr
+                                    | DIV_ASSIGN expr
+                                    | ADD_ASSIGN expr
+                                    | SUB_ASSIGN expr
+                                    | ASSIGN     gawk_expr
+                                  ]
                      )
                      non_unary_expr1
 
@@ -461,19 +461,19 @@ private non_unary_print_expr ::= (
                      | NUMBER
                      | STRING
                      | ERE
-                     | lvalue INCR
-                     | lvalue DECR
                      | INCR lvalue
                      | DECR lvalue
-                     | lvalue POW_ASSIGN print_expr
-                     | lvalue MOD_ASSIGN print_expr
-                     | lvalue MUL_ASSIGN print_expr
-                     | lvalue DIV_ASSIGN print_expr
-                     | lvalue ADD_ASSIGN print_expr
-                     | lvalue SUB_ASSIGN print_expr
-                     | lvalue ASSIGN     print_expr
-                     | lvalue
                      | function_call_expr
+                     | lvalue [   INCR
+                                | DECR
+                                | POW_ASSIGN print_expr
+                                | MOD_ASSIGN print_expr
+                                | MUL_ASSIGN print_expr
+                                | DIV_ASSIGN print_expr
+                                | ADD_ASSIGN print_expr
+                                | SUB_ASSIGN print_expr
+                                | ASSIGN     print_expr
+                              ]
                  )
                  non_unary_print_expr1
 

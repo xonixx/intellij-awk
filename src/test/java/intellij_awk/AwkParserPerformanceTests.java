@@ -13,4 +13,12 @@ public class AwkParserPerformanceTests extends ParsingTestCaseBase {
   public void testLongExpression() {
     ensureOnlyParsingNoErrors();
   }
+
+  public void testLongExpression2() {
+    ensureOnlyParsingNoErrors();
+  }
+
+  public void testLongExpression3() {
+    ensureOnlyParsingNoErrors();
+  }
 }
