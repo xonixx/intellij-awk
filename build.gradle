@@ -34,24 +34,25 @@ variables/functions renaming, code completion, go to declaration, find usages, a
 Find more info at <a href="https://github.com/xonixx/intellij-awk">https://github.com/xonixx/intellij-awk</a>.
 <br/><br/>
 <i>Preliminary support for Gawk features is added!</i>
-<br/>
-<br/>
-<a href="https://github.com/xonixx/intellij-awk/milestone/6?closed=1">Items delivered in v0.2.3 release</a><br/>
-<a href="https://github.com/xonixx/intellij-awk/milestone/5?closed=1">Items delivered in v0.2.2 release</a><br/>
-<a href="https://github.com/xonixx/intellij-awk/milestone/4?closed=1">Items delivered in v0.2.1 release</a><br/>
-<a href="https://github.com/xonixx/intellij-awk/milestone/2?closed=1">Items delivered in v0.2.0 release</a><br/>
-<a href="https://github.com/xonixx/intellij-awk/milestone/1?closed=1">Items delivered in v0.0.1 release</a><br/>
-<br/>
 """
     changeNotes """
 <p>
+    <b>v0.2.3</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/6?closed=1">GitHub issues</a>
+    <ul>
+        <li>TODO</li>
+    </ul>
+</p>
+<p>
     <b>v0.2.2</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/5?closed=1">GitHub issues</a>
     <ul>
         <li>Minor fixes to auto-completion logic</li>
     </ul>
 </p>
 <p>
     <b>v0.2.1</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/4?closed=1">GitHub issues</a>
     <ul>
         <li>Make compatible with IDEA 2021.2</li>
         <li>Minor fixes</li>
@@ -59,6 +60,7 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
 </p>
 <p>
     <b>v0.2.0</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/2?closed=1">GitHub issues</a>
     <ul>
         <li>Gawk features support added!
             <ul>
@@ -85,6 +87,7 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
 </p>
 <p>
     <b>v0.0.1</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/1?closed=1">GitHub issues</a>
     <ul>
         <li>Support basic AWK code highlighting</li>
         <li>Support basic AWK code navigations
