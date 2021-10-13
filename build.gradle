@@ -40,7 +40,9 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
     <b>v0.2.3</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/6?closed=1">GitHub issues</a>
     <ul>
-        <li>TODO</li>
+        <li>Fixed inefficiency in parser</li>
+        <li>Highlight unused functions and function parameters</li>
+        <li>Enforce variable naming conventions</li>
     </ul>
 </p>
 <p>
@@ -74,7 +76,7 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
                 <li>etc.</li>
             </ul>
         </li>
-        <li>Lots of other improvement to all areas of plugin:
+        <li>Lots of other improvements to all areas of plugin:
             <ul>
                 <li>Improvements/fixes to lexer and parser</li>
                 <li>Cross-file functions and variables navigation added</li>
