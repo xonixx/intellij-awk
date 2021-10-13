@@ -41,6 +41,7 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
     <a href="https://github.com/xonixx/intellij-awk/milestone/6?closed=1">GitHub issues</a>
     <ul>
         <li>Fixed inefficiency in parser</li>
+        <li>Show hints for function parameters (Ctrl-P)</li>
         <li>Highlight unused functions and function parameters</li>
         <li>Enforce variable naming conventions</li>
     </ul>
