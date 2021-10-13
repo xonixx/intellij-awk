@@ -2,7 +2,7 @@
 <idea-plugin require-restart="true">
     <id>intellij-awk</id>
     <name>AWK Support</name>
-    <vendor email="xonixx@gmail.com" url="https://www.linkedin.com/in/gubarkovv/">Volodymyr Gubarkov</vendor>
+    <vendor email="xonixx@gmail.com" url="https://github.com/xonixx/intellij-awk">Volodymyr Gubarkov</vendor>
 
     <description>placeholder</description>
     <change-notes>placeholder</change-notes>
