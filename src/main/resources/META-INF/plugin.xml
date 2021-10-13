@@ -1,4 +1,5 @@
-<idea-plugin>
+<!-- TODO remove require-restart="true" when https://github.com/xonixx/intellij-awk/issues/97 is resolved -->
+<idea-plugin require-restart="true">
     <id>intellij-awk</id>
     <name>AWK Support</name>
     <vendor email="xonixx@gmail.com" url="https://www.linkedin.com/in/gubarkovv/">Volodymyr Gubarkov</vendor>
@@ -44,7 +45,8 @@
         <lang.braceMatcher language="AWK" implementationClass="intellij_awk.AwkBraceMatcher"/>
 
         <stubIndex implementation="intellij_awk.psi.AwkFunctionNameStubElementType$Index"/>
-        <stubIndex implementation="intellij_awk.psi.AwkUserVarNameStubElementType$IndexUserVarDeclarationsInsideInitializingContext"/>
+        <stubIndex
+                implementation="intellij_awk.psi.AwkUserVarNameStubElementType$IndexUserVarDeclarationsInsideInitializingContext"/>
 
         <localInspection language="AWK" groupName="AWK"
                          displayName="Unused parameter"
