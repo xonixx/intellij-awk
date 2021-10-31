@@ -49,6 +49,7 @@ public class AwkFormattingBlock extends AbstractBlock {
     while (child != null) {
       if (child.getElementType() != TokenType.WHITE_SPACE
           && child.getElementType() != AwkTypes.NEWLINE) {
+        //        System.out.println("Block: " + child.getText());
         blocks.add(
             new AwkFormattingBlock(
                 child,
@@ -151,6 +152,7 @@ public class AwkFormattingBlock extends AbstractBlock {
       // considers the current case node block for new indent determination, not the parent switch
       return true;
     }
+    //    System.out.println("@@@ " + this + " :: " + super.isIncomplete());
     return super.isIncomplete();
   }
 
@@ -189,7 +191,9 @@ public class AwkFormattingBlock extends AbstractBlock {
         }
       }
       return new ChildAttributes(Indent.getNoneIndent(), null);
-    } else if (psi instanceof AwkTerminatedStatementList) {
+    } else if (psi instanceof AwkTerminatedStatementList
+        // case of https://github.com/xonixx/intellij-awk/issues/106
+        || psi instanceof AwkTerminatedStatement) {
       return new ChildAttributes(Indent.getNoneIndent(), null);
     } else if (psi instanceof AwkCaseStatement) {
       return new ChildAttributes(Indent.getNormalIndent(true), null);
