@@ -93,7 +93,7 @@ public class AwkInspectionVariablesNaming extends LocalInspectionTool {
         String paramsAsText = paramListAsText(paramList);
         String newParamsAsText =
             paramsAsText
-                + (paramsAsText.contains("   ") || paramsAsText.contains("\\") ? ", " : ",   ")
+                + (paramsAsText.contains("   ") || paramsAsText.contains("\\") ? "," : ",   ")
                 + varName.getName();
         AwkParamList newParamList =
             AwkElementFactory.createParamList(varName.getProject(), newParamsAsText);

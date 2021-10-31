@@ -1,6 +1,6 @@
 
 
 function f(\
-y,z, a) {
+y,z,a) {
     a<caret> = 1
 }

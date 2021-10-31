@@ -1,5 +1,5 @@
 
 
-function f(   y,z, a) {
+function f(   y,z,a) {
     a<caret> = 1
 }
