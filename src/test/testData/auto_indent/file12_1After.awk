@@ -1,0 +1,5 @@
+function a() {
+    print
+    <caret>
+    #
+}

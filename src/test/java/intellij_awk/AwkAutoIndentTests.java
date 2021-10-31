@@ -15,7 +15,8 @@ public class AwkAutoIndentTests extends BasePlatformTestCase {
   public void testFile9() { checkByFile(); }
   public void testFile10() { checkByFile(); }
   public void testFile11() { checkByFile(); }
-  public void testFile12() { checkByFile(); }
+  public void testFile12_0() { checkByFile(); }
+  public void testFile12_1() { checkByFile(); }
   public void testFile13() { checkByFile(); }
 
   public void testGawk_switch1(){ checkByFile(); }
