@@ -70,6 +70,10 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(declareLocalInspection);
   }
 
+  public void testDeclareLocal2_3() {
+    checkByFile(declareLocalInspection);
+  }
+
   @Override
   protected String getTestDataPath() {
     return "src/test/testData/inspection";
