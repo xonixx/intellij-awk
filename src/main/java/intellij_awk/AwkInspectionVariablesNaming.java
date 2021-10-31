@@ -90,7 +90,7 @@ public class AwkInspectionVariablesNaming extends LocalInspectionTool {
       AwkParamList paramList = awkItem.getParamList();
 
       if (paramList != null) {
-        String paramsAsText = paramList.getText();
+        String paramsAsText = paramListAsText(paramList);
         String newParamsAsText =
             paramsAsText
                 + (paramsAsText.contains("   ") || paramsAsText.contains("\\") ? ", " : ",   ")
@@ -107,6 +107,16 @@ public class AwkInspectionVariablesNaming extends LocalInspectionTool {
         awkItem.addAfter(newParamList, e);
         awkItem.addAfter(AwkElementFactory.createWhiteSpaces(varName.getProject(), 3), e);
       }
+    }
+
+    private String paramListAsText(AwkParamList paramList) {
+      StringBuilder sb = new StringBuilder(paramList.getText());
+      PsiElement e = paramList;
+      while (AwkUtil.isNotType(e = e.getPrevSibling(), AwkTypes.LPAREN)) {
+        // also include any whitespaces before param list: `function f(   x,y,z)` -> "   x,y,z"
+        sb.insert(0, e.getText());
+      }
+      return sb.toString();
     }
   }
 }
