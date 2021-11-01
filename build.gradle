@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'intellij-awk'
-version '0.2.3'
+version '0.2.4'
 
 repositories {
     mavenCentral()
@@ -36,6 +36,14 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
 <i>Preliminary support for Gawk features is added!</i>
 """
     changeNotes """
+<p>
+    <b>v0.2.4</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/7?closed=1">GitHub issues</a>
+    <ul>
+        <li>Show error on multiple functions with same name in a file</li>
+        <li>Bug fixes</li>
+    </ul>
+</p>
 <p>
     <b>v0.2.3</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/6?closed=1">GitHub issues</a>
