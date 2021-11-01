@@ -59,6 +59,11 @@
                          level="WARNING"
                          implementationClass="intellij_awk.AwkInspectionUnusedFunction"/>
         <localInspection language="AWK" groupName="AWK"
+                         displayName="Duplicate function"
+                         enabledByDefault="true"
+                         level="ERROR"
+                         implementationClass="intellij_awk.AwkInspectionDuplicateFunction"/>
+        <localInspection language="AWK" groupName="AWK"
                          displayName="Variables naming"
                          enabledByDefault="true"
                          level="WARNING"
