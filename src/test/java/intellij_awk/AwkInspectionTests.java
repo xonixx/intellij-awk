@@ -78,6 +78,11 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(declareLocalInspection);
   }
 
+  public void testDupFunctions1() {
+    // dup functions should not imply unused
+    checkByFileNoProblemAtCaret(unusedFunction);
+  }
+
   @Override
   protected String getTestDataPath() {
     return "src/test/testData/inspection";
