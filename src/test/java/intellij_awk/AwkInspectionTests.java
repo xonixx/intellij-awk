@@ -17,6 +17,9 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   private final Inspection unusedFunction =
       new Inspection(new AwkInspectionUnusedFunction(), AwkInspectionUnusedFunction.QUICK_FIX_NAME);
 
+  private final Inspection duplicateFunction =
+      new Inspection(new AwkInspectionDuplicateFunction(), null);
+
   private final Inspection declareLocalInspection =
       new Inspection(
           new AwkInspectionVariablesNaming(), AwkInspectionVariablesNaming.QUICK_FIX_DECLARE_LOCAL);
@@ -78,9 +81,17 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(declareLocalInspection);
   }
 
-  public void testDupFunctions1() {
+  public void testDupFunctionsNotReportedUnused() {
     // dup functions should not imply unused
     checkByFileNoProblemAtCaret(unusedFunction);
+  }
+
+  public void testDupFunctions1() {
+    checkByFile(duplicateFunction);
+  }
+
+  public void testDupFunctions2() {
+    checkByFile(duplicateFunction);
   }
 
   @Override
@@ -117,12 +128,15 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     myFixture.enableInspections(inspection.inspection);
     List<HighlightInfo> highlightInfos = myFixture.doHighlighting();
     assertFalse(highlightInfos.isEmpty());
-    // Get the quick fix action for comparing references inspection and apply it to the file
-    final IntentionAction action = myFixture.findSingleIntention(inspection.quickFixName);
-    assertNotNull(action);
-    myFixture.launchAction(action);
 
-    myFixture.checkResultByFile(after, true);
+    if (inspection.quickFixName != null) {
+      // Get the quick fix action for comparing references inspection and apply it to the file
+      final IntentionAction action = myFixture.findSingleIntention(inspection.quickFixName);
+      assertNotNull(action);
+      myFixture.launchAction(action);
+
+      myFixture.checkResultByFile(after, true);
+    }
   }
 
   private static class Inspection {
