@@ -4,13 +4,14 @@ import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.search.searches.ReferencesSearch;
-import com.intellij.util.Query;
+import com.intellij.psi.PsiFile;
 import intellij_awk.psi.AwkFunctionNameMixin;
 import intellij_awk.psi.AwkItem;
 import intellij_awk.psi.AwkVisitor;
+import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 public class AwkInspectionDuplicateFunction extends LocalInspectionTool {
 
@@ -22,12 +23,17 @@ public class AwkInspectionDuplicateFunction extends LocalInspectionTool {
       public void visitItem(@NotNull AwkItem awkItem) {
         AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
         if (functionName != null) {
-          Query<PsiReference> functionReferences = ReferencesSearch.search(functionName);
-          if (!functionReferences.iterator().hasNext()) {
+          PsiFile containingFile = functionName.getContainingFile();
+          Collection<AwkFunctionNameImpl> functionsWithSameName =
+              AwkUtil.findFunctionsInFile(containingFile, functionName.getText());
+          if (functionsWithSameName.size() > 1) {
             holder.registerProblem(
                 functionName,
-                "Function '" + functionName.getName() + "()' is never used",
-                ProblemHighlightType.LIKE_UNUSED_SYMBOL);
+                "Function '"
+                    + functionName.getName()
+                    + "' is already defined in "
+                    + containingFile.getName(),
+                ProblemHighlightType.GENERIC_ERROR);
           }
         }
       }
