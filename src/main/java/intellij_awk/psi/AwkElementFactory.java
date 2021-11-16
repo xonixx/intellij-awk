@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiWhiteSpace;
+import com.intellij.psi.tree.IElementType;
 import intellij_awk.AwkFileType;
 import intellij_awk.AwkUtil;
 
@@ -15,6 +16,10 @@ public class AwkElementFactory {
 
   public static AwkFunctionName createFunctionName(Project project, String name) {
     return createAwkPsiElement(project, "function " + name + "(){}", AwkFunctionName.class);
+  }
+
+  public static AwkItem createFunctionItem(Project project, String name) {
+    return createAwkPsiElement(project, "function " + name + "(){}", AwkItem.class);
   }
 
   public static AwkUserVarName createUserVarName(Project project, String name) {
@@ -34,9 +39,18 @@ public class AwkElementFactory {
     return createAwkPsiElement(project, "a" + whitespaces + "b", PsiWhiteSpace.class);
   }
 
+  public static PsiWhiteSpace createNewline(Project project) {
+    return createAwkPsiElement(project, "1\n1", AwkTypes.NEWLINE);
+  }
+
   public static <T extends PsiElement> T createAwkPsiElement(
       Project project, String text, Class<T> klass) {
     return (T) AwkUtil.findFirstMatchedDeep(createFile(project, text), klass::isInstance);
+  }
+
+  public static <T extends PsiElement> T createAwkPsiElement(
+      Project project, String text, IElementType elementType) {
+    return (T) AwkUtil.findFirstMatchedDeep(createFile(project, text), elementType);
   }
 
   public static AwkFile createFile(Project project, String text) {

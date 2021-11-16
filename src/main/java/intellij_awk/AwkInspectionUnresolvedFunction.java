@@ -3,10 +3,13 @@ package intellij_awk;
 import com.intellij.codeInspection.*;
 import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveResult;
+import intellij_awk.psi.AwkElementFactory;
 import intellij_awk.psi.AwkFunctionCallName;
+import intellij_awk.psi.AwkItem;
 import intellij_awk.psi.AwkVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,7 +50,14 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
 
     @Override
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-      throw new UnsupportedOperationException("TODO");
+      AwkFunctionCallName awkFunctionCallName = (AwkFunctionCallName) descriptor.getPsiElement();
+      AwkItem awkItem = AwkUtil.findParent(awkFunctionCallName, AwkItem.class);
+      PsiElement parent = awkItem.getParent();
+      parent.addAfter(AwkElementFactory.createNewline(awkItem.getProject()), awkItem);
+      parent.addAfter(
+          AwkElementFactory.createFunctionItem(awkItem.getProject(), awkFunctionCallName.getName()),
+          awkItem);
+      parent.addAfter(AwkElementFactory.createNewline(awkItem.getProject()), awkItem);
     }
   }
 }
