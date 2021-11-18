@@ -17,6 +17,9 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   private final Inspection unusedFunction =
       new Inspection(new AwkInspectionUnusedFunction(), AwkInspectionUnusedFunction.QUICK_FIX_NAME);
 
+  private final Inspection unresolvedFunctionCall =
+      new Inspection(new AwkInspectionUnresolvedFunction(), AwkInspectionUnresolvedFunction.QUICK_FIX_NAME);
+
   private final Inspection duplicateFunction =
       new Inspection(new AwkInspectionDuplicateFunction(), null);
 
@@ -92,6 +95,18 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
   public void testDupFunctions2() {
     checkByFile(duplicateFunction);
+  }
+
+  public void testUnresolvedFunctionCall1() {
+    checkByFile(unresolvedFunctionCall);
+  }
+
+  public void testUnresolvedFunctionCall2() {
+    checkByFileNoProblemAtCaret(unresolvedFunctionCall);
+  }
+
+  public void testUnresolvedFunctionCall3() {
+    checkByFileNoProblemAtCaret(unresolvedFunctionCall);
   }
 
   @Override

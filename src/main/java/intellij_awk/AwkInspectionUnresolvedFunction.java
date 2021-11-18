@@ -53,7 +53,6 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
       AwkFunctionCallName awkFunctionCallName = (AwkFunctionCallName) descriptor.getPsiElement();
       AwkItem awkItem = AwkUtil.findParent(awkFunctionCallName, AwkItem.class);
       PsiElement parent = awkItem.getParent();
-      parent.addAfter(AwkElementFactory.createNewline(awkItem.getProject()), awkItem);
       parent.addAfter(
           AwkElementFactory.createFunctionItem(awkItem.getProject(), awkFunctionCallName.getName()),
           awkItem);

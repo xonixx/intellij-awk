@@ -39,7 +39,7 @@ public class AwkElementFactory {
     return createAwkPsiElement(project, "a" + whitespaces + "b", PsiWhiteSpace.class);
   }
 
-  public static PsiWhiteSpace createNewline(Project project) {
+  public static PsiElement createNewline(Project project) {
     return createAwkPsiElement(project, "1\n1", AwkTypes.NEWLINE);
   }
 
