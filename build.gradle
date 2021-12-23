@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'intellij-awk'
-version '0.2.5'
+version '0.2.5.1'
 
 repositories {
     mavenCentral()
@@ -24,7 +24,7 @@ intellij {
     plugins = ['com.intellij.java']
 }
 patchPluginXml {
-    untilBuild '212.*'
+    untilBuild '213.*'
     pluginDescription """
 <b>AWK Programming Language Support</b>
 <br/><br/>
