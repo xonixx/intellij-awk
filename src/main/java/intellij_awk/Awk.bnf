@@ -383,6 +383,11 @@ non_unary_expr   ::= (
                      non_unary_expr1
 
 fake function_call               ::= gawk_func_call_list_opt
+{
+    mixin="intellij_awk.psi.AwkNamedElementImpl"
+    implements="intellij_awk.psi.AwkNamedElement"
+}
+
 function_call_expr               ::= function_call_user | function_call_built_in {
     extends=function_call
     elementType=function_call
