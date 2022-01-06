@@ -3,7 +3,7 @@
 @depends_on installed_bwk
 @depends_on installed_gawk51
 
-@goal soft_folder_created
+@goal soft_folder_created @private
 @reached_if [[ -d "soft" ]]
   mkdir soft
 
@@ -67,12 +67,13 @@
 @reached_if [[ -d temp ]]
   mkdir temp
 
-@goal string_functions_downloaded
+@goal string_functions_downloaded @private
 @depends_on temp_folder_created
 @reached_if [[ -f 'temp/String-Functions.html' ]]
   curl https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html -o temp/String-Functions.html
 
 @goal std.awk
+@doc 'generates std.awk file used for documentation (Ctrl-Q)'
 @depends_on std.awk_clean
 @depends_on std.awk_string
 
