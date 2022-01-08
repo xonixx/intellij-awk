@@ -1056,7 +1056,7 @@ function awk::system() {}
 # <span id="index-gawk-56"></span>
 # <span id="index-PROCINFO-array-3"></span>
 # </dd>
-function awk::mktime() {}
+function gawk::mktime() {}
 
 # <dt><code>strftime(</code>[<var>format</var> [<code>,</code> <var>timestamp</var> [<code>,</code> <var>utc-flag</var>] ] ]<code>)</code></dt>
 # <dd><span id="index-strftime_0028_0029-function-_0028gawk_0029"></span>
@@ -1080,7 +1080,7 @@ function awk::mktime() {}
 # change the default format; see the following list for the various format directives.
 # </p>
 # </dd>
-function awk::strftime() {}
+function gawk::strftime() {}
 
 # <dt><code>systime()</code></dt>
 # <dd><span id="index-systime_0028_0029-function-_0028gawk_0029"></span>
@@ -1091,7 +1091,7 @@ function awk::strftime() {}
 # since 1970-01-01 00:00:00 UTC, not counting leap seconds.
 # It may be a different number on other systems.
 # </p></dd>
-function awk::systime() {}
+function gawk::systime() {}
 
 # <dd><span id="index-and_0028_0029-function-_0028gawk_0029"></span>
 # <span id="index-bitwise-3"></span>
@@ -1102,14 +1102,14 @@ function awk::systime() {}
 # <span id="index-compl_0028_0029-function-_0028gawk_0029"></span>
 # <span id="index-bitwise-4"></span>
 # </dd>
-function awk::and() {}
+function gawk::and() {}
 
 # <dt><code>compl(<var>val</var>)</code></dt>
 # <dd><p>Return the bitwise complement of <var>val</var>.
 # </p>
 # <span id="index-lshift_0028_0029-function-_0028gawk_0029"></span>
 # </dd>
-function awk::compl() {}
+function gawk::compl() {}
 
 # <dt><code>lshift(<var>val</var>, <var>count</var>)</code></dt>
 # <dd><p>Return the value of <var>val</var>, shifted left by <var>count</var> bits.
@@ -1117,14 +1117,14 @@ function awk::compl() {}
 # <span id="index-or_0028_0029-function-_0028gawk_0029"></span>
 # <span id="index-bitwise-5"></span>
 # </dd>
-function awk::lshift() {}
+function gawk::lshift() {}
 
 # <dt><code>or(</code><var>v1</var><code>,</code> <var>v2</var> [<code>,</code> &hellip;]<code>)</code></dt>
 # <dd><p>Return the bitwise OR of the arguments. There must be at least two.
 # </p>
 # <span id="index-rshift_0028_0029-function-_0028gawk_0029"></span>
 # </dd>
-function awk::or() {}
+function gawk::or() {}
 
 # <dt><code>rshift(<var>val</var>, <var>count</var>)</code></dt>
 # <dd><p>Return the value of <var>val</var>, shifted right by <var>count</var> bits.
@@ -1132,12 +1132,12 @@ function awk::or() {}
 # <span id="index-xor_0028_0029-function-_0028gawk_0029"></span>
 # <span id="index-bitwise-6"></span>
 # </dd>
-function awk::rshift() {}
+function gawk::rshift() {}
 
 # <dt><code>xor(</code><var>v1</var><code>,</code> <var>v2</var> [<code>,</code> &hellip;]<code>)</code></dt>
 # <dd><p>Return the bitwise XOR of the arguments. There must be at least two.
 # </p></dd>
-function awk::xor() {}
+function gawk::xor() {}
 
 # <dd><span id="index-isarray_0028_0029-function-_0028gawk_0029"></span>
 # <span id="index-scalar-or-array"></span>
@@ -1149,7 +1149,7 @@ function awk::xor() {}
 # <span id="index-variable-type_002c-typeof_0028_0029-function-_0028gawk_0029"></span>
 # <span id="index-type-1"></span>
 # </dd>
-function awk::isarray() {}
+function gawk::isarray() {}
 
 # <dt><code>typeof(<var>x</var>)</code></dt>
 # <dd><p>Return one of the following strings, depending upon the type of <var>x</var>:
@@ -1215,4 +1215,4 @@ function awk::isarray() {}
 # </dd>
 # </dl>
 # </dd>
-function awk::typeof() {}
+function gawk::typeof() {}

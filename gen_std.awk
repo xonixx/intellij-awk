@@ -7,8 +7,7 @@ BEGIN {
 /^<dt>/ && !Typeof  {
     Name = substr($0, 11, index($0,"(")-11)
     Typeof = "typeof"==Name
-    if (Gawk = (index($0,"#")>0))
-        sub(/ +#/,"")
+    sub(/ +#/,"")
 }
 Content             { Doc = Doc "\n# " $0 }
 
@@ -18,7 +17,8 @@ NR==152 && Typeof              { closeItem() }
 function closeItem() {
     print Doc
     Doc = ""
-    print "function " (Gawk ? "gawk" : "awk") "::" Name "() {}"
+    print "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?
+        "gawk" : "awk") "::" Name "() {}"
 }
 
 # TODO sprintf format chars
@@ -26,4 +26,3 @@ function closeItem() {
 # TODO mark gawk-only functions
 # TODO links in docs
 # TODO remove <span id="index-sub_0028_0029-function-2"></span>
-# TODO awk bitwise,type mark as gawk
