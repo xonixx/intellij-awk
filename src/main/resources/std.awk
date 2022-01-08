@@ -867,3 +867,161 @@ function awk::tolower() {}
 # <code>toupper(&quot;MiXeD cAsE 123&quot;)</code> returns <code>&quot;MIXED CASE 123&quot;</code>.
 # </p></dd>
 function awk::toupper() {}
+
+# <dt><code>close(</code><var>filename</var> [<code>,</code> <var>how</var>]<code>)</code></dt>
+# <dd><span id="index-close_0028_0029-function-3"></span>
+# <span id="index-files-10"></span>
+# <span id="index-close-file-or-coprocess"></span>
+# <p>Close the file <var>filename</var> for input or output. Alternatively, the
+# argument may be a shell command that was used for creating a coprocess, or
+# for redirecting to or from a pipe; then the coprocess or pipe is closed.
+# See section <a href="Close-Files-And-Pipes.html">Closing Input and Output Redirections</a>
+# for more information.
+# </p>
+# <p>When closing a coprocess, it is occasionally useful to first close
+# one end of the two-way pipe and then to close the other.  This is done
+# by providing a second argument to <code>close()</code>.  This second argument
+# (<var>how</var>)
+# should be one of the two string values <code>&quot;to&quot;</code> or <code>&quot;from&quot;</code>,
+# indicating which end of the pipe to close.  Case in the string does
+# not matter.
+# See section <a href="Two_002dway-I_002fO.html">Two-Way Communications with Another Process</a>,
+# which discusses this feature in more detail and gives an example.
+# </p>
+# <p>Note that the second argument to <code>close()</code> is a <code>gawk</code>
+# extension; it is not available in compatibility mode (see section <a href="Options.html">Command-Line Options</a>).
+# </p>
+# </dd>
+function awk::close() {}
+
+# <dt><code>fflush(</code>[<var>filename</var>]<code>)</code></dt>
+# <dd><span id="index-fflush_0028_0029-function"></span>
+# <span id="index-flush-buffered-output"></span>
+# <p>Flush any buffered output associated with <var>filename</var>, which is either a
+# file opened for writing or a shell command for redirecting output to
+# a pipe or coprocess.
+# </p>
+# <span id="index-buffers-1"></span>
+# <span id="index-output-6"></span>
+# <p>Many utility programs <em>buffer</em> their output (i.e., they save information
+# to write to a disk file or the screen in memory until there is enough
+# for it to be worthwhile to send the data to the output device).
+# This is often more efficient than writing
+# every little bit of information as soon as it is ready.  However, sometimes
+# it is necessary to force a program to <em>flush</em> its buffers (i.e.,
+# write the information to its destination, even if a buffer is not full).
+# This is the purpose of the <code>fflush()</code> function&mdash;<code>gawk</code> also
+# buffers its output, and the <code>fflush()</code> function forces
+# <code>gawk</code> to flush its buffers.
+# </p>
+# <span id="index-extensions-11"></span>
+# <span id="index-Brian-Kernighan_0027s-awk-14"></span>
+# <p>Brian Kernighan added <code>fflush()</code> to his <code>awk</code> in April
+# 1992.  For two decades, it was a common extension.  In December
+# 2012, it was accepted for inclusion into the POSIX standard.
+# See <a href="http://austingroupbugs.net/view.php?id=634">the Austin Group website</a>.
+# </p>
+# <p>POSIX standardizes <code>fflush()</code> as follows: if there
+# is no argument, or if the argument is the null string (<code>&quot;&quot;</code><!-- /@w -->),
+# then <code>awk</code> flushes the buffers for <em>all</em> open output files
+# and pipes.
+# </p>
+# <blockquote>
+# <p><b>NOTE:</b> Prior to version 4.0.2, <code>gawk</code>
+# would flush only the standard output if there was no argument,
+# and flush all output files and pipes if the argument was the null
+# string. This was changed in order to be compatible with BWK
+# <code>awk</code>, in the hope that standardizing this
+# feature in POSIX would then be easier (which indeed proved to be the case).
+# </p>
+# <p>With <code>gawk</code>,
+# you can use &lsquo;<samp>fflush(&quot;/dev/stdout&quot;)</samp>&rsquo; if you wish to flush
+# only the standard output.
+# </p></blockquote>
+# 
+# <span id="index-troubleshooting-18"></span>
+# <p><code>fflush()</code> returns zero if the buffer is successfully flushed;
+# otherwise, it returns a nonzero value. (<code>gawk</code> returns -1.)
+# In the case where all buffers are flushed, the return value is zero
+# only if all buffers were flushed successfully.  Otherwise, it is
+# -1, and <code>gawk</code> warns about the problem <var>filename</var>.
+# </p>
+# <p><code>gawk</code> also issues a warning message if you attempt to flush
+# a file or pipe that was opened for reading (such as with <code>getline</code>),
+# or if <var>filename</var> is not an open file, pipe, or coprocess.
+# In such a case, <code>fflush()</code> returns -1, as well.
+# </p>
+# </dd>
+function awk::fflush() {}
+
+# </dl>
+# <dt><code>system(<var>command</var>)</code></dt>
+# <dd><span id="index-system_0028_0029-function"></span>
+# <span id="index-invoke-shell-command"></span>
+# <span id="index-interacting-with-other-programs"></span>
+# <p>Execute the operating system
+# command <var>command</var> and then return to the <code>awk</code> program.
+# Return <var>command</var>&rsquo;s exit status (see further on).
+# </p>
+# <p>For example, if the following fragment of code is put in your <code>awk</code>
+# program:
+# </p>
+# <div class="example">
+# <pre class="example">END {
+#      system(&quot;date | mail -s 'awk run done' root&quot;)
+# }
+# </pre></div>
+# 
+# <p>the system administrator is sent mail when the <code>awk</code> program
+# finishes processing input and begins its end-of-input processing.
+# </p>
+# <p>Note that redirecting <code>print</code> or <code>printf</code> into a pipe is often
+# enough to accomplish your task.  If you need to run many commands, it
+# is more efficient to simply print them down a pipeline to the shell:
+# </p>
+# <div class="example">
+# <pre class="example">while (<var>more stuff to do</var>)
+#     print <var>command</var> | &quot;/bin/sh&quot;
+# close(&quot;/bin/sh&quot;)
+# </pre></div>
+# 
+# <p><span id="index-troubleshooting-19"></span>
+# <span id="index-_002d_002dsandbox-option-3"></span>
+# However, if your <code>awk</code>
+# program is interactive, <code>system()</code> is useful for running large
+# self-contained programs, such as a shell or an editor.
+# Some operating systems cannot implement the <code>system()</code> function.
+# <code>system()</code> causes a fatal error if it is not supported.
+# </p>
+# <blockquote>
+# <p><b>NOTE:</b> When <samp>--sandbox</samp> is specified, the <code>system()</code> function is disabled
+# (see section <a href="Options.html">Command-Line Options</a>).
+# </p></blockquote>
+# 
+# <p>On POSIX systems, a command&rsquo;s exit status is a 16-bit number. The exit
+# value passed to the C <code>exit()</code> function is held in the high-order
+# eight bits. The low-order bits indicate if the process was killed by a
+# signal (bit 7) and if so, the guilty signal number (bits 0&ndash;6).
+# </p>
+# <p>Traditionally, <code>awk</code>&rsquo;s <code>system()</code> function has simply
+# returned the exit status value divided by 256. In the normal case this
+# gives the exit status but in the case of death-by-signal it yields
+# a fractional floating-point value.<a id="DOCF52" href="#FOOT52"><sup>52</sup></a> POSIX states that <code>awk</code>&rsquo;s
+# <code>system()</code> should return the full 16-bit value.
+# </p>
+# <p><code>gawk</code> steers a middle ground.
+# The return values are summarized in <a href="#table_002dsystem_002dreturn_002dvalues">Table 9.5</a>.
+# </p>
+# <div class="float"><span id="table_002dsystem_002dreturn_002dvalues"></span>
+# 
+# <table>
+# <thead><tr><th width="40%">Situation</th><th width="60%">Return value from <code>system()</code></th></tr></thead>
+# <tr><td width="40%"><samp>--traditional</samp></td><td width="60%">C <code>system()</code>&rsquo;s value divided by 256</td></tr>
+# <tr><td width="40%"><samp>--posix</samp></td><td width="60%">C <code>system()</code>&rsquo;s value</td></tr>
+# <tr><td width="40%">Normal exit of command</td><td width="60%">Command&rsquo;s exit status</td></tr>
+# <tr><td width="40%">Death by signal of command</td><td width="60%">256 + number of murderous signal</td></tr>
+# <tr><td width="40%">Death by signal of command with core dump</td><td width="60%">512 + number of murderous signal</td></tr>
+# <tr><td width="40%">Some kind of error</td><td width="60%">-1</td></tr>
+# </table>
+# <div class="float-caption"><p><strong>Table 9.5: </strong>Return values from <code>system()</code></p></div></div></dd>
+function awk::system() {}
