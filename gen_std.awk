@@ -20,6 +20,8 @@ function closeItem() {
 }
 
 # TODO sprintf format chars
+# TODO strftime format chars
 # TODO mark gawk-only functions
 # TODO links in docs
 # TODO remove <span id="index-sub_0028_0029-function-2"></span>
+# TODO awk bitwise mark as gawk

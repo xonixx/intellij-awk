@@ -62,6 +62,14 @@
   ./gawk51 --version
   rm -r "gawk-5.1.0"
 
+@goal std.awk
+@doc 'generates std.awk file used for documentation (Ctrl-Q)'
+@depends_on std.awk_clean
+@depends_on std.awk_numeric
+@depends_on std.awk_string
+@depends_on std.awk_io
+@depends_on std.awk_time
+@depends_on std.awk_bitwise
 
 @goal temp_folder_created @private
 @reached_if [[ -d temp ]]
@@ -87,13 +95,10 @@
 @reached_if [[ -f 'temp/Time-Functions.html' ]]
   curl https://www.gnu.org/software/gawk/manual/html_node/Time-Functions.html -o temp/Time-Functions.html
 
-@goal std.awk
-@doc 'generates std.awk file used for documentation (Ctrl-Q)'
-@depends_on std.awk_clean
-@depends_on std.awk_numeric
-@depends_on std.awk_string
-@depends_on std.awk_io
-@depends_on std.awk_time
+@goal bitwise_functions_downloaded @private
+@depends_on temp_folder_created
+@reached_if [[ -f 'temp/Bitwise-Functions.html' ]]
+  curl https://www.gnu.org/software/gawk/manual/html_node/Bitwise-Functions.html -o temp/Bitwise-Functions.html
 
 @goal std.awk_clean @private
   echo > src/main/resources/std.awk
@@ -113,3 +118,8 @@
 @goal std.awk_time @private
 @depends_on time_functions_downloaded
   awk -f gen_std.awk temp/Time-Functions.html >> src/main/resources/std.awk
+
+@goal std.awk_bitwise @private
+@depends_on bitwise_functions_downloaded
+  awk -f gen_std.awk temp/Bitwise-Functions.html >> src/main/resources/std.awk
+

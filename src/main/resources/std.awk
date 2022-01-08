@@ -1092,3 +1092,49 @@ function awk::strftime() {}
 # It may be a different number on other systems.
 # </p></dd>
 function awk::systime() {}
+
+# <dd><span id="index-and_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-bitwise-3"></span>
+# </dd>
+# <dt><code>and(</code><var>v1</var><code>,</code> <var>v2</var> [<code>,</code> &hellip;]<code>)</code></dt>
+# <dd><p>Return the bitwise AND of the arguments. There must be at least two.
+# </p>
+# <span id="index-compl_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-bitwise-4"></span>
+# </dd>
+function awk::and() {}
+
+# <dt><code>compl(<var>val</var>)</code></dt>
+# <dd><p>Return the bitwise complement of <var>val</var>.
+# </p>
+# <span id="index-lshift_0028_0029-function-_0028gawk_0029"></span>
+# </dd>
+function awk::compl() {}
+
+# <dt><code>lshift(<var>val</var>, <var>count</var>)</code></dt>
+# <dd><p>Return the value of <var>val</var>, shifted left by <var>count</var> bits.
+# </p>
+# <span id="index-or_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-bitwise-5"></span>
+# </dd>
+function awk::lshift() {}
+
+# <dt><code>or(</code><var>v1</var><code>,</code> <var>v2</var> [<code>,</code> &hellip;]<code>)</code></dt>
+# <dd><p>Return the bitwise OR of the arguments. There must be at least two.
+# </p>
+# <span id="index-rshift_0028_0029-function-_0028gawk_0029"></span>
+# </dd>
+function awk::or() {}
+
+# <dt><code>rshift(<var>val</var>, <var>count</var>)</code></dt>
+# <dd><p>Return the value of <var>val</var>, shifted right by <var>count</var> bits.
+# </p>
+# <span id="index-xor_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-bitwise-6"></span>
+# </dd>
+function awk::rshift() {}
+
+# <dt><code>xor(</code><var>v1</var><code>,</code> <var>v2</var> [<code>,</code> &hellip;]<code>)</code></dt>
+# <dd><p>Return the bitwise XOR of the arguments. There must be at least two.
+# </p></dd>
+function awk::xor() {}
