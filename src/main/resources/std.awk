@@ -1,7 +1,7 @@
 
 
-# <dt><code>asort(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>) #</code></dt>
-# <dt><code>asorti(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>) #</code></dt>
+# <dt><code>asort(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>)</code></dt>
+# <dt><code>asorti(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>)</code></dt>
 # <dd><span id="index-asorti_0028_0029-function-_0028gawk_0029"></span>
 # <span id="index-sort-array"></span>
 # <span id="index-arrays-20"></span>
@@ -74,9 +74,9 @@
 # arguments, but doing so only makes sense if you&rsquo;re also supplying the third argument.
 # </p>
 # </dd>
-function awk::asorti() {}
+function gawk::asorti() {}
 
-# <dt><code>gensub(<var>regexp</var>, <var>replacement</var>, <var>how</var></code> [<code>, <var>target</var></code>]<code>) #</code></dt>
+# <dt><code>gensub(<var>regexp</var>, <var>replacement</var>, <var>how</var></code> [<code>, <var>target</var></code>]<code>)</code></dt>
 # <dd><span id="index-gensub_0028_0029-function-_0028gawk_0029-1"></span>
 # <span id="index-search-and-replace-in-strings"></span>
 # <span id="index-substitute-in-string"></span>
@@ -141,7 +141,7 @@ function awk::asorti() {}
 # above, the returned value is a string, even if <var>target</var> was not.
 # </p>
 # </dd>
-function awk::gensub() {}
+function gawk::gensub() {}
 
 # <dt><code>gsub(<var>regexp</var>, <var>replacement</var></code> [<code>, <var>target</var></code>]<code>)</code></dt>
 # <dd><span id="index-gsub_0028_0029-function-1"></span>
@@ -373,7 +373,7 @@ function awk::length() {}
 # </dd>
 function awk::match() {}
 
-# <dt><code>patsplit(<var>string</var>, <var>array</var></code> [<code>, <var>fieldpat</var></code> [<code>, <var>seps</var></code> ] ]<code>) #</code></dt>
+# <dt><code>patsplit(<var>string</var>, <var>array</var></code> [<code>, <var>fieldpat</var></code> [<code>, <var>seps</var></code> ] ]<code>)</code></dt>
 # <dd><span id="index-patsplit_0028_0029-function-_0028gawk_0029"></span>
 # <span id="index-split-string-into-array"></span>
 # <p>Divide
@@ -402,7 +402,7 @@ function awk::match() {}
 # elements in the arrays <var>array</var> and <var>seps</var>.
 # </p>
 # </dd>
-function awk::patsplit() {}
+function gawk::patsplit() {}
 
 # <dt><code>split(<var>string</var>, <var>array</var></code> [<code>, <var>fieldsep</var></code> [<code>, <var>seps</var></code> ] ]<code>)</code></dt>
 # <dd><span id="index-split_0028_0029-function-1"></span>
@@ -512,7 +512,7 @@ function awk::split() {}
 # </dd>
 function awk::sprintf() {}
 
-# <dt><code>strtonum(<var>str</var>) #</code></dt>
+# <dt><code>strtonum(<var>str</var>)</code></dt>
 # <dd><p>Examine <var>str</var> and return its numeric value.  If <var>str</var>
 # begins with a leading &lsquo;<samp>0</samp>&rsquo;, <code>strtonum()</code> assumes that <var>str</var>
 # is an octal number.  If <var>str</var> begins with a leading &lsquo;<samp>0x</samp>&rsquo; or
@@ -533,7 +533,7 @@ function awk::sprintf() {}
 # for recognizing numbers (see section <a href="Locales.html">Where You Are Makes a Difference</a>).
 # </p>
 # </dd>
-function awk::strtonum() {}
+function gawk::strtonum() {}
 
 # <dt><code>sub(<var>regexp</var>, <var>replacement</var></code> [<code>, <var>target</var></code>]<code>)</code></dt>
 # <dd><span id="index-sub_0028_0029-function-1"></span>
@@ -704,3 +704,13 @@ function awk::substr() {}
 # </p>
 # </dd>
 function awk::tolower() {}
+
+# <dt><code>toupper(<var>string</var>)</code></dt>
+# <dd><span id="index-toupper_0028_0029-function"></span>
+# <span id="index-converting-5"></span>
+# <p>Return a copy of <var>string</var>, with each lowercase character
+# in the string replaced with its corresponding uppercase character.
+# Nonalphabetic characters are left unchanged.  For example,
+# <code>toupper(&quot;MiXeD cAsE 123&quot;)</code> returns <code>&quot;MIXED CASE 123&quot;</code>.
+# </p></dd>
+function awk::toupper() {}

@@ -36,7 +36,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       if (builtinFuncNameGawk != null) {
         String awkFuncName = builtinFuncNameGawk.getText();
         String documentation =
-            getBuiltInFunctionDocumentation(builtinFuncNameGawk.getProject(), "awk::" + awkFuncName);
+            getBuiltInFunctionDocumentation(builtinFuncNameGawk.getProject(), "gawk::" + awkFuncName);
         if (documentation != null) {
           return postprocessDocumentation(documentation);
         } else {
