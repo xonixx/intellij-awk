@@ -32,6 +32,17 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
           return "TODO: add documentation for " + awkFuncName;
         }
       }
+      PsiElement builtinFuncNameGawk = awkFunctionCallBuiltIn.getBuiltinFuncNameGawk();
+      if (builtinFuncNameGawk != null) {
+        String awkFuncName = builtinFuncNameGawk.getText();
+        String documentation =
+            getBuiltInFunctionDocumentation(builtinFuncNameGawk.getProject(), "awk::" + awkFuncName);
+        if (documentation != null) {
+          return postprocessDocumentation(documentation);
+        } else {
+          return "TODO: add documentation for " + awkFuncName;
+        }
+      }
     }
     return null;
   }
