@@ -1150,3 +1150,69 @@ function awk::xor() {}
 # <span id="index-type-1"></span>
 # </dd>
 function awk::isarray() {}
+
+# <dt><code>typeof(<var>x</var>)</code></dt>
+# <dd><p>Return one of the following strings, depending upon the type of <var>x</var>:
+# </p>
+# <dl compact="compact">
+# <dt><code>&quot;array&quot;</code></dt>
+# <dd><p><var>x</var> is an array.
+# </p>
+# </dd>
+# <dt><code>&quot;regexp&quot;</code></dt>
+# <dd><p><var>x</var> is a strongly typed regexp (see section <a href="Strong-Regexp-Constants.html">Strongly Typed Regexp Constants</a>).
+# </p>
+# </dd>
+# <dt><code>&quot;number&quot;</code></dt>
+# <dd><p><var>x</var> is a number.
+# </p>
+# </dd>
+# <dt><code>&quot;string&quot;</code></dt>
+# <dd><p><var>x</var> is a string.
+# </p>
+# </dd>
+# <dt><code>&quot;strnum&quot;</code></dt>
+# <dd><p><var>x</var> is a number that started life as user input, such as a field or
+# the result of calling <code>split()</code>. (I.e., <var>x</var> has the strnum
+# attribute; see section <a href="Variable-Typing.html">String Type versus Numeric Type</a>.)
+# </p>
+# </dd>
+# <dt><code>&quot;unassigned&quot;</code></dt>
+# <dd><p><var>x</var> is a scalar variable that has not been assigned a value yet.
+# For example:
+# </p>
+# <div class="example">
+# <pre class="example">BEGIN {
+#     # creates a[1] but it has no assigned value
+#     a[1]
+#     print typeof(a[1])  # unassigned
+# }
+# </pre></div>
+# 
+# </dd>
+# <dt><code>&quot;untyped&quot;</code></dt>
+# <dd><p><var>x</var> has not yet been used yet at all; it can become a scalar or an
+# array.  The typing could even conceivably differ from run to run of
+# the same program! For example:
+# </p>
+# <div class="example">
+# <pre class="example">BEGIN {
+#     print &quot;initially, typeof(v) = &quot;, typeof(v)
+# 
+#     if (&quot;FOO&quot; in ENVIRON)
+#         make_scalar(v)
+#     else
+#         make_array(v)
+# 
+#     print &quot;typeof(v) =&quot;, typeof(v)
+# }
+# 
+# function make_scalar(p,    l) { l = p }
+# 
+# function make_array(p) { p[1] = 1 }
+# </pre></div>
+# 
+# </dd>
+# </dl>
+# </dd>
+function awk::typeof() {}
