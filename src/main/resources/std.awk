@@ -1216,3 +1216,44 @@ function gawk::isarray() {}
 # </dl>
 # </dd>
 function gawk::typeof() {}
+
+# <dd><span id="index-bindtextdomain_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-set-directory-of-message-catalogs"></span>
+# </dd>
+# <dt><code>bindtextdomain(<var>directory</var></code> [<code>,</code> <var>domain</var>]<code>)</code></dt>
+# <dd><p>Set the directory in which
+# <code>gawk</code> will look for message translation files, in case they
+# will not or cannot be placed in the &ldquo;standard&rdquo; locations
+# (e.g., during testing).
+# It returns the directory in which <var>domain</var> is &ldquo;bound.&rdquo;
+# </p>
+# <p>The default <var>domain</var> is the value of <code>TEXTDOMAIN</code>.
+# If <var>directory</var> is the null string (<code>&quot;&quot;</code>), then
+# <code>bindtextdomain()</code> returns the current binding for the
+# given <var>domain</var>.
+# </p>
+# <span id="index-dcgettext_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-translate-string"></span>
+# </dd>
+function gawk::bindtextdomain() {}
+
+# <dt><code>dcgettext(<var>string</var></code> [<code>,</code> <var>domain</var> [<code>,</code> <var>category</var>] ]<code>)</code></dt>
+# <dd><p>Return the translation of <var>string</var> in
+# text domain <var>domain</var> for locale category <var>category</var>.
+# The default value for <var>domain</var> is the current value of <code>TEXTDOMAIN</code>.
+# The default value for <var>category</var> is <code>&quot;LC_MESSAGES&quot;</code>.
+# </p>
+# <span id="index-dcngettext_0028_0029-function-_0028gawk_0029"></span>
+# </dd>
+function gawk::dcgettext() {}
+
+# <dt><code>dcngettext(<var>string1</var>, <var>string2</var>, <var>number</var></code> [<code>,</code> <var>domain</var> [<code>,</code> <var>category</var>] ]<code>)</code></dt>
+# <dd><p>Return the plural form used for <var>number</var> of the
+# translation of <var>string1</var> and <var>string2</var> in text domain
+# <var>domain</var> for locale category <var>category</var>. <var>string1</var> is the
+# English singular variant of a message, and <var>string2</var> is the English plural
+# variant of the same message.
+# The default value for <var>domain</var> is the current value of <code>TEXTDOMAIN</code>.
+# The default value for <var>category</var> is <code>&quot;LC_MESSAGES&quot;</code>.
+# </p></dd>
+function gawk::dcngettext() {}

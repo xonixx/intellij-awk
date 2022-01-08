@@ -71,6 +71,7 @@
 @depends_on std.awk_time
 @depends_on std.awk_bitwise
 @depends_on std.awk_type
+@depends_on std.awk_i18n
 
 @goal temp_folder_created @private
 @reached_if [[ -d temp ]]
@@ -106,6 +107,11 @@
 @reached_if [[ -f 'temp/Type-Functions.html' ]]
   curl https://www.gnu.org/software/gawk/manual/html_node/Type-Functions.html -o temp/Type-Functions.html
 
+@goal i18n_functions_downloaded @private
+@depends_on temp_folder_created
+@reached_if [[ -f 'temp/I18N-Functions.html' ]]
+  curl https://www.gnu.org/software/gawk/manual/html_node/I18N-Functions.html -o temp/I18N-Functions.html
+
 @goal std.awk_clean @private
   echo > src/main/resources/std.awk
 
@@ -132,4 +138,8 @@
 @goal std.awk_type @private
 @depends_on type_functions_downloaded
   awk -f gen_std.awk temp/Type-Functions.html >> src/main/resources/std.awk
+
+@goal std.awk_i18n @private
+@depends_on i18n_functions_downloaded
+  awk -f gen_std.awk temp/I18N-Functions.html >> src/main/resources/std.awk
 
