@@ -36,7 +36,8 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       if (builtinFuncNameGawk != null) {
         String awkFuncName = builtinFuncNameGawk.getText();
         String documentation =
-            getBuiltInFunctionDocumentation(builtinFuncNameGawk.getProject(), "gawk::" + awkFuncName);
+            getBuiltInFunctionDocumentation(
+                builtinFuncNameGawk.getProject(), "gawk::" + awkFuncName);
         if (documentation != null) {
           return postprocessDocumentation(documentation);
         } else {
@@ -49,13 +50,20 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
 
   private String postprocessDocumentation(String documentation) {
     if (documentation.contains("</dt>")) {
-      String[] parts = documentation.split(Pattern.quote("</dt>"), 2);
-      return DEFINITION_START
-          + parts[0].stripLeading()
-          + DEFINITION_END
-          + CONTENT_START
-          + parts[1].stripLeading()
-          + CONTENT_END;
+      StringBuilder res = new StringBuilder();
+
+      String[] parts = documentation.split(Pattern.quote("</dt>"), 3);
+
+      for (int i = 0; i < parts.length - 1; i++) {
+        res.append(DEFINITION_START)
+            .append(parts[i].stripLeading())
+            .append("</dt>")
+            .append(DEFINITION_END);
+      }
+
+      res.append(CONTENT_START).append(parts[parts.length - 1].stripLeading()).append(CONTENT_END);
+
+      return res.toString();
     }
     return documentation;
   }
