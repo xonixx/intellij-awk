@@ -15,6 +15,10 @@ Content             { Doc = Doc "\n# " $0 }
 NR==152 && Typeof              { closeItem() }
 
 function closeItem() {
+    if (Name=="asorti") {
+        print Doc
+        print "function gawk::asort() {}"
+    }
     print Doc
     Doc = ""
     print "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?

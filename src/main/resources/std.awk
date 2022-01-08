@@ -227,6 +227,82 @@ function awk::srand() {}
 # arguments, but doing so only makes sense if you&rsquo;re also supplying the third argument.
 # </p>
 # </dd>
+function gawk::asort() {}
+
+# <dt><code>asort(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>)</code></dt>
+# <dt><code>asorti(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>)</code></dt>
+# <dd><span id="index-asorti_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-sort-array"></span>
+# <span id="index-arrays-20"></span>
+# <span id="index-asort_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-sort-array-indices"></span>
+# <p>These two functions are similar in behavior, so they are described
+# together.
+# </p>
+# <blockquote>
+# <p><b>NOTE:</b> The following description ignores the third argument, <var>how</var>, as it
+# requires understanding features that we have not discussed yet.  Thus,
+# the discussion here is a deliberate simplification.  (We do provide all
+# the details later on; see <a href="Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a> for the full story.)
+# </p></blockquote>
+# 
+# <p>Both functions return the number of elements in the array <var>source</var>.
+# For <code>asort()</code>, <code>gawk</code> sorts the values of <var>source</var>
+# and replaces the indices of the sorted values of <var>source</var> with
+# sequential integers starting with one.  If the optional array <var>dest</var>
+# is specified, then <var>source</var> is duplicated into <var>dest</var>.  <var>dest</var>
+# is then sorted, leaving the indices of <var>source</var> unchanged.
+# </p>
+# <span id="index-gawk-54"></span>
+# <p>When comparing strings, <code>IGNORECASE</code> affects the sorting
+# (see section <a href="Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a>).  If the
+# <var>source</var> array contains subarrays as values (see section <a href="Arrays-of-Arrays.html">Arrays of Arrays</a>), they will come last, after all scalar values.
+# Subarrays are <em>not</em> recursively sorted.
+# </p>
+# <p>For example, if the contents of <code>a</code> are as follows:
+# </p>
+# <div class="example">
+# <pre class="example">a[&quot;last&quot;] = &quot;de&quot;
+# a[&quot;first&quot;] = &quot;sac&quot;
+# a[&quot;middle&quot;] = &quot;cul&quot;
+# </pre></div>
+# 
+# <p>A call to <code>asort()</code>:
+# </p>
+# <div class="example">
+# <pre class="example">asort(a)
+# </pre></div>
+# 
+# <p>results in the following contents of <code>a</code>:
+# </p>
+# <div class="example">
+# <pre class="example">a[1] = &quot;cul&quot;
+# a[2] = &quot;de&quot;
+# a[3] = &quot;sac&quot;
+# </pre></div>
+# 
+# <p>The <code>asorti()</code> function works similarly to <code>asort()</code>; however,
+# the <em>indices</em> are sorted, instead of the values. Thus, in the
+# previous example, starting with the same initial set of indices and
+# values in <code>a</code>, calling &lsquo;<samp>asorti(a)</samp>&rsquo; would yield:
+# </p>
+# <div class="example">
+# <pre class="example">a[1] = &quot;first&quot;
+# a[2] = &quot;last&quot;
+# a[3] = &quot;middle&quot;
+# </pre></div>
+# 
+# <blockquote>
+# <p><b>NOTE:</b> You may not use either <code>SYMTAB</code> or <code>FUNCTAB</code> as the second
+# argument to these functions.  Attempting to do so produces a fatal error.
+# You may use them as the first argument, but only if providing a second
+# array to use for the actual sorting.
+# </p></blockquote>
+# 
+# <p>You are allowed to use the same array for both the <var>source</var> and <var>dest</var>
+# arguments, but doing so only makes sense if you&rsquo;re also supplying the third argument.
+# </p>
+# </dd>
 function gawk::asorti() {}
 
 # <dt><code>gensub(<var>regexp</var>, <var>replacement</var>, <var>how</var></code> [<code>, <var>target</var></code>]<code>)</code></dt>
