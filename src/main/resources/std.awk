@@ -1,5 +1,158 @@
 
 
+# <dt><code>atan2(<var>y</var>, <var>x</var>)</code></dt>
+# <dd><span id="index-atan2_0028_0029-function"></span>
+# <span id="index-arctangent"></span>
+# <p>Return the arctangent of <code><var>y</var> / <var>x</var></code> in radians.
+# You can use &lsquo;<samp>pi = atan2(0, -1)</samp>&rsquo; to retrieve the value of
+# <i>pi</i>.
+# </p>
+# </dd>
+function awk::atan2() {}
+
+# <dt><code>cos(<var>x</var>)</code></dt>
+# <dd><span id="index-cos_0028_0029-function"></span>
+# <span id="index-cosine"></span>
+# <p>Return the cosine of <var>x</var>, with <var>x</var> in radians.
+# </p>
+# </dd>
+function awk::cos() {}
+
+# <dt><code>exp(<var>x</var>)</code></dt>
+# <dd><span id="index-exp_0028_0029-function"></span>
+# <span id="index-exponent"></span>
+# <p>Return the exponential of <var>x</var> (<code>e ^ <var>x</var></code>) or report
+# an error if <var>x</var> is out of range.  The range of values <var>x</var> can have
+# depends on your machine&rsquo;s floating-point representation.
+# </p>
+# </dd>
+function awk::exp() {}
+
+# <dt><code>int(<var>x</var>)</code></dt>
+# <dd><span id="index-int_0028_0029-function"></span>
+# <span id="index-round-to-nearest-integer"></span>
+# <p>Return the nearest integer to <var>x</var>, located between <var>x</var> and zero and
+# truncated toward zero.
+# For example, <code>int(3)</code> is 3, <code>int(3.9)</code> is 3, <code>int(-3.9)</code>
+# is -3, and <code>int(-3)</code> is -3 as well.
+# </p>
+# 
+# </dd>
+function awk::int() {}
+
+# <dt><code>log(<var>x</var>)</code></dt>
+# <dd><span id="index-log_0028_0029-function"></span>
+# <span id="index-logarithm"></span>
+# <p>Return the natural logarithm of <var>x</var>, if <var>x</var> is positive;
+# otherwise, return <code>NaN</code> (&ldquo;not a number&rdquo;) on IEEE 754 systems.
+# Additionally, <code>gawk</code> prints a warning message when <code>x</code>
+# is negative.
+# </p>
+# <span id="index-Beebe_002c-Nelson-H_002eF_002e-1"></span>
+# </dd>
+function awk::log() {}
+
+# <dt><code>rand()</code></dt>
+# <dd><span id="index-rand_0028_0029-function"></span>
+# <span id="index-random-numbers"></span>
+# <p>Return a random number.  The values of <code>rand()</code> are
+# uniformly distributed between zero and one.
+# The value could be zero but is never one.<a id="DOCF44" href="#FOOT44"><sup>44</sup></a>
+# </p>
+# <p>Often random integers are needed instead.  Following is a user-defined function
+# that can be used to obtain a random nonnegative integer less than <var>n</var>:
+# </p>
+# <div class="example">
+# <pre class="example">function randint(n)
+# {
+#     return int(n * rand())
+# }
+# </pre></div>
+# 
+# <p>The multiplication produces a random number greater than or equal to
+# zero and less than <code>n</code>.  Using <code>int()</code>, this result is made into
+# an integer between zero and <code>n</code> - 1, inclusive.
+# </p>
+# <p>The following example uses a similar function to produce random integers
+# between one and <var>n</var>.  This program prints a new random number for
+# each input record:
+# </p>
+# <div class="example">
+# <pre class="example"># Function to roll a simulated die.
+# function roll(n) { return 1 + int(rand() * n) }
+# 
+# # Roll 3 six-sided dice and
+# # print total number of points.
+# {
+#     printf(&quot;%d points\n&quot;, roll(6) + roll(6) + roll(6))
+# }
+# </pre></div>
+# 
+# <span id="index-seeding-random-number-generator"></span>
+# <span id="index-random-numbers-1"></span>
+# <blockquote>
+# <p><b>CAUTION:</b> In most <code>awk</code> implementations, including <code>gawk</code>,
+# <code>rand()</code> starts generating numbers from the same
+# starting number, or <em>seed</em>, each time you run <code>awk</code>.<a id="DOCF45" href="#FOOT45"><sup>45</sup></a>  Thus,
+# a program generates the same results each time you run it.
+# The numbers are random within one <code>awk</code> run but predictable
+# from run to run.  This is convenient for debugging, but if you want
+# a program to do different things each time it is used, you must change
+# the seed to a value that is different in each run.  To do this,
+# use <code>srand()</code>.
+# </p></blockquote>
+# 
+# </dd>
+function awk::rand() {}
+
+# <dt><code>sin(<var>x</var>)</code></dt>
+# <dd><span id="index-sin_0028_0029-function"></span>
+# <span id="index-sine"></span>
+# <p>Return the sine of <var>x</var>, with <var>x</var> in radians.
+# </p>
+# </dd>
+function awk::sin() {}
+
+# <dt><code>sqrt(<var>x</var>)</code></dt>
+# <dd><span id="index-sqrt_0028_0029-function"></span>
+# <span id="index-square-root"></span>
+# <p>Return the positive square root of <var>x</var>.
+# <code>gawk</code> prints a warning message
+# if <var>x</var> is negative.  Thus, <code>sqrt(4)</code> is 2.
+# </p>
+# </dd>
+function awk::sqrt() {}
+
+# <dt><code>srand(</code>[<var>x</var>]<code>)</code></dt>
+# <dd><span id="index-srand_0028_0029-function"></span>
+# <p>Set the starting point, or seed,
+# for generating random numbers to the value <var>x</var>.
+# </p>
+# <p>Each seed value leads to a particular sequence of random
+# numbers.<a id="DOCF46" href="#FOOT46"><sup>46</sup></a>
+# Thus, if the seed is set to the same value a second time,
+# the same sequence of random numbers is produced again.
+# </p>
+# <blockquote>
+# <p><b>CAUTION:</b> Different <code>awk</code> implementations use different random-number
+# generators internally.  Don&rsquo;t expect the same <code>awk</code> program
+# to produce the same series of random numbers when executed by
+# different versions of <code>awk</code>.
+# </p></blockquote>
+# 
+# <p>If the argument <var>x</var> is omitted, as in &lsquo;<samp>srand()</samp>&rsquo;, then the current
+# date and time of day are used for a seed.  This is the way to get random
+# numbers that are truly unpredictable.
+# </p>
+# <p>The return value of <code>srand()</code> is the previous seed.  This makes it
+# easy to keep track of the seeds in case you need to consistently reproduce
+# sequences of random numbers.
+# </p>
+# <p>POSIX does not specify the initial seed; it differs among <code>awk</code>
+# implementations.
+# </p></dd>
+function awk::srand() {}
+
 # <dt><code>asort(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>)</code></dt>
 # <dt><code>asorti(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>)</code></dt>
 # <dd><span id="index-asorti_0028_0029-function-_0028gawk_0029"></span>

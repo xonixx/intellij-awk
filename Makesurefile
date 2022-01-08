@@ -72,13 +72,23 @@
 @reached_if [[ -f 'temp/String-Functions.html' ]]
   curl https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html -o temp/String-Functions.html
 
+@goal numeric_functions_downloaded @private
+@depends_on temp_folder_created
+@reached_if [[ -f 'temp/Numeric-Functions.html' ]]
+  curl https://www.gnu.org/software/gawk/manual/html_node/Numeric-Functions.html -o temp/Numeric-Functions.html
+
 @goal std.awk
 @doc 'generates std.awk file used for documentation (Ctrl-Q)'
 @depends_on std.awk_clean
+@depends_on std.awk_numeric
 @depends_on std.awk_string
 
 @goal std.awk_clean @private
   echo > src/main/resources/std.awk
+
+@goal std.awk_numeric @private
+@depends_on numeric_functions_downloaded
+  awk -f gen_std.awk temp/Numeric-Functions.html >> src/main/resources/std.awk
 
 @goal std.awk_string @private
 @depends_on string_functions_downloaded
