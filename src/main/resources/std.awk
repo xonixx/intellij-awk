@@ -1138,3 +1138,15 @@ function awk::rshift() {}
 # <dd><p>Return the bitwise XOR of the arguments. There must be at least two.
 # </p></dd>
 function awk::xor() {}
+
+# <dd><span id="index-isarray_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-scalar-or-array"></span>
+# </dd>
+# <dt><code>isarray(<var>x</var>)</code></dt>
+# <dd><p>Return a true value if <var>x</var> is an array. Otherwise, return false.
+# </p>
+# <span id="index-typeof_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-variable-type_002c-typeof_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-type-1"></span>
+# </dd>
+function awk::isarray() {}
