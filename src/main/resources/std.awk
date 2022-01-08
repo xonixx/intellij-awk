@@ -1024,3 +1024,71 @@ function awk::fflush() {}
 # </table>
 # <div class="float-caption"><p><strong>Table 9.5: </strong>Return values from <code>system()</code></p></div></div></dd>
 function awk::system() {}
+
+# <dt><code>mktime(<var>datespec</var></code> [<code>, <var>utc-flag</var></code> ]<code>)</code></dt>
+# <dd><span id="index-mktime_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-generate-time-values"></span>
+# <p>Turn <var>datespec</var> into a timestamp in the same form
+# as is returned by <code>systime()</code>.  It is similar to the function of the
+# same name in ISO C.  The argument, <var>datespec</var>, is a string of the form
+# <code>&quot;<var>YYYY</var>&nbsp;<var>MM</var>&nbsp;<var>DD</var>&nbsp;<var>HH</var>&nbsp;<var>MM</var>&nbsp;<var>SS</var>&nbsp;[<var>DST</var>]&quot;</code><!-- /@w -->.
+# The string consists of six or seven numbers representing, respectively,
+# the full year including century, the month from 1 to 12, the day of the month
+# from 1 to 31, the hour of the day from 0 to 23, the minute from 0 to
+# 59, the second from 0 to 60,<a id="DOCF55" href="#FOOT55"><sup>55</sup></a>
+# and an optional daylight-savings flag.
+# </p>
+# <p>The values of these numbers need not be within the ranges specified;
+# for example, an hour of -1 means 1 hour before midnight.
+# The origin-zero Gregorian calendar is assumed, with year 0 preceding
+# year 1 and year -1 preceding year 0.
+# If <var>utc-flag</var> is present and is either nonzero or non-null, the time
+# is assumed to be in the UTC time zone; otherwise, the
+# time is assumed to be in the local time zone.
+# If the <var>DST</var> daylight-savings flag is positive, the time is assumed to be
+# daylight savings time; if zero, the time is assumed to be standard
+# time; and if negative (the default), <code>mktime()</code> attempts to determine
+# whether daylight savings time is in effect for the specified time.
+# </p>
+# <p>If <var>datespec</var> does not contain enough elements or if the resulting time
+# is out of range, <code>mktime()</code> returns -1.
+# </p>
+# <span id="index-gawk-56"></span>
+# <span id="index-PROCINFO-array-3"></span>
+# </dd>
+function awk::mktime() {}
+
+# <dt><code>strftime(</code>[<var>format</var> [<code>,</code> <var>timestamp</var> [<code>,</code> <var>utc-flag</var>] ] ]<code>)</code></dt>
+# <dd><span id="index-strftime_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-format-time-string"></span>
+# <p>Format the time specified by <var>timestamp</var>
+# based on the contents of the <var>format</var> string and return the result.
+# It is similar to the function of the same name in ISO C.
+# If <var>utc-flag</var> is present and is either nonzero or non-null, the value
+# is formatted as UTC (Coordinated Universal Time, formerly GMT or Greenwich
+# Mean Time). Otherwise, the value is formatted for the local time zone.
+# The <var>timestamp</var> is in the same format as the value returned by the
+# <code>systime()</code> function.  If no <var>timestamp</var> argument is supplied,
+# <code>gawk</code> uses the current time of day as the timestamp.
+# Without a <var>format</var> argument, <code>strftime()</code> uses
+# the value of <code>PROCINFO[&quot;strftime&quot;]</code> as the format string
+# (see section <a href="Built_002din-Variables.html">Predefined Variables</a>).
+# The default string value is
+# <code>&quot;%a&nbsp;%b&nbsp;%e&nbsp;%H:%M:%S&nbsp;%Z&nbsp;%Y&quot;<!-- /@w --></code>.  This format string produces
+# output that is equivalent to that of the <code>date</code> utility.
+# You can assign a new value to <code>PROCINFO[&quot;strftime&quot;]</code> to
+# change the default format; see the following list for the various format directives.
+# </p>
+# </dd>
+function awk::strftime() {}
+
+# <dt><code>systime()</code></dt>
+# <dd><span id="index-systime_0028_0029-function-_0028gawk_0029"></span>
+# <span id="index-timestamps-1"></span>
+# <span id="index-current-system-time"></span>
+# <p>Return the current time as the number of seconds since
+# the system epoch.  On POSIX systems, this is the number of seconds
+# since 1970-01-01 00:00:00 UTC, not counting leap seconds.
+# It may be a different number on other systems.
+# </p></dd>
+function awk::systime() {}
