@@ -954,7 +954,6 @@ function awk::close() {}
 # </dd>
 function awk::fflush() {}
 
-# </dl>
 # <dt><code>system(<var>command</var>)</code></dt>
 # <dd><span id="index-system_0028_0029-function"></span>
 # <span id="index-invoke-shell-command"></span>
