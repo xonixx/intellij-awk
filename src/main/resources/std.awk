@@ -1,8 +1,7 @@
 
 
 # <dt><code>atan2(<var>y</var>, <var>x</var>)</code></dt>
-# <dd><span id="index-atan2_0028_0029-function"></span>
-# <span id="index-arctangent"></span>
+# <dd>
 # <p>Return the arctangent of <code><var>y</var> / <var>x</var></code> in radians.
 # You can use &lsquo;<samp>pi = atan2(0, -1)</samp>&rsquo; to retrieve the value of
 # <i>pi</i>.
@@ -11,16 +10,14 @@
 function awk::atan2() {}
 
 # <dt><code>cos(<var>x</var>)</code></dt>
-# <dd><span id="index-cos_0028_0029-function"></span>
-# <span id="index-cosine"></span>
+# <dd>
 # <p>Return the cosine of <var>x</var>, with <var>x</var> in radians.
 # </p>
 # </dd>
 function awk::cos() {}
 
 # <dt><code>exp(<var>x</var>)</code></dt>
-# <dd><span id="index-exp_0028_0029-function"></span>
-# <span id="index-exponent"></span>
+# <dd>
 # <p>Return the exponential of <var>x</var> (<code>e ^ <var>x</var></code>) or report
 # an error if <var>x</var> is out of range.  The range of values <var>x</var> can have
 # depends on your machine&rsquo;s floating-point representation.
@@ -29,8 +26,7 @@ function awk::cos() {}
 function awk::exp() {}
 
 # <dt><code>int(<var>x</var>)</code></dt>
-# <dd><span id="index-int_0028_0029-function"></span>
-# <span id="index-round-to-nearest-integer"></span>
+# <dd>
 # <p>Return the nearest integer to <var>x</var>, located between <var>x</var> and zero and
 # truncated toward zero.
 # For example, <code>int(3)</code> is 3, <code>int(3.9)</code> is 3, <code>int(-3.9)</code>
@@ -41,20 +37,17 @@ function awk::exp() {}
 function awk::int() {}
 
 # <dt><code>log(<var>x</var>)</code></dt>
-# <dd><span id="index-log_0028_0029-function"></span>
-# <span id="index-logarithm"></span>
+# <dd>
 # <p>Return the natural logarithm of <var>x</var>, if <var>x</var> is positive;
 # otherwise, return <code>NaN</code> (&ldquo;not a number&rdquo;) on IEEE 754 systems.
 # Additionally, <code>gawk</code> prints a warning message when <code>x</code>
 # is negative.
 # </p>
-# <span id="index-Beebe_002c-Nelson-H_002eF_002e-1"></span>
 # </dd>
 function awk::log() {}
 
 # <dt><code>rand()</code></dt>
-# <dd><span id="index-rand_0028_0029-function"></span>
-# <span id="index-random-numbers"></span>
+# <dd>
 # <p>Return a random number.  The values of <code>rand()</code> are
 # uniformly distributed between zero and one.
 # The value could be zero but is never one.
@@ -88,8 +81,6 @@ function awk::log() {}
 # }
 # </pre></div>
 # 
-# <span id="index-seeding-random-number-generator"></span>
-# <span id="index-random-numbers-1"></span>
 # <blockquote>
 # <p><b>CAUTION:</b> In most <code>awk</code> implementations, including <code>gawk</code>,
 # <code>rand()</code> starts generating numbers from the same
@@ -106,16 +97,14 @@ function awk::log() {}
 function awk::rand() {}
 
 # <dt><code>sin(<var>x</var>)</code></dt>
-# <dd><span id="index-sin_0028_0029-function"></span>
-# <span id="index-sine"></span>
+# <dd>
 # <p>Return the sine of <var>x</var>, with <var>x</var> in radians.
 # </p>
 # </dd>
 function awk::sin() {}
 
 # <dt><code>sqrt(<var>x</var>)</code></dt>
-# <dd><span id="index-sqrt_0028_0029-function"></span>
-# <span id="index-square-root"></span>
+# <dd>
 # <p>Return the positive square root of <var>x</var>.
 # <code>gawk</code> prints a warning message
 # if <var>x</var> is negative.  Thus, <code>sqrt(4)</code> is 2.
@@ -124,7 +113,7 @@ function awk::sin() {}
 function awk::sqrt() {}
 
 # <dt><code>srand(</code>[<var>x</var>]<code>)</code></dt>
-# <dd><span id="index-srand_0028_0029-function"></span>
+# <dd>
 # <p>Set the starting point, or seed,
 # for generating random numbers to the value <var>x</var>.
 # </p>
@@ -155,11 +144,7 @@ function awk::srand() {}
 
 # <dt><code>asort(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>)</code></dt>
 # <dt><code>asorti(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>)</code></dt>
-# <dd><span id="index-asorti_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-sort-array"></span>
-# <span id="index-arrays-20"></span>
-# <span id="index-asort_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-sort-array-indices"></span>
+# <dd>
 # <p>These two functions are similar in behavior, so they are described
 # together.
 # </p>
@@ -177,7 +162,6 @@ function awk::srand() {}
 # is specified, then <var>source</var> is duplicated into <var>dest</var>.  <var>dest</var>
 # is then sorted, leaving the indices of <var>source</var> unchanged.
 # </p>
-# <span id="index-gawk-54"></span>
 # <p>When comparing strings, <code>IGNORECASE</code> affects the sorting
 # (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a>).  If the
 # <var>source</var> array contains subarrays as values (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Arrays-of-Arrays.html">Arrays of Arrays</a>), they will come last, after all scalar values.
@@ -231,11 +215,7 @@ function gawk::asort() {}
 
 # <dt><code>asort(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>)</code></dt>
 # <dt><code>asorti(</code><var>source</var> [<code>,</code> <var>dest</var> [<code>,</code> <var>how</var> ] ]<code>)</code></dt>
-# <dd><span id="index-asorti_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-sort-array"></span>
-# <span id="index-arrays-20"></span>
-# <span id="index-asort_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-sort-array-indices"></span>
+# <dd>
 # <p>These two functions are similar in behavior, so they are described
 # together.
 # </p>
@@ -253,7 +233,6 @@ function gawk::asort() {}
 # is specified, then <var>source</var> is duplicated into <var>dest</var>.  <var>dest</var>
 # is then sorted, leaving the indices of <var>source</var> unchanged.
 # </p>
-# <span id="index-gawk-54"></span>
 # <p>When comparing strings, <code>IGNORECASE</code> affects the sorting
 # (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a>).  If the
 # <var>source</var> array contains subarrays as values (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Arrays-of-Arrays.html">Arrays of Arrays</a>), they will come last, after all scalar values.
@@ -306,9 +285,7 @@ function gawk::asort() {}
 function gawk::asorti() {}
 
 # <dt><code>gensub(<var>regexp</var>, <var>replacement</var>, <var>how</var></code> [<code>, <var>target</var></code>]<code>)</code></dt>
-# <dd><span id="index-gensub_0028_0029-function-_0028gawk_0029-1"></span>
-# <span id="index-search-and-replace-in-strings"></span>
-# <span id="index-substitute-in-string"></span>
+# <dd>
 # <p>Search the target string <var>target</var> for matches of the regular
 # expression <var>regexp</var>.  If <var>how</var> is a string beginning with
 # &lsquo;<samp>g</samp>&rsquo; or &lsquo;<samp>G</samp>&rsquo; (short for &ldquo;global&rdquo;), then replace all matches
@@ -373,7 +350,7 @@ function gawk::asorti() {}
 function gawk::gensub() {}
 
 # <dt><code>gsub(<var>regexp</var>, <var>replacement</var></code> [<code>, <var>target</var></code>]<code>)</code></dt>
-# <dd><span id="index-gsub_0028_0029-function-1"></span>
+# <dd>
 # <p>Search <var>target</var> for
 # <em>all</em> of the longest, leftmost, <em>nonoverlapping</em> matching
 # substrings it can find and replace them with <var>replacement</var>.
@@ -397,9 +374,7 @@ function gawk::gensub() {}
 function awk::gsub() {}
 
 # <dt><code>index(<var>in</var>, <var>find</var>)</code></dt>
-# <dd><span id="index-index_0028_0029-function"></span>
-# <span id="index-search-for-substring"></span>
-# <span id="index-find-substring-in-string"></span>
+# <dd>
 # <p>Search the string <var>in</var> for the first occurrence of the string
 # <var>find</var>, and return the position in characters where that occurrence
 # begins in the string <var>in</var>.  Consider the following example:
@@ -411,7 +386,6 @@ function awk::gsub() {}
 # 
 # <p>If <var>find</var> is not found, <code>index()</code> returns zero.
 # </p>
-# <span id="index-dark-corner-35"></span>
 # <p>With BWK <code>awk</code> and <code>gawk</code>,
 # it is a fatal error to use a regexp constant for <var>find</var>.
 # Other implementations allow it, simply treating the regexp
@@ -421,9 +395,7 @@ function awk::gsub() {}
 function awk::index() {}
 
 # <dt><code>length(</code>[<var>string</var>]<code>)</code></dt>
-# <dd><span id="index-length_0028_0029-function"></span>
-# <span id="index-string-3"></span>
-# <span id="index-length-of-string"></span>
+# <dd>
 # <p>Return the number of characters in <var>string</var>.  If
 # <var>string</var> is a number, the length of the digit string representing
 # that number is returned.  For example, <code>length(&quot;abcde&quot;)</code> is five.  By
@@ -432,12 +404,8 @@ function awk::index() {}
 # and 525 is then converted to the string <code>&quot;525&quot;</code>, which has
 # three characters.
 # </p>
-# <span id="index-length-of-input-record"></span>
-# <span id="index-input-record_002c-length-of"></span>
 # <p>If no argument is supplied, <code>length()</code> returns the length of <code>$0</code>.
 # </p>
-# <span id="index-portability-15"></span>
-# <span id="index-POSIX-awk-25"></span>
 # <blockquote>
 # <p><b>NOTE:</b> In older versions of <code>awk</code>, the <code>length()</code> function could
 # be called
@@ -447,7 +415,6 @@ function awk::index() {}
 # always supply the parentheses.
 # </p></blockquote>
 # 
-# <span id="index-dark-corner-36"></span>
 # <p>If <code>length()</code> is called with a variable that has not been used,
 # <code>gawk</code> forces the variable to be a scalar.  Other
 # implementations of <code>awk</code> leave the variable without a type.
@@ -467,11 +434,6 @@ function awk::index() {}
 # been specified on the command line, <code>gawk</code> issues a
 # warning about this.
 # </p>
-# <span id="index-common-extensions-9"></span>
-# <span id="index-extensions-10"></span>
-# <span id="index-differences-in-awk-and-gawk-43"></span>
-# <span id="index-number-of-array-elements"></span>
-# <span id="index-arrays-21"></span>
 # <p>With <code>gawk</code> and several other <code>awk</code> implementations, when given an
 # array argument, the <code>length()</code> function returns the number of elements
 # in the array. (c.e.)
@@ -488,9 +450,7 @@ function awk::index() {}
 function awk::length() {}
 
 # <dt><code>match(<var>string</var>, <var>regexp</var></code> [<code>, <var>array</var></code>]<code>)</code></dt>
-# <dd><span id="index-match_0028_0029-function"></span>
-# <span id="index-string-4"></span>
-# <span id="index-match-regexp-in-string"></span>
+# <dd>
 # <p>Search <var>string</var> for the
 # longest, leftmost substring matched by the regular expression
 # <var>regexp</var> and return the character position (index)
@@ -510,11 +470,6 @@ function awk::length() {}
 # for <code>match()</code>, the order is the same as for the &lsquo;<samp>~</samp>&rsquo; operator:
 # &lsquo;<samp><var>string</var> ~ <var>regexp</var></samp>&rsquo;.
 # </p>
-# <span id="index-RSTART-variable-1"></span>
-# <span id="index-RLENGTH-variable-1"></span>
-# <span id="index-match_0028_0029-function-1"></span>
-# <span id="index-match_0028_0029-function-2"></span>
-# <span id="index-side-effects-11"></span>
 # <p>The <code>match()</code> function sets the predefined variable <code>RSTART</code> to
 # the index.  It also sets the predefined variable <code>RLENGTH</code> to the
 # length in characters of the matched substring.  If no match is found,
@@ -556,7 +511,6 @@ function awk::length() {}
 # Match of Melvin found at 1 in Melvin was here.
 # </pre></div>
 # 
-# <span id="index-differences-in-awk-and-gawk-44"></span>
 # <p>If <var>array</var> is present, it is cleared, and then the zeroth element
 # of <var>array</var> is set to the entire portion of <var>string</var>
 # matched by <var>regexp</var>.  If <var>regexp</var> contains parentheses,
@@ -593,7 +547,6 @@ function awk::length() {}
 # should be tested for with the <code>in</code> operator
 # (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Reference-to-Elements.html">Referring to an Array Element</a>).
 # </p>
-# <span id="index-troubleshooting-15"></span>
 # <p>The <var>array</var> argument to <code>match()</code> is a
 # <code>gawk</code> extension.  In compatibility mode
 # (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>),
@@ -603,8 +556,7 @@ function awk::length() {}
 function awk::match() {}
 
 # <dt><code>patsplit(<var>string</var>, <var>array</var></code> [<code>, <var>fieldpat</var></code> [<code>, <var>seps</var></code> ] ]<code>)</code></dt>
-# <dd><span id="index-patsplit_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-split-string-into-array"></span>
+# <dd>
 # <p>Divide
 # <var>string</var> into pieces (or &ldquo;fields&rdquo;) defined by <var>fieldpat</var>
 # and store the pieces in <var>array</var> and the separator strings in the
@@ -634,7 +586,7 @@ function awk::match() {}
 function gawk::patsplit() {}
 
 # <dt><code>split(<var>string</var>, <var>array</var></code> [<code>, <var>fieldsep</var></code> [<code>, <var>seps</var></code> ] ]<code>)</code></dt>
-# <dd><span id="index-split_0028_0029-function-1"></span>
+# <dd>
 # <p>Divide <var>string</var> into pieces separated by <var>fieldsep</var>
 # and store the pieces in <var>array</var> and the separator strings in the
 # <var>seps</var> array.  The first piece is stored in
@@ -661,7 +613,7 @@ function gawk::patsplit() {}
 # <pre class="example">split(&quot;cul-de-sac&quot;, a, &quot;-&quot;, seps)
 # </pre></div>
 # 
-# <p><span id="index-strings-8"></span>
+# <p>
 # splits the string <code>&quot;cul-de-sac&quot;</code> into three fields using &lsquo;<samp>-</samp>&rsquo; as the
 # separator.  It sets the contents of the array <code>a</code> as follows:
 # </p>
@@ -680,7 +632,6 @@ function gawk::patsplit() {}
 # 
 # <p>The value returned by this call to <code>split()</code> is three.
 # </p>
-# <span id="index-differences-in-awk-and-gawk-45"></span>
 # <p>As with input field-splitting, when the value of <var>fieldsep</var> is
 # <code>&quot;&nbsp;&quot;</code><!-- /@w -->, leading and trailing whitespace is ignored in values assigned to
 # the elements of
@@ -696,7 +647,6 @@ function gawk::patsplit() {}
 # works. Even though &lsquo;<samp>RS = &quot;&quot;</samp>&rsquo; causes the newline character to also be an input
 # field separator, this does not affect how <code>split()</code> splits strings.
 # </p>
-# <span id="index-dark-corner-37"></span>
 # <p>Modern implementations of <code>awk</code>, including <code>gawk</code>, allow
 # the third argument to be a regexp constant (<code>/</code>&hellip;<code>/</code><!-- /@w -->)
 # as well as a string.  (d.c.)
@@ -716,15 +666,13 @@ function gawk::patsplit() {}
 # <var>array</var> has one element only. The value of that element is the original
 # <var>string</var>.
 # </p>
-# <span id="index-POSIX-mode-10"></span>
 # <p>In POSIX mode (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), the fourth argument is not allowed.
 # </p>
 # </dd>
 function awk::split() {}
 
 # <dt><code>sprintf(<var>format</var>, <var>expression1</var>, &hellip;)</code></dt>
-# <dd><span id="index-sprintf_0028_0029-function-1"></span>
-# <span id="index-formatting-1"></span>
+# <dd>
 # <p>Return (without printing) the string that <code>printf</code> would
 # have printed out with the same arguments
 # (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Printf.html">Using <code>printf</code> Statements for Fancier Printing</a>).
@@ -736,8 +684,6 @@ function awk::split() {}
 # 
 # <p>assigns the string &lsquo;<samp>pi&nbsp;=&nbsp;3.14&nbsp;(approx.)</samp>&rsquo;<!-- /@w --> to the variable <code>pival</code>.
 # </p>
-# <span id="index-strtonum_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-converting-3"></span>
 # </dd>
 function awk::sprintf() {}
 
@@ -765,8 +711,7 @@ function awk::sprintf() {}
 function gawk::strtonum() {}
 
 # <dt><code>sub(<var>regexp</var>, <var>replacement</var></code> [<code>, <var>target</var></code>]<code>)</code></dt>
-# <dd><span id="index-sub_0028_0029-function-1"></span>
-# <span id="index-replace-in-string"></span>
+# <dd>
 # <p>Search <var>target</var>, which is treated as a string, for the
 # leftmost, longest substring matched by the regular expression <var>regexp</var>.
 # Modify the entire string
@@ -833,10 +778,6 @@ function gawk::strtonum() {}
 # <pre class="example">{ sub(/\|/, &quot;\\&amp;&quot;); print }
 # </pre></div>
 # 
-# <span id="index-sub_0028_0029-function-2"></span>
-# <span id="index-gsub_0028_0029-function-2"></span>
-# <span id="index-side-effects-12"></span>
-# <span id="index-side-effects-13"></span>
 # <p>As mentioned, the third argument to <code>sub()</code> must
 # be a variable, field, or array element.
 # Some versions of <code>awk</code> allow the third argument to
@@ -850,7 +791,7 @@ function gawk::strtonum() {}
 # <pre class="example">sub(/USA/, &quot;United States&quot;, &quot;the USA and Canada&quot;)
 # </pre></div>
 # 
-# <p><span id="index-troubleshooting-16"></span>
+# <p>
 # For historical compatibility, <code>gawk</code> accepts such erroneous code.
 # However, using any other nonchangeable
 # object as the third parameter causes a fatal error and your program
@@ -863,8 +804,7 @@ function gawk::strtonum() {}
 function awk::sub() {}
 
 # <dt><code>substr(<var>string</var>, <var>start</var></code> [<code>, <var>length</var></code> ]<code>)</code></dt>
-# <dd><span id="index-substr_0028_0029-function"></span>
-# <span id="index-substring"></span>
+# <dd>
 # <p>Return a <var>length</var>-character-long substring of <var>string</var>,
 # starting at character number <var>start</var>.  The first character of a
 # string is character number one.
@@ -877,7 +817,6 @@ function awk::sub() {}
 # if <var>length</var> is greater than the number of characters remaining
 # in the string, counting from character <var>start</var>.
 # </p>
-# <span id="index-Brian-Kernighan_0027s-awk-12"></span>
 # <p>If <var>start</var> is less than one, <code>substr()</code> treats it as
 # if it was one. (POSIX doesn&rsquo;t specify what to do in this case:
 # BWK <code>awk</code> acts this way, and therefore <code>gawk</code>
@@ -887,7 +826,6 @@ function awk::sub() {}
 # Similarly, if <var>length</var> is present but less than or equal to zero,
 # the null string is returned.
 # </p>
-# <span id="index-troubleshooting-17"></span>
 # <p>The string returned by <code>substr()</code> <em>cannot</em> be
 # assigned.  Thus, it is a mistake to attempt to change a portion of
 # a string, as shown in the following example:
@@ -905,7 +843,6 @@ function awk::sub() {}
 # <pre class="example">gsub(/xyz/, &quot;pdq&quot;, substr($0, 5, 20))  # WRONG
 # </pre></div>
 # 
-# <span id="index-portability-16"></span>
 # <p>(Some commercial versions of <code>awk</code> treat
 # <code>substr()</code> as assignable, but doing so is not portable.)
 # </p>
@@ -918,14 +855,11 @@ function awk::sub() {}
 # string = substr(string, 1, 2) &quot;CDE&quot; substr(string, 6)
 # </pre></div>
 # 
-# <span id="index-case-sensitivity-5"></span>
-# <span id="index-strings-9"></span>
 # </dd>
 function awk::substr() {}
 
 # <dt><code>tolower(<var>string</var>)</code></dt>
-# <dd><span id="index-tolower_0028_0029-function"></span>
-# <span id="index-converting-4"></span>
+# <dd>
 # <p>Return a copy of <var>string</var>, with each uppercase character
 # in the string replaced with its corresponding lowercase character.
 # Nonalphabetic characters are left unchanged.  For example,
@@ -935,8 +869,7 @@ function awk::substr() {}
 function awk::tolower() {}
 
 # <dt><code>toupper(<var>string</var>)</code></dt>
-# <dd><span id="index-toupper_0028_0029-function"></span>
-# <span id="index-converting-5"></span>
+# <dd>
 # <p>Return a copy of <var>string</var>, with each lowercase character
 # in the string replaced with its corresponding uppercase character.
 # Nonalphabetic characters are left unchanged.  For example,
@@ -945,9 +878,7 @@ function awk::tolower() {}
 function awk::toupper() {}
 
 # <dt><code>close(</code><var>filename</var> [<code>,</code> <var>how</var>]<code>)</code></dt>
-# <dd><span id="index-close_0028_0029-function-3"></span>
-# <span id="index-files-10"></span>
-# <span id="index-close-file-or-coprocess"></span>
+# <dd>
 # <p>Close the file <var>filename</var> for input or output. Alternatively, the
 # argument may be a shell command that was used for creating a coprocess, or
 # for redirecting to or from a pipe; then the coprocess or pipe is closed.
@@ -971,14 +902,11 @@ function awk::toupper() {}
 function awk::close() {}
 
 # <dt><code>fflush(</code>[<var>filename</var>]<code>)</code></dt>
-# <dd><span id="index-fflush_0028_0029-function"></span>
-# <span id="index-flush-buffered-output"></span>
+# <dd>
 # <p>Flush any buffered output associated with <var>filename</var>, which is either a
 # file opened for writing or a shell command for redirecting output to
 # a pipe or coprocess.
 # </p>
-# <span id="index-buffers-1"></span>
-# <span id="index-output-6"></span>
 # <p>Many utility programs <em>buffer</em> their output (i.e., they save information
 # to write to a disk file or the screen in memory until there is enough
 # for it to be worthwhile to send the data to the output device).
@@ -990,8 +918,6 @@ function awk::close() {}
 # buffers its output, and the <code>fflush()</code> function forces
 # <code>gawk</code> to flush its buffers.
 # </p>
-# <span id="index-extensions-11"></span>
-# <span id="index-Brian-Kernighan_0027s-awk-14"></span>
 # <p>Brian Kernighan added <code>fflush()</code> to his <code>awk</code> in April
 # 1992.  For two decades, it was a common extension.  In December
 # 2012, it was accepted for inclusion into the POSIX standard.
@@ -1015,7 +941,6 @@ function awk::close() {}
 # only the standard output.
 # </p></blockquote>
 # 
-# <span id="index-troubleshooting-18"></span>
 # <p><code>fflush()</code> returns zero if the buffer is successfully flushed;
 # otherwise, it returns a nonzero value. (<code>gawk</code> returns -1.)
 # In the case where all buffers are flushed, the return value is zero
@@ -1031,9 +956,7 @@ function awk::close() {}
 function awk::fflush() {}
 
 # <dt><code>system(<var>command</var>)</code></dt>
-# <dd><span id="index-system_0028_0029-function"></span>
-# <span id="index-invoke-shell-command"></span>
-# <span id="index-interacting-with-other-programs"></span>
+# <dd>
 # <p>Execute the operating system
 # command <var>command</var> and then return to the <code>awk</code> program.
 # Return <var>command</var>&rsquo;s exit status (see further on).
@@ -1060,8 +983,7 @@ function awk::fflush() {}
 # close(&quot;/bin/sh&quot;)
 # </pre></div>
 # 
-# <p><span id="index-troubleshooting-19"></span>
-# <span id="index-_002d_002dsandbox-option-3"></span>
+# <p>
 # However, if your <code>awk</code>
 # program is interactive, <code>system()</code> is useful for running large
 # self-contained programs, such as a shell or an editor.
@@ -1087,7 +1009,7 @@ function awk::fflush() {}
 # <p><code>gawk</code> steers a middle ground.
 # The return values are summarized in <a href="https://www.gnu.org/software/gawk/manual/html_node/#table_002dsystem_002dreturn_002dvalues">Table 9.5</a>.
 # </p>
-# <div class="float"><span id="table_002dsystem_002dreturn_002dvalues"></span>
+# <div class="float">
 # 
 # <table>
 # <thead><tr><th width="40%">Situation</th><th width="60%">Return value from <code>system()</code></th></tr></thead>
@@ -1102,8 +1024,7 @@ function awk::fflush() {}
 function awk::system() {}
 
 # <dt><code>mktime(<var>datespec</var></code> [<code>, <var>utc-flag</var></code> ]<code>)</code></dt>
-# <dd><span id="index-mktime_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-generate-time-values"></span>
+# <dd>
 # <p>Turn <var>datespec</var> into a timestamp in the same form
 # as is returned by <code>systime()</code>.  It is similar to the function of the
 # same name in ISO C.  The argument, <var>datespec</var>, is a string of the form
@@ -1129,14 +1050,11 @@ function awk::system() {}
 # <p>If <var>datespec</var> does not contain enough elements or if the resulting time
 # is out of range, <code>mktime()</code> returns -1.
 # </p>
-# <span id="index-gawk-56"></span>
-# <span id="index-PROCINFO-array-3"></span>
 # </dd>
 function gawk::mktime() {}
 
 # <dt><code>strftime(</code>[<var>format</var> [<code>,</code> <var>timestamp</var> [<code>,</code> <var>utc-flag</var>] ] ]<code>)</code></dt>
-# <dd><span id="index-strftime_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-format-time-string"></span>
+# <dd>
 # <p>Format the time specified by <var>timestamp</var>
 # based on the contents of the <var>format</var> string and return the result.
 # It is similar to the function of the same name in ISO C.
@@ -1159,9 +1077,7 @@ function gawk::mktime() {}
 function gawk::strftime() {}
 
 # <dt><code>systime()</code></dt>
-# <dd><span id="index-systime_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-timestamps-1"></span>
-# <span id="index-current-system-time"></span>
+# <dd>
 # <p>Return the current time as the number of seconds since
 # the system epoch.  On POSIX systems, this is the number of seconds
 # since 1970-01-01 00:00:00 UTC, not counting leap seconds.
@@ -1169,44 +1085,35 @@ function gawk::strftime() {}
 # </p></dd>
 function gawk::systime() {}
 
-# <dd><span id="index-and_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-bitwise-3"></span>
+# <dd>
 # </dd>
 # <dt><code>and(</code><var>v1</var><code>,</code> <var>v2</var> [<code>,</code> &hellip;]<code>)</code></dt>
 # <dd><p>Return the bitwise AND of the arguments. There must be at least two.
 # </p>
-# <span id="index-compl_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-bitwise-4"></span>
 # </dd>
 function gawk::and() {}
 
 # <dt><code>compl(<var>val</var>)</code></dt>
 # <dd><p>Return the bitwise complement of <var>val</var>.
 # </p>
-# <span id="index-lshift_0028_0029-function-_0028gawk_0029"></span>
 # </dd>
 function gawk::compl() {}
 
 # <dt><code>lshift(<var>val</var>, <var>count</var>)</code></dt>
 # <dd><p>Return the value of <var>val</var>, shifted left by <var>count</var> bits.
 # </p>
-# <span id="index-or_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-bitwise-5"></span>
 # </dd>
 function gawk::lshift() {}
 
 # <dt><code>or(</code><var>v1</var><code>,</code> <var>v2</var> [<code>,</code> &hellip;]<code>)</code></dt>
 # <dd><p>Return the bitwise OR of the arguments. There must be at least two.
 # </p>
-# <span id="index-rshift_0028_0029-function-_0028gawk_0029"></span>
 # </dd>
 function gawk::or() {}
 
 # <dt><code>rshift(<var>val</var>, <var>count</var>)</code></dt>
 # <dd><p>Return the value of <var>val</var>, shifted right by <var>count</var> bits.
 # </p>
-# <span id="index-xor_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-bitwise-6"></span>
 # </dd>
 function gawk::rshift() {}
 
@@ -1215,15 +1122,11 @@ function gawk::rshift() {}
 # </p></dd>
 function gawk::xor() {}
 
-# <dd><span id="index-isarray_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-scalar-or-array"></span>
+# <dd>
 # </dd>
 # <dt><code>isarray(<var>x</var>)</code></dt>
 # <dd><p>Return a true value if <var>x</var> is an array. Otherwise, return false.
 # </p>
-# <span id="index-typeof_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-variable-type_002c-typeof_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-type-1"></span>
 # </dd>
 function gawk::isarray() {}
 
@@ -1293,8 +1196,7 @@ function gawk::isarray() {}
 # </dd>
 function gawk::typeof() {}
 
-# <dd><span id="index-bindtextdomain_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-set-directory-of-message-catalogs"></span>
+# <dd>
 # </dd>
 # <dt><code>bindtextdomain(<var>directory</var></code> [<code>,</code> <var>domain</var>]<code>)</code></dt>
 # <dd><p>Set the directory in which
@@ -1308,8 +1210,6 @@ function gawk::typeof() {}
 # <code>bindtextdomain()</code> returns the current binding for the
 # given <var>domain</var>.
 # </p>
-# <span id="index-dcgettext_0028_0029-function-_0028gawk_0029"></span>
-# <span id="index-translate-string"></span>
 # </dd>
 function gawk::bindtextdomain() {}
 
@@ -1319,7 +1219,6 @@ function gawk::bindtextdomain() {}
 # The default value for <var>domain</var> is the current value of <code>TEXTDOMAIN</code>.
 # The default value for <var>category</var> is <code>&quot;LC_MESSAGES&quot;</code>.
 # </p>
-# <span id="index-dcngettext_0028_0029-function-_0028gawk_0029"></span>
 # </dd>
 function gawk::dcgettext() {}
 

@@ -12,10 +12,15 @@ BEGIN {
 }
 /^<pre class="example">/ { Code=1 }
 /^<\/pre>/               { Code=0 }
-Content             { Doc = Doc "\n# " processCode(processUrls(indentCode($0))) }
+Content             { Doc = Doc "\n# " rmSpanId(processCode(processUrls(indentCode($0)))) }
 
 /<\/dd>/ && Name && !Typeof    { closeItem() }
 NR==152 && Typeof              { closeItem() }
+
+function rmSpanId(line) {
+    if (gsub(/<span id=".+"><\/span>/,"",line) && !line) next
+    return line
+}
 
 function processCode(line) {
     gsub(/<div class="example"/,"<div class=\"example\" style=\"border: 1px dashed #888888; padding-left: 5px\"",line)
@@ -52,4 +57,3 @@ function closeItem() {
 # TODO sprintf format chars
 # TODO strftime format chars
 # TODO mark gawk-only functions
-# TODO remove <span id="index-sub_0028_0029-function-2"></span>
