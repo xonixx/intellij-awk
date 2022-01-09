@@ -23,36 +23,36 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       AwkFunctionCallBuiltIn awkFunctionCallBuiltIn = (AwkFunctionCallBuiltIn) element;
       PsiElement builtinFuncName = awkFunctionCallBuiltIn.getBuiltinFuncName();
       if (builtinFuncName != null) {
-        String awkFuncName = builtinFuncName.getText();
+        String funcName = builtinFuncName.getText();
         String documentation =
-            getBuiltInFunctionDocumentation(builtinFuncName.getProject(), "awk::" + awkFuncName);
+            getBuiltInFunctionDocumentation(builtinFuncName.getProject(), "awk::" + funcName);
         if (documentation != null) {
-          return postprocessDocumentation(documentation);
+          return postprocessDocumentation(funcName, documentation);
         } else {
-          return "TODO: add documentation for " + awkFuncName;
+          return "TODO: add documentation for " + funcName;
         }
       }
       PsiElement builtinFuncNameGawk = awkFunctionCallBuiltIn.getBuiltinFuncNameGawk();
       if (builtinFuncNameGawk != null) {
-        String awkFuncName = builtinFuncNameGawk.getText();
+        String funcName = builtinFuncNameGawk.getText();
         String documentation =
-            getBuiltInFunctionDocumentation(
-                builtinFuncNameGawk.getProject(), "gawk::" + awkFuncName);
+            getBuiltInFunctionDocumentation(builtinFuncNameGawk.getProject(), "gawk::" + funcName);
         if (documentation != null) {
-          return postprocessDocumentation(documentation);
+          return postprocessDocumentation(funcName, documentation);
         } else {
-          return "TODO: add documentation for " + awkFuncName;
+          return "TODO: add documentation for " + funcName;
         }
       }
     }
     return null;
   }
 
-  private String postprocessDocumentation(String documentation) {
+  private String postprocessDocumentation(String funcName, String documentation) {
     if (documentation.contains("</dt>")) {
       StringBuilder res = new StringBuilder();
 
-      String[] parts = documentation.split(Pattern.quote("</dt>"), 3);
+      String[] parts =
+          documentation.split(Pattern.quote("</dt>"), funcName.contains("asort") ? 3 : 2);
 
       for (int i = 0; i < parts.length - 1; i++) {
         res.append(DEFINITION_START)

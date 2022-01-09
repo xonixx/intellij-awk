@@ -30,4 +30,4 @@ function closeItem() {
 # TODO mark gawk-only functions
 # TODO links in docs
 # TODO remove <span id="index-sub_0028_0029-function-2"></span>
-# TODO fix doc postrpocessing for typeof
+# TODO fix formatting in code blocks
