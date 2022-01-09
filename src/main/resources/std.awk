@@ -62,7 +62,7 @@ function awk::log() {}
 # <p>Often random integers are needed instead.  Following is a user-defined function
 # that can be used to obtain a random nonnegative integer less than <var>n</var>:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">function randint(n)
 # {
 # &nbsp;&nbsp;&nbsp;&nbsp;return int(n * rand())
@@ -77,7 +77,7 @@ function awk::log() {}
 # between one and <var>n</var>.  This program prints a new random number for
 # each input record:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example"># Function to roll a simulated die.
 # function roll(n) { return 1 + int(rand() * n) }
 # 
@@ -185,7 +185,7 @@ function awk::srand() {}
 # </p>
 # <p>For example, if the contents of <code>a</code> are as follows:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">a[&quot;last&quot;] = &quot;de&quot;
 # a[&quot;first&quot;] = &quot;sac&quot;
 # a[&quot;middle&quot;] = &quot;cul&quot;
@@ -193,13 +193,13 @@ function awk::srand() {}
 # 
 # <p>A call to <code>asort()</code>:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">asort(a)
 # </pre></div>
 # 
 # <p>results in the following contents of <code>a</code>:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">a[1] = &quot;cul&quot;
 # a[2] = &quot;de&quot;
 # a[3] = &quot;sac&quot;
@@ -210,7 +210,7 @@ function awk::srand() {}
 # previous example, starting with the same initial set of indices and
 # values in <code>a</code>, calling &lsquo;<samp>asorti(a)</samp>&rsquo; would yield:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">a[1] = &quot;first&quot;
 # a[2] = &quot;last&quot;
 # a[3] = &quot;middle&quot;
@@ -261,7 +261,7 @@ function gawk::asort() {}
 # </p>
 # <p>For example, if the contents of <code>a</code> are as follows:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">a[&quot;last&quot;] = &quot;de&quot;
 # a[&quot;first&quot;] = &quot;sac&quot;
 # a[&quot;middle&quot;] = &quot;cul&quot;
@@ -269,13 +269,13 @@ function gawk::asort() {}
 # 
 # <p>A call to <code>asort()</code>:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">asort(a)
 # </pre></div>
 # 
 # <p>results in the following contents of <code>a</code>:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">a[1] = &quot;cul&quot;
 # a[2] = &quot;de&quot;
 # a[3] = &quot;sac&quot;
@@ -286,7 +286,7 @@ function gawk::asort() {}
 # previous example, starting with the same initial set of indices and
 # values in <code>a</code>, calling &lsquo;<samp>asorti(a)</samp>&rsquo; would yield:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">a[1] = &quot;first&quot;
 # a[2] = &quot;last&quot;
 # a[3] = &quot;middle&quot;
@@ -332,7 +332,7 @@ function gawk::asorti() {}
 # in the replacement text, where <var>N</var> is a digit from 1 to 9.
 # For example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">$ <kbd>gawk '</kbd>
 # &gt; <kbd>BEGIN {</kbd>
 # &gt;      <kbd>a = &quot;abc def&quot;</kbd>
@@ -350,7 +350,7 @@ function gawk::asorti() {}
 # <p>The following example shows how you can use the third argument to control
 # which match of the regexp should be changed:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">$ <kbd>echo a b c a b c |</kbd>
 # &gt; <kbd>gawk '{ print gensub(/a/, &quot;AA&quot;, 2) }'</kbd>
 # -| a b c AA b c
@@ -380,7 +380,7 @@ function gawk::gensub() {}
 # The &lsquo;<samp>g</samp>&rsquo; in <code>gsub()</code> stands for
 # &ldquo;global,&rdquo; which means replace everywhere.  For example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">{ gsub(/Britain/, &quot;United Kingdom&quot;); print }
 # </pre></div>
 # 
@@ -404,7 +404,7 @@ function awk::gsub() {}
 # <var>find</var>, and return the position in characters where that occurrence
 # begins in the string <var>in</var>.  Consider the following example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">$ <kbd>awk 'BEGIN { print index(&quot;peanut&quot;, &quot;an&quot;) }'</kbd>
 # -| 3
 # </pre></div>
@@ -454,7 +454,7 @@ function awk::index() {}
 # (d.c.)
 # Consider:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">$ <kbd>gawk 'BEGIN { print length(x) ; x[1] = 1 }'</kbd>
 # -| 0
 # error&rarr; gawk: fatal: attempt to use scalar `x' as array
@@ -522,7 +522,7 @@ function awk::length() {}
 # </p>
 # <p>For example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">{
 # &nbsp;&nbsp;&nbsp;&nbsp;if ($1 == &quot;FIND&quot;)
 # &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regex = $2
@@ -539,7 +539,7 @@ function awk::length() {}
 # first word on a line is &lsquo;<samp>FIND</samp>&rsquo;, <code>regex</code> is changed to be the
 # second word on that line.  Therefore, if given:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">FIND ru+n
 # My program runs
 # but not very quickly
@@ -551,7 +551,7 @@ function awk::length() {}
 # 
 # <p><code>awk</code> prints:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">Match of ru+n found at 12 in My program runs
 # Match of Melvin found at 1 in Melvin was here.
 # </pre></div>
@@ -565,7 +565,7 @@ function awk::length() {}
 # subexpression.
 # For example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">$ <kbd>echo foooobazbarrrrr |</kbd>
 # &gt; <kbd>gawk '{ match($0, /(fo+).+(bar*)/, arr)</kbd>
 # &gt;         <kbd>print arr[1], arr[2] }'</kbd>
@@ -576,7 +576,7 @@ function awk::length() {}
 # multidimensional subscripts are available providing
 # the start index and length of each matched subexpression:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">$ <kbd>echo foooobazbarrrrr |</kbd>
 # &gt; <kbd>gawk '{ match($0, /(fo+).+(bar*)/, arr)</kbd>
 # &gt;           <kbd>print arr[1], arr[2]</kbd>
@@ -657,7 +657,7 @@ function gawk::patsplit() {}
 # <p>The <code>split()</code> function splits strings into pieces in the same way
 # that input lines are split into fields.  For example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">split(&quot;cul-de-sac&quot;, a, &quot;-&quot;, seps)
 # </pre></div>
 # 
@@ -665,7 +665,7 @@ function gawk::patsplit() {}
 # splits the string <code>&quot;cul-de-sac&quot;</code> into three fields using &lsquo;<samp>-</samp>&rsquo; as the
 # separator.  It sets the contents of the array <code>a</code> as follows:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">a[1] = &quot;cul&quot;
 # a[2] = &quot;de&quot;
 # a[3] = &quot;sac&quot;
@@ -673,7 +673,7 @@ function gawk::patsplit() {}
 # 
 # <p>and sets the contents of the array <code>seps</code> as follows:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">seps[1] = &quot;-&quot;
 # seps[2] = &quot;-&quot;
 # </pre></div>
@@ -730,7 +730,7 @@ function awk::split() {}
 # (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Printf.html">Using <code>printf</code> Statements for Fancier Printing</a>).
 # For example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">pival = sprintf(&quot;pi = %.2f (approx.)&quot;, 22/7)
 # </pre></div>
 # 
@@ -748,7 +748,7 @@ function awk::sprintf() {}
 # &lsquo;<samp>0X</samp>&rsquo;, <code>strtonum()</code> assumes that <var>str</var> is a hexadecimal number.
 # For example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">$ <kbd>echo 0x11 |</kbd>
 # &gt; <kbd>gawk '{ printf &quot;%d\n&quot;, strtonum($1) }'</kbd>
 # -| 17
@@ -788,7 +788,7 @@ function gawk::strtonum() {}
 # default is to use and alter <code>$0</code>.
 # For example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">str = &quot;water, water, everywhere&quot;
 # sub(/at/, &quot;ith&quot;, str)
 # </pre></div>
@@ -801,7 +801,7 @@ function gawk::strtonum() {}
 # the regexp can match more than one string, then this precise substring
 # may vary.)  For example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">{ sub(/candidate/, &quot;&amp; and his wife&quot;); print }
 # </pre></div>
 # 
@@ -809,7 +809,7 @@ function gawk::strtonum() {}
 # and his wife</samp>&rsquo; on each input line.
 # Here is another example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">$ <kbd>awk 'BEGIN {</kbd>
 # &gt;         <kbd>str = &quot;daabaaa&quot;</kbd>
 # &gt;         <kbd>sub(/a+/, &quot;C&amp;C&quot;, str)</kbd>
@@ -829,7 +829,7 @@ function gawk::strtonum() {}
 # For example, the following shows how to replace the first &lsquo;<samp>|</samp>&rsquo; on each line with
 # an &lsquo;<samp>&amp;</samp>&rsquo;:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">{ sub(/\|/, &quot;\\&amp;&quot;); print }
 # </pre></div>
 # 
@@ -846,7 +846,7 @@ function gawk::strtonum() {}
 # to put it.  Such versions of <code>awk</code> accept expressions
 # like the following:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">sub(/USA/, &quot;United States&quot;, &quot;the USA and Canada&quot;)
 # </pre></div>
 # 
@@ -892,7 +892,7 @@ function awk::sub() {}
 # assigned.  Thus, it is a mistake to attempt to change a portion of
 # a string, as shown in the following example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">string = &quot;abcdef&quot;
 # # try to get &quot;abCDEf&quot;, won't work
 # substr(string, 3, 3) = &quot;CDE&quot;
@@ -901,7 +901,7 @@ function awk::sub() {}
 # <p>It is also a mistake to use <code>substr()</code> as the third argument
 # of <code>sub()</code> or <code>gsub()</code>:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">gsub(/xyz/, &quot;pdq&quot;, substr($0, 5, 20))  # WRONG
 # </pre></div>
 # 
@@ -912,7 +912,7 @@ function awk::sub() {}
 # <p>If you need to replace bits and pieces of a string, combine <code>substr()</code>
 # with string concatenation, in the following manner:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">string = &quot;abcdef&quot;
 # &hellip;
 # string = substr(string, 1, 2) &quot;CDE&quot; substr(string, 6)
@@ -1041,7 +1041,7 @@ function awk::fflush() {}
 # <p>For example, if the following fragment of code is put in your <code>awk</code>
 # program:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">END {
 # &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system(&quot;date | mail -s 'awk run done' root&quot;)
 # }
@@ -1054,7 +1054,7 @@ function awk::fflush() {}
 # enough to accomplish your task.  If you need to run many commands, it
 # is more efficient to simply print them down a pipeline to the shell:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">while (<var>more stuff to do</var>)
 # &nbsp;&nbsp;&nbsp;&nbsp;print <var>command</var> | &quot;/bin/sh&quot;
 # close(&quot;/bin/sh&quot;)
@@ -1257,7 +1257,7 @@ function gawk::isarray() {}
 # <dd><p><var>x</var> is a scalar variable that has not been assigned a value yet.
 # For example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">BEGIN {
 # &nbsp;&nbsp;&nbsp;&nbsp;# creates a[1] but it has no assigned value
 # &nbsp;&nbsp;&nbsp;&nbsp;a[1]
@@ -1271,7 +1271,7 @@ function gawk::isarray() {}
 # array.  The typing could even conceivably differ from run to run of
 # the same program! For example:
 # </p>
-# <div class="example">
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
 # <pre class="example">BEGIN {
 # &nbsp;&nbsp;&nbsp;&nbsp;print &quot;initially, typeof(v) = &quot;, typeof(v)
 # 

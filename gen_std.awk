@@ -12,10 +12,15 @@ BEGIN {
 }
 /^<pre class="example">/ { Code=1 }
 /^<\/pre>/               { Code=0 }
-Content             { Doc = Doc "\n# " processUrls(indentCode($0)) }
+Content             { Doc = Doc "\n# " processCode(processUrls(indentCode($0))) }
 
 /<\/dd>/ && Name && !Typeof    { closeItem() }
 NR==152 && Typeof              { closeItem() }
+
+function processCode(line) {
+    gsub(/<div class="example"/,"<div class=\"example\" style=\"border: 1px dashed #888888; padding-left: 5px\"",line)
+    return line
+}
 
 function indentCode(line,   n,newWs) {
     if (Code) {
@@ -41,7 +46,7 @@ function closeItem() {
     print Doc
     Doc = ""
     print "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?
-        "gawk" : "awk") "::" Name "() {}"
+    "gawk" : "awk") "::" Name "() {}"
 }
 
 # TODO sprintf format chars
