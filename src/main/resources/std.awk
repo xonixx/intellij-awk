@@ -167,7 +167,7 @@ function awk::srand() {}
 # <p><b>NOTE:</b> The following description ignores the third argument, <var>how</var>, as it
 # requires understanding features that we have not discussed yet.  Thus,
 # the discussion here is a deliberate simplification.  (We do provide all
-# the details later on; see <a href="Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a> for the full story.)
+# the details later on; see <a href="https://www.gnu.org/software/gawk/manual/html_node/Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a> for the full story.)
 # </p></blockquote>
 # 
 # <p>Both functions return the number of elements in the array <var>source</var>.
@@ -179,8 +179,8 @@ function awk::srand() {}
 # </p>
 # <span id="index-gawk-54"></span>
 # <p>When comparing strings, <code>IGNORECASE</code> affects the sorting
-# (see section <a href="Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a>).  If the
-# <var>source</var> array contains subarrays as values (see section <a href="Arrays-of-Arrays.html">Arrays of Arrays</a>), they will come last, after all scalar values.
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a>).  If the
+# <var>source</var> array contains subarrays as values (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Arrays-of-Arrays.html">Arrays of Arrays</a>), they will come last, after all scalar values.
 # Subarrays are <em>not</em> recursively sorted.
 # </p>
 # <p>For example, if the contents of <code>a</code> are as follows:
@@ -243,7 +243,7 @@ function gawk::asort() {}
 # <p><b>NOTE:</b> The following description ignores the third argument, <var>how</var>, as it
 # requires understanding features that we have not discussed yet.  Thus,
 # the discussion here is a deliberate simplification.  (We do provide all
-# the details later on; see <a href="Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a> for the full story.)
+# the details later on; see <a href="https://www.gnu.org/software/gawk/manual/html_node/Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a> for the full story.)
 # </p></blockquote>
 # 
 # <p>Both functions return the number of elements in the array <var>source</var>.
@@ -255,8 +255,8 @@ function gawk::asort() {}
 # </p>
 # <span id="index-gawk-54"></span>
 # <p>When comparing strings, <code>IGNORECASE</code> affects the sorting
-# (see section <a href="Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a>).  If the
-# <var>source</var> array contains subarrays as values (see section <a href="Arrays-of-Arrays.html">Arrays of Arrays</a>), they will come last, after all scalar values.
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a>).  If the
+# <var>source</var> array contains subarrays as values (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Arrays-of-Arrays.html">Arrays of Arrays</a>), they will come last, after all scalar values.
 # Subarrays are <em>not</em> recursively sorted.
 # </p>
 # <p>For example, if the contents of <code>a</code> are as follows:
@@ -479,10 +479,10 @@ function awk::index() {}
 # array is not guaranteed to be indexed from one to the number of elements
 # in it.
 # If <samp>--lint</samp> is provided on the command line
-# (see section <a href="Options.html">Command-Line Options</a>),
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>),
 # <code>gawk</code> warns that passing an array argument is not portable.
 # If <samp>--posix</samp> is supplied, using an array argument is a fatal error
-# (see section <a href="Arrays.html">Arrays in <code>awk</code></a>).
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Arrays.html">Arrays in <code>awk</code></a>).
 # </p>
 # </dd>
 function awk::length() {}
@@ -500,7 +500,7 @@ function awk::length() {}
 # <p>The <var>regexp</var> argument may be either a regexp constant
 # (<code>/</code>&hellip;<code>/</code>) or a string constant (<code>&quot;</code>&hellip;<code>&quot;</code>).
 # In the latter case, the string is treated as a regexp to be matched.
-# See section <a href="Computed-Regexps.html">Using Dynamic Regexps</a> for a
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Computed-Regexps.html">Using Dynamic Regexps</a> for a
 # discussion of the difference between the two forms, and the
 # implications for writing your program correctly.
 # </p>
@@ -591,12 +591,12 @@ function awk::length() {}
 # <p>There may not be subscripts for the start and index for every parenthesized
 # subexpression, because they may not all have matched text; thus, they
 # should be tested for with the <code>in</code> operator
-# (see section <a href="Reference-to-Elements.html">Referring to an Array Element</a>).
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Reference-to-Elements.html">Referring to an Array Element</a>).
 # </p>
 # <span id="index-troubleshooting-15"></span>
 # <p>The <var>array</var> argument to <code>match()</code> is a
 # <code>gawk</code> extension.  In compatibility mode
-# (see section <a href="Options.html">Command-Line Options</a>),
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>),
 # using a third argument is a fatal error.
 # </p>
 # </dd>
@@ -625,7 +625,7 @@ function awk::match() {}
 # </p>
 # <p>The <code>patsplit()</code> function splits strings into pieces in a
 # manner similar to the way input lines are split into fields using <code>FPAT</code>
-# (see section <a href="Splitting-By-Content.html">Defining Fields by Content</a>).
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Splitting-By-Content.html">Defining Fields by Content</a>).
 # </p>
 # <p>Before splitting the string, <code>patsplit()</code> deletes any previously existing
 # elements in the arrays <var>array</var> and <var>seps</var>.
@@ -701,7 +701,7 @@ function gawk::patsplit() {}
 # the third argument to be a regexp constant (<code>/</code>&hellip;<code>/</code><!-- /@w -->)
 # as well as a string.  (d.c.)
 # The POSIX standard allows this as well.
-# See section <a href="Computed-Regexps.html">Using Dynamic Regexps</a> for a
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Computed-Regexps.html">Using Dynamic Regexps</a> for a
 # discussion of the difference between using a string constant or a regexp constant,
 # and the implications for writing your program correctly.
 # </p>
@@ -710,14 +710,14 @@ function gawk::patsplit() {}
 # </p>
 # <p>If <var>string</var> is null, the array has no elements. (So this is a portable
 # way to delete an entire array with one statement.
-# See section <a href="Delete.html">The <code>delete</code> Statement</a>.)
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Delete.html">The <code>delete</code> Statement</a>.)
 # </p>
 # <p>If <var>string</var> does not match <var>fieldsep</var> at all (but is not null),
 # <var>array</var> has one element only. The value of that element is the original
 # <var>string</var>.
 # </p>
 # <span id="index-POSIX-mode-10"></span>
-# <p>In POSIX mode (see section <a href="Options.html">Command-Line Options</a>), the fourth argument is not allowed.
+# <p>In POSIX mode (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), the fourth argument is not allowed.
 # </p>
 # </dd>
 function awk::split() {}
@@ -727,7 +727,7 @@ function awk::split() {}
 # <span id="index-formatting-1"></span>
 # <p>Return (without printing) the string that <code>printf</code> would
 # have printed out with the same arguments
-# (see section <a href="Printf.html">Using <code>printf</code> Statements for Fancier Printing</a>).
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Printf.html">Using <code>printf</code> Statements for Fancier Printing</a>).
 # For example:
 # </p>
 # <div class="example">
@@ -759,7 +759,7 @@ function awk::sprintf() {}
 # works only for decimal data, not for octal or hexadecimal.<a id="DOCF47" href="#FOOT47"><sup>47</sup></a>
 # </p>
 # <p>Note also that <code>strtonum()</code> uses the current locale&rsquo;s decimal point
-# for recognizing numbers (see section <a href="Locales.html">Where You Are Makes a Difference</a>).
+# for recognizing numbers (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Locales.html">Where You Are Makes a Difference</a>).
 # </p>
 # </dd>
 function gawk::strtonum() {}
@@ -777,7 +777,7 @@ function gawk::strtonum() {}
 # <p>The <var>regexp</var> argument may be either a regexp constant
 # (<code>/</code>&hellip;<code>/</code>) or a string constant (<code>&quot;</code>&hellip;<code>&quot;</code>).
 # In the latter case, the string is treated as a regexp to be matched.
-# See section <a href="Computed-Regexps.html">Using Dynamic Regexps</a> for a
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Computed-Regexps.html">Using Dynamic Regexps</a> for a
 # discussion of the difference between the two forms, and the
 # implications for writing your program correctly.
 # </p>
@@ -820,7 +820,7 @@ function gawk::strtonum() {}
 # 
 # <p>This shows how &lsquo;<samp>&amp;</samp>&rsquo; can represent a nonconstant string and also
 # illustrates the &ldquo;leftmost, longest&rdquo; rule in regexp matching
-# (see section <a href="Leftmost-Longest.html">How Much Text Matches?</a>).
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Leftmost-Longest.html">How Much Text Matches?</a>).
 # </p>
 # <p>The effect of this special character (&lsquo;<samp>&amp;</samp>&rsquo;) can be turned off by putting a
 # backslash before it in the string.  As usual, to insert one backslash in
@@ -951,7 +951,7 @@ function awk::toupper() {}
 # <p>Close the file <var>filename</var> for input or output. Alternatively, the
 # argument may be a shell command that was used for creating a coprocess, or
 # for redirecting to or from a pipe; then the coprocess or pipe is closed.
-# See section <a href="Close-Files-And-Pipes.html">Closing Input and Output Redirections</a>
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Close-Files-And-Pipes.html">Closing Input and Output Redirections</a>
 # for more information.
 # </p>
 # <p>When closing a coprocess, it is occasionally useful to first close
@@ -961,11 +961,11 @@ function awk::toupper() {}
 # should be one of the two string values <code>&quot;to&quot;</code> or <code>&quot;from&quot;</code>,
 # indicating which end of the pipe to close.  Case in the string does
 # not matter.
-# See section <a href="Two_002dway-I_002fO.html">Two-Way Communications with Another Process</a>,
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Two_002dway-I_002fO.html">Two-Way Communications with Another Process</a>,
 # which discusses this feature in more detail and gives an example.
 # </p>
 # <p>Note that the second argument to <code>close()</code> is a <code>gawk</code>
-# extension; it is not available in compatibility mode (see section <a href="Options.html">Command-Line Options</a>).
+# extension; it is not available in compatibility mode (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>).
 # </p>
 # </dd>
 function awk::close() {}
@@ -995,7 +995,7 @@ function awk::close() {}
 # <p>Brian Kernighan added <code>fflush()</code> to his <code>awk</code> in April
 # 1992.  For two decades, it was a common extension.  In December
 # 2012, it was accepted for inclusion into the POSIX standard.
-# See <a href="http://austingroupbugs.net/view.php?id=634">the Austin Group website</a>.
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/http://austingroupbugs.net/view.php?id=634">the Austin Group website</a>.
 # </p>
 # <p>POSIX standardizes <code>fflush()</code> as follows: if there
 # is no argument, or if the argument is the null string (<code>&quot;&quot;</code><!-- /@w -->),
@@ -1070,7 +1070,7 @@ function awk::fflush() {}
 # </p>
 # <blockquote>
 # <p><b>NOTE:</b> When <samp>--sandbox</samp> is specified, the <code>system()</code> function is disabled
-# (see section <a href="Options.html">Command-Line Options</a>).
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>).
 # </p></blockquote>
 # 
 # <p>On POSIX systems, a command&rsquo;s exit status is a 16-bit number. The exit
@@ -1085,7 +1085,7 @@ function awk::fflush() {}
 # <code>system()</code> should return the full 16-bit value.
 # </p>
 # <p><code>gawk</code> steers a middle ground.
-# The return values are summarized in <a href="#table_002dsystem_002dreturn_002dvalues">Table 9.5</a>.
+# The return values are summarized in <a href="https://www.gnu.org/software/gawk/manual/html_node/#table_002dsystem_002dreturn_002dvalues">Table 9.5</a>.
 # </p>
 # <div class="float"><span id="table_002dsystem_002dreturn_002dvalues"></span>
 # 
@@ -1148,7 +1148,7 @@ function gawk::mktime() {}
 # <code>gawk</code> uses the current time of day as the timestamp.
 # Without a <var>format</var> argument, <code>strftime()</code> uses
 # the value of <code>PROCINFO[&quot;strftime&quot;]</code> as the format string
-# (see section <a href="Built_002din-Variables.html">Predefined Variables</a>).
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Built_002din-Variables.html">Predefined Variables</a>).
 # The default string value is
 # <code>&quot;%a&nbsp;%b&nbsp;%e&nbsp;%H:%M:%S&nbsp;%Z&nbsp;%Y&quot;<!-- /@w --></code>.  This format string produces
 # output that is equivalent to that of the <code>date</code> utility.
@@ -1236,7 +1236,7 @@ function gawk::isarray() {}
 # </p>
 # </dd>
 # <dt><code>&quot;regexp&quot;</code></dt>
-# <dd><p><var>x</var> is a strongly typed regexp (see section <a href="Strong-Regexp-Constants.html">Strongly Typed Regexp Constants</a>).
+# <dd><p><var>x</var> is a strongly typed regexp (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Strong-Regexp-Constants.html">Strongly Typed Regexp Constants</a>).
 # </p>
 # </dd>
 # <dt><code>&quot;number&quot;</code></dt>
@@ -1250,7 +1250,7 @@ function gawk::isarray() {}
 # <dt><code>&quot;strnum&quot;</code></dt>
 # <dd><p><var>x</var> is a number that started life as user input, such as a field or
 # the result of calling <code>split()</code>. (I.e., <var>x</var> has the strnum
-# attribute; see section <a href="Variable-Typing.html">String Type versus Numeric Type</a>.)
+# attribute; see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Variable-Typing.html">String Type versus Numeric Type</a>.)
 # </p>
 # </dd>
 # <dt><code>&quot;unassigned&quot;</code></dt>

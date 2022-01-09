@@ -1,5 +1,6 @@
 BEGIN {
     Doc=""
+    Base="https://www.gnu.org/software/gawk/manual/html_node/"
 }
 
 /^<\/dl>/ && !Typeof { Content=0 }
@@ -11,7 +12,7 @@ BEGIN {
 }
 /^<pre class="example">/ { Code=1 }
 /^<\/pre>/               { Code=0 }
-Content             { Doc = Doc "\n# " indentCode($0) }
+Content             { Doc = Doc "\n# " processUrls(indentCode($0)) }
 
 /<\/dd>/ && Name && !Typeof    { closeItem() }
 NR==152 && Typeof              { closeItem() }
@@ -24,6 +25,11 @@ function indentCode(line,   n,newWs) {
         return newWs substr(line,n)
     } else
         return line
+}
+
+function processUrls(line) {
+    gsub(/<a href="/, "<a href=\"" Base, line)
+    return line
 }
 
 function closeItem() {
@@ -40,5 +46,5 @@ function closeItem() {
 # TODO sprintf format chars
 # TODO strftime format chars
 # TODO mark gawk-only functions
-# TODO links in docs
 # TODO remove <span id="index-sub_0028_0029-function-2"></span>
+# TODO fix <a id="DOCF49" href="#FOOT49"><sup>49</sup>
