@@ -9,10 +9,22 @@ BEGIN {
     Typeof = "typeof"==Name
     sub(/ +#/,"")
 }
-Content             { Doc = Doc "\n# " $0 }
+/^<pre class="example">/ { Code=1 }
+/^<\/pre>/               { Code=0 }
+Content             { Doc = Doc "\n# " indentCode($0) }
 
 /<\/dd>/ && Name && !Typeof    { closeItem() }
 NR==152 && Typeof              { closeItem() }
+
+function indentCode(line,   n,newWs) {
+    if (Code) {
+        for(n=1;substr(line,n,1)==" ";n++) {
+            newWs = newWs "&nbsp;"
+        }
+        return newWs substr(line,n)
+    } else
+        return line
+}
 
 function closeItem() {
     if (Name=="asorti") {
@@ -30,4 +42,3 @@ function closeItem() {
 # TODO mark gawk-only functions
 # TODO links in docs
 # TODO remove <span id="index-sub_0028_0029-function-2"></span>
-# TODO fix formatting in code blocks

@@ -65,7 +65,7 @@ function awk::log() {}
 # <div class="example">
 # <pre class="example">function randint(n)
 # {
-#     return int(n * rand())
+# &nbsp;&nbsp;&nbsp;&nbsp;return int(n * rand())
 # }
 # </pre></div>
 # 
@@ -84,7 +84,7 @@ function awk::log() {}
 # # Roll 3 six-sided dice and
 # # print total number of points.
 # {
-#     printf(&quot;%d points\n&quot;, roll(6) + roll(6) + roll(6))
+# &nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;%d points\n&quot;, roll(6) + roll(6) + roll(6))
 # }
 # </pre></div>
 # 
@@ -524,13 +524,13 @@ function awk::length() {}
 # </p>
 # <div class="example">
 # <pre class="example">{
-#     if ($1 == &quot;FIND&quot;)
-#         regex = $2
-#     else {
-#         where = match($0, regex)
-#         if (where != 0)
-#             print &quot;Match of&quot;, regex, &quot;found at&quot;, where, &quot;in&quot;, $0
-#        }
+# &nbsp;&nbsp;&nbsp;&nbsp;if ($1 == &quot;FIND&quot;)
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regex = $2
+# &nbsp;&nbsp;&nbsp;&nbsp;else {
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where = match($0, regex)
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (where != 0)
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print &quot;Match of&quot;, regex, &quot;found at&quot;, where, &quot;in&quot;, $0
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
 # }
 # </pre></div>
 # 
@@ -1043,7 +1043,7 @@ function awk::fflush() {}
 # </p>
 # <div class="example">
 # <pre class="example">END {
-#      system(&quot;date | mail -s 'awk run done' root&quot;)
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system(&quot;date | mail -s 'awk run done' root&quot;)
 # }
 # </pre></div>
 # 
@@ -1056,7 +1056,7 @@ function awk::fflush() {}
 # </p>
 # <div class="example">
 # <pre class="example">while (<var>more stuff to do</var>)
-#     print <var>command</var> | &quot;/bin/sh&quot;
+# &nbsp;&nbsp;&nbsp;&nbsp;print <var>command</var> | &quot;/bin/sh&quot;
 # close(&quot;/bin/sh&quot;)
 # </pre></div>
 # 
@@ -1259,9 +1259,9 @@ function gawk::isarray() {}
 # </p>
 # <div class="example">
 # <pre class="example">BEGIN {
-#     # creates a[1] but it has no assigned value
-#     a[1]
-#     print typeof(a[1])  # unassigned
+# &nbsp;&nbsp;&nbsp;&nbsp;# creates a[1] but it has no assigned value
+# &nbsp;&nbsp;&nbsp;&nbsp;a[1]
+# &nbsp;&nbsp;&nbsp;&nbsp;print typeof(a[1])  # unassigned
 # }
 # </pre></div>
 # 
@@ -1273,14 +1273,14 @@ function gawk::isarray() {}
 # </p>
 # <div class="example">
 # <pre class="example">BEGIN {
-#     print &quot;initially, typeof(v) = &quot;, typeof(v)
+# &nbsp;&nbsp;&nbsp;&nbsp;print &quot;initially, typeof(v) = &quot;, typeof(v)
 # 
-#     if (&quot;FOO&quot; in ENVIRON)
-#         make_scalar(v)
-#     else
-#         make_array(v)
+# &nbsp;&nbsp;&nbsp;&nbsp;if (&quot;FOO&quot; in ENVIRON)
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make_scalar(v)
+# &nbsp;&nbsp;&nbsp;&nbsp;else
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make_array(v)
 # 
-#     print &quot;typeof(v) =&quot;, typeof(v)
+# &nbsp;&nbsp;&nbsp;&nbsp;print &quot;typeof(v) =&quot;, typeof(v)
 # }
 # 
 # function make_scalar(p,    l) { l = p }
