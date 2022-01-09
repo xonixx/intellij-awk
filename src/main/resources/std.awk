@@ -57,7 +57,7 @@ function awk::log() {}
 # <span id="index-random-numbers"></span>
 # <p>Return a random number.  The values of <code>rand()</code> are
 # uniformly distributed between zero and one.
-# The value could be zero but is never one.<a id="DOCF44" href="#FOOT44"><sup>44</sup></a>
+# The value could be zero but is never one.
 # </p>
 # <p>Often random integers are needed instead.  Following is a user-defined function
 # that can be used to obtain a random nonnegative integer less than <var>n</var>:
@@ -93,7 +93,7 @@ function awk::log() {}
 # <blockquote>
 # <p><b>CAUTION:</b> In most <code>awk</code> implementations, including <code>gawk</code>,
 # <code>rand()</code> starts generating numbers from the same
-# starting number, or <em>seed</em>, each time you run <code>awk</code>.<a id="DOCF45" href="#FOOT45"><sup>45</sup></a>  Thus,
+# starting number, or <em>seed</em>, each time you run <code>awk</code>.  Thus,
 # a program generates the same results each time you run it.
 # The numbers are random within one <code>awk</code> run but predictable
 # from run to run.  This is convenient for debugging, but if you want
@@ -129,7 +129,7 @@ function awk::sqrt() {}
 # for generating random numbers to the value <var>x</var>.
 # </p>
 # <p>Each seed value leads to a particular sequence of random
-# numbers.<a id="DOCF46" href="#FOOT46"><sup>46</sup></a>
+# numbers.
 # Thus, if the seed is set to the same value a second time,
 # the same sequence of random numbers is produced again.
 # </p>
@@ -756,7 +756,7 @@ function awk::sprintf() {}
 # 
 # <p>Using the <code>strtonum()</code> function is <em>not</em> the same as adding zero
 # to a string value; the automatic coercion of strings to numbers
-# works only for decimal data, not for octal or hexadecimal.<a id="DOCF47" href="#FOOT47"><sup>47</sup></a>
+# works only for decimal data, not for octal or hexadecimal.
 # </p>
 # <p>Note also that <code>strtonum()</code> uses the current locale&rsquo;s decimal point
 # for recognizing numbers (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Locales.html">Where You Are Makes a Difference</a>).
@@ -785,7 +785,7 @@ function gawk::strtonum() {}
 # used to compute a value, and not just any expression will do&mdash;it
 # must be a variable, field, or array element so that <code>sub()</code> can
 # store a modified value there.  If this argument is omitted, then the
-# default is to use and alter <code>$0</code>.<a id="DOCF48" href="#FOOT48"><sup>48</sup></a>
+# default is to use and alter <code>$0</code>.
 # For example:
 # </p>
 # <div class="example">
@@ -867,7 +867,7 @@ function awk::sub() {}
 # <span id="index-substring"></span>
 # <p>Return a <var>length</var>-character-long substring of <var>string</var>,
 # starting at character number <var>start</var>.  The first character of a
-# string is character number one.<a id="DOCF49" href="#FOOT49"><sup>49</sup></a>
+# string is character number one.
 # For example, <code>substr(&quot;washington&quot;, 5, 3)</code> returns <code>&quot;ing&quot;</code>.
 # </p>
 # <p>If <var>length</var> is not present, <code>substr()</code> returns the whole suffix of
@@ -1081,7 +1081,7 @@ function awk::fflush() {}
 # <p>Traditionally, <code>awk</code>&rsquo;s <code>system()</code> function has simply
 # returned the exit status value divided by 256. In the normal case this
 # gives the exit status but in the case of death-by-signal it yields
-# a fractional floating-point value.<a id="DOCF52" href="#FOOT52"><sup>52</sup></a> POSIX states that <code>awk</code>&rsquo;s
+# a fractional floating-point value. POSIX states that <code>awk</code>&rsquo;s
 # <code>system()</code> should return the full 16-bit value.
 # </p>
 # <p><code>gawk</code> steers a middle ground.
@@ -1111,7 +1111,7 @@ function awk::system() {}
 # The string consists of six or seven numbers representing, respectively,
 # the full year including century, the month from 1 to 12, the day of the month
 # from 1 to 31, the hour of the day from 0 to 23, the minute from 0 to
-# 59, the second from 0 to 60,<a id="DOCF55" href="#FOOT55"><sup>55</sup></a>
+# 59, the second from 0 to 60,
 # and an optional daylight-savings flag.
 # </p>
 # <p>The values of these numbers need not be within the ranges specified;

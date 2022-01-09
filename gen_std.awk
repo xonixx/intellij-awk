@@ -29,6 +29,7 @@ function indentCode(line,   n,newWs) {
 
 function processUrls(line) {
     gsub(/<a href="/, "<a href=\"" Base, line)
+    gsub(/<a id=.+<\/sup><\/a>/,"",line)
     return line
 }
 
@@ -47,4 +48,3 @@ function closeItem() {
 # TODO strftime format chars
 # TODO mark gawk-only functions
 # TODO remove <span id="index-sub_0028_0029-function-2"></span>
-# TODO fix <a id="DOCF49" href="#FOOT49"><sup>49</sup>
