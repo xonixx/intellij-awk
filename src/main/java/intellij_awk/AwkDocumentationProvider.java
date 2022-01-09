@@ -27,7 +27,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
         String documentation =
             getBuiltInFunctionDocumentation(builtinFuncName.getProject(), "awk::" + funcName);
         if (documentation != null) {
-          return postprocessDocumentation(funcName, documentation);
+          return postprocessDocumentation(funcName, documentation, false);
         } else {
           return "TODO: add documentation for " + funcName;
         }
@@ -38,7 +38,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
         String documentation =
             getBuiltInFunctionDocumentation(builtinFuncNameGawk.getProject(), "gawk::" + funcName);
         if (documentation != null) {
-          return postprocessDocumentation(funcName, documentation);
+          return postprocessDocumentation(funcName, documentation, true);
         } else {
           return "TODO: add documentation for " + funcName;
         }
@@ -47,7 +47,8 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
     return null;
   }
 
-  private String postprocessDocumentation(String funcName, String documentation) {
+  private String postprocessDocumentation(
+      String funcName, String documentation, boolean isGawkFunction) {
     if (documentation.contains("</dt>")) {
       StringBuilder res = new StringBuilder();
 
@@ -57,6 +58,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       for (int i = 0; i < parts.length - 1; i++) {
         res.append(DEFINITION_START)
             .append(parts[i].stripLeading())
+            .append(isGawkFunction ? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Gawk-only!</b>" : "")
             .append("</dt>")
             .append(DEFINITION_END);
       }
