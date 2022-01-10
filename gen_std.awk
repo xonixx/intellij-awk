@@ -55,21 +55,22 @@ function closeItem(   nr1,l) {
         print "function gawk::asort() {}"
     }
     if (Name=="sprintf") {
-#        print "here"
-        while ((getline l < "temp/Control-Letters.html")>0) {
-            nr1++
-#            print "here1: " nr1, l
-            if (nr1>=70 && nr1 <=236) {
-#                print "here2: " nr1, l
-                appendDocLine(l)
-
-            }
-        }
+        appendPartOfFileToDoc("temp/Control-Letters.html",70,236)
+        appendPartOfFileToDoc("temp/Format-Modifiers.html",70,280)
     }
     print Doc
     Doc = ""
     print "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?
     "gawk" : "awk") "::" Name "() {}"
+}
+
+function appendPartOfFileToDoc(fName,nrFrom,nrTo,   l,nr1) {
+    while ((getline l < fName)>0) {
+        nr1++
+        if (nr1>=nrFrom && nr1<=nrTo) {
+            appendDocLine(l)
+        }
+    }
 }
 
 # TODO sprintf format chars
