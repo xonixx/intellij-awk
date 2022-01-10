@@ -1375,7 +1375,7 @@ function awk::fflush() {}
 # <code>system()</code> should return the full 16-bit value.
 # </p>
 # <p><code>gawk</code> steers a middle ground.
-# The return values are summarized in <a href="https://www.gnu.org/software/gawk/manual/html_node/#table_002dsystem_002dreturn_002dvalues">Table 9.5</a>.
+# The return values are summarized in table below.
 # </p>
 # <div class="float">
 # 
@@ -1388,7 +1388,7 @@ function awk::fflush() {}
 # <tr><td width="40%">Death by signal of command with core dump</td><td width="60%">512 + number of murderous signal</td></tr>
 # <tr><td width="40%">Some kind of error</td><td width="60%">-1</td></tr>
 # </table>
-# <div class="float-caption"><p><strong>Table 9.5: </strong>Return values from <code>system()</code></p></div></div></dd>
+# <div class="float-caption"><p><strong>Table: </strong>Return values from <code>system()</code></p></div></div></dd>
 function awk::system() {}
 
 # <dt><code>mktime(<var>datespec</var></code> [<code>, <var>utc-flag</var></code> ]<code>)</code></dt>

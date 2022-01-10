@@ -62,6 +62,9 @@ function closeItem() {
         appendDocLine("<br>")
         appendDocLine("<h3>Format-Control Letters</h3>")
         appendPartOfFileToDoc("temp/Time-Functions.html",181,401)
+    } else if (Name=="system") {
+        gsub(/<a href="[^"]+">Table [0-9]+\.[0-9]+<\/a>/,"table below",Doc)
+        gsub(/Table [0-9]+\.[0-9]+:/,"Table:",Doc)
     }
     print Doc
     Doc = ""
