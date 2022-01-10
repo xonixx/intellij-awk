@@ -49,7 +49,7 @@ function processUrls(line) {
     return line
 }
 
-function closeItem(   nr1,l) {
+function closeItem() {
     if (Name=="asorti") {
         print Doc
         print "function gawk::asort() {}"
@@ -64,14 +64,21 @@ function closeItem(   nr1,l) {
     "gawk" : "awk") "::" Name "() {}"
 }
 
-function appendPartOfFileToDoc(fName,nrFrom,nrTo,   l,nr1) {
+function appendPartOfFileToDoc(fName,nrFrom,nrTo,   l,nr) {
+    appendDocLine("<br>")
+#    appendDocLine("<br>")
     while ((getline l < fName)>0) {
-        nr1++
-        if (nr1>=nrFrom && nr1<=nrTo) {
+        nr++
+        if (nr>=nrFrom && nr<=nrTo) {
+            if (l ~ /<h4/) {
+#                print "here ", l
+                gsub(/h4/,"h3",l)
+                gsub(/([0-9]+\.)+[0-9]+ */,"",l) # remove section number
+#                print "here1", l
+            }
             appendDocLine(l)
         }
     }
 }
 
-# TODO sprintf format chars
 # TODO strftime format chars

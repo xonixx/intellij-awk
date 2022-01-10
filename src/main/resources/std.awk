@@ -685,7 +685,8 @@ function awk::split() {}
 # <p>assigns the string &lsquo;<samp>pi&nbsp;=&nbsp;3.14&nbsp;(approx.)</samp>&rsquo;<!-- /@w --> to the variable <code>pival</code>.
 # </p>
 # </dd>
-# <h4 class="subsection">5.5.2 Format-Control Letters</h4>
+# <br>
+# <h3 class="subsection">Format-Control Letters</h3>
 # 
 # <p>A format specifier starts with the character &lsquo;<samp>%</samp>&rsquo; and ends with
 # a <em>format-control letter</em>&mdash;it tells the <code>printf</code> statement
@@ -846,7 +847,8 @@ function awk::split() {}
 # the IEEE standard.  Further details are provided in
 # <a href="https://www.gnu.org/software/gawk/manual/html_node/POSIX-Floating-Point-Problems.html">Standards Versus Existing Practice</a>; please see there.
 # </p></blockquote>
-# <h4 class="subsection">5.5.3 Modifiers for <code>printf</code> Formats</h4>
+# <br>
+# <h3 class="subsection">Modifiers for <code>printf</code> Formats</h3>
 # 
 # <p>A format specification can also include <em>modifiers</em> that can control
 # how much of the item&rsquo;s value is printed, as well as how much space it gets.
