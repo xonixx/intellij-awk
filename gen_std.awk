@@ -53,10 +53,15 @@ function closeItem() {
     if (Name=="asorti") {
         print Doc
         print "function gawk::asort() {}"
-    }
-    if (Name=="sprintf") {
+    } else if (Name=="sprintf") {
+        appendDocLine("<br>")
         appendPartOfFileToDoc("temp/Control-Letters.html",70,236)
+        appendDocLine("<br>")
         appendPartOfFileToDoc("temp/Format-Modifiers.html",70,280)
+    } else if (Name=="strftime") {
+        appendDocLine("<br>")
+        appendDocLine("<h3>Format-Control Letters</h3>")
+        appendPartOfFileToDoc("temp/Time-Functions.html",181,401)
     }
     print Doc
     Doc = ""
@@ -65,8 +70,6 @@ function closeItem() {
 }
 
 function appendPartOfFileToDoc(fName,nrFrom,nrTo,   l,nr) {
-    appendDocLine("<br>")
-#    appendDocLine("<br>")
     while ((getline l < fName)>0) {
         nr++
         if (nr>=nrFrom && nr<=nrTo) {
@@ -80,5 +83,3 @@ function appendPartOfFileToDoc(fName,nrFrom,nrTo,   l,nr) {
         }
     }
 }
-
-# TODO strftime format chars

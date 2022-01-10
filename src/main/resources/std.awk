@@ -1442,6 +1442,227 @@ function gawk::mktime() {}
 # change the default format; see the following list for the various format directives.
 # </p>
 # </dd>
+# <br>
+# <h3>Format-Control Letters</h3>
+# <p>The <code>strftime()</code> function allows you to easily turn a timestamp
+# into human-readable information.  It is similar in nature to the <code>sprintf()</code>
+# function
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>),
+# in that it copies nonformat specification characters verbatim to the
+# returned string, while substituting date and time values for format
+# specifications in the <var>format</var> string.
+# </p>
+# <p><code>strftime()</code> is guaranteed by the 1999 ISO C
+# standard
+# to support the following date format specifications:
+# </p>
+# <dl compact="compact">
+# <dt><code>%a</code></dt>
+# <dd><p>The locale&rsquo;s abbreviated weekday name.
+# </p>
+# </dd>
+# <dt><code>%A</code></dt>
+# <dd><p>The locale&rsquo;s full weekday name.
+# </p>
+# </dd>
+# <dt><code>%b</code></dt>
+# <dd><p>The locale&rsquo;s abbreviated month name.
+# </p>
+# </dd>
+# <dt><code>%B</code></dt>
+# <dd><p>The locale&rsquo;s full month name.
+# </p>
+# </dd>
+# <dt><code>%c</code></dt>
+# <dd><p>The locale&rsquo;s &ldquo;appropriate&rdquo; date and time representation.
+# (This is &lsquo;<samp>%A %B %d %T %Y</samp>&rsquo; in the <code>&quot;C&quot;</code> locale.)
+# </p>
+# </dd>
+# <dt><code>%C</code></dt>
+# <dd><p>The century part of the current year.
+# This is the year divided by 100 and truncated to the next
+# lower integer.
+# </p>
+# </dd>
+# <dt><code>%d</code></dt>
+# <dd><p>The day of the month as a decimal number (01&ndash;31).
+# </p>
+# </dd>
+# <dt><code>%D</code></dt>
+# <dd><p>Equivalent to specifying &lsquo;<samp>%m/%d/%y</samp>&rsquo;.
+# </p>
+# </dd>
+# <dt><code>%e</code></dt>
+# <dd><p>The day of the month, padded with a space if it is only one digit.
+# </p>
+# </dd>
+# <dt><code>%F</code></dt>
+# <dd><p>Equivalent to specifying &lsquo;<samp>%Y-%m-%d</samp>&rsquo;.
+# This is the ISO 8601 date format.
+# </p>
+# </dd>
+# <dt><code>%g</code></dt>
+# <dd><p>The year modulo 100 of the ISO 8601 week number, as a decimal number (00&ndash;99).
+# For example, January 1, 2012, is in week 53 of 2011. Thus, the year
+# of its ISO 8601 week number is 2011, even though its year is 2012.
+# Similarly, December 31, 2012, is in week 1 of 2013. Thus, the year
+# of its ISO week number is 2013, even though its year is 2012.
+# </p>
+# </dd>
+# <dt><code>%G</code></dt>
+# <dd><p>The full year of the ISO week number, as a decimal number.
+# </p>
+# </dd>
+# <dt><code>%h</code></dt>
+# <dd><p>Equivalent to &lsquo;<samp>%b</samp>&rsquo;.
+# </p>
+# </dd>
+# <dt><code>%H</code></dt>
+# <dd><p>The hour (24-hour clock) as a decimal number (00&ndash;23).
+# </p>
+# </dd>
+# <dt><code>%I</code></dt>
+# <dd><p>The hour (12-hour clock) as a decimal number (01&ndash;12).
+# </p>
+# </dd>
+# <dt><code>%j</code></dt>
+# <dd><p>The day of the year as a decimal number (001&ndash;366).
+# </p>
+# </dd>
+# <dt><code>%m</code></dt>
+# <dd><p>The month as a decimal number (01&ndash;12).
+# </p>
+# </dd>
+# <dt><code>%M</code></dt>
+# <dd><p>The minute as a decimal number (00&ndash;59).
+# </p>
+# </dd>
+# <dt><code>%n</code></dt>
+# <dd><p>A newline character (ASCII LF).
+# </p>
+# </dd>
+# <dt><code>%p</code></dt>
+# <dd><p>The locale&rsquo;s equivalent of the AM/PM designations associated
+# with a 12-hour clock.
+# </p>
+# </dd>
+# <dt><code>%r</code></dt>
+# <dd><p>The locale&rsquo;s 12-hour clock time.
+# (This is &lsquo;<samp>%I:%M:%S %p</samp>&rsquo; in the <code>&quot;C&quot;</code> locale.)
+# </p>
+# </dd>
+# <dt><code>%R</code></dt>
+# <dd><p>Equivalent to specifying &lsquo;<samp>%H:%M</samp>&rsquo;.
+# </p>
+# </dd>
+# <dt><code>%S</code></dt>
+# <dd><p>The second as a decimal number (00&ndash;60).
+# </p>
+# </dd>
+# <dt><code>%t</code></dt>
+# <dd><p>A TAB character.
+# </p>
+# </dd>
+# <dt><code>%T</code></dt>
+# <dd><p>Equivalent to specifying &lsquo;<samp>%H:%M:%S</samp>&rsquo;.
+# </p>
+# </dd>
+# <dt><code>%u</code></dt>
+# <dd><p>The weekday as a decimal number (1&ndash;7).  Monday is day one.
+# </p>
+# </dd>
+# <dt><code>%U</code></dt>
+# <dd><p>The week number of the year (with the first Sunday as the first day of week one)
+# as a decimal number (00&ndash;53).
+# </p>
+# </dd>
+# <dt><code>%V</code></dt>
+# <dd><p>The week number of the year (with the first Monday as the first
+# day of week one) as a decimal number (01&ndash;53).
+# The method for determining the week number is as specified by ISO 8601.
+# (To wit: if the week containing January 1 has four or more days in the
+# new year, then it is week one; otherwise it is the last week
+# [52 or 53] of the previous year and the next week is week one.)
+# </p>
+# </dd>
+# <dt><code>%w</code></dt>
+# <dd><p>The weekday as a decimal number (0&ndash;6).  Sunday is day zero.
+# </p>
+# </dd>
+# <dt><code>%W</code></dt>
+# <dd><p>The week number of the year (with the first Monday as the first day of week one)
+# as a decimal number (00&ndash;53).
+# </p>
+# </dd>
+# <dt><code>%x</code></dt>
+# <dd><p>The locale&rsquo;s &ldquo;appropriate&rdquo; date representation.
+# (This is &lsquo;<samp>%A %B %d %Y</samp>&rsquo; in the <code>&quot;C&quot;</code> locale.)
+# </p>
+# </dd>
+# <dt><code>%X</code></dt>
+# <dd><p>The locale&rsquo;s &ldquo;appropriate&rdquo; time representation.
+# (This is &lsquo;<samp>%T</samp>&rsquo; in the <code>&quot;C&quot;</code> locale.)
+# </p>
+# </dd>
+# <dt><code>%y</code></dt>
+# <dd><p>The year modulo 100 as a decimal number (00&ndash;99).
+# </p>
+# </dd>
+# <dt><code>%Y</code></dt>
+# <dd><p>The full year as a decimal number (e.g., 2015).
+# </p>
+# </dd>
+# <dt><code>%z</code></dt>
+# <dd><p>The time zone offset in a &lsquo;<samp>+<var>HHMM</var></samp>&rsquo; format (e.g., the format
+# necessary to produce RFC 822/RFC 1036 date headers).
+# </p>
+# </dd>
+# <dt><code>%Z</code></dt>
+# <dd><p>The time zone name or abbreviation; no characters if
+# no time zone is determinable.
+# </p>
+# </dd>
+# <dt><code>%Ec %EC %Ex %EX %Ey %EY %Od %Oe %OH</code></dt>
+# <dt><code>%OI %Om %OM %OS %Ou %OU %OV %Ow %OW %Oy</code></dt>
+# <dd><p>&ldquo;Alternative representations&rdquo; for the specifications
+# that use only the second letter (&lsquo;<samp>%c</samp>&rsquo;, &lsquo;<samp>%C</samp>&rsquo;,
+# and so on).
+# (These facilitate compliance with the POSIX <code>date</code> utility.)
+# </p>
+# </dd>
+# <dt><code>%%</code></dt>
+# <dd><p>A literal &lsquo;<samp>%</samp>&rsquo;.
+# </p></dd>
+# </dl>
+# 
+# <p>If a conversion specifier is not one of those just listed, the behavior is
+# undefined.
+# </p>
+# <p>For systems that are not yet fully standards-compliant,
+# <code>gawk</code> supplies a copy of
+# <code>strftime()</code> from the GNU C Library.
+# It supports all of the just-listed format specifications.
+# If that version is
+# used to compile <code>gawk</code> (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Installation.html">Installing <code>gawk</code></a>),
+# then the following additional format specifications are available:
+# </p>
+# <dl compact="compact">
+# <dt><code>%k</code></dt>
+# <dd><p>The hour (24-hour clock) as a decimal number (0&ndash;23).
+# Single-digit numbers are padded with a space.
+# </p>
+# </dd>
+# <dt><code>%l</code></dt>
+# <dd><p>The hour (12-hour clock) as a decimal number (1&ndash;12).
+# Single-digit numbers are padded with a space.
+# </p>
+# 
+# </dd>
+# <dt><code>%s</code></dt>
+# <dd><p>The time as a decimal timestamp in seconds since the epoch.
+# </p>
+# </dd>
+# </dl>
 function gawk::strftime() {}
 
 # <dt><code>systime()</code></dt>
