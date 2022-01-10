@@ -685,6 +685,167 @@ function awk::split() {}
 # <p>assigns the string &lsquo;<samp>pi&nbsp;=&nbsp;3.14&nbsp;(approx.)</samp>&rsquo;<!-- /@w --> to the variable <code>pival</code>.
 # </p>
 # </dd>
+# <h4 class="subsection">5.5.2 Format-Control Letters</h4>
+# 
+# <p>A format specifier starts with the character &lsquo;<samp>%</samp>&rsquo; and ends with
+# a <em>format-control letter</em>&mdash;it tells the <code>printf</code> statement
+# how to output one item.  The format-control letter specifies what <em>kind</em>
+# of value to print.  The rest of the format specifier is made up of
+# optional <em>modifiers</em> that control <em>how</em> to print the value, such as
+# the field width.  Here is a list of the format-control letters:
+# </p>
+# <dl compact="compact">
+# <dt><code>%a</code>, <code>%A</code></dt>
+# <dd><p>A floating point number of the form
+# [<code>-</code>]<code>0x<var>h</var>.<var>hhhh</var>p+-<var>dd</var></code>
+# (C99 hexadecimal floating point format).
+# For <code>%A</code>,
+# uppercase letters are used instead of lowercase ones.
+# </p>
+# <blockquote>
+# <p><b>NOTE:</b> The current POSIX standard requires support for <code>%a</code> and <code>%A</code> in
+# <code>awk</code>. As far as we know, besides <code>gawk</code>, the only other
+# version of <code>awk</code> that actually implements it is BWK <code>awk</code>.
+# It&rsquo;s use is thus highly nonportable!
+# </p>
+# <p>Furthermore, these formats are not available on any system where the
+# underlying C library <code>printf()</code> function does not support them. As
+# of this writing, among current systems, only OpenVMS is known to not
+# support them.
+# </p></blockquote>
+# 
+# </dd>
+# <dt><code>%c</code></dt>
+# <dd><p>Print a number as a character; thus, &lsquo;<samp>printf &quot;%c&quot;,
+# 65</samp>&rsquo; outputs the letter &lsquo;<samp>A</samp>&rsquo;. The output for a string value is
+# the first character of the string.
+# </p>
+# <blockquote>
+# <p><b>NOTE:</b> The POSIX standard says the first character of a string is printed.
+# In locales with multibyte characters, <code>gawk</code> attempts to
+# convert the leading bytes of the string into a valid wide character
+# and then to print the multibyte encoding of that character.
+# Similarly, when printing a numeric value, <code>gawk</code> allows the
+# value to be within the numeric range of values that can be held
+# in a wide character.
+# If the conversion to multibyte encoding fails, <code>gawk</code>
+# uses the low eight bits of the value as the character to print.
+# </p>
+# <p>Other <code>awk</code> versions generally restrict themselves to printing
+# the first byte of a string or to numeric values within the range of
+# a single byte (0&ndash;255).
+# (d.c.)
+# </p></blockquote>
+# 
+# 
+# </dd>
+# <dt><code>%d</code>, <code>%i</code></dt>
+# <dd><p>Print a decimal integer.
+# The two control letters are equivalent.
+# (The &lsquo;<samp>%i</samp>&rsquo; specification is for compatibility with ISO C.)
+# </p>
+# </dd>
+# <dt><code>%e</code>, <code>%E</code></dt>
+# <dd><p>Print a number in scientific (exponential) notation.
+# For example:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">printf &quot;%4.3e\n&quot;, 1950
+# </pre></div>
+# 
+# <p>prints &lsquo;<samp>1.950e+03</samp>&rsquo;, with a total of four significant figures, three of
+# which follow the decimal point.
+# (The &lsquo;<samp>4.3</samp>&rsquo; represents two modifiers,
+# discussed in the next subsection.)
+# &lsquo;<samp>%E</samp>&rsquo; uses &lsquo;<samp>E</samp>&rsquo; instead of &lsquo;<samp>e</samp>&rsquo; in the output.
+# </p>
+# </dd>
+# <dt><code>%f</code></dt>
+# <dd><p>Print a number in floating-point notation.
+# For example:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">printf &quot;%4.3f&quot;, 1950
+# </pre></div>
+# 
+# <p>prints &lsquo;<samp>1950.000</samp>&rsquo;, with a minimum of four significant figures, three of
+# which follow the decimal point.
+# (The &lsquo;<samp>4.3</samp>&rsquo; represents two modifiers,
+# discussed in the next subsection.)
+# </p>
+# <p>On systems supporting IEEE 754 floating-point format, values
+# representing negative
+# infinity are formatted as
+# &lsquo;<samp>-inf</samp>&rsquo; or &lsquo;<samp>-infinity</samp>&rsquo;,
+# and positive infinity as
+# &lsquo;<samp>inf</samp>&rsquo; or &lsquo;<samp>infinity</samp>&rsquo;.
+# The special &ldquo;not a number&rdquo; value formats as &lsquo;<samp>-nan</samp>&rsquo; or &lsquo;<samp>nan</samp>&rsquo;
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Math-Definitions.html">Other Stuff to Know</a>).
+# </p>
+# </dd>
+# <dt><code>%F</code></dt>
+# <dd><p>Like &lsquo;<samp>%f</samp>&rsquo;, but the infinity and &ldquo;not a number&rdquo; values are spelled
+# using uppercase letters.
+# </p>
+# <p>The &lsquo;<samp>%F</samp>&rsquo; format is a POSIX extension to ISO C; not all systems
+# support it.  On those that don&rsquo;t, <code>gawk</code> uses &lsquo;<samp>%f</samp>&rsquo; instead.
+# </p>
+# </dd>
+# <dt><code>%g</code>, <code>%G</code></dt>
+# <dd><p>Print a number in either scientific notation or in floating-point
+# notation, whichever uses fewer characters; if the result is printed in
+# scientific notation, &lsquo;<samp>%G</samp>&rsquo; uses &lsquo;<samp>E</samp>&rsquo; instead of &lsquo;<samp>e</samp>&rsquo;.
+# </p>
+# </dd>
+# <dt><code>%o</code></dt>
+# <dd><p>Print an unsigned octal integer
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
+# </p>
+# </dd>
+# <dt><code>%s</code></dt>
+# <dd><p>Print a string.
+# </p>
+# </dd>
+# <dt><code>%u</code></dt>
+# <dd><p>Print an unsigned decimal integer.
+# (This format is of marginal use, because all numbers in <code>awk</code>
+# are floating point; it is provided primarily for compatibility with C.)
+# </p>
+# </dd>
+# <dt><code>%x</code>, <code>%X</code></dt>
+# <dd><p>Print an unsigned hexadecimal integer;
+# &lsquo;<samp>%X</samp>&rsquo; uses the letters &lsquo;<samp>A</samp>&rsquo; through &lsquo;<samp>F</samp>&rsquo;
+# instead of &lsquo;<samp>a</samp>&rsquo; through &lsquo;<samp>f</samp>&rsquo;
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
+# </p>
+# </dd>
+# <dt><code>%%</code></dt>
+# <dd><p>Print a single &lsquo;<samp>%</samp>&rsquo;.
+# This does not consume an
+# argument and it ignores any modifiers.
+# </p></dd>
+# </dl>
+# 
+# <blockquote>
+# <p><b>NOTE:</b> When using the integer format-control letters for values that are
+# outside the range of the widest C integer type, <code>gawk</code> switches to
+# the &lsquo;<samp>%g</samp>&rsquo; format specifier. If <samp>--lint</samp> is provided on the
+# command line (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code>
+# warns about this.  Other versions of <code>awk</code> may print invalid
+# values or do something else entirely.
+# (d.c.)
+# </p></blockquote>
+# 
+# <blockquote>
+# <p><b>NOTE:</b> The IEEE 754 standard for floating-point arithmetic allows for special
+# values that represent &ldquo;infinity&rdquo; (positive and negative) and values
+# that are &ldquo;not a number&rdquo; (NaN).
+# </p>
+# <p>Input and output of these values occurs as text strings. This is
+# somewhat problematic for the <code>awk</code> language, which predates
+# the IEEE standard.  Further details are provided in
+# <a href="https://www.gnu.org/software/gawk/manual/html_node/POSIX-Floating-Point-Problems.html">Standards Versus Existing Practice</a>; please see there.
+# </p></blockquote>
 function awk::sprintf() {}
 
 # <dt><code>strtonum(<var>str</var>)</code></dt>

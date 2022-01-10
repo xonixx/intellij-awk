@@ -12,13 +12,19 @@ BEGIN {
 }
 /^<pre class="example">/ { Code=1 }
 /^<\/pre>/               { Code=0 }
-Content                  { Doc = Doc "\n# " rmSpanId(processCode(processUrls(indentCode($0)))) }
+Content                  { appendDocLine($0) }
 
 /<\/dd>/ && Name && !Typeof    { closeItem() }
 NR==152 && Typeof              { closeItem() }
 
+function appendDocLine(l,   l1) {
+    l1 = rmSpanId(processCode(processUrls(indentCode(l))))
+    if (!l || l1)
+        Doc = Doc "\n# " l1
+}
+
 function rmSpanId(line) {
-    if (gsub(/<span id=".+"><\/span>/,"",line) && !line) next
+    gsub(/<span id=".+"><\/span>/,"",line)
     return line
 }
 
@@ -43,10 +49,22 @@ function processUrls(line) {
     return line
 }
 
-function closeItem() {
+function closeItem(   nr1,l) {
     if (Name=="asorti") {
         print Doc
         print "function gawk::asort() {}"
+    }
+    if (Name=="sprintf") {
+#        print "here"
+        while ((getline l < "temp/Control-Letters.html")>0) {
+            nr1++
+#            print "here1: " nr1, l
+            if (nr1>=70 && nr1 <=236) {
+#                print "here2: " nr1, l
+                appendDocLine(l)
+
+            }
+        }
     }
     print Doc
     Doc = ""

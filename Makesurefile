@@ -112,6 +112,16 @@
 @reached_if [[ -f 'temp/I18N-Functions.html' ]]
   curl https://www.gnu.org/software/gawk/manual/html_node/I18N-Functions.html -o temp/I18N-Functions.html
 
+@goal sprintf1_downloaded @private
+@depends_on temp_folder_created
+@reached_if [[ -f 'temp/Control-Letters.html' ]]
+  curl https://www.gnu.org/software/gawk/manual/html_node/Control-Letters.html -o temp/Control-Letters.html
+
+@goal sprintf2_downloaded @private
+@depends_on temp_folder_created
+@reached_if [[ -f 'temp/Format-Modifiers.html' ]]
+  curl https://www.gnu.org/software/gawk/manual/html_node/Format-Modifiers.html -o temp/Format-Modifiers.html
+
 @goal std.awk_clean @private
   echo > src/main/resources/std.awk
 
@@ -121,6 +131,8 @@
 
 @goal std.awk_string @private
 @depends_on string_functions_downloaded
+@depends_on sprintf1_downloaded
+@depends_on sprintf2_downloaded
   awk -f gen_std.awk temp/String-Functions.html >> src/main/resources/std.awk
 
 @goal std.awk_io @private
