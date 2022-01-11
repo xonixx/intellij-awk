@@ -1,5 +1,4 @@
 
-
 # <dt><code>atan2(<var>y</var>, <var>x</var>)</code></dt>
 # <dd>
 # <p>Return the arctangent of <code><var>y</var> / <var>x</var></code> in radians.

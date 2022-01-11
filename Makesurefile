@@ -124,7 +124,7 @@
   curl https://www.gnu.org/software/gawk/manual/html_node/Format-Modifiers.html -o temp/Format-Modifiers.html
 
 @goal std.awk_clean @private
-  echo > src/main/resources/std.awk
+  > src/main/resources/std.awk
 
 @goal std.awk_numeric @private
 @depends_on numeric_functions_downloaded
