@@ -1,3 +1,4 @@
+# vim: syntax=bash
 
 @goal default
 @depends_on installed_bwk
