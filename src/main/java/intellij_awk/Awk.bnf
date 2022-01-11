@@ -522,7 +522,13 @@ private subscript_start ::= LBRACKET expr_lst {
 }
 private recover_on_rbracket ::= !RBRACKET*/
 
-private var_name ::= SPECIAL_VAR_NAME | SPECIAL_VAR_NAME_GAWK | user_var_name
+private var_name ::= builtin_var_name | user_var_name
+
+builtin_var_name ::= SPECIAL_VAR_NAME | SPECIAL_VAR_NAME_GAWK
+{
+    mixin="intellij_awk.psi.AwkNamedElementImpl"
+    implements="intellij_awk.psi.AwkNamedElement"
+}
 
 user_var_name ::= VAR_NAME {
     mixin="intellij_awk.psi.AwkUserVarNameMixin"
