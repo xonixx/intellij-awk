@@ -179,5 +179,5 @@
 
 @goal std.awk_variables2 @private
 @depends_on variables2_downloaded
-#  awk -v Vars=1 -f gen_std.awk temp/Auto_002dset.html >> src/main/resources/std.awk
+  awk -v Vars=1 -f gen_std.awk temp/Auto_002dset.html >> src/main/resources/std.awk
 

@@ -207,6 +207,561 @@ awk::SUBSEP = ""
 # The default value of <code>TEXTDOMAIN</code> is <code>&quot;messages&quot;</code>.
 # </p></dd>
 gawk::TEXTDOMAIN = ""
+
+# <dt><code>ARGC</code>, <code>ARGV</code></dt>
+# <dd><p>The command-line arguments available to <code>awk</code> programs are stored in
+# an array called <code>ARGV</code>.  <code>ARGC</code> is the number of command-line
+# arguments present.  See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Other-Arguments.html">Other Command-Line Arguments</a>.
+# Unlike most <code>awk</code> arrays,
+# <code>ARGV</code> is indexed from 0 to <code>ARGC</code> - 1.
+# In the following example:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">$ <kbd>awk 'BEGIN {</kbd>
+# &gt;         <kbd>for (i = 0; i &lt; ARGC; i++)</kbd>
+# &gt;             <kbd>print ARGV[i]</kbd>
+# &gt;      <kbd>}' inventory-shipped mail-list</kbd>
+# -| awk
+# -| inventory-shipped
+# -| mail-list
+# </pre></div>
+# 
+# <p><code>ARGV[0]</code> contains &lsquo;<samp>awk</samp>&rsquo;, <code>ARGV[1]</code>
+# contains &lsquo;<samp>inventory-shipped</samp>&rsquo;, and <code>ARGV[2]</code> contains
+# &lsquo;<samp>mail-list</samp>&rsquo;.  The value of <code>ARGC</code> is three, one more than the
+# index of the last element in <code>ARGV</code>, because the elements are numbered
+# from zero.
+# </p>
+# <p>The names <code>ARGC</code> and <code>ARGV</code>, as well as the convention of indexing
+# the array from 0 to <code>ARGC</code> - 1, are derived from the C language&rsquo;s
+# method of accessing command-line arguments.
+# </p>
+# <p>The value of <code>ARGV[0]</code> can vary from system to system.
+# Also, you should note that the program text is <em>not</em> included in
+# <code>ARGV</code>, nor are any of <code>awk</code>&rsquo;s command-line options.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a> for information
+# about how <code>awk</code> uses these variables.
+# (d.c.)
+# </p>
+# </dd>
+awk::ARGC = ""
+
+# <dt><code>ARGIND</code></dt>
+# <dd><p>The index in <code>ARGV</code> of the current file being processed.
+# Every time <code>gawk</code> opens a new data file for processing, it sets
+# <code>ARGIND</code> to the index in <code>ARGV</code> of the file name.
+# When <code>gawk</code> is processing the input files,
+# &lsquo;<samp>FILENAME == ARGV[ARGIND]</samp>&rsquo; is always true.
+# </p>
+# <p>This variable is useful in file processing; it allows you to tell how far
+# along you are in the list of data files as well as to distinguish between
+# successive instances of the same file name on the command line.
+# </p>
+# <p>While you can change the value of <code>ARGIND</code> within your <code>awk</code>
+# program, <code>gawk</code> automatically sets it to a new value when it
+# opens the next file.
+# </p>
+# </dd>
+gawk::ARGIND = ""
+
+# <dt><code>ENVIRON</code></dt>
+# <dd><p>An associative array containing the values of the environment.  The array
+# indices are the environment variable names; the elements are the values of
+# the particular environment variables.  For example,
+# <code>ENVIRON[&quot;HOME&quot;]</code> might be <code>/home/arnold</code>.
+# </p>
+# <p>For POSIX <code>awk</code>, changing this array does not affect the
+# environment passed on to any programs that <code>awk</code> may spawn via
+# redirection or the <code>system()</code> function.
+# </p>
+# <p>However, beginning with version 4.2, if not in POSIX
+# compatibility mode, <code>gawk</code> does update its own environment when
+# <code>ENVIRON</code> is changed, thus changing the environment seen by programs
+# that it creates.  You should therefore be especially careful if you
+# modify <code>ENVIRON[&quot;PATH&quot;]</code>, which is the search path for finding
+# executable programs.
+# </p>
+# <p>This can also affect the running <code>gawk</code> program, since some of the
+# built-in functions may pay attention to certain environment variables.
+# The most notable instance of this is <code>mktime()</code> (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Time-Functions.html">Time Functions</a>), which pays attention the value of the <code>TZ</code> environment
+# variable on many systems.
+# </p>
+# <p>Some operating systems may not have environment variables.
+# On such systems, the <code>ENVIRON</code> array is empty (except for
+# <code>ENVIRON[&quot;AWKPATH&quot;]</code><!-- /@w --> and
+# <code>ENVIRON[&quot;AWKLIBPATH&quot;]</code><!-- /@w -->;
+# see section <a href="https://www.gnu.org/software/gawk/manual/html_node/AWKPATH-Variable.html">The <code>AWKPATH</code> Environment Variable</a> and
+# see section <a href="https://www.gnu.org/software/gawk/manual/html_node/AWKLIBPATH-Variable.html">The <code>AWKLIBPATH</code> Environment Variable</a>).
+# </p>
+# </dd>
+awk::ENVIRON = ""
+
+# <dt><code>ERRNO</code></dt>
+# <dd><p>If a system error occurs during a redirection for <code>getline</code>, during
+# a read for <code>getline</code>, or during a <code>close()</code> operation, then
+# <code>ERRNO</code> contains a string describing the error.
+# </p>
+# <p>In addition, <code>gawk</code> clears <code>ERRNO</code> before opening each
+# command-line input file. This enables checking if the file is readable
+# inside a <code>BEGINFILE</code> pattern (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/BEGINFILE_002fENDFILE.html">The <code>BEGINFILE</code> and <code>ENDFILE</code> Special Patterns</a>).
+# </p>
+# <p>Otherwise, <code>ERRNO</code> works similarly to the C variable <code>errno</code>.
+# Except for the case just mentioned, <code>gawk</code> <em>never</em> clears
+# it (sets it to zero or <code>&quot;&quot;</code>).  Thus, you should only expect its
+# value to be meaningful when an I/O operation returns a failure value,
+# such as <code>getline</code> returning -1.  You are, of course, free
+# to clear it yourself before doing an I/O operation.
+# </p>
+# <p>If the value of <code>ERRNO</code> corresponds to a system error in the C
+# <code>errno</code> variable, then <code>PROCINFO[&quot;errno&quot;]</code> will be set to the value
+# of <code>errno</code>.  For non-system errors, <code>PROCINFO[&quot;errno&quot;]</code> will
+# be zero.
+# </p>
+# </dd>
+gawk::ERRNO = ""
+
+# <dt><code>FILENAME</code></dt>
+# <dd><p>The name of the current input file.  When no data files are listed
+# on the command line, <code>awk</code> reads from the standard input and
+# <code>FILENAME</code> is set to <code>&quot;-&quot;</code>.  <code>FILENAME</code> changes each
+# time a new file is read (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Reading-Files.html">Reading Input Files</a>).  Inside a <code>BEGIN</code>
+# rule, the value of <code>FILENAME</code> is <code>&quot;&quot;</code>, because there are no input
+# files being processed yet. (d.c.) Note, though,
+# that using <code>getline</code> (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Getline.html">Explicit Input with <code>getline</code></a>) inside a <code>BEGIN</code> rule
+# can give <code>FILENAME</code> a value.
+# </p>
+# </dd>
+awk::FILENAME = ""
+
+# <dt><code>FNR</code></dt>
+# <dd><p>The current record number in the current file.  <code>awk</code> increments
+# <code>FNR</code> each time it reads a new record (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Records.html">How Input Is Split into Records</a>).
+# <code>awk</code> resets <code>FNR</code> to zero each time it starts a new
+# input file.
+# </p>
+# </dd>
+awk::FNR = ""
+
+# <dt><code>NF</code></dt>
+# <dd><p>The number of fields in the current input record.
+# <code>NF</code> is set each time a new record is read, when a new field is
+# created, or when <code>$0</code> changes (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Fields.html">Examining Fields</a>).
+# </p>
+# <p>Unlike most of the variables described in this subsection,
+# assigning a value to <code>NF</code> has the potential to affect
+# <code>awk</code>&rsquo;s internal workings.  In particular, assignments
+# to <code>NF</code> can be used to create fields in or remove fields from the
+# current record. See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Changing-Fields.html">Changing the Contents of a Field</a>.
+# </p>
+# </dd>
+awk::NF = ""
+
+# <dt><code>FUNCTAB</code></dt>
+# <dd><p>An array whose indices and corresponding values are the names of all
+# the built-in, user-defined, and extension functions in the program.
+# </p>
+# <blockquote>
+# <p><b>NOTE:</b> Attempting to use the <code>delete</code> statement with the <code>FUNCTAB</code>
+# array causes a fatal error.  Any attempt to assign to an element of
+# <code>FUNCTAB</code> also causes a fatal error.
+# </p></blockquote>
+# 
+# </dd>
+gawk::FUNCTAB = ""
+
+# <dt><code>NR</code></dt>
+# <dd><p>The number of input records <code>awk</code> has processed since
+# the beginning of the program&rsquo;s execution
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Records.html">How Input Is Split into Records</a>).
+# <code>awk</code> increments <code>NR</code> each time it reads a new record.
+# </p>
+# </dd>
+awk::NR = ""
+
+# <dt><code>PROCINFO</code></dt>
+# <dd><p>The elements of this array provide access to information about the
+# running <code>awk</code> program.
+# The following elements (listed alphabetically)
+# are guaranteed to be available:
+# </p>
+# <dl compact="compact">
+# <dt><code>PROCINFO[&quot;argv&quot;]</code></dt>
+# <dd>
+# <p>The <code>PROCINFO[&quot;argv&quot;]</code> array contains all of the command-line arguments
+# (after glob expansion and redirection processing on platforms where that must
+# be done manually by the program) with subscripts ranging from 0 through
+# <code>argc</code> - 1.  For example, <code>PROCINFO[&quot;argv&quot;][0]</code> will contain
+# the name by which <code>gawk</code> was invoked.  Here is an example of how this
+# feature may be used:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">gawk '
+# BEGIN {
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (i = 0; i &lt; length(PROCINFO[&quot;argv&quot;]); i++)
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print i, PROCINFO[&quot;argv&quot;][i]
+# }'
+# </pre></div>
+# 
+# <p>Please note that this differs from the standard <code>ARGV</code> array which does
+# not include command-line arguments that have already been processed by
+# <code>gawk</code> (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a>).
+# </p>
+# </dd>
+awk::PROCINFO[&quot;argv&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;egid&quot;]</code></dt>
+# <dd><p>The value of the <code>getegid()</code> system call.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;egid&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;errno&quot;]</code></dt>
+# <dd><p>The value of the C <code>errno</code> variable when <code>ERRNO</code> is set to
+# the associated error message.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;errno&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;euid&quot;]</code></dt>
+# <dd>
+# <p>The value of the <code>geteuid()</code> system call.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;euid&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;FS&quot;]</code></dt>
+# <dd><p>This is
+# <code>&quot;FS&quot;</code> if field splitting with <code>FS</code> is in effect,
+# <code>&quot;FIELDWIDTHS&quot;</code> if field splitting with <code>FIELDWIDTHS</code> is in effect,
+# <code>&quot;FPAT&quot;</code> if field matching with <code>FPAT</code> is in effect,
+# or <code>&quot;API&quot;</code> if field splitting is controlled by an API input parser.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;FS&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;gid&quot;]</code></dt>
+# <dd>
+# <p>The value of the <code>getgid()</code> system call.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;gid&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;identifiers&quot;]</code></dt>
+# <dd>
+# <p>A subarray, indexed by the names of all identifiers used in the text of
+# the <code>awk</code> program.  An <em>identifier</em> is simply the name of a variable
+# (be it scalar or array), built-in function, user-defined function, or
+# extension function.  For each identifier, the value of the element is
+# one of the following:
+# </p>
+# <dl compact="compact">
+# <dt><code>&quot;array&quot;</code></dt>
+# <dd><p>The identifier is an array.
+# </p>
+# </dd>
+awk::&quot;array&quot; = ""
+
+# <dt><code>&quot;builtin&quot;</code></dt>
+# <dd><p>The identifier is a built-in function.
+# </p>
+# </dd>
+awk::&quot;builtin&quot; = ""
+
+# <dt><code>&quot;extension&quot;</code></dt>
+# <dd><p>The identifier is an extension function loaded via
+# <code>@load</code> or <samp>-l</samp>.
+# </p>
+# </dd>
+awk::&quot;extension&quot; = ""
+
+# <dt><code>&quot;scalar&quot;</code></dt>
+# <dd><p>The identifier is a scalar.
+# </p>
+# </dd>
+awk::&quot;scalar&quot; = ""
+
+# <dt><code>&quot;untyped&quot;</code></dt>
+# <dd><p>The identifier is untyped (could be used as a scalar or an array;
+# <code>gawk</code> doesn&rsquo;t know yet).
+# </p>
+# </dd>
+awk::&quot;untyped&quot; = ""
+
+# <dt><code>&quot;user&quot;</code></dt>
+# <dd><p>The identifier is a user-defined function.
+# </p></dd>
+awk::&quot;user&quot; = ""
+
+awk::&quot;user&quot; = ""
+
+# <dt><code>PROCINFO[&quot;platform&quot;]</code></dt>
+# <dd>
+# <p>This element gives a string indicating the platform for which
+# <code>gawk</code> was compiled. The value will be one of the following:
+# </p>
+# <dl compact="compact">
+# <dt><code>&quot;djgpp&quot;</code></dt>
+# <dt><code>&quot;mingw&quot;</code></dt>
+# <dd><p>Microsoft Windows, using either DJGPP or MinGW, respectively.
+# </p>
+# </dd>
+awk::&quot;mingw&quot; = ""
+
+# <dt><code>&quot;os2&quot;</code></dt>
+# <dd><p>OS/2.
+# </p>
+# </dd>
+awk::&quot;os2&quot; = ""
+
+# <dt><code>&quot;os390&quot;</code></dt>
+# <dd><p>OS/390.
+# </p>
+# </dd>
+awk::&quot;os390&quot; = ""
+
+# <dt><code>&quot;posix&quot;</code></dt>
+# <dd><p>GNU/Linux, Cygwin, Mac OS X, and legacy Unix systems.
+# </p>
+# </dd>
+awk::&quot;posix&quot; = ""
+
+# <dt><code>&quot;vms&quot;</code></dt>
+# <dd><p>OpenVMS or Vax/VMS.
+# </p></dd>
+awk::&quot;vms&quot; = ""
+
+awk::&quot;vms&quot; = ""
+
+# <dt><code>PROCINFO[&quot;pgrpid&quot;]</code></dt>
+# <dd>
+# <p>The process group ID of the current process.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;pgrpid&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;pid&quot;]</code></dt>
+# <dd>
+# <p>The process ID of the current process.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;pid&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;ppid&quot;]</code></dt>
+# <dd>
+# <p>The parent process ID of the current process.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;ppid&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;strftime&quot;]</code></dt>
+# <dd><p>The default time format string for <code>strftime()</code>.
+# Assigning a new value to this element changes the default.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Time-Functions.html">Time Functions</a>.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;strftime&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;uid&quot;]</code></dt>
+# <dd><p>The value of the <code>getuid()</code> system call.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;uid&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;version&quot;]</code></dt>
+# <dd>
+# <p>The version of <code>gawk</code>.
+# </p></dd>
+awk::PROCINFO[&quot;version&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;gmp_version&quot;]</code></dt>
+# <dd>
+# <p>The version of the GNU MP library.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;gmp_version&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;mpfr_version&quot;]</code></dt>
+# <dd><p>The version of the GNU MPFR library.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;mpfr_version&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;prec_max&quot;]</code></dt>
+# <dd>
+# <p>The maximum precision supported by MPFR.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;prec_max&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;prec_min&quot;]</code></dt>
+# <dd>
+# <p>The minimum precision required by MPFR.
+# </p></dd>
+awk::PROCINFO[&quot;prec_min&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;api_major&quot;]</code></dt>
+# <dd>
+# <p>The major version of the extension API.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;api_major&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;api_minor&quot;]</code></dt>
+# <dd><p>The minor version of the extension API.
+# </p></dd>
+awk::PROCINFO[&quot;api_minor&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;NONFATAL&quot;]</code></dt>
+# <dd><p>If this element exists, then I/O errors for all redirections become nonfatal.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nonfatal.html">Enabling Nonfatal Output</a>.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;NONFATAL&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;<var>name</var>&quot;, &quot;NONFATAL&quot;]</code></dt>
+# <dd><p>Make I/O errors for <var>name</var> be nonfatal.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nonfatal.html">Enabling Nonfatal Output</a>.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;<var>name</var>&quot;, &quot;NONFATAL&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;<var>command</var>&quot;, &quot;pty&quot;]</code></dt>
+# <dd><p>For two-way communication to <var>command</var>, use a pseudo-tty instead
+# of setting up a two-way pipe.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Two_002dway-I_002fO.html">Two-Way Communications with Another Process</a> for more information.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;<var>command</var>&quot;, &quot;pty&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;<var>input_name</var>&quot;, &quot;READ_TIMEOUT&quot;]</code></dt>
+# <dd><p>Set a timeout for reading from input redirection <var>input_name</var>.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Read-Timeout.html">Reading Input with a Timeout</a> for more information.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;<var>input_name</var>&quot;, &quot;READ_TIMEOUT&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;<var>input_name</var>&quot;, &quot;RETRY&quot;]</code></dt>
+# <dd><p>If an I/O error that may be retried occurs when reading data from
+# <var>input_name</var>, and this array entry exists, then <code>getline</code> returns
+# -2 instead of following the default behavior of returning -1
+# and configuring <var>input_name</var> to return no further data.  An I/O error
+# that may be retried is one where <code>errno</code> has the value <code>EAGAIN</code>,
+# <code>EWOULDBLOCK</code>, <code>EINTR</code>, or <code>ETIMEDOUT</code>.  This may be useful
+# in conjunction with <code>PROCINFO[&quot;<var>input_name</var>&quot;, &quot;READ_TIMEOUT&quot;]</code>
+# or situations where a file descriptor has been configured to behave in
+# a non-blocking fashion.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Retrying-Input.html">Retrying Reads After Certain Input Errors</a> for more information.
+# </p>
+# </dd>
+awk::PROCINFO[&quot;<var>input_name</var>&quot;, &quot;RETRY&quot;] = ""
+
+# <dt><code>PROCINFO[&quot;sorted_in&quot;]</code></dt>
+# <dd><p>If this element exists in <code>PROCINFO</code>, its value controls the
+# order in which array indices will be processed by
+# &lsquo;<samp>for (<var>indx</var> in <var>array</var>)</samp>&rsquo; loops.
+# This is an advanced feature, so we defer the
+# full description until later; see
+# <a href="https://www.gnu.org/software/gawk/manual/html_node/Controlling-Scanning.html">Using Predefined Array Scanning Orders with <code>gawk</code></a>.
+# </p></dd>
+awk::PROCINFO[&quot;sorted_in&quot;] = ""
+
+awk::PROCINFO[&quot;sorted_in&quot;] = ""
+
+# <dt><code>RLENGTH</code></dt>
+# <dd><p>The length of the substring matched by the
+# <code>match()</code> function
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
+# <code>RLENGTH</code> is set by invoking the <code>match()</code> function.  Its value
+# is the length of the matched string, or -1 if no match is found.
+# </p>
+# </dd>
+awk::RLENGTH = ""
+
+# <dt><code>RSTART</code></dt>
+# <dd><p>The start index in characters of the substring that is matched by the
+# <code>match()</code> function
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
+# <code>RSTART</code> is set by invoking the <code>match()</code> function.  Its value
+# is the position of the string where the matched substring starts, or zero
+# if no match was found.
+# </p>
+# </dd>
+awk::RSTART = ""
+
+# <dt><code>RT</code></dt>
+# <dd><p>The input text that matched the text denoted by <code>RS</code>,
+# the record separator.  It is set every time a record is read.
+# </p>
+# </dd>
+gawk::RT = ""
+
+# <dt><code>SYMTAB</code></dt>
+# <dd><p>An array whose indices are the names of all defined global variables and
+# arrays in the program.  <code>SYMTAB</code> makes <code>gawk</code>&rsquo;s symbol table
+# visible to the <code>awk</code> programmer.  It is built as <code>gawk</code>
+# parses the program and is complete before the program starts to run.
+# </p>
+# <p>The array may be used for indirect access to read or write the value of
+# a variable:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">foo = 5
+# SYMTAB[&quot;foo&quot;] = 4
+# print foo    # prints 4
+# </pre></div>
+# 
+# <p>The <code>isarray()</code> function (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Type-Functions.html">Getting Type Information</a>) may be used to test
+# if an element in <code>SYMTAB</code> is an array.
+# Also, you may not use the <code>delete</code> statement with the
+# <code>SYMTAB</code> array.
+# </p>
+# <p>Prior to version 5.0 of <code>gawk</code>, you could
+# use an index for <code>SYMTAB</code> that was not a predefined identifier:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">SYMTAB[&quot;xxx&quot;] = 5
+# print SYMTAB[&quot;xxx&quot;]
+# </pre></div>
+# 
+# <p>This no longer works, instead producing a fatal error, as it led
+# to rampant confusion.
+# </p>
+# <p>The <code>SYMTAB</code> array is more interesting than it looks. Andrew Schorr
+# points out that it effectively gives <code>awk</code> data pointers. Consider his
+# example:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example"># Indirect multiply of any variable by amount, return result
+# 
+# function multiply(variable, amount)
+# {
+# &nbsp;&nbsp;&nbsp;&nbsp;return SYMTAB[variable] *= amount
+# }
+# </pre></div>
+# 
+# <p>You would use it like this:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">BEGIN {
+# &nbsp;&nbsp;&nbsp;&nbsp;answer = 10.5
+# &nbsp;&nbsp;&nbsp;&nbsp;multiply(&quot;answer&quot;, 4)
+# &nbsp;&nbsp;&nbsp;&nbsp;print &quot;The answer is&quot;, answer
+# }
+# </pre></div>
+# 
+# <p>When run, this produces:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">$ <kbd>gawk -f answer.awk</kbd>
+# -| The answer is 42
+# </pre></div>
+# 
+# <blockquote>
+# <p><b>NOTE:</b> In order to avoid severe time-travel paradoxes, neither <code>FUNCTAB</code> nor <code>SYMTAB</code>
+# is available as an element within the <code>SYMTAB</code> array.
+# </p></blockquote>
+# </dd>
+gawk::SYMTAB = ""
 }
 
 # <dt><code>atan2(<var>y</var>, <var>x</var>)</code></dt>
