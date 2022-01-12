@@ -34,9 +34,25 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
                 && s.contains("The minus sign, used before the width modifier"));
   }
 
+  public void testGawkFunctionStrftime() {
+    doTest(
+        "function a() { return strf<caret>time() }",
+        s ->
+            s.contains("strftime([format [, timestamp [, utc-flag] ] ])")
+                && s.contains("Gawk-only!")
+                && s.contains(
+                    "Format the time specified by timestamp based on the contents of the format string")
+                && s.contains("The minute as a decimal number (00–59)"));
+  }
+
   public final BiConsumer<String, String> awkFunctionChecker =
       (funcName, funcSig) ->
-          doTest("{ print " + funcName + "<caret>(); }", s -> s.contains(funcName + funcSig));
+          doTest(
+              "{ print " + funcName + "<caret>(); }",
+              s ->
+                  s.contains(funcName + funcSig)
+                      && AwkFunctions.gawkFunctions.containsKey(funcName)
+                          == s.contains("Gawk-only!"));
 
   public void testAllFunctionsDocsPresent() {
     AwkFunctions.builtInFunctions.forEach(awkFunctionChecker);
