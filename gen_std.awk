@@ -3,9 +3,9 @@ BEGIN {
     Base="https://www.gnu.org/software/gawk/manual/html_node/"
 }
 
-/^<\/dl>/ && !Typeof { Content=0 }
-/^<dl/    && !Typeof { Content=1; next }
-/^<dt>/   && !Typeof {
+/^<\/dl>/     && !Typeof { Content=0 }
+/^<dt><code>/ && !Typeof { Content=1 }
+/^<dt>/       && !Typeof {
     sub(/ +#/,"")
     if (Vars) {
         sub(/<code><code>/,"<code>")

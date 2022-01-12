@@ -1,7 +1,5 @@
 BEGIN {
 
-# <dd>
-# </dd>
 # <dt><code>BINMODE</code></dt>
 # <dd><p>On non-POSIX systems, this variable specifies use of binary mode
 # for all I/O.  Numeric values of one, two, or three specify that input
@@ -1885,8 +1883,6 @@ function gawk::strftime() {}
 # </p></dd>
 function gawk::systime() {}
 
-# <dd>
-# </dd>
 # <dt><code>and(</code><var>v1</var><code>,</code> <var>v2</var> [<code>,</code> &hellip;]<code>)</code></dt>
 # <dd><p>Return the bitwise AND of the arguments. There must be at least two.
 # </p>
@@ -1922,8 +1918,6 @@ function gawk::rshift() {}
 # </p></dd>
 function gawk::xor() {}
 
-# <dd>
-# </dd>
 # <dt><code>isarray(<var>x</var>)</code></dt>
 # <dd><p>Return a true value if <var>x</var> is an array. Otherwise, return false.
 # </p>
@@ -1996,8 +1990,6 @@ function gawk::isarray() {}
 # </dd>
 function gawk::typeof() {}
 
-# <dd>
-# </dd>
 # <dt><code>bindtextdomain(<var>directory</var></code> [<code>,</code> <var>domain</var>]<code>)</code></dt>
 # <dd><p>Set the directory in which
 # <code>gawk</code> will look for message translation files, in case they
