@@ -1,3 +1,215 @@
+BEGIN {
+
+# <dd>
+# </dd>
+# <dt><code>BINMODE</code></dt>
+# <dd><p>On non-POSIX systems, this variable specifies use of binary mode
+# for all I/O.  Numeric values of one, two, or three specify that input
+# files, output files, or all files, respectively, should use binary I/O.
+# A numeric value less than zero is treated as zero, and a numeric value
+# greater than three is treated as three.  Alternatively, string values
+# of <code>&quot;r&quot;</code> or <code>&quot;w&quot;</code> specify that input files and output files,
+# respectively, should use binary I/O.  A string value of <code>&quot;rw&quot;</code> or
+# <code>&quot;wr&quot;</code> indicates that all files should use binary I/O.  Any other
+# string value is treated the same as <code>&quot;rw&quot;</code>, but causes <code>gawk</code>
+# to generate a warning message.  <code>BINMODE</code> is described in more
+# detail in <a href="https://www.gnu.org/software/gawk/manual/html_node/PC-Using.html">Using <code>gawk</code> on PC Operating Systems</a>.  <code>mawk</code> (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Other-Versions.html">Other Freely Available <code>awk</code> Implementations</a>)
+# also supports this variable, but only using numeric values.
+# </p>
+# </dd>
+gawk::BINMODE = ""
+
+# <dt><code>CONVFMT</code></dt>
+# <dd><p>A string that controls the conversion of numbers to
+# strings (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Conversion.html">Conversion of Strings and Numbers</a>).
+# It works by being passed, in effect, as the first argument to the
+# <code>sprintf()</code> function
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
+# Its default value is <code>&quot;%.6g&quot;</code>.
+# <code>CONVFMT</code> was introduced by the POSIX standard.
+# </p>
+# </dd>
+awk::CONVFMT = ""
+
+# <dt><code>FIELDWIDTHS</code></dt>
+# <dd><p>A space-separated list of columns that tells <code>gawk</code>
+# how to split input with fixed columnar boundaries.
+# Starting in version 4.2, each field width may optionally be
+# preceded by a colon-separated value specifying the number of characters to skip
+# before the field starts.
+# Assigning a value to <code>FIELDWIDTHS</code>
+# overrides the use of <code>FS</code> and <code>FPAT</code> for field splitting.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Constant-Size.html">Reading Fixed-Width Data</a> for more information.
+# </p>
+# </dd>
+gawk::FIELDWIDTHS = ""
+
+# <dt><code>FPAT</code></dt>
+# <dd><p>A regular expression (as a string) that tells <code>gawk</code>
+# to create the fields based on text that matches the regular expression.
+# Assigning a value to <code>FPAT</code>
+# overrides the use of <code>FS</code> and <code>FIELDWIDTHS</code> for field splitting.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Splitting-By-Content.html">Defining Fields by Content</a> for more information.
+# </p>
+# </dd>
+gawk::FPAT = ""
+
+# <dt><code>FS</code></dt>
+# <dd><p>The input field separator (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Field-Separators.html">Specifying How Fields Are Separated</a>).
+# The value is a single-character string or a multicharacter regular
+# expression that matches the separations between fields in an input
+# record.  If the value is the null string (<code>&quot;&quot;</code>), then each
+# character in the record becomes a separate field.
+# (This behavior is a <code>gawk</code> extension. POSIX <code>awk</code> does not
+# specify the behavior when <code>FS</code> is the null string.
+# Nonetheless, some other versions of <code>awk</code> also treat
+# <code>&quot;&quot;</code> specially.)
+# </p>
+# <p>The default value is <code>&quot;&nbsp;&quot;</code><!-- /@w -->, a string consisting of a single
+# space.  As a special exception, this value means that any sequence of
+# spaces, TABs, and/or newlines is a single separator.  It also causes
+# spaces, TABs, and newlines at the beginning and end of a record to
+# be ignored.
+# </p>
+# <p>You can set the value of <code>FS</code> on the command line using the
+# <samp>-F</samp> option:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">awk -F, '<var>program</var>' <var>input-files</var>
+# </pre></div>
+# 
+# <p>If <code>gawk</code> is using <code>FIELDWIDTHS</code> or <code>FPAT</code>
+# for field splitting,
+# assigning a value to <code>FS</code> causes <code>gawk</code> to return to
+# the normal, <code>FS</code>-based field splitting. An easy way to do this
+# is to simply say &lsquo;<samp>FS = FS</samp>&rsquo;, perhaps with an explanatory comment.
+# </p>
+# </dd>
+awk::FS = ""
+
+# <dt><code>IGNORECASE</code></dt>
+# <dd><p>If <code>IGNORECASE</code> is nonzero or non-null, then all string comparisons
+# and all regular expression matching are case-independent.
+# This applies to
+# regexp matching with &lsquo;<samp>~</samp>&rsquo; and &lsquo;<samp>!~</samp>&rsquo;,
+# the <code>gensub()</code>, <code>gsub()</code>, <code>index()</code>, <code>match()</code>,
+# <code>patsplit()</code>, <code>split()</code>, and <code>sub()</code> functions,
+# record termination with <code>RS</code>, and field splitting with
+# <code>FS</code> and <code>FPAT</code>.
+# However, the value of <code>IGNORECASE</code> does <em>not</em> affect array subscripting
+# and it does not affect field splitting when using a single-character
+# field separator.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Case_002dsensitivity.html">Case Sensitivity in Matching</a>.
+# </p>
+# </dd>
+gawk::IGNORECASE = ""
+
+# <dt><code>LINT</code></dt>
+# <dd><p>When this variable is true (nonzero or non-null), <code>gawk</code>
+# behaves as if the <samp>--lint</samp> command-line option is in effect
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>).
+# With a value of <code>&quot;fatal&quot;</code>, lint warnings become fatal errors.
+# With a value of <code>&quot;invalid&quot;</code>, only warnings about things that are
+# actually invalid are issued. (This is not fully implemented yet.)
+# Any other true value prints nonfatal warnings.
+# Assigning a false value to <code>LINT</code> turns off the lint warnings.
+# </p>
+# <p>This variable is a <code>gawk</code> extension.  It is not special
+# in other <code>awk</code> implementations.  Unlike with the other special variables,
+# changing <code>LINT</code> does affect the production of lint warnings,
+# even if <code>gawk</code> is in compatibility mode.  Much as
+# the <samp>--lint</samp> and <samp>--traditional</samp> options independently
+# control different aspects of <code>gawk</code>&rsquo;s behavior, the control
+# of lint warnings during program execution is independent of the flavor
+# of <code>awk</code> being executed.
+# </p>
+# </dd>
+gawk::LINT = ""
+
+# <dt><code>OFMT</code></dt>
+# <dd><p>A string that controls conversion of numbers to
+# strings (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Conversion.html">Conversion of Strings and Numbers</a>) for
+# printing with the <code>print</code> statement.  It works by being passed
+# as the first argument to the <code>sprintf()</code> function
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
+# Its default value is <code>&quot;%.6g&quot;</code>.  Earlier versions of <code>awk</code>
+# used <code>OFMT</code> to specify the format for converting numbers to
+# strings in general expressions; this is now done by <code>CONVFMT</code>.
+# </p>
+# </dd>
+awk::OFMT = ""
+
+# <dt><code>OFS</code></dt>
+# <dd><p>The output field separator (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Output-Separators.html">Output Separators</a>).  It is
+# output between the fields printed by a <code>print</code> statement.  Its
+# default value is <code>&quot;&nbsp;&quot;</code><!-- /@w -->, a string consisting of a single space.
+# </p>
+# </dd>
+awk::OFS = ""
+
+# <dt><code>ORS</code></dt>
+# <dd><p>The output record separator.  It is output at the end of every
+# <code>print</code> statement.  Its default value is <code>&quot;\n&quot;</code>, the newline
+# character.  (See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Output-Separators.html">Output Separators</a>.)
+# </p>
+# </dd>
+awk::ORS = ""
+
+# <dt><code>PREC</code></dt>
+# <dd><p>The working precision of arbitrary-precision floating-point numbers,
+# 53 bits by default (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Setting-precision.html">Setting the Precision</a>).
+# </p>
+# </dd>
+gawk::PREC = ""
+
+# <dt><code>ROUNDMODE</code></dt>
+# <dd><p>The rounding mode to use for arbitrary-precision arithmetic on
+# numbers, by default <code>&quot;N&quot;</code> (<code>roundTiesToEven</code> in
+# the IEEE 754 standard; see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Setting-the-rounding-mode.html">Setting the Rounding Mode</a>).
+# </p>
+# </dd>
+gawk::ROUNDMODE = ""
+
+# <dt><code>RS</code></dt>
+# <dd><p>The input record separator.  Its default value is a string
+# containing a single newline character, which means that an input record
+# consists of a single line of text.
+# It can also be the null string, in which case records are separated by
+# runs of blank lines.
+# If it is a regexp, records are separated by
+# matches of the regexp in the input text.
+# (See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Records.html">How Input Is Split into Records</a>.)
+# </p>
+# <p>The ability for <code>RS</code> to be a regular expression
+# is a <code>gawk</code> extension.
+# In most other <code>awk</code> implementations,
+# or if <code>gawk</code> is in compatibility mode
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>),
+# just the first character of <code>RS</code>&rsquo;s value is used.
+# </p>
+# </dd>
+awk::RS = ""
+
+# <dt><code>SUBSEP</code></dt>
+# <dd><p>The subscript separator.  It has the default value of
+# <code>&quot;\034&quot;</code> and is used to separate the parts of the indices of a
+# multidimensional array.  Thus, the expression &lsquo;<samp>foo[&quot;A&quot;,&nbsp;&quot;B&quot;]<!-- /@w --></samp>&rsquo;
+# really accesses <code>foo[&quot;A\034B&quot;]</code>
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Multidimensional.html">Multidimensional Arrays</a>).
+# </p>
+# </dd>
+awk::SUBSEP = ""
+
+# <dt><code>TEXTDOMAIN</code></dt>
+# <dd><p>Used for internationalization of programs at the
+# <code>awk</code> level.  It sets the default text domain for specially
+# marked string constants in the source text, as well as for the
+# <code>dcgettext()</code>, <code>dcngettext()</code>, and <code>bindtextdomain()</code> functions
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Internationalization.html">Internationalization with <code>gawk</code></a>).
+# The default value of <code>TEXTDOMAIN</code> is <code>&quot;messages&quot;</code>.
+# </p></dd>
+gawk::TEXTDOMAIN = ""
+}
 
 # <dt><code>atan2(<var>y</var>, <var>x</var>)</code></dt>
 # <dd>

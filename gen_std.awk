@@ -6,9 +6,15 @@ BEGIN {
 /^<\/dl>/ && !Typeof { Content=0 }
 /^<dl/    && !Typeof { Content=1; next }
 /^<dt>/   && !Typeof {
-    Name = substr($0, 11, index($0,"(")-11)
-    Typeof = "typeof"==Name
     sub(/ +#/,"")
+    if (Vars) {
+        sub(/<code><code>/,"<code>")
+        sub(/<\/code><\/code>/,"</code>")
+        Name = substr($0, 11, index($0,"</code>")-11)
+    } else {
+        Name = substr($0, 11, index($0,"(")-11)
+        Typeof = "typeof"==Name
+    }
 }
 /^<pre class="example">/ { Code=1 }
 /^<\/pre>/               { Code=0 }
@@ -68,7 +74,8 @@ function closeItem() {
     }
     print Doc
     Doc = ""
-    print "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?
+    print Vars ? (Name ~ /^(BINMODE|FIELDWIDTHS|FPAT|IGNORECASE|LINT|PREC|ROUNDMODE|TEXTDOMAIN|ARGIND|ERRNO|FUNCTAB|PROCINFO|RT|SYMTAB)$/ ?
+    "gawk" : "awk") "::" Name " = \"\"" : "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?
     "gawk" : "awk") "::" Name "() {}"
 }
 
