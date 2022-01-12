@@ -58,7 +58,10 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       for (int i = 0; i < parts.length - 1; i++) {
         res.append(DEFINITION_START)
             .append(parts[i].stripLeading())
-            .append(isGawkFunction ? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Gawk-only!</b>" : "")
+            .append(
+                isGawkFunction
+                    ? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Gawk-only!</b>"
+                    : "")
             .append("</dt>")
             .append(DEFINITION_END);
       }
@@ -75,10 +78,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
     if (stdLibFile == null) {
       String text;
       try {
-        InputStream stream =
-            AwkDocumentationProvider.class
-                .getClassLoader()
-                .getResourceAsStream("/" + STD_LIB_FILE_NAME);
+        InputStream stream = getResourceAsStream("/" + STD_LIB_FILE_NAME);
         if (stream != null) {
           text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
         } else {
@@ -104,5 +104,14 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
     }
 
     return AwkUtil.getDocStringFromCommentBefore(awkItemOfFunction);
+  }
+
+  @Nullable
+  private InputStream getResourceAsStream(String name) {
+    InputStream stream = AwkDocumentationProvider.class.getClassLoader().getResourceAsStream(name);
+    if (stream == null) { // this is for test scope
+      stream = AwkDocumentationProvider.class.getResourceAsStream(name);
+    }
+    return stream;
   }
 }
