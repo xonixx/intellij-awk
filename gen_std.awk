@@ -59,6 +59,9 @@ function closeItem() {
     if (Name=="asorti") {
         print Doc
         print "function gawk::asort() {}"
+    } else if (Name=="ARGC") {
+        print Doc
+        print "awk::ARGV = \"\""
     } else if (Name=="sprintf") {
         appendDocLine("<br>")
         appendPartOfFileToDoc("temp/Control-Letters.html",70,236)

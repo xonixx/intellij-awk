@@ -244,6 +244,44 @@ gawk::TEXTDOMAIN = ""
 # (d.c.)
 # </p>
 # </dd>
+awk::ARGV = ""
+
+# <dt><code>ARGC</code>, <code>ARGV</code></dt>
+# <dd><p>The command-line arguments available to <code>awk</code> programs are stored in
+# an array called <code>ARGV</code>.  <code>ARGC</code> is the number of command-line
+# arguments present.  See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Other-Arguments.html">Other Command-Line Arguments</a>.
+# Unlike most <code>awk</code> arrays,
+# <code>ARGV</code> is indexed from 0 to <code>ARGC</code> - 1.
+# In the following example:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">$ <kbd>awk 'BEGIN {</kbd>
+# &gt;         <kbd>for (i = 0; i &lt; ARGC; i++)</kbd>
+# &gt;             <kbd>print ARGV[i]</kbd>
+# &gt;      <kbd>}' inventory-shipped mail-list</kbd>
+# -| awk
+# -| inventory-shipped
+# -| mail-list
+# </pre></div>
+# 
+# <p><code>ARGV[0]</code> contains &lsquo;<samp>awk</samp>&rsquo;, <code>ARGV[1]</code>
+# contains &lsquo;<samp>inventory-shipped</samp>&rsquo;, and <code>ARGV[2]</code> contains
+# &lsquo;<samp>mail-list</samp>&rsquo;.  The value of <code>ARGC</code> is three, one more than the
+# index of the last element in <code>ARGV</code>, because the elements are numbered
+# from zero.
+# </p>
+# <p>The names <code>ARGC</code> and <code>ARGV</code>, as well as the convention of indexing
+# the array from 0 to <code>ARGC</code> - 1, are derived from the C language&rsquo;s
+# method of accessing command-line arguments.
+# </p>
+# <p>The value of <code>ARGV[0]</code> can vary from system to system.
+# Also, you should note that the program text is <em>not</em> included in
+# <code>ARGV</code>, nor are any of <code>awk</code>&rsquo;s command-line options.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a> for information
+# about how <code>awk</code> uses these variables.
+# (d.c.)
+# </p>
+# </dd>
 awk::ARGC = ""
 
 # <dt><code>ARGIND</code></dt>
