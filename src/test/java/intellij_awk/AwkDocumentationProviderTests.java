@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import org.jsoup.Jsoup;
 
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 /**
@@ -33,6 +34,15 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
                 && s.contains("The minus sign, used before the width modifier"));
   }
 
+  public final BiConsumer<String, String> awkFunctionChecker =
+      (funcName, funcSig) ->
+          doTest("{ print " + funcName + "<caret>(); }", s -> s.contains(funcName + funcSig));
+
+  public void testAllFunctionsDocsPresent() {
+    AwkFunctions.builtInFunctions.forEach(awkFunctionChecker);
+    AwkFunctions.gawkFunctions.forEach(awkFunctionChecker);
+  }
+
   private void doTest(String code, Predicate<String> docChecker) {
     myFixture.configureByText("a.awk", code);
     PsiElement docElement =
@@ -40,11 +50,6 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
             .findTargetElement(myFixture.getEditor(), myFixture.getFile());
 
     DocumentationProvider provider = DocumentationManager.getProviderFromElement(docElement);
-
-    //    assertEquals(
-    //        quickNavigateInfo, provider.getQuickNavigateInfo(docElement, getOriginalElement()));
-
-    //    assertEquals(doc, provider.generateDoc(docElement, getOriginalElement()));
 
     String docString = provider.generateDoc(docElement, getOriginalElement());
     String docStringWithoutHtmlTags = removeTags(docString);
