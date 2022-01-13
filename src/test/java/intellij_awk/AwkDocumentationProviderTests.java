@@ -51,6 +51,15 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
         s -> s.contains("FS") && s.contains("The input field separator"));
   }
 
+  public void testGawkVarBINMODE() {
+    doTest(
+        "BEGIN { BIN<caret>MODE=1 }",
+        s ->
+            s.contains("BINMODE")
+                && s.contains("this variable specifies use of binary mode")
+                && s.contains("Gawk-only!"));
+  }
+
   public final BiConsumer<String, String> awkFunctionChecker =
       (funcName, funcSig) ->
           doTest(

@@ -65,21 +65,21 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
   }
 
   private String postprocessDocumentation(
-      String funcName, @Nullable String documentation, boolean isGawkFunction) {
+      String builtInName, @Nullable String documentation, boolean isGawkBuiltIn) {
     if (documentation == null) {
-      return "TODO: add documentation for " + funcName;
+      return "TODO: add documentation for " + builtInName;
     }
     if (documentation.contains("</dt>")) {
       StringBuilder res = new StringBuilder();
 
       String[] parts =
-          documentation.split(Pattern.quote("</dt>"), funcName.contains("asort") ? 3 : 2);
+          documentation.split(Pattern.quote("</dt>"), builtInName.contains("asort") ? 3 : 2);
 
       for (int i = 0; i < parts.length - 1; i++) {
         res.append(DEFINITION_START)
             .append(parts[i].stripLeading())
             .append(
-                isGawkFunction
+                isGawkBuiltIn
                     ? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Gawk-only!</b>"
                     : "")
             .append("</dt>")
@@ -117,10 +117,12 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
     //   # comment2
     //   A=2
     // }
-    // The comment1 will be under AwkTerminatedStatementList and comment2 under
-    // AwkTerminatedStatement
+    // The comment1 will be above AwkTerminatedStatementList and comment2 inside
+    // AwkTerminatedStatement OF A=1 (sic!)
     if (psiElemWithComment.getPrevSibling() == null) {
       psiElemWithComment = psiElemWithComment.getParent();
+    } else {
+      psiElemWithComment = psiElemWithComment.getPrevSibling().getLastChild();
     }
     return AwkUtil.getDocStringFromCommentBefore(psiElemWithComment);
   }
