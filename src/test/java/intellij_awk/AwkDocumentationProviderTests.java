@@ -45,6 +45,12 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
                 && s.contains("The minute as a decimal number (00–59)"));
   }
 
+  public void testAwkVarFS() {
+    doTest(
+        "BEGIN { FS<caret>=\":\" }",
+        s -> s.contains("FS") && s.contains("The input field separator"));
+  }
+
   public final BiConsumer<String, String> awkFunctionChecker =
       (funcName, funcSig) ->
           doTest(

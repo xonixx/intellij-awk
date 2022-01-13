@@ -21,26 +21,43 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
   public @Nullable String generateDoc(PsiElement element, @Nullable PsiElement originalElement) {
     if (element instanceof AwkFunctionCallBuiltIn) {
       AwkFunctionCallBuiltIn awkFunctionCallBuiltIn = (AwkFunctionCallBuiltIn) element;
-      PsiElement builtinFuncName = awkFunctionCallBuiltIn.getBuiltinFuncName();
-      if (builtinFuncName != null) {
-        String funcName = builtinFuncName.getText();
-        String documentation =
-            getBuiltInFunctionDocumentation(builtinFuncName.getProject(), "awk::" + funcName);
-        if (documentation != null) {
+      {
+        PsiElement builtinFuncName = awkFunctionCallBuiltIn.getBuiltinFuncName();
+        if (builtinFuncName != null) {
+          String funcName = builtinFuncName.getText();
+          String documentation =
+              getBuiltInFunctionDocumentation(builtinFuncName.getProject(), "awk::" + funcName);
           return postprocessDocumentation(funcName, documentation, false);
-        } else {
-          return "TODO: add documentation for " + funcName;
         }
       }
-      PsiElement builtinFuncNameGawk = awkFunctionCallBuiltIn.getBuiltinFuncNameGawk();
-      if (builtinFuncNameGawk != null) {
-        String funcName = builtinFuncNameGawk.getText();
-        String documentation =
-            getBuiltInFunctionDocumentation(builtinFuncNameGawk.getProject(), "gawk::" + funcName);
-        if (documentation != null) {
+      {
+        PsiElement builtinFuncNameGawk = awkFunctionCallBuiltIn.getBuiltinFuncNameGawk();
+        if (builtinFuncNameGawk != null) {
+          String funcName = builtinFuncNameGawk.getText();
+          String documentation =
+              getBuiltInFunctionDocumentation(
+                  builtinFuncNameGawk.getProject(), "gawk::" + funcName);
           return postprocessDocumentation(funcName, documentation, true);
-        } else {
-          return "TODO: add documentation for " + funcName;
+        }
+      }
+    } else if (element instanceof AwkBuiltinVarName) {
+      AwkBuiltinVarName awkBuiltinVarName = (AwkBuiltinVarName) element;
+      {
+        PsiElement awkVarName = awkBuiltinVarName.getSpecialVarName();
+        if (awkVarName != null) {
+          String varName = awkVarName.getText();
+          String documentation =
+              getBuiltInVariableDocumentation(awkVarName.getProject(), "awk::" + varName);
+          return postprocessDocumentation(varName, documentation, false);
+        }
+      }
+      {
+        PsiElement gawkVarName = awkBuiltinVarName.getSpecialVarNameGawk();
+        if (gawkVarName != null) {
+          String varName = gawkVarName.getText();
+          String documentation =
+              getBuiltInVariableDocumentation(gawkVarName.getProject(), "gawk::" + varName);
+          return postprocessDocumentation(varName, documentation, true);
         }
       }
     }
@@ -48,7 +65,10 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
   }
 
   private String postprocessDocumentation(
-      String funcName, String documentation, boolean isGawkFunction) {
+      String funcName, @Nullable String documentation, boolean isGawkFunction) {
+    if (documentation == null) {
+      return "TODO: add documentation for " + funcName;
+    }
     if (documentation.contains("</dt>")) {
       StringBuilder res = new StringBuilder();
 
@@ -73,22 +93,41 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
     return documentation;
   }
 
+  private String getBuiltInVariableDocumentation(Project project, String varName) {
+    AwkFile stdLibFile = getStdLibFile(project);
+
+    PsiElement awkBuiltInVar =
+        AwkUtil.findFirstMatchedDeep(
+            stdLibFile,
+            psiElement -> {
+              if (!(psiElement instanceof AwkBuiltinVarName)) return false;
+              String psiElemVarName = ((AwkBuiltinVarName) psiElement).getName();
+              return psiElemVarName != null && psiElemVarName.equals(varName);
+            });
+
+    if (awkBuiltInVar == null) {
+      return null;
+    }
+
+    PsiElement psiElemWithComment = AwkUtil.findParent(awkBuiltInVar, AwkTerminatedStatement.class);
+    // It appears that for
+    // {
+    //   # comment1
+    //   A=1
+    //   # comment2
+    //   A=2
+    // }
+    // The comment1 will be under AwkTerminatedStatementList and comment2 under
+    // AwkTerminatedStatement
+    if (psiElemWithComment.getPrevSibling() == null) {
+      psiElemWithComment = psiElemWithComment.getParent();
+    }
+    return AwkUtil.getDocStringFromCommentBefore(psiElemWithComment);
+  }
+
   @Nullable
   private String getBuiltInFunctionDocumentation(Project project, String funcName) {
-    if (stdLibFile == null) {
-      String text;
-      try {
-        InputStream stream = getResourceAsStream("/" + STD_LIB_FILE_NAME);
-        if (stream != null) {
-          text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-        } else {
-          throw new IllegalStateException(STD_LIB_FILE_NAME + " is absent!");
-        }
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-      stdLibFile = AwkElementFactory.createFile(project, text);
-    }
+    AwkFile stdLibFile = getStdLibFile(project);
 
     PsiElement awkItemOfFunction =
         AwkUtil.findFirstMatchedDeep(
@@ -104,6 +143,24 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
     }
 
     return AwkUtil.getDocStringFromCommentBefore(awkItemOfFunction);
+  }
+
+  private AwkFile getStdLibFile(Project project) {
+    if (stdLibFile == null) {
+      String text;
+      try {
+        InputStream stream = getResourceAsStream("/" + STD_LIB_FILE_NAME);
+        if (stream != null) {
+          text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        } else {
+          throw new IllegalStateException(STD_LIB_FILE_NAME + " is absent!");
+        }
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      stdLibFile = AwkElementFactory.createFile(project, text);
+    }
+    return stdLibFile;
   }
 
   @Nullable
