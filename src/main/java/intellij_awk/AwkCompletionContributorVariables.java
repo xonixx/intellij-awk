@@ -17,44 +17,6 @@ import static com.intellij.patterns.StandardPatterns.or;
 
 public class AwkCompletionContributorVariables extends CompletionContributor {
 
-  private static final String[] builtInVariables =
-      new String[] {
-        "ARGC",
-        "ARGV",
-        "CONVFMT",
-        "ENVIRON",
-        "FILENAME",
-        "FNR",
-        "FS",
-        "NF",
-        "NR",
-        "OFMT",
-        "OFS",
-        "ORS",
-        "RLENGTH",
-        "RS",
-        "RSTART",
-        "SUBSEP"
-      };
-
-  private static final String[] gawkVariables =
-      new String[] {
-        "BINMODE",
-        "FIELDWIDTHS",
-        "FPAT",
-        "IGNORECASE",
-        "LINT",
-        "PREC",
-        "ROUNDMODE",
-        "TEXTDOMAIN",
-        "ARGIND",
-        "ERRNO",
-        "FUNCTAB",
-        "PROCINFO",
-        "RT",
-        "SYMTAB"
-      };
-
   public AwkCompletionContributorVariables() {
     extend(
         CompletionType.BASIC,
@@ -133,14 +95,14 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
   }
 
   private void addBuiltIns(@NotNull CompletionResultSet resultSet) {
-    for (String builtInVariable : builtInVariables) {
+    for (String builtInVariable : AwkVariables.builtInVariables) {
       resultSet.addElement(
           LookupElementBuilder.create(builtInVariable)
               .withBoldness(true)
               .withItemTextItalic(true)
               .withIcon(AwkIcons.VARIABLE));
     }
-    for (String builtInVariable : gawkVariables) {
+    for (String builtInVariable : AwkVariables.gawkVariables) {
       resultSet.addElement(
           LookupElementBuilder.create(builtInVariable)
               .withBoldness(true)

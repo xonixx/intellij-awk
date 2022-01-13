@@ -24,7 +24,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
   public Resolved.AwkResolvedResult @NotNull [] multiResolve(boolean incompleteCode) {
     List<Resolved.AwkResolvedResult> res = new ArrayList<>();
 
-    Resolved ref = resolveFunctionParameter("RESOLVE-ARG", myElement); // TODO rename to RESOLVE-PARAM
+    Resolved ref =
+        resolveFunctionParameter("RESOLVE-ARG", myElement); // TODO rename to RESOLVE-PARAM
     if (ref == null) {
       ref = resolveInCurrentFile("RESOLVE-CUR-INIT-DECL", true, true, myElement);
     }

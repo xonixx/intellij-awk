@@ -7,6 +7,7 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import org.jsoup.Jsoup;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -58,6 +59,19 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
             s.contains("BINMODE")
                 && s.contains("this variable specifies use of binary mode")
                 && s.contains("Gawk-only!"));
+  }
+
+  public final Consumer<String> awkVariableChecker =
+      (varName) ->
+          doTest(
+              "{ print " + varName + "<caret> }",
+              s ->
+                  s.contains(varName)
+                      && AwkVariables.gawkVariables.contains(varName) == s.contains("Gawk-only!"));
+
+  public void testAllVariablesDocsPresent() {
+    AwkVariables.builtInVariables.forEach(awkVariableChecker);
+    AwkVariables.gawkVariables.forEach(awkVariableChecker);
   }
 
   public final BiConsumer<String, String> awkFunctionChecker =
