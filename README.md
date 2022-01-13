@@ -37,7 +37,7 @@ The missing IntelliJ IDEA language support plugin for [AWK](https://en.wikipedia
   - [x] `name` for local
 - [x] Showing parameter hints for functions (Ctrl-P)
 - [x] Showing documentation for built-in functions
-- [ ] Showing documentation for built-in variables (`NR`/`NF`/etc.)
+- [x] Showing documentation for built-in variables (`NR`/`NF`/etc.)
     
 ## Future ideas
 

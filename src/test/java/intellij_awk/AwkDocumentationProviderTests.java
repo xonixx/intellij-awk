@@ -61,6 +61,15 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
                 && s.contains("Gawk-only!"));
   }
 
+  public void testGawkVarPROCINFO() {
+    doTest(
+        "BEGIN { print <caret>PROCINFO[\"\"] }",
+        s ->
+            s.contains("information about the running awk program")
+                && s.contains("PROCINFO[\"argv\"]")
+                && s.contains("PROCINFO[\"sorted_in\"]"));
+  }
+
   public final Consumer<String> awkVariableChecker =
       (varName) ->
           doTest(
