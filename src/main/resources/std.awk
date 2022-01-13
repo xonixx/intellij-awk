@@ -445,28 +445,20 @@ awk::NR = ""
 # <code>gawk</code> (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a>).
 # </p>
 # </dd>
-awk::PROCINFO[&quot;argv&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;egid&quot;]</code></dt>
 # <dd><p>The value of the <code>getegid()</code> system call.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;egid&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;errno&quot;]</code></dt>
 # <dd><p>The value of the C <code>errno</code> variable when <code>ERRNO</code> is set to
 # the associated error message.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;errno&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;euid&quot;]</code></dt>
 # <dd>
 # <p>The value of the <code>geteuid()</code> system call.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;euid&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;FS&quot;]</code></dt>
 # <dd><p>This is
 # <code>&quot;FS&quot;</code> if field splitting with <code>FS</code> is in effect,
@@ -475,15 +467,11 @@ awk::PROCINFO[&quot;euid&quot;] = ""
 # or <code>&quot;API&quot;</code> if field splitting is controlled by an API input parser.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;FS&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;gid&quot;]</code></dt>
 # <dd>
 # <p>The value of the <code>getgid()</code> system call.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;gid&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;identifiers&quot;]</code></dt>
 # <dd>
 # <p>A subarray, indexed by the names of all identifiers used in the text of
@@ -497,41 +485,34 @@ awk::PROCINFO[&quot;gid&quot;] = ""
 # <dd><p>The identifier is an array.
 # </p>
 # </dd>
-awk::&quot;array&quot; = ""
-
 # <dt><code>&quot;builtin&quot;</code></dt>
 # <dd><p>The identifier is a built-in function.
 # </p>
 # </dd>
-awk::&quot;builtin&quot; = ""
-
 # <dt><code>&quot;extension&quot;</code></dt>
 # <dd><p>The identifier is an extension function loaded via
 # <code>@load</code> or <samp>-l</samp>.
 # </p>
 # </dd>
-awk::&quot;extension&quot; = ""
-
 # <dt><code>&quot;scalar&quot;</code></dt>
 # <dd><p>The identifier is a scalar.
 # </p>
 # </dd>
-awk::&quot;scalar&quot; = ""
-
 # <dt><code>&quot;untyped&quot;</code></dt>
 # <dd><p>The identifier is untyped (could be used as a scalar or an array;
 # <code>gawk</code> doesn&rsquo;t know yet).
 # </p>
 # </dd>
-awk::&quot;untyped&quot; = ""
-
 # <dt><code>&quot;user&quot;</code></dt>
 # <dd><p>The identifier is a user-defined function.
 # </p></dd>
-awk::&quot;user&quot; = ""
-
-awk::&quot;user&quot; = ""
-
+# </dl>
+# 
+# <p>The values indicate what <code>gawk</code> knows about the identifiers
+# after it has finished parsing the program; they are <em>not</em> updated
+# while the program runs.
+# </p>
+# </dd>
 # <dt><code>PROCINFO[&quot;platform&quot;]</code></dt>
 # <dd>
 # <p>This element gives a string indicating the platform for which
@@ -543,141 +524,127 @@ awk::&quot;user&quot; = ""
 # <dd><p>Microsoft Windows, using either DJGPP or MinGW, respectively.
 # </p>
 # </dd>
-awk::&quot;mingw&quot; = ""
-
 # <dt><code>&quot;os2&quot;</code></dt>
 # <dd><p>OS/2.
 # </p>
 # </dd>
-awk::&quot;os2&quot; = ""
-
 # <dt><code>&quot;os390&quot;</code></dt>
 # <dd><p>OS/390.
 # </p>
 # </dd>
-awk::&quot;os390&quot; = ""
-
 # <dt><code>&quot;posix&quot;</code></dt>
 # <dd><p>GNU/Linux, Cygwin, Mac OS X, and legacy Unix systems.
 # </p>
 # </dd>
-awk::&quot;posix&quot; = ""
-
 # <dt><code>&quot;vms&quot;</code></dt>
 # <dd><p>OpenVMS or Vax/VMS.
 # </p></dd>
-awk::&quot;vms&quot; = ""
-
-awk::&quot;vms&quot; = ""
-
+# </dl>
+# 
+# </dd>
 # <dt><code>PROCINFO[&quot;pgrpid&quot;]</code></dt>
 # <dd>
 # <p>The process group ID of the current process.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;pgrpid&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;pid&quot;]</code></dt>
 # <dd>
 # <p>The process ID of the current process.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;pid&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;ppid&quot;]</code></dt>
 # <dd>
 # <p>The parent process ID of the current process.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;ppid&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;strftime&quot;]</code></dt>
 # <dd><p>The default time format string for <code>strftime()</code>.
 # Assigning a new value to this element changes the default.
 # See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Time-Functions.html">Time Functions</a>.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;strftime&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;uid&quot;]</code></dt>
 # <dd><p>The value of the <code>getuid()</code> system call.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;uid&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;version&quot;]</code></dt>
 # <dd>
 # <p>The version of <code>gawk</code>.
 # </p></dd>
-awk::PROCINFO[&quot;version&quot;] = ""
-
+# </dl>
+# 
+# <p>The following additional elements in the array
+# are available to provide information about the MPFR and GMP libraries
+# if your version of <code>gawk</code> supports arbitrary-precision arithmetic
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Arbitrary-Precision-Arithmetic.html">Arithmetic and Arbitrary-Precision Arithmetic with <code>gawk</code></a>):
+# </p>
+# <dl compact="compact">
 # <dt><code>PROCINFO[&quot;gmp_version&quot;]</code></dt>
 # <dd>
 # <p>The version of the GNU MP library.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;gmp_version&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;mpfr_version&quot;]</code></dt>
 # <dd><p>The version of the GNU MPFR library.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;mpfr_version&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;prec_max&quot;]</code></dt>
 # <dd>
 # <p>The maximum precision supported by MPFR.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;prec_max&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;prec_min&quot;]</code></dt>
 # <dd>
 # <p>The minimum precision required by MPFR.
 # </p></dd>
-awk::PROCINFO[&quot;prec_min&quot;] = ""
-
+# </dl>
+# 
+# <p>The following additional elements in the array are available to provide
+# information about the version of the extension API, if your version
+# of <code>gawk</code> supports dynamic loading of extension functions
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Dynamic-Extensions.html">Writing Extensions for <code>gawk</code></a>):
+# </p>
+# <dl compact="compact">
 # <dt><code>PROCINFO[&quot;api_major&quot;]</code></dt>
 # <dd>
 # <p>The major version of the extension API.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;api_major&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;api_minor&quot;]</code></dt>
 # <dd><p>The minor version of the extension API.
 # </p></dd>
-awk::PROCINFO[&quot;api_minor&quot;] = ""
-
+# </dl>
+# 
+# <p>On some systems, there may be elements in the array, <code>&quot;group1&quot;</code>
+# through <code>&quot;group<var>N</var>&quot;</code> for some <var>N</var>. <var>N</var> is the number of
+# supplementary groups that the process has.  Use the <code>in</code> operator
+# to test for these elements
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Reference-to-Elements.html">Referring to an Array Element</a>).
+# </p>
+# <p>The following elements allow you to change <code>gawk</code>&rsquo;s behavior:
+# </p>
+# <dl compact="compact">
 # <dt><code>PROCINFO[&quot;NONFATAL&quot;]</code></dt>
 # <dd><p>If this element exists, then I/O errors for all redirections become nonfatal.
 # See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nonfatal.html">Enabling Nonfatal Output</a>.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;NONFATAL&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;<var>name</var>&quot;, &quot;NONFATAL&quot;]</code></dt>
 # <dd><p>Make I/O errors for <var>name</var> be nonfatal.
 # See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nonfatal.html">Enabling Nonfatal Output</a>.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;<var>name</var>&quot;, &quot;NONFATAL&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;<var>command</var>&quot;, &quot;pty&quot;]</code></dt>
 # <dd><p>For two-way communication to <var>command</var>, use a pseudo-tty instead
 # of setting up a two-way pipe.
 # See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Two_002dway-I_002fO.html">Two-Way Communications with Another Process</a> for more information.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;<var>command</var>&quot;, &quot;pty&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;<var>input_name</var>&quot;, &quot;READ_TIMEOUT&quot;]</code></dt>
 # <dd><p>Set a timeout for reading from input redirection <var>input_name</var>.
 # See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Read-Timeout.html">Reading Input with a Timeout</a> for more information.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;<var>input_name</var>&quot;, &quot;READ_TIMEOUT&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;<var>input_name</var>&quot;, &quot;RETRY&quot;]</code></dt>
 # <dd><p>If an I/O error that may be retried occurs when reading data from
 # <var>input_name</var>, and this array entry exists, then <code>getline</code> returns
@@ -691,8 +658,6 @@ awk::PROCINFO[&quot;<var>input_name</var>&quot;, &quot;READ_TIMEOUT&quot;] = ""
 # See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Retrying-Input.html">Retrying Reads After Certain Input Errors</a> for more information.
 # </p>
 # </dd>
-awk::PROCINFO[&quot;<var>input_name</var>&quot;, &quot;RETRY&quot;] = ""
-
 # <dt><code>PROCINFO[&quot;sorted_in&quot;]</code></dt>
 # <dd><p>If this element exists in <code>PROCINFO</code>, its value controls the
 # order in which array indices will be processed by
@@ -701,9 +666,10 @@ awk::PROCINFO[&quot;<var>input_name</var>&quot;, &quot;RETRY&quot;] = ""
 # full description until later; see
 # <a href="https://www.gnu.org/software/gawk/manual/html_node/Controlling-Scanning.html">Using Predefined Array Scanning Orders with <code>gawk</code></a>.
 # </p></dd>
-awk::PROCINFO[&quot;sorted_in&quot;] = ""
-
-awk::PROCINFO[&quot;sorted_in&quot;] = ""
+# </dl>
+# 
+# </dd>
+gawk::PROCINFO = ""
 
 # <dt><code>RLENGTH</code></dt>
 # <dd><p>The length of the substring matched by the

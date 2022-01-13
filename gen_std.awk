@@ -3,25 +3,26 @@ BEGIN {
     Base="https://www.gnu.org/software/gawk/manual/html_node/"
 }
 
-/^<\/dl>/     && !Typeof { Content=0 }
-/^<dt><code>/ && !Typeof { Content=1 }
-/^<dt>/       && !Typeof {
+/^<\/dl>/     && !Nested { Content=0 }
+/^<dt><code>/ && !Nested { Content=1 }
+/^<dt>/       && !Nested {
     sub(/ +#/,"")
     if (Vars) {
         sub(/<code><code>/,"<code>")
         sub(/<\/code><\/code>/,"</code>")
         Name = substr($0, 11, index($0,"</code>")-11)
+        Nested = "PROCINFO"==Name
     } else {
         Name = substr($0, 11, index($0,"(")-11)
-        Typeof = "typeof"==Name
+        Nested = "typeof"==Name
     }
 }
 /^<pre class="example">/ { Code=1 }
 /^<\/pre>/               { Code=0 }
 Content                  { appendDocLine($0) }
 
-/<\/dd>/ && Name && !Typeof    { closeItem() }
-NR==152 && Typeof              { closeItem() }
+/<\/dd>/ && Name && !Nested    { closeItem() }
+Nested && ("typeof"==Name ? NR==152 : NR==522) { closeItem(); Nested=0 }
 
 function appendDocLine(l,   l1) {
     l1 = rmSpanId(processCode(processUrls(indentCode(l))))
