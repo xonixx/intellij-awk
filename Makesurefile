@@ -1,5 +1,8 @@
 # vim: syntax=bash
 
+@define NEXT_VERSION='0.3.0'
+@define REPO='xonixx/intellij-awk'
+
 @goal default
 @depends_on installed_bwk
 @depends_on installed_gawk51
@@ -62,6 +65,32 @@
   cd ..
   ./gawk51 --version
   rm -r "gawk-5.1.0"
+
+@goal gh_release
+@doc 'publish Github release (draft)'
+  releaseTag="v$NEXT_VERSION"
+  echo
+  echo "Will publish a draft release for $releaseTag ..."
+  echo
+  fail () {
+    echo >&2 "$@"
+    exit 1
+  }
+  milestoneId=$(gh api -X GET "repos/$REPO/milestones" --jq '.[] | select(.title=="'$NEXT_VERSION'").number')
+  if [[ -z $milestoneId ]]
+  then
+    fail "Unable to determine milestoneId by release version"
+  fi
+  echo "Milestone ID : $milestoneId"
+
+  notesStr="Issues in release: https://github.com/$REPO/milestone/$milestoneId?closed=1"
+
+  gh release create "$releaseTag" \
+    --title "$releaseTag" \
+    --notes "$notesStr" \
+    --draft
+
+  echo "Please don't forget to open the release draft, edit it as needed and PUBLISH!"
 
 @goal std.awk
 @doc 'generates std.awk file used for documentation (Ctrl-Q)'
