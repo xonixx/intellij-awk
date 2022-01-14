@@ -83,7 +83,25 @@
   fi
   echo "Milestone ID : $milestoneId"
 
-  notesStr="Issues in release: https://github.com/$REPO/milestone/$milestoneId?closed=1"
+#  notesStr="Issues in release: https://github.com/$REPO/milestone/$milestoneId?closed=1"
+# Let's take for notes the latest record from change log (in build.gradle)
+# Let's make sure the version there is correct
+  notesStr=$(awk '
+  /changeNotes """/ { Started=1; next }
+  Started
+  /<\/p>/ { exit 0 }
+  ' build.gradle)
+
+  echo "Notes: $notesStr"
+
+  awk -v notesStr="$notesStr" -v NEXT_VERSION="$NEXT_VERSION" '
+  BEGIN {
+    if (index(notesStr,NEXT_VERSION)>0) exit 0
+    print "Wrong version in notes, should be " NEXT_VERSION
+    print "Make sure you did not forget to add latest change note!"
+    exit 1
+  }
+  '
 
   gh release create "$releaseTag" \
     --title "$releaseTag" \
