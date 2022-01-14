@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'intellij-awk'
-version '0.2.5.1'
+version '0.3.0'
 
 repositories {
     mavenCentral()
@@ -13,8 +13,8 @@ repositories {
 
 dependencies {
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
@@ -36,6 +36,13 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
 <i>Preliminary support for Gawk features is added!</i>
 """
     changeNotes """
+<p>
+    <b>v0.3.0</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/3?closed=1">GitHub issues</a>
+    <ul>
+        <li>Support documentation for built-in functions and variables (Ctrl-Q)</li>
+    </ul>
+</p>
 <p>
     <b>v0.2.5</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/9?closed=1">GitHub issues</a>

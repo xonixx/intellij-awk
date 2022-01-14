@@ -31,7 +31,7 @@ The missing IntelliJ IDEA language support plugin for [AWK](https://en.wikipedia
 
 - [x] Add GAWK parsing mode
 
-## Goals v0.3.0
+## Goals v0.3.0 \[done]
 
 - [x] Enforce variable naming convention (the idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools))
   - [x] `name` for local
