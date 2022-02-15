@@ -5,6 +5,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
@@ -179,6 +180,14 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       @NotNull PsiFile file,
       @Nullable PsiElement contextElement,
       int targetOffset) {
+    if (contextElement instanceof PsiWhiteSpace
+        || AwkUtil.isType(contextElement, AwkTypes.LPAREN)) {
+      PsiElement parent = contextElement.getParent();
+      contextElement = contextElement.getPrevSibling();
+      if (contextElement == null) { // exit<caret>() case
+        contextElement = parent.getPrevSibling();
+      }
+    }
     if (AwkUtil.isType(contextElement, AwkTypes.PRINTF)
         || AwkUtil.isType(contextElement, AwkTypes.EXIT)) {
       return contextElement;

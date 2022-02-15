@@ -70,15 +70,37 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
                 && s.contains("PROCINFO[\"sorted_in\"]"));
   }
 
-  public void testStmtExit() {
-    doTest(
-        "BEGIN { exit<caret> 123 }",
-        s -> s.contains("The exit statement causes awk to immediately stop executing"));
+  public void testStmtExit1() {
+    testStmtExit("BEGIN { exi<caret>t 123 }");
   }
 
-  public void testStmtPrintf() {
+  public void testStmtExit2() {
+    testStmtExit("BEGIN { exit<caret> 123 }");
+  }
+
+  public void testStmtExit3() {
+    testStmtExit("BEGIN { exit<caret>(123) }");
+  }
+
+  private void testStmtExit(String code) {
+    doTest(code, s -> s.contains("The exit statement causes awk to immediately stop executing"));
+  }
+
+  public void testStmtPrintf1() {
+    testStmtPrintf("END { <caret>printf \"%s\", 123 }");
+  }
+
+  public void testStmtPrintf2() {
+    testStmtPrintf("END { printf<caret> \"%s\", 123 }");
+  }
+
+  public void testStmtPrintf3() {
+    testStmtPrintf("END { printf<caret>(\"%s\", 123) }");
+  }
+
+  private void testStmtPrintf(String code) {
     doTest(
-        "END { <caret>printf \"%s\", 123 }",
+        code,
         s ->
             s.contains("printf")
                 && s.contains("Print a number in floating-point notation")
