@@ -2649,3 +2649,373 @@ function gawk::dcngettext() {}
 # 
 # 
 function stmt::exit() {}
+
+# <br>
+# <h3 class="subsection">Format-Control Letters</h3>
+# 
+# <p>A format specifier starts with the character &lsquo;<samp>%</samp>&rsquo; and ends with
+# a <em>format-control letter</em>&mdash;it tells the <code>printf</code> statement
+# how to output one item.  The format-control letter specifies what <em>kind</em>
+# of value to print.  The rest of the format specifier is made up of
+# optional <em>modifiers</em> that control <em>how</em> to print the value, such as
+# the field width.  Here is a list of the format-control letters:
+# </p>
+# <dl compact="compact">
+# <dt><code>%a</code>, <code>%A</code></dt>
+# <dd><p>A floating point number of the form
+# [<code>-</code>]<code>0x<var>h</var>.<var>hhhh</var>p+-<var>dd</var></code>
+# (C99 hexadecimal floating point format).
+# For <code>%A</code>,
+# uppercase letters are used instead of lowercase ones.
+# </p>
+# <blockquote>
+# <p><b>NOTE:</b> The current POSIX standard requires support for <code>%a</code> and <code>%A</code> in
+# <code>awk</code>. As far as we know, besides <code>gawk</code>, the only other
+# version of <code>awk</code> that actually implements it is BWK <code>awk</code>.
+# It&rsquo;s use is thus highly nonportable!
+# </p>
+# <p>Furthermore, these formats are not available on any system where the
+# underlying C library <code>printf()</code> function does not support them. As
+# of this writing, among current systems, only OpenVMS is known to not
+# support them.
+# </p></blockquote>
+# 
+# </dd>
+# <dt><code>%c</code></dt>
+# <dd><p>Print a number as a character; thus, &lsquo;<samp>printf &quot;%c&quot;,
+# 65</samp>&rsquo; outputs the letter &lsquo;<samp>A</samp>&rsquo;. The output for a string value is
+# the first character of the string.
+# </p>
+# <blockquote>
+# <p><b>NOTE:</b> The POSIX standard says the first character of a string is printed.
+# In locales with multibyte characters, <code>gawk</code> attempts to
+# convert the leading bytes of the string into a valid wide character
+# and then to print the multibyte encoding of that character.
+# Similarly, when printing a numeric value, <code>gawk</code> allows the
+# value to be within the numeric range of values that can be held
+# in a wide character.
+# If the conversion to multibyte encoding fails, <code>gawk</code>
+# uses the low eight bits of the value as the character to print.
+# </p>
+# <p>Other <code>awk</code> versions generally restrict themselves to printing
+# the first byte of a string or to numeric values within the range of
+# a single byte (0&ndash;255).
+# (d.c.)
+# </p></blockquote>
+# 
+# 
+# </dd>
+# <dt><code>%d</code>, <code>%i</code></dt>
+# <dd><p>Print a decimal integer.
+# The two control letters are equivalent.
+# (The &lsquo;<samp>%i</samp>&rsquo; specification is for compatibility with ISO C.)
+# </p>
+# </dd>
+# <dt><code>%e</code>, <code>%E</code></dt>
+# <dd><p>Print a number in scientific (exponential) notation.
+# For example:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">printf &quot;%4.3e\n&quot;, 1950
+# </pre></div>
+# 
+# <p>prints &lsquo;<samp>1.950e+03</samp>&rsquo;, with a total of four significant figures, three of
+# which follow the decimal point.
+# (The &lsquo;<samp>4.3</samp>&rsquo; represents two modifiers,
+# discussed in the next subsection.)
+# &lsquo;<samp>%E</samp>&rsquo; uses &lsquo;<samp>E</samp>&rsquo; instead of &lsquo;<samp>e</samp>&rsquo; in the output.
+# </p>
+# </dd>
+# <dt><code>%f</code></dt>
+# <dd><p>Print a number in floating-point notation.
+# For example:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">printf &quot;%4.3f&quot;, 1950
+# </pre></div>
+# 
+# <p>prints &lsquo;<samp>1950.000</samp>&rsquo;, with a minimum of four significant figures, three of
+# which follow the decimal point.
+# (The &lsquo;<samp>4.3</samp>&rsquo; represents two modifiers,
+# discussed in the next subsection.)
+# </p>
+# <p>On systems supporting IEEE 754 floating-point format, values
+# representing negative
+# infinity are formatted as
+# &lsquo;<samp>-inf</samp>&rsquo; or &lsquo;<samp>-infinity</samp>&rsquo;,
+# and positive infinity as
+# &lsquo;<samp>inf</samp>&rsquo; or &lsquo;<samp>infinity</samp>&rsquo;.
+# The special &ldquo;not a number&rdquo; value formats as &lsquo;<samp>-nan</samp>&rsquo; or &lsquo;<samp>nan</samp>&rsquo;
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Math-Definitions.html">Other Stuff to Know</a>).
+# </p>
+# </dd>
+# <dt><code>%F</code></dt>
+# <dd><p>Like &lsquo;<samp>%f</samp>&rsquo;, but the infinity and &ldquo;not a number&rdquo; values are spelled
+# using uppercase letters.
+# </p>
+# <p>The &lsquo;<samp>%F</samp>&rsquo; format is a POSIX extension to ISO C; not all systems
+# support it.  On those that don&rsquo;t, <code>gawk</code> uses &lsquo;<samp>%f</samp>&rsquo; instead.
+# </p>
+# </dd>
+# <dt><code>%g</code>, <code>%G</code></dt>
+# <dd><p>Print a number in either scientific notation or in floating-point
+# notation, whichever uses fewer characters; if the result is printed in
+# scientific notation, &lsquo;<samp>%G</samp>&rsquo; uses &lsquo;<samp>E</samp>&rsquo; instead of &lsquo;<samp>e</samp>&rsquo;.
+# </p>
+# </dd>
+# <dt><code>%o</code></dt>
+# <dd><p>Print an unsigned octal integer
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
+# </p>
+# </dd>
+# <dt><code>%s</code></dt>
+# <dd><p>Print a string.
+# </p>
+# </dd>
+# <dt><code>%u</code></dt>
+# <dd><p>Print an unsigned decimal integer.
+# (This format is of marginal use, because all numbers in <code>awk</code>
+# are floating point; it is provided primarily for compatibility with C.)
+# </p>
+# </dd>
+# <dt><code>%x</code>, <code>%X</code></dt>
+# <dd><p>Print an unsigned hexadecimal integer;
+# &lsquo;<samp>%X</samp>&rsquo; uses the letters &lsquo;<samp>A</samp>&rsquo; through &lsquo;<samp>F</samp>&rsquo;
+# instead of &lsquo;<samp>a</samp>&rsquo; through &lsquo;<samp>f</samp>&rsquo;
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
+# </p>
+# </dd>
+# <dt><code>%%</code></dt>
+# <dd><p>Print a single &lsquo;<samp>%</samp>&rsquo;.
+# This does not consume an
+# argument and it ignores any modifiers.
+# </p></dd>
+# </dl>
+# 
+# <blockquote>
+# <p><b>NOTE:</b> When using the integer format-control letters for values that are
+# outside the range of the widest C integer type, <code>gawk</code> switches to
+# the &lsquo;<samp>%g</samp>&rsquo; format specifier. If <samp>--lint</samp> is provided on the
+# command line (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code>
+# warns about this.  Other versions of <code>awk</code> may print invalid
+# values or do something else entirely.
+# (d.c.)
+# </p></blockquote>
+# 
+# <blockquote>
+# <p><b>NOTE:</b> The IEEE 754 standard for floating-point arithmetic allows for special
+# values that represent &ldquo;infinity&rdquo; (positive and negative) and values
+# that are &ldquo;not a number&rdquo; (NaN).
+# </p>
+# <p>Input and output of these values occurs as text strings. This is
+# somewhat problematic for the <code>awk</code> language, which predates
+# the IEEE standard.  Further details are provided in
+# <a href="https://www.gnu.org/software/gawk/manual/html_node/POSIX-Floating-Point-Problems.html">Standards Versus Existing Practice</a>; please see there.
+# </p></blockquote>
+# <br>
+# <h3 class="subsection">Modifiers for <code>printf</code> Formats</h3>
+# 
+# <p>A format specification can also include <em>modifiers</em> that can control
+# how much of the item&rsquo;s value is printed, as well as how much space it gets.
+# The modifiers come between the &lsquo;<samp>%</samp>&rsquo; and the format-control letter.
+# We use the bullet symbol &ldquo;&bull;&rdquo; in the following examples to
+# represent
+# spaces in the output. Here are the possible modifiers, in the order in
+# which they may appear:
+# </p>
+# <dl compact="compact">
+# <dd>
+# </dd>
+# <dt><code><var>N</var>$</code></dt>
+# <dd><p>An integer constant followed by a &lsquo;<samp>$</samp>&rsquo; is a <em>positional specifier</em>.
+# Normally, format specifications are applied to arguments in the order
+# given in the format string.  With a positional specifier, the format
+# specification is applied to a specific argument, instead of what
+# would be the next argument in the list.  Positional specifiers begin
+# counting with one. Thus:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">printf &quot;%s %s\n&quot;, &quot;don't&quot;, &quot;panic&quot;
+# printf &quot;%2$s %1$s\n&quot;, &quot;panic&quot;, &quot;don't&quot;
+# </pre></div>
+# 
+# <p>prints the famous friendly message twice.
+# </p>
+# <p>At first glance, this feature doesn&rsquo;t seem to be of much use.
+# It is in fact a <code>gawk</code> extension, intended for use in translating
+# messages at runtime.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Printf-Ordering.html">Rearranging <code>printf</code> Arguments</a>,
+# which describes how and why to use positional specifiers.
+# For now, we ignore them.
+# </p>
+# </dd>
+# <dt><code>-</code> (Minus)</dt>
+# <dd><p>The minus sign, used before the width modifier (see later on in
+# this list),
+# says to left-justify
+# the argument within its specified width.  Normally, the argument
+# is printed right-justified in the specified width.  Thus:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">printf &quot;%-4s&quot;, &quot;foo&quot;
+# </pre></div>
+# 
+# <p>prints &lsquo;<samp>foo&bull;</samp>&rsquo;.
+# </p>
+# </dd>
+# <dt><var>space</var></dt>
+# <dd><p>For numeric conversions, prefix positive values with a space and
+# negative values with a minus sign.
+# </p>
+# </dd>
+# <dt><code>+</code></dt>
+# <dd><p>The plus sign, used before the width modifier (see later on in
+# this list),
+# says to always supply a sign for numeric conversions, even if the data
+# to format is positive. The &lsquo;<samp>+</samp>&rsquo; overrides the space modifier.
+# </p>
+# </dd>
+# <dt><code>#</code></dt>
+# <dd><p>Use an &ldquo;alternative form&rdquo; for certain control letters.
+# For &lsquo;<samp>%o</samp>&rsquo;, supply a leading zero.
+# For &lsquo;<samp>%x</samp>&rsquo; and &lsquo;<samp>%X</samp>&rsquo;, supply a leading &lsquo;<samp>0x</samp>&rsquo; or &lsquo;<samp>0X</samp>&rsquo; for
+# a nonzero result.
+# For &lsquo;<samp>%e</samp>&rsquo;, &lsquo;<samp>%E</samp>&rsquo;, &lsquo;<samp>%f</samp>&rsquo;, and &lsquo;<samp>%F</samp>&rsquo;, the result always
+# contains a decimal point.
+# For &lsquo;<samp>%g</samp>&rsquo; and &lsquo;<samp>%G</samp>&rsquo;, trailing zeros are not removed from the result.
+# </p>
+# </dd>
+# <dt><code>0</code></dt>
+# <dd><p>A leading &lsquo;<samp>0</samp>&rsquo; (zero) acts as a flag indicating that output should be
+# padded with zeros instead of spaces.
+# This applies only to the numeric output formats.
+# This flag only has an effect when the field width is wider than the
+# value to print.
+# </p>
+# </dd>
+# <dt><code>'</code></dt>
+# <dd><p>A single quote or apostrophe character is a POSIX extension to ISO C.
+# It indicates that the integer part of a floating-point value, or the
+# entire part of an integer decimal value, should have a thousands-separator
+# character in it.  This only works in locales that support such characters.
+# For example:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">$ <kbd>cat thousands.awk</kbd>          <i>Show source program</i>
+# -| BEGIN { printf &quot;%'d\n&quot;, 1234567 }
+# $ <kbd>LC_ALL=C gawk -f thousands.awk</kbd>
+# -| 1234567                   <i>Results in</i> &quot;C&quot; <i>locale</i>
+# $ <kbd>LC_ALL=en_US.UTF-8 gawk -f thousands.awk</kbd>
+# -| 1,234,567                 <i>Results in US English UTF locale</i>
+# </pre></div>
+# 
+# <p>For more information about locales and internationalization issues,
+# see <a href="https://www.gnu.org/software/gawk/manual/html_node/Locales.html">Where You Are Makes a Difference</a>.
+# </p>
+# <blockquote>
+# <p><b>NOTE:</b> The &lsquo;<samp>'</samp>&rsquo; flag is a nice feature, but its use complicates things: it
+# becomes difficult to use it in command-line programs.  For information
+# on appropriate quoting tricks, see <a href="https://www.gnu.org/software/gawk/manual/html_node/Quoting.html">Shell Quoting Issues</a>.
+# </p></blockquote>
+# 
+# </dd>
+# <dt><var>width</var></dt>
+# <dd><p>This is a number specifying the desired minimum width of a field.  Inserting any
+# number between the &lsquo;<samp>%</samp>&rsquo; sign and the format-control character forces the
+# field to expand to this width.  The default way to do this is to
+# pad with spaces on the left.  For example:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">printf &quot;%4s&quot;, &quot;foo&quot;
+# </pre></div>
+# 
+# <p>prints &lsquo;<samp>&bull;foo</samp>&rsquo;.
+# </p>
+# <p>The value of <var>width</var> is a minimum width, not a maximum.  If the item
+# value requires more than <var>width</var> characters, it can be as wide as
+# necessary.  Thus, the following:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">printf &quot;%4s&quot;, &quot;foobar&quot;
+# </pre></div>
+# 
+# <p>prints &lsquo;<samp>foobar</samp>&rsquo;.
+# </p>
+# <p>Preceding the <var>width</var> with a minus sign causes the output to be
+# padded with spaces on the right, instead of on the left.
+# </p>
+# </dd>
+# <dt><code>.<var>prec</var></code></dt>
+# <dd><p>A period followed by an integer constant
+# specifies the precision to use when printing.
+# The meaning of the precision varies by control letter:
+# </p>
+# <dl compact="compact">
+# <dt><code>%d</code>, <code>%i</code>, <code>%o</code>, <code>%u</code>, <code>%x</code>, <code>%X</code></dt>
+# <dd><p>Minimum number of digits to print.
+# </p>
+# </dd>
+# <dt><code>%e</code>, <code>%E</code>, <code>%f</code>, <code>%F</code></dt>
+# <dd><p>Number of digits to the right of the decimal point.
+# </p>
+# </dd>
+# <dt><code>%g</code>, <code>%G</code></dt>
+# <dd><p>Maximum number of significant digits.
+# </p>
+# </dd>
+# <dt><code>%s</code></dt>
+# <dd><p>Maximum number of characters from the string that should print.
+# </p></dd>
+# </dl>
+# 
+# <p>Thus, the following:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">printf &quot;%.4s&quot;, &quot;foobar&quot;
+# </pre></div>
+# 
+# <p>prints &lsquo;<samp>foob</samp>&rsquo;.
+# </p></dd>
+# </dl>
+# 
+# <p>The C library <code>printf</code>&rsquo;s dynamic <var>width</var> and <var>prec</var>
+# capability (e.g., <code>&quot;%*.*s&quot;</code>) is supported.  Instead of
+# supplying explicit <var>width</var> and/or <var>prec</var> values in the format
+# string, they are passed in the argument list.  For example:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">w = 5
+# p = 3
+# s = &quot;abcdefg&quot;
+# printf &quot;%*.*s\n&quot;, w, p, s
+# </pre></div>
+# 
+# <p>is exactly equivalent to:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">s = &quot;abcdefg&quot;
+# printf &quot;%5.3s\n&quot;, s
+# </pre></div>
+# 
+# <p>Both programs output &lsquo;<samp>&bull;&bull;abc<!-- /@w --></samp>&rsquo;.
+# Earlier versions of <code>awk</code> did not support this capability.
+# If you must use such a version, you may simulate this feature by using
+# concatenation to build up the format string, like so:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">w = 5
+# p = 3
+# s = &quot;abcdefg&quot;
+# printf &quot;%&quot; w &quot;.&quot; p &quot;s\n&quot;, s
+# </pre></div>
+# 
+# <p>This is not particularly easy to read, but it does work.
+# </p>
+# <p>C programmers may be used to supplying additional modifiers (&lsquo;<samp>h</samp>&rsquo;,
+# &lsquo;<samp>j</samp>&rsquo;, &lsquo;<samp>l</samp>&rsquo;, &lsquo;<samp>L</samp>&rsquo;, &lsquo;<samp>t</samp>&rsquo;, and &lsquo;<samp>z</samp>&rsquo;) in <code>printf</code>
+# format strings. These are not valid in <code>awk</code>.  Most <code>awk</code>
+# implementations silently ignore them.  If <samp>--lint</samp> is provided
+# on the command line (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code> warns about their
+# use. If <samp>--posix</samp> is supplied, their use is a fatal error.
+# </p>
+function stmt::printf() {}

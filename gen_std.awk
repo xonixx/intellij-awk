@@ -1,6 +1,8 @@
 BEGIN {
     Doc=""
     Base="https://www.gnu.org/software/gawk/manual/html_node/"
+
+    if ("printf" == Stmt) { closeItem(); exit }
 }
 
 { sub(/<\/pre><pre class="example">/,"") } # unsplit code blocks
@@ -68,7 +70,7 @@ function closeItem() {
     } else if (Name=="ARGC") {
         print Doc
         print "awk::ARGV = \"\""
-    } else if (Name=="sprintf") {
+    } else if (Name=="sprintf" || Stmt=="printf") {
         appendDocLine("<br>")
         appendPartOfFileToDoc("temp/Control-Letters.html",70,236)
         appendDocLine("<br>")
@@ -86,9 +88,9 @@ function closeItem() {
     if (Stmt)
         print "function stmt::" Stmt "() {}"
     else
-    print Vars ? (Name ~ /^(BINMODE|FIELDWIDTHS|FPAT|IGNORECASE|LINT|PREC|ROUNDMODE|TEXTDOMAIN|ARGIND|ERRNO|FUNCTAB|PROCINFO|RT|SYMTAB)$/ ?
-    "gawk" : "awk") "::" Name " = \"\"" : "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?
-    "gawk" : "awk") "::" Name "() {}"
+        print Vars ? (Name ~ /^(BINMODE|FIELDWIDTHS|FPAT|IGNORECASE|LINT|PREC|ROUNDMODE|TEXTDOMAIN|ARGIND|ERRNO|FUNCTAB|PROCINFO|RT|SYMTAB)$/ ?
+        "gawk" : "awk") "::" Name " = \"\"" : "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?
+        "gawk" : "awk") "::" Name "() {}"
 }
 
 function appendPartOfFileToDoc(fName,nrFrom,nrTo,   l,nr) {
