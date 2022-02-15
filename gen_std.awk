@@ -3,6 +3,8 @@ BEGIN {
     Base="https://www.gnu.org/software/gawk/manual/html_node/"
 }
 
+{ sub(/<\/pre><pre class="example">/,"") } # unsplit code blocks
+
 Stmt && /<h4/            { Content=1; next }
 Stmt && Content &&/<hr>/ { Content=0; closeItem(); exit }
 

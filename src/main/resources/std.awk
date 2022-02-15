@@ -2636,8 +2636,8 @@ function gawk::dcngettext() {}
 # &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print &quot;Can't get system date&quot; &gt; &quot;/dev/stderr&quot;
 # &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit 1
 # &nbsp;&nbsp;&nbsp;&nbsp;}
-# </pre><pre class="example">    print &quot;current date is&quot;, date_now
-#     close(&quot;date&quot;)
+# &nbsp;&nbsp;&nbsp;&nbsp;print &quot;current date is&quot;, date_now
+# &nbsp;&nbsp;&nbsp;&nbsp;close(&quot;date&quot;)
 # }
 # </pre></div>
 # 
