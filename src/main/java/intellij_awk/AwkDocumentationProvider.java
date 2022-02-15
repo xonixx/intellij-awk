@@ -5,6 +5,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,6 +64,10 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
           return postprocessDocumentation(varName, documentation, true);
         }
       }
+    } else if (element instanceof LeafPsiElement) { // keywords like `exit`, `printf`
+      String stmt = element.getText();
+      String documentation = getBuiltInFunctionDocumentation(element.getProject(), "stmt::" + stmt);
+      return postprocessDocumentation(stmt, documentation, false);
     }
     return null;
   }
