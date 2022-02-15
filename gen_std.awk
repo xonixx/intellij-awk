@@ -3,6 +3,9 @@ BEGIN {
     Base="https://www.gnu.org/software/gawk/manual/html_node/"
 }
 
+Stmt && /<h4/            { Content=1; next }
+Stmt && Content &&/<hr>/ { Content=0; closeItem(); exit }
+
 /^<\/dl>/     && !Nested { Content=0 }
 /^<dt><code>/ && !Nested { Content=1 }
 /^<dt>/       && !Nested {
@@ -78,6 +81,9 @@ function closeItem() {
     }
     print Doc
     Doc = ""
+    if (Stmt)
+        print "function stmt::" Stmt "() {}"
+    else
     print Vars ? (Name ~ /^(BINMODE|FIELDWIDTHS|FPAT|IGNORECASE|LINT|PREC|ROUNDMODE|TEXTDOMAIN|ARGIND|ERRNO|FUNCTAB|PROCINFO|RT|SYMTAB)$/ ?
     "gawk" : "awk") "::" Name " = \"\"" : "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?
     "gawk" : "awk") "::" Name "() {}"

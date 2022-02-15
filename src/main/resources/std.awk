@@ -2583,3 +2583,69 @@ function gawk::dcgettext() {}
 # The default value for <var>category</var> is <code>&quot;LC_MESSAGES&quot;</code>.
 # </p></dd>
 function gawk::dcngettext() {}
+
+# 
+# <p>The <code>exit</code> statement causes <code>awk</code> to immediately stop
+# executing the current rule and to stop processing input; any remaining input
+# is ignored.  The <code>exit</code> statement is written as follows:
+# </p>
+# <div class="display">
+# <pre class="display"><code>exit</code> [<var>return code</var>]
+# </pre></div>
+# 
+# <p>When an <code>exit</code> statement is executed from a <code>BEGIN</code> rule, the
+# program stops processing everything immediately.  No input records are
+# read.  However, if an <code>END</code> rule is present,
+# as part of executing the <code>exit</code> statement,
+# the <code>END</code> rule is executed
+# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/BEGIN_002fEND.html">The <code>BEGIN</code> and <code>END</code> Special Patterns</a>).
+# If <code>exit</code> is used in the body of an <code>END</code> rule, it causes
+# the program to stop immediately.
+# </p>
+# <p>An <code>exit</code> statement that is not part of a <code>BEGIN</code> or <code>END</code>
+# rule stops the execution of any further automatic rules for the current
+# record, skips reading any remaining input records, and executes the
+# <code>END</code> rule if there is one.  <code>gawk</code> also skips
+# any <code>ENDFILE</code> rules; they do not execute.
+# </p>
+# <p>In such a case,
+# if you don&rsquo;t want the <code>END</code> rule to do its job, set a variable
+# to a nonzero value before the <code>exit</code> statement and check that variable in
+# the <code>END</code> rule.
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Assert-Function.html">Assertions</a>
+# for an example that does this.
+# </p>
+# <p>If an argument is supplied to <code>exit</code>, its value is used as the exit
+# status code for the <code>awk</code> process.  If no argument is supplied,
+# <code>exit</code> causes <code>awk</code> to return a &ldquo;success&rdquo; status.
+# In the case where an argument
+# is supplied to a first <code>exit</code> statement, and then <code>exit</code> is
+# called a second time from an <code>END</code> rule with no argument,
+# <code>awk</code> uses the previously supplied exit value.  (d.c.)
+# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Exit-Status.html"><code>gawk</code>&rsquo;s Exit Status</a> for more information.
+# </p>
+# <p>For example, suppose an error condition occurs that is difficult or
+# impossible to handle.  Conventionally, programs report this by
+# exiting with a nonzero status.  An <code>awk</code> program can do this
+# using an <code>exit</code> statement with a nonzero argument, as shown
+# in the following example:
+# </p>
+# <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
+# <pre class="example">BEGIN {
+# &nbsp;&nbsp;&nbsp;&nbsp;if ((&quot;date&quot; | getline date_now) &lt;= 0) {
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print &quot;Can't get system date&quot; &gt; &quot;/dev/stderr&quot;
+# &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit 1
+# &nbsp;&nbsp;&nbsp;&nbsp;}
+# </pre><pre class="example">    print &quot;current date is&quot;, date_now
+#     close(&quot;date&quot;)
+# }
+# </pre></div>
+# 
+# <blockquote>
+# <p><b>NOTE:</b> For full portability, exit values should be between zero and 126, inclusive.
+# Negative values, and values of 127 or greater, may not produce consistent
+# results across different operating systems.
+# </p></blockquote>
+# 
+# 
+function stmt::exit() {}

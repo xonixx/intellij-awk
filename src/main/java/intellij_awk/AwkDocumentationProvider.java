@@ -175,7 +175,9 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       @Nullable PsiElement contextElement,
       int targetOffset) {
     if (AwkUtil.isType(contextElement, AwkTypes.PRINTF)
-        || AwkUtil.isType(contextElement, AwkTypes.EXIT)) return contextElement;
+        || AwkUtil.isType(contextElement, AwkTypes.EXIT)) {
+      return contextElement;
+    }
     return super.getCustomDocumentationElement(editor, file, contextElement, targetOffset);
   }
 
