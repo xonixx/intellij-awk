@@ -1,9 +1,12 @@
 package intellij_awk;
 
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import intellij_awk.psi.*;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -163,6 +166,17 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       stdLibFile = AwkElementFactory.createFile(project, text);
     }
     return stdLibFile;
+  }
+
+  @Override
+  public @Nullable PsiElement getCustomDocumentationElement(
+      @NotNull Editor editor,
+      @NotNull PsiFile file,
+      @Nullable PsiElement contextElement,
+      int targetOffset) {
+    if (AwkUtil.isType(contextElement, AwkTypes.PRINTF)
+        || AwkUtil.isType(contextElement, AwkTypes.EXIT)) return contextElement;
+    return super.getCustomDocumentationElement(editor, file, contextElement, targetOffset);
   }
 
   @Nullable
