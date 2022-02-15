@@ -70,6 +70,21 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
                 && s.contains("PROCINFO[\"sorted_in\"]"));
   }
 
+  public void testStmtExit() {
+    doTest(
+        "BEGIN { exit<caret> 123 }",
+        s -> s.contains("The exit statement causes awk to immediately stop executing"));
+  }
+
+  public void testStmtPrintf() {
+    doTest(
+        "END { <caret>printf \"%s\", 123 }",
+        s ->
+            s.contains("printf")
+                && s.contains("Print a number in floating-point notation")
+                && s.contains("The minus sign, used before the width modifier"));
+  }
+
   public final Consumer<String> awkVariableChecker =
       (varName) ->
           doTest(
