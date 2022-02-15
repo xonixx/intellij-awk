@@ -2650,7 +2650,7 @@ function gawk::dcngettext() {}
 # 
 function stmt::exit() {}
 
-# <br>
+# <dt><code>printf format, item1, item2, …</code></dt>
 # <h3 class="subsection">Format-Control Letters</h3>
 # 
 # <p>A format specifier starts with the character &lsquo;<samp>%</samp>&rsquo; and ends with

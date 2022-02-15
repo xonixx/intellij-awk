@@ -71,7 +71,10 @@ function closeItem() {
         print Doc
         print "awk::ARGV = \"\""
     } else if (Name=="sprintf" || Stmt=="printf") {
-        appendDocLine("<br>")
+        if (Stmt=="printf")
+            appendDocLine("<dt><code>printf format, item1, item2, …</code></dt>")
+        else
+            appendDocLine("<br>")
         appendPartOfFileToDoc("temp/Control-Letters.html",70,236)
         appendDocLine("<br>")
         appendPartOfFileToDoc("temp/Format-Modifiers.html",70,280)
