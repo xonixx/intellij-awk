@@ -151,7 +151,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
     if (stdLibFile == null) {
       String text;
       try {
-        InputStream stream = getResourceAsStream("/" + STD_LIB_FILE_NAME);
+        InputStream stream = getResourceAsStream(STD_LIB_FILE_NAME);
         if (stream != null) {
           text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
         } else {
