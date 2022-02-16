@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'intellij-awk'
-version '0.3.0'
+version '0.3.1'
 
 repositories {
     mavenCentral()
@@ -44,6 +44,13 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
 <i>Preliminary support for Gawk features is added!</i>
 """
     changeNotes """
+<p>
+    <b>v0.3.1</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/10?closed=1">GitHub issues</a>
+    <ul>
+        <li>Added documentation for printf/exit keywords (Ctrl-Q)</li>
+    </ul>
+</p>
 <p>
     <b>v0.3.0</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/3?closed=1">GitHub issues</a>
