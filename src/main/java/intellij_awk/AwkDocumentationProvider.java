@@ -186,6 +186,9 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       contextElement = contextElement.getPrevSibling();
       if (contextElement == null) { // exit<caret>() case
         contextElement = parent.getPrevSibling();
+        if (contextElement == null) { // printf<caret>("") case
+          contextElement = parent.getParent().getPrevSibling();
+        }
       }
     }
     if (AwkUtil.isType(contextElement, AwkTypes.PRINTF)

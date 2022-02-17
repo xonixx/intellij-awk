@@ -48,7 +48,7 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
     <b>v0.3.1</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/10?closed=1">GitHub issues</a>
     <ul>
-        <li>Added documentation for printf/exit keywords (Ctrl-Q)</li>
+        <li>Added documentation for <code>printf</code> / <code>exit</code> keywords (Ctrl-Q)</li>
     </ul>
 </p>
 <p>

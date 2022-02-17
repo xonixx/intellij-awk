@@ -98,6 +98,10 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
     testStmtPrintf("END { printf<caret>(\"%s\", 123) }");
   }
 
+  public void testStmtPrintf4() {
+    testStmtPrintf("END { printf<caret>(\"\") }");
+  }
+
   private void testStmtPrintf(String code) {
     doTest(
         code,
