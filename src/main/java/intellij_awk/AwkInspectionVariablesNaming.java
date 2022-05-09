@@ -28,7 +28,6 @@ public class AwkInspectionVariablesNaming extends LocalInspectionTool {
   private static final DeclareAsLocalParamQuickFix declareAsLocalParamQuickFix =
       new DeclareAsLocalParamQuickFix();
   public static final String QUICK_FIX_DECLARE_LOCAL = "Declare as local variable";
-  private static final Pattern lcLetterFirst = Pattern.compile("^[a-z]");
 
   @Override
   public @NotNull PsiElementVisitor buildVisitor(
@@ -52,7 +51,7 @@ public class AwkInspectionVariablesNaming extends LocalInspectionTool {
           for (PsiElement psiElement : varsInFuncBody) {
             String varName = psiElement.getText();
 
-            if (startsWithLowercaseLetter(varName)
+            if (Utils.startsWithLowercaseLetter(varName)
                 && !paramNames.contains(varName)
                 && !seen.contains(varName)) {
               seen.add(varName);
@@ -68,10 +67,6 @@ public class AwkInspectionVariablesNaming extends LocalInspectionTool {
         }
       }
     };
-  }
-
-  private boolean startsWithLowercaseLetter(String string) {
-    return lcLetterFirst.matcher(string).find();
   }
 
   private static class DeclareAsLocalParamQuickFix implements LocalQuickFix {
