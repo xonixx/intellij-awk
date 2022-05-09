@@ -17,8 +17,14 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   private final Inspection unusedFunction =
       new Inspection(new AwkInspectionUnusedFunction(), AwkInspectionUnusedFunction.QUICK_FIX_NAME);
 
+  private final Inspection unusedGlobalVariable =
+      new Inspection(
+          new AwkInspectionUnusedGlobalVariable(),
+          AwkInspectionUnusedGlobalVariable.QUICK_FIX_NAME);
+
   private final Inspection unresolvedFunctionCall =
-      new Inspection(new AwkInspectionUnresolvedFunction(), AwkInspectionUnresolvedFunction.QUICK_FIX_NAME);
+      new Inspection(
+          new AwkInspectionUnresolvedFunction(), AwkInspectionUnresolvedFunction.QUICK_FIX_NAME);
 
   private final Inspection duplicateFunction =
       new Inspection(new AwkInspectionDuplicateFunction(), null);
@@ -53,6 +59,26 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
   public void testUnusedFunction1() {
     checkByFile(unusedFunction);
+  }
+
+  public void testUnusedGlobalVar1() {
+    checkByFile(unusedGlobalVariable);
+  }
+
+  public void testUnusedGlobalVar2() {
+    checkByFile(unusedGlobalVariable);
+  }
+
+  public void testUnusedGlobalVar3() {
+    checkByFile(unusedGlobalVariable);
+  }
+
+  public void testUnusedGlobalVarNoProblem1() {
+    checkByFileNoProblemAtCaret(unusedGlobalVariable);
+  }
+
+  public void testUnusedGlobalVarNoProblem2() {
+    checkByFileNoProblemAtCaret(unusedGlobalVariable);
   }
 
   public void testDeclareLocal1_0() {
