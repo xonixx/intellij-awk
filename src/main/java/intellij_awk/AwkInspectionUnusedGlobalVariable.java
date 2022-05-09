@@ -1,15 +1,14 @@
 package intellij_awk;
 
-import com.intellij.codeInspection.LocalInspectionTool;
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.codeInspection.ProblemDescriptor;
-import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.codeInspection.*;
 import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import intellij_awk.psi.AwkUserVarName;
-import intellij_awk.psi.AwkUserVarNameMixin;
-import intellij_awk.psi.AwkVisitor;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.search.searches.ReferencesSearch;
+import com.intellij.util.Query;
+import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
@@ -26,22 +25,15 @@ public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
       public void visitUserVarName(@NotNull AwkUserVarName userVarName) {
         AwkUserVarNameMixin userVarNameMixin = (AwkUserVarNameMixin) userVarName;
         if (userVarNameMixin.isDeclaration()) {
-          
+          Query<PsiReference> references = ReferencesSearch.search(userVarNameMixin);
+          if (!references.iterator().hasNext()) {
+            holder.registerProblem(
+                userVarNameMixin,
+                "Global variable '" + userVarNameMixin.getName() + "' is never used",
+                ProblemHighlightType.LIKE_UNUSED_SYMBOL,
+                deleteUnusedGlobalVariableQuickFix);
+          }
         }
-
-        /*
-                AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
-                if (functionName != null) {
-                  Query<PsiReference> functionReferences = ReferencesSearch.search(functionName);
-                  if (!functionReferences.iterator().hasNext()) {
-                    holder.registerProblem(
-                        functionName,
-                        "Function '" + functionName.getName() + "()' is never used",
-                        ProblemHighlightType.LIKE_UNUSED_SYMBOL,
-                            deleteUnusedGlobalVariableQuickFix);
-                  }
-                }
-        */
       }
     };
   }
@@ -55,7 +47,12 @@ public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
 
     @Override
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-      //      AwkUtil.findParent(descriptor.getPsiElement(), AwkItem.class).delete();
+      PsiElement statement =
+          AwkUtil.findParent(descriptor.getPsiElement(), AwkTerminatedStatement.class);
+      if (statement == null) {
+        statement = AwkUtil.findParent(descriptor.getPsiElement(), AwkUnterminatedStatement.class);
+      }
+      statement.delete();
     }
   }
 }
