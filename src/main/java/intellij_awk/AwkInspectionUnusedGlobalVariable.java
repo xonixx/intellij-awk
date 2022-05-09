@@ -26,7 +26,8 @@ public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
         AwkUserVarNameMixin userVarNameMixin = (AwkUserVarNameMixin) userVarName;
         if (userVarNameMixin.isDeclaration()) {
           Query<PsiReference> references = ReferencesSearch.search(userVarNameMixin);
-          if (!references.iterator().hasNext()) {
+          if (!references.iterator().hasNext()
+              && userVarNameMixin.getReference().resolve() == null) {
             holder.registerProblem(
                 userVarNameMixin,
                 "Global variable '" + userVarNameMixin.getName() + "' is never used",

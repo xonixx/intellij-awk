@@ -33,6 +33,7 @@ public abstract class AwkUserVarNameMixin
 
   /**
    *
+   * <li>Var TODO should we support this? bwk doesn't support, gawk/mawk do
    * <li>Var["key"]
    */
   private static final PsiElementPattern.@NotNull Capture<PsiElement> LVALUE_ASSIGN1 =
