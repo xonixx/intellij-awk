@@ -2,7 +2,7 @@ package intellij_awk;
 
 import java.util.regex.Pattern;
 
-public final class Utils {
+public final class Util {
   private static final Pattern lcLetterFirst = Pattern.compile("^[a-z]");
   private static final Pattern ucLetterFirst = Pattern.compile("^[A-Z]");
 

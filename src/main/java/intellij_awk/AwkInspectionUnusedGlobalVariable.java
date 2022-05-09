@@ -28,7 +28,7 @@ public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
         AwkUserVarNameMixin userVarNameMixin = (AwkUserVarNameMixin) userVarName;
         if (userVarNameMixin.isDeclaration()
             || userVarNameMixin.looksLikeDeclaration()
-                && Utils.startsWithUppercaseLetter(userVarNameMixin.getName())) {
+                && Util.startsWithUppercaseLetter(userVarNameMixin.getName())) {
           Query<PsiReference> references = ReferencesSearch.search(userVarNameMixin);
           if (!references.anyMatch(
                   psiReference -> {

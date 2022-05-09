@@ -6,13 +6,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiNamedElement;
+import com.intellij.psi.PsiReference;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -51,9 +51,10 @@ public class AwkInspectionVariablesNaming extends LocalInspectionTool {
           for (PsiElement psiElement : varsInFuncBody) {
             String varName = psiElement.getText();
 
-            if (Utils.startsWithLowercaseLetter(varName)
+            if (Util.startsWithLowercaseLetter(varName)
                 && !paramNames.contains(varName)
-                && !seen.contains(varName)) {
+                && !seen.contains(varName)
+                && isNotDeclaredAsGlobalVar(psiElement)) {
               seen.add(varName);
               holder.registerProblem(
                   psiElement,
@@ -67,6 +68,14 @@ public class AwkInspectionVariablesNaming extends LocalInspectionTool {
         }
       }
     };
+  }
+
+  private boolean isNotDeclaredAsGlobalVar(PsiElement psiElement) {
+    PsiReference reference = psiElement.getReference();
+    PsiElement refTarget;
+    return reference == null
+        || (refTarget = reference.resolve()) == null
+        || !((AwkUserVarNameMixin) refTarget).isDeclaration();
   }
 
   private static class DeclareAsLocalParamQuickFix implements LocalQuickFix {
