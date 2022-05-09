@@ -141,6 +141,9 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   public void testDeclareLocalNoProblem1() {
     checkByFileNoProblemAtCaret(declareLocalInspection);
   }
+  public void testDeclareLocalNoProblem2() {
+    checkByFileNoProblemAtCaret(declareLocalInspection);
+  }
 
   public void testDupFunctionsNotReportedUnused() {
     // dup functions should not imply unused
