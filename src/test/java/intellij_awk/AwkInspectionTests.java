@@ -77,6 +77,10 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(unusedGlobalVariable);
   }
 
+  public void testUnusedGlobalVar2_2() {
+    checkByFile(unusedGlobalVariable);
+  }
+
   public void testUnusedGlobalVar3() {
     checkByFile(unusedGlobalVariable);
   }
@@ -141,6 +145,7 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   public void testDeclareLocalNoProblem1() {
     checkByFileNoProblemAtCaret(declareLocalInspection);
   }
+
   public void testDeclareLocalNoProblem2() {
     checkByFileNoProblemAtCaret(declareLocalInspection);
   }

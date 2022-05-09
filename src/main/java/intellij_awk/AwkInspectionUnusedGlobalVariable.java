@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.searches.ReferencesSearch;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.Query;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
@@ -66,11 +67,9 @@ public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
     }
 
     private void deleteDeclarationStatement(PsiElement psiElement) {
-      PsiElement statement = AwkUtil.findParent(psiElement, AwkTerminatedStatement.class);
-      if (statement == null) {
-        statement = AwkUtil.findParent(psiElement, AwkUnterminatedStatement.class);
-      }
-      statement.delete();
+      PsiTreeUtil.getParentOfType(
+              psiElement, AwkTerminatedStatement.class, AwkUnterminatedStatement.class)
+          .delete();
     }
   }
 }
