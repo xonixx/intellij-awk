@@ -11,6 +11,8 @@ import com.intellij.util.Query;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Consumer;
+
 public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
 
   private static final DeleteUnusedGlobalVariableQuickFix deleteUnusedGlobalVariableQuickFix =
@@ -26,7 +28,12 @@ public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
         AwkUserVarNameMixin userVarNameMixin = (AwkUserVarNameMixin) userVarName;
         if (userVarNameMixin.isDeclaration()) {
           Query<PsiReference> references = ReferencesSearch.search(userVarNameMixin);
-          if (!references.iterator().hasNext()
+          if (!references.anyMatch(
+                  psiReference -> {
+                    PsiElement psiElement = psiReference.getElement();
+                    return psiElement instanceof AwkUserVarNameMixin
+                        && !((AwkUserVarNameMixin) psiElement).isDeclaration();
+                  })
               && userVarNameMixin.getReference().resolve() == null) {
             holder.registerProblem(
                 userVarNameMixin,
@@ -48,10 +55,18 @@ public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
 
     @Override
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-      PsiElement statement =
-          AwkUtil.findParent(descriptor.getPsiElement(), AwkTerminatedStatement.class);
+      PsiElement psiElement = descriptor.getPsiElement();
+      ReferencesSearch.search(psiElement)
+          .forEach(
+              (Consumer<? super PsiReference>)
+                  psiReference -> deleteDeclarationStatement(psiReference.getElement()));
+      deleteDeclarationStatement(psiElement);
+    }
+
+    private void deleteDeclarationStatement(PsiElement psiElement) {
+      PsiElement statement = AwkUtil.findParent(psiElement, AwkTerminatedStatement.class);
       if (statement == null) {
-        statement = AwkUtil.findParent(descriptor.getPsiElement(), AwkUnterminatedStatement.class);
+        statement = AwkUtil.findParent(psiElement, AwkUnterminatedStatement.class);
       }
       statement.delete();
     }
