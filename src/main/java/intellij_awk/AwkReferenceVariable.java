@@ -107,7 +107,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
   private @Nullable Resolved resolveInAllFilesDeclarationsInInit(
       String type, AwkNamedElement userVarName) {
     Collection<AwkUserVarNameImpl> userVarDeclarations =
-        AwkUtil.findUserVars(userVarName.getProject(), userVarName.getName());
+        AwkUtil.findUserVarDeclarations(userVarName.getProject(), userVarName.getName());
     Resolved resolved = null;
     if (!userVarDeclarations.isEmpty()) {
       AwkUserVarNameImpl found = userVarDeclarations.iterator().next();

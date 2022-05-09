@@ -72,9 +72,9 @@ public class AwkUtil {
     return findFunctions(project, name, GlobalSearchScope.projectScope(project));
   }
 
-  public static Collection<AwkUserVarNameImpl> findUserVars(Project project, String name) {
+  public static Collection<AwkUserVarNameImpl> findUserVarDeclarations(Project project, String name) {
     return StubIndex.getElements(
-        AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
+        AwkUserVarNameStubElementType.IndexUserVarDeclarations.KEY,
         name,
         project,
         GlobalSearchScope.projectScope(project),
@@ -109,7 +109,7 @@ public class AwkUtil {
     for (String key : allKeys) {
       result.addAll(
           StubIndex.getElements(
-              AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
+              AwkUserVarNameStubElementType.IndexUserVarDeclarations.KEY,
               key,
               project,
               GlobalSearchScope.projectScope(project),
@@ -128,7 +128,7 @@ public class AwkUtil {
   public static Collection<String> findGlobalVarNames(Project project) {
     return StubIndex.getInstance()
         .getAllKeys(
-            AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
+            AwkUserVarNameStubElementType.IndexUserVarDeclarations.KEY,
             project);
   }
 

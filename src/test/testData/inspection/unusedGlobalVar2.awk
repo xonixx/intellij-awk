@@ -1,3 +1,3 @@
 BEGIN {
-    Gl<caret>obalArr["aaa"]
+    gl<caret>obalArr["aaa"]
 }

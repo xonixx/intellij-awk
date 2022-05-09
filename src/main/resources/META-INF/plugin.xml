@@ -49,7 +49,7 @@
 
         <stubIndex implementation="intellij_awk.psi.AwkFunctionNameStubElementType$Index"/>
         <stubIndex
-                implementation="intellij_awk.psi.AwkUserVarNameStubElementType$IndexUserVarDeclarationsInsideInitializingContext"/>
+                implementation="intellij_awk.psi.AwkUserVarNameStubElementType$IndexUserVarDeclarations"/>
 
         <localInspection language="AWK" groupName="AWK"
                          displayName="Unused parameter"

@@ -17,7 +17,8 @@ import javax.swing.*;
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 
 public abstract class AwkUserVarNameMixin
-    extends AwkNamedStubBasedPsiElementBase<AwkUserVarNameStub> implements AwkUserVarName {
+    extends AwkNamedStubBasedPsiElementBase<AwkUserVarNameStub>
+    implements AwkUserVarName, AwkUserVarNameDeclaration {
 
   /**
    *
