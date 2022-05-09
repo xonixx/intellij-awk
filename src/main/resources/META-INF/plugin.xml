@@ -62,6 +62,11 @@
                          level="WARNING"
                          implementationClass="intellij_awk.AwkInspectionUnusedFunction"/>
         <localInspection language="AWK" groupName="AWK"
+                         displayName="Unused global variable"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="intellij_awk.AwkInspectionUnusedGlobalVariable"/>
+        <localInspection language="AWK" groupName="AWK"
                          displayName="Unresolved function"
                          enabledByDefault="true"
                          level="ERROR"
