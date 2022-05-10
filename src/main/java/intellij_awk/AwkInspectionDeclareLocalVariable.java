@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  *   <li>Always define globals as MixedCase starting an Uppercase letter
  * </ul>
  */
-public class AwkInspectionVariablesNaming extends LocalInspectionTool {
+public class AwkInspectionDeclareLocalVariable extends LocalInspectionTool {
 
   private static final DeclareAsLocalParamQuickFix declareAsLocalParamQuickFix =
       new DeclareAsLocalParamQuickFix();

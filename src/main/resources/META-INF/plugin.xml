@@ -80,7 +80,7 @@
                          displayName="Variables naming"
                          enabledByDefault="true"
                          level="WARNING"
-                         implementationClass="intellij_awk.AwkInspectionVariablesNaming"/>
+                         implementationClass="intellij_awk.AwkInspectionDeclareLocalVariable"/>
 
         <codeInsight.parameterInfo language="AWK"
                                    implementationClass="intellij_awk.AwkParameterInfoHandler"/>

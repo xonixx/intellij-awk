@@ -31,7 +31,7 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
   private final Inspection declareLocalInspection =
       new Inspection(
-          new AwkInspectionVariablesNaming(), AwkInspectionVariablesNaming.QUICK_FIX_DECLARE_LOCAL);
+          new AwkInspectionDeclareLocalVariable(), AwkInspectionDeclareLocalVariable.QUICK_FIX_DECLARE_LOCAL);
 
   public void testUnusedFunctionParam1() {
     checkByFile(unusedFunctionParam);
