@@ -29,9 +29,15 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   private final Inspection duplicateFunction =
       new Inspection(new AwkInspectionDuplicateFunction(), null);
 
-  private final Inspection declareLocalInspection =
+  private final Inspection declareLocal =
       new Inspection(
-          new AwkInspectionDeclareLocalVariable(), AwkInspectionDeclareLocalVariable.QUICK_FIX_DECLARE_LOCAL);
+          new AwkInspectionDeclareLocalVariable(),
+          AwkInspectionDeclareLocalVariable.QUICK_FIX_NAME);
+
+  private final Inspection enforceGlobalVarNaming =
+      new Inspection(
+          new AwkInspectionEnforceGlobalVariableNaming(),
+          AwkInspectionEnforceGlobalVariableNaming.QUICK_FIX_NAME);
 
   public void testUnusedFunctionParam1() {
     checkByFile(unusedFunctionParam);
@@ -114,40 +120,40 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   }
 
   public void testDeclareLocal1_0() {
-    checkByFile(declareLocalInspection);
+    checkByFile(declareLocal);
   }
 
   public void testDeclareLocal1_1() {
     // checks that we only report on first same variable occurrence
-    checkByFileNoProblemAtCaret(declareLocalInspection);
+    checkByFileNoProblemAtCaret(declareLocal);
   }
 
   public void testDeclareLocal2_0() {
-    checkByFile(declareLocalInspection);
+    checkByFile(declareLocal);
   }
 
   public void testDeclareLocal2_1() {
-    checkByFile(declareLocalInspection);
+    checkByFile(declareLocal);
   }
 
   public void testDeclareLocal2_2() {
-    checkByFile(declareLocalInspection);
+    checkByFile(declareLocal);
   }
 
   public void testDeclareLocal2_3() {
-    checkByFile(declareLocalInspection);
+    checkByFile(declareLocal);
   }
 
   public void testDeclareLocal2_4() {
-    checkByFile(declareLocalInspection);
+    checkByFile(declareLocal);
   }
 
   public void testDeclareLocalNoProblem1() {
-    checkByFileNoProblemAtCaret(declareLocalInspection);
+    checkByFileNoProblemAtCaret(declareLocal);
   }
 
   public void testDeclareLocalNoProblem2() {
-    checkByFileNoProblemAtCaret(declareLocalInspection);
+    checkByFileNoProblemAtCaret(declareLocal);
   }
 
   public void testDupFunctionsNotReportedUnused() {
@@ -173,6 +179,18 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
   public void testUnresolvedFunctionCall3() {
     checkByFileNoProblemAtCaret(unresolvedFunctionCall);
+  }
+
+  public void testEnforceGlobalVarNaming1() {
+    checkByFile(enforceGlobalVarNaming);
+  }
+
+  public void testEnforceGlobalVarNaming2() {
+    checkByFile(enforceGlobalVarNaming);
+  }
+
+  public void testEnforceGlobalVarNaming3() {
+    checkByFile(enforceGlobalVarNaming);
   }
 
   @Override

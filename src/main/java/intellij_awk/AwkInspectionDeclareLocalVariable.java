@@ -27,7 +27,7 @@ public class AwkInspectionDeclareLocalVariable extends LocalInspectionTool {
 
   private static final DeclareAsLocalParamQuickFix declareAsLocalParamQuickFix =
       new DeclareAsLocalParamQuickFix();
-  public static final String QUICK_FIX_DECLARE_LOCAL = "Declare as local variable";
+  public static final String QUICK_FIX_NAME = "Declare as local variable";
 
   @Override
   public @NotNull PsiElementVisitor buildVisitor(
@@ -82,7 +82,7 @@ public class AwkInspectionDeclareLocalVariable extends LocalInspectionTool {
 
     @Override
     public @IntentionFamilyName @NotNull String getFamilyName() {
-      return QUICK_FIX_DECLARE_LOCAL;
+      return QUICK_FIX_NAME;
     }
 
     @Override

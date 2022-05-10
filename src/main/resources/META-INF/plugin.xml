@@ -81,6 +81,11 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="intellij_awk.AwkInspectionDeclareLocalVariable"/>
+        <localInspection language="AWK" groupName="AWK"
+                         displayName="Variables naming"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="intellij_awk.AwkInspectionEnforceGlobalVariableNaming"/>
 
         <codeInsight.parameterInfo language="AWK"
                                    implementationClass="intellij_awk.AwkParameterInfoHandler"/>
