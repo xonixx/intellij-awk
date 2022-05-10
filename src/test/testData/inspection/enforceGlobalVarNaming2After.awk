@@ -1,9 +1,9 @@
 function initFunc() {
-    Var = 1
+    VarName = 1
 }
 BEGIN {
     initFunc()
 }
 END {
-    print Var
+    print VarName
 }

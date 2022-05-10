@@ -52,8 +52,7 @@ public class AwkInspectionEnforceGlobalVariableNaming extends LocalInspectionToo
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
       PsiElement psiElement = descriptor.getPsiElement();
       AwkUserVarNameMixin userVarNameMixin = (AwkUserVarNameMixin) psiElement;
-      // TODO shall we do smth more clever like 'aaa_bbb' -> 'AaaBbb'?
-      String newName = Util.ucFirst(userVarNameMixin.getName());
+      String newName = Util.lowerUnderscoreToCamelCase(userVarNameMixin.getName());
       ReferencesSearch.search(psiElement)
           .forEach(
               (Consumer<? super PsiReference>)
