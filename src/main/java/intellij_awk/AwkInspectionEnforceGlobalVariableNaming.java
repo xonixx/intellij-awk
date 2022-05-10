@@ -28,20 +28,12 @@ public class AwkInspectionEnforceGlobalVariableNaming extends LocalInspectionToo
       public void visitUserVarName(@NotNull AwkUserVarName userVarName) {
         AwkUserVarNameMixin userVarNameMixin = (AwkUserVarNameMixin) userVarName;
         if (userVarNameMixin.isDeclaration()
-            || userVarNameMixin.looksLikeDeclaration()
-                && Util.startsWithUppercaseLetter(userVarNameMixin.getName())) {
-          Query<PsiReference> references = ReferencesSearch.search(userVarNameMixin);
-          if (!references.anyMatch(
-                  psiReference -> {
-                    PsiElement psiElement = psiReference.getElement();
-                    return psiElement instanceof AwkUserVarNameMixin
-                        && !((AwkUserVarNameMixin) psiElement).isDeclaration();
-                  })
-              && userVarNameMixin.getReference().resolve() == null) {
+            && Util.startsWithLowercaseLetter(userVarNameMixin.getName())) {
+          if (userVarNameMixin.getReference().resolve() == null) { // is top declaration
             holder.registerProblem(
                 userVarNameMixin,
                 "Global variable name '" + userVarNameMixin.getName() + "' is in lowercase",
-                ProblemHighlightType.LIKE_UNUSED_SYMBOL,
+                ProblemHighlightType.WARNING,
                 uppercaseGlobalVariableNameQuickFix);
           }
         }
@@ -67,9 +59,9 @@ public class AwkInspectionEnforceGlobalVariableNaming extends LocalInspectionToo
     }
 
     private void deleteDeclarationStatement(PsiElement psiElement) {
-      PsiTreeUtil.getParentOfType(
-              psiElement, AwkTerminatedStatement.class, AwkUnterminatedStatement.class)
-          .delete();
+      //      PsiTreeUtil.getParentOfType(
+      //              psiElement, AwkTerminatedStatement.class, AwkUnterminatedStatement.class)
+      //          .delete();
     }
   }
 }
