@@ -13,4 +13,10 @@ public final class Util {
   public static boolean startsWithUppercaseLetter(String string) {
     return ucLetterFirst.matcher(string).find();
   }
+
+  public static String ucFirst(String str) {
+    if (str == null) return null;
+    if (str.length() == 0) return str;
+    return str.substring(0, 1).toUpperCase() + str.substring(1);
+  }
 }
