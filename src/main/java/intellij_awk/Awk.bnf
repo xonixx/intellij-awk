@@ -6,6 +6,9 @@
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
+// TODO maybe this can be of use
+//  implements="intellij_awk.psi.AwkBaseElement"
+
   psiClassPrefix="Awk"
   psiImplClassSuffix="Impl"
   psiPackage="intellij_awk.psi"
@@ -153,6 +156,7 @@
 
   extends("unary_expr|non_unary_expr")=expr
   extends("begin_block|end_block")=begin_or_end
+  extends("function_call_user|function_call_built_in")=function_call_expr
 }
 
 // /pattern/
@@ -165,7 +169,7 @@ program ::= newlines_opt (item terminator?)* newlines_opt
 // { ... }
 // 1
 // function a() { ... }
-item             ::= FUNCTION function_name LPAREN param_list? RPAREN
+item             ::= FUNCTION function_name param_list_start RPAREN
                        newlines_opt action
 
                      // TODO this leaves us too permissive: it will parse: @namespace "a" @namespace "b"
@@ -175,6 +179,11 @@ item             ::= FUNCTION function_name LPAREN param_list? RPAREN
 
                    | pattern action?
                    | action
+
+private param_list_start ::= LPAREN param_list? {
+    pin=1
+    recoverWhile=recover_on_rparen
+}
 
 include_path     ::= STRING {
     mixin="intellij_awk.psi.AwkIncludePathMixin"
@@ -349,32 +358,48 @@ private ternary_expr       ::= QUESTION newlines_opt expr       COLON newlines_o
 private ternary_print_expr ::= QUESTION newlines_opt print_expr COLON newlines_opt print_expr
 
 non_unary_expr   ::= (
-                           LPAREN expr RPAREN
-                         | LPAREN expr_lst RPAREN IN gawk_var_name
+                           LPAREN ( expr RPAREN
+                                  | expr_lst RPAREN IN gawk_var_name
+                                  )
                          | NOT expr
                          | simple_get (LT expr)?
                          | NUMBER
                          | STRING
                          | ERE
-                         | lvalue INCR
-                         | lvalue DECR
                          | INCR lvalue
                          | DECR lvalue
-                         | lvalue POW_ASSIGN expr
-                         | lvalue MOD_ASSIGN expr
-                         | lvalue MUL_ASSIGN expr
-                         | lvalue DIV_ASSIGN expr
-                         | lvalue ADD_ASSIGN expr
-                         | lvalue SUB_ASSIGN expr
-                         | lvalue ASSIGN     gawk_expr
-                         | lvalue
-                         | function_call
-                         | function_call_built_in
+                         | function_call_expr
+                         | lvalue [   INCR
+                                    | DECR
+                                    | POW_ASSIGN expr
+                                    | MOD_ASSIGN expr
+                                    | MUL_ASSIGN expr
+                                    | DIV_ASSIGN expr
+                                    | ADD_ASSIGN expr
+                                    | SUB_ASSIGN expr
+                                    | ASSIGN     gawk_expr
+                                  ]
                      )
                      non_unary_expr1
 
-private function_call       ::= AT? function_call_name LPAREN gawk_func_call_list_opt RPAREN /* no white space allowed before LPAREN */
-private function_call_built_in ::= (BUILTIN_FUNC_NAME | BUILTIN_FUNC_NAME_GAWK) [ LPAREN gawk_func_call_list_opt RPAREN ]
+fake function_call               ::= gawk_func_call_list_opt
+{
+    mixin="intellij_awk.psi.AwkNamedElementImpl"
+    implements="intellij_awk.psi.AwkNamedElement"
+}
+
+function_call_expr               ::= function_call_user | function_call_built_in {
+    extends=function_call
+    elementType=function_call
+}
+
+private func_call_args_start ::= LPAREN gawk_func_call_list_opt {
+    pin=1
+    recoverWhile=recover_on_rparen
+}
+private recover_on_rparen ::= !RPAREN
+function_call_user       ::= AT? function_call_name func_call_args_start RPAREN /* no white space allowed before LPAREN */
+function_call_built_in ::= (BUILTIN_FUNC_NAME | BUILTIN_FUNC_NAME_GAWK) [ func_call_args_start RPAREN ]
 
 function_call_name          ::= FUNC_NAME
 {
@@ -442,20 +467,19 @@ private non_unary_print_expr ::= (
                      | NUMBER
                      | STRING
                      | ERE
-                     | lvalue INCR
-                     | lvalue DECR
                      | INCR lvalue
                      | DECR lvalue
-                     | lvalue POW_ASSIGN print_expr
-                     | lvalue MOD_ASSIGN print_expr
-                     | lvalue MUL_ASSIGN print_expr
-                     | lvalue DIV_ASSIGN print_expr
-                     | lvalue ADD_ASSIGN print_expr
-                     | lvalue SUB_ASSIGN print_expr
-                     | lvalue ASSIGN     print_expr
-                     | lvalue
-                     | function_call
-                     | function_call_built_in
+                     | function_call_expr
+                     | lvalue [   INCR
+                                | DECR
+                                | POW_ASSIGN print_expr
+                                | MOD_ASSIGN print_expr
+                                | MUL_ASSIGN print_expr
+                                | DIV_ASSIGN print_expr
+                                | ADD_ASSIGN print_expr
+                                | SUB_ASSIGN print_expr
+                                | ASSIGN     print_expr
+                              ]
                  )
                  non_unary_print_expr1
 
@@ -490,7 +514,21 @@ lvalue           ::= gawk_var_name | DOLLAR expr
 // XXX awk only supports a[1]
 private gawk_var_name ::= var_name (LBRACKET expr_lst RBRACKET)*
 
-private var_name ::= SPECIAL_VAR_NAME | SPECIAL_VAR_NAME_GAWK | user_var_name
+// XXX for some reason the below makes it terribly slow or hanging on profile5.awk
+/*private gawk_var_name ::= var_name (subscript_start RBRACKET)*
+private subscript_start ::= LBRACKET expr_lst {
+    pin=1
+    recoverWhile=recover_on_rbracket
+}
+private recover_on_rbracket ::= !RBRACKET*/
+
+private var_name ::= builtin_var_name | user_var_name
+
+builtin_var_name ::= SPECIAL_VAR_NAME | SPECIAL_VAR_NAME_GAWK
+{
+    mixin="intellij_awk.psi.AwkNamedElementImpl"
+    implements="intellij_awk.psi.AwkNamedElement"
+}
 
 user_var_name ::= VAR_NAME {
     mixin="intellij_awk.psi.AwkUserVarNameMixin"

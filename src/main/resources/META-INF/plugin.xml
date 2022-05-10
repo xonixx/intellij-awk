@@ -1,7 +1,8 @@
-<idea-plugin>
+<!-- TODO remove require-restart="true" when https://github.com/xonixx/intellij-awk/issues/97 is resolved -->
+<idea-plugin require-restart="true">
     <id>intellij-awk</id>
     <name>AWK Support</name>
-    <vendor email="xonixx@gmail.com" url="https://www.linkedin.com/in/gubarkovv/">Volodymyr Gubarkov</vendor>
+    <vendor email="xonixx@gmail.com" url="https://github.com/xonixx/intellij-awk">Volodymyr Gubarkov</vendor>
 
     <description>placeholder</description>
     <change-notes>placeholder</change-notes>
@@ -43,8 +44,52 @@
 
         <lang.braceMatcher language="AWK" implementationClass="intellij_awk.AwkBraceMatcher"/>
 
+        <lang.documentationProvider language="AWK"
+                                    implementationClass="intellij_awk.AwkDocumentationProvider"/>
+
         <stubIndex implementation="intellij_awk.psi.AwkFunctionNameStubElementType$Index"/>
-        <stubIndex implementation="intellij_awk.psi.AwkUserVarNameStubElementType$IndexUserVarDeclarationsInsideInitializingContext"/>
+        <stubIndex
+                implementation="intellij_awk.psi.AwkUserVarNameStubElementType$IndexUserVarDeclarations"/>
+
+        <localInspection language="AWK" groupName="AWK"
+                         displayName="Unused parameter"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="intellij_awk.AwkInspectionUnusedFunctionParam"/>
+        <localInspection language="AWK" groupName="AWK"
+                         displayName="Unused function"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="intellij_awk.AwkInspectionUnusedFunction"/>
+        <localInspection language="AWK" groupName="AWK"
+                         displayName="Unused global variable"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="intellij_awk.AwkInspectionUnusedGlobalVariable"/>
+        <localInspection language="AWK" groupName="AWK"
+                         displayName="Unresolved function"
+                         enabledByDefault="true"
+                         level="ERROR"
+                         implementationClass="intellij_awk.AwkInspectionUnresolvedFunction"/>
+        <localInspection language="AWK" groupName="AWK"
+                         displayName="Duplicate function"
+                         enabledByDefault="true"
+                         level="ERROR"
+                         implementationClass="intellij_awk.AwkInspectionDuplicateFunction"/>
+        <localInspection language="AWK" groupName="AWK"
+                         displayName="Variables naming"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="intellij_awk.AwkInspectionDeclareLocalVariable"/>
+        <localInspection language="AWK" groupName="AWK"
+                         displayName="Variables naming"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="intellij_awk.AwkInspectionEnforceGlobalVariableNaming"/>
+
+        <codeInsight.parameterInfo language="AWK"
+                                   implementationClass="intellij_awk.AwkParameterInfoHandler"/>
+
     </extensions>
 
     <actions>

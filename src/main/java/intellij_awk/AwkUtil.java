@@ -3,15 +3,18 @@ package intellij_awk;
 import com.intellij.codeInsight.completion.InsertHandler;
 import com.intellij.codeInsight.lookup.Lookup;
 import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.lang.ASTNode;
 import com.intellij.openapi.editor.EditorModificationUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StubIndex;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
@@ -40,6 +43,11 @@ public class AwkUtil {
     return null;
   }
 
+  @Nullable
+  public static PsiElement findFirstMatchedDeep(PsiElement root, IElementType elementType) {
+    return findFirstMatchedDeep(root, psiElement -> isType(psiElement, elementType));
+  }
+
   public static void findAllMatchedDeep(
       @Nullable PsiElement root, Predicate<PsiElement> predicate, Collection<PsiElement> result) {
     if (root == null) return;
@@ -64,9 +72,9 @@ public class AwkUtil {
     return findFunctions(project, name, GlobalSearchScope.projectScope(project));
   }
 
-  public static Collection<AwkUserVarNameImpl> findUserVars(Project project, String name) {
+  public static Collection<AwkUserVarNameImpl> findUserVarDeclarations(Project project, String name) {
     return StubIndex.getElements(
-        AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
+        AwkUserVarNameStubElementType.IndexUserVarDeclarations.KEY,
         name,
         project,
         GlobalSearchScope.projectScope(project),
@@ -101,7 +109,7 @@ public class AwkUtil {
     for (String key : allKeys) {
       result.addAll(
           StubIndex.getElements(
-              AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
+              AwkUserVarNameStubElementType.IndexUserVarDeclarations.KEY,
               key,
               project,
               GlobalSearchScope.projectScope(project),
@@ -120,7 +128,7 @@ public class AwkUtil {
   public static Collection<String> findGlobalVarNames(Project project) {
     return StubIndex.getInstance()
         .getAllKeys(
-            AwkUserVarNameStubElementType.IndexUserVarDeclarationsInsideInitializingContext.KEY,
+            AwkUserVarNameStubElementType.IndexUserVarDeclarations.KEY,
             project);
   }
 
@@ -170,9 +178,22 @@ public class AwkUtil {
   }
 
   public static PsiElement getPrevNotWhitespace(PsiElement element) {
-    while ((element = element.getPrevSibling()) instanceof PsiWhiteSpace)
+    while ((element = element.getPrevSibling()) instanceof PsiWhiteSpace
+        || isLineContinuation(element))
       ;
     return element;
+  }
+
+  public static PsiElement getNextNotWhitespace(PsiElement element) {
+    while ((element = element.getNextSibling()) instanceof PsiWhiteSpace
+        || isLineContinuation(element))
+      ;
+    return element;
+  }
+
+  /** Line continuation is '\' followed by newline */
+  public static boolean isLineContinuation(PsiElement element) {
+    return element instanceof PsiComment && element.textMatches("\\\n");
   }
 
   /** "\"value\"" -> "value" */
@@ -185,5 +206,34 @@ public class AwkUtil {
     List<PsiElement> userVars = new ArrayList<>();
     findAllMatchedDeep(psiElement, psiEl -> psiEl instanceof AwkUserVarNameMixin, userVars);
     return userVars;
+  }
+
+  public static boolean isNotType(PsiElement psiElement, IElementType elementType) {
+    return !isType(psiElement, elementType);
+  }
+
+  public static boolean isType(PsiElement psiElement, IElementType elementType) {
+    if (psiElement == null) {
+      return false;
+    }
+    ASTNode node = psiElement.getNode();
+    return node != null && elementType.equals(node.getElementType());
+  }
+
+  @NotNull
+  public static String getDocStringFromCommentBefore(PsiElement psiElement) {
+    if (psiElement == null) {
+      return "";
+    }
+    StringBuilder sb = new StringBuilder();
+    PsiElement e = psiElement;
+    while ((e = e.getPrevSibling()) instanceof PsiComment || isType(e, AwkTypes.NEWLINE)) {
+      String text = e.getText();
+      if (text.startsWith("#")) {
+        text = text.substring(1).stripLeading();
+      }
+      sb.insert(0, text);
+    }
+    return sb.toString();
   }
 }

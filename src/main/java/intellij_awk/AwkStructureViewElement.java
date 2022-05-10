@@ -107,8 +107,7 @@ public class AwkStructureViewElement implements StructureViewTreeElement, Sortab
           psiElement ->
               psiElement instanceof AwkUserVarNameMixin
                   && !mostLikelyLocal.contains(((AwkUserVarNameMixin) psiElement).getName())
-                  && ((AwkUserVarNameMixin) psiElement).isInsideInitializingContext()
-                  && (((AwkUserVarNameMixin) psiElement).looksLikeDeclaration()),
+                  && ((AwkUserVarNameMixin) psiElement).isDeclaration(),
           vars);
 
       for (PsiElement var : vars) {

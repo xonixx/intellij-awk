@@ -20,7 +20,7 @@ public class AwkChooseByNameContributorGlobalVars implements ChooseByNameContrib
   public NavigationItem @NotNull [] getItemsByName(
       String name, String pattern, Project project, boolean includeNonProjectItems) {
     // TODO: include non project items
-    Collection<AwkUserVarNameImpl> globalVars = AwkUtil.findUserVars(project, name);
+    Collection<AwkUserVarNameImpl> globalVars = AwkUtil.findUserVarDeclarations(project, name);
     return globalVars.isEmpty()
         ? NavigationItem.EMPTY_NAVIGATION_ITEM_ARRAY
         : new NavigationItem[] {globalVars.iterator().next()};

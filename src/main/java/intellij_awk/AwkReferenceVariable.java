@@ -24,7 +24,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
   public Resolved.AwkResolvedResult @NotNull [] multiResolve(boolean incompleteCode) {
     List<Resolved.AwkResolvedResult> res = new ArrayList<>();
 
-    Resolved ref = resolveFunctionArgument("RESOLVE-ARG", myElement);
+    Resolved ref =
+        resolveFunctionParameter("RESOLVE-ARG", myElement); // TODO rename to RESOLVE-PARAM
     if (ref == null) {
       ref = resolveInCurrentFile("RESOLVE-CUR-INIT-DECL", true, true, myElement);
     }
@@ -49,7 +50,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     return res.toArray(new AwkReferenceVariable.Resolved.AwkResolvedResult[0]);
   }
 
-  private @Nullable Resolved resolveFunctionArgument(String type, AwkNamedElement userVarName) {
+  private @Nullable Resolved resolveFunctionParameter(String type, AwkNamedElement userVarName) {
     PsiElement parent = userVarName;
     while (true) {
       parent = parent.getParent();
@@ -106,7 +107,7 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
   private @Nullable Resolved resolveInAllFilesDeclarationsInInit(
       String type, AwkNamedElement userVarName) {
     Collection<AwkUserVarNameImpl> userVarDeclarations =
-        AwkUtil.findUserVars(userVarName.getProject(), userVarName.getName());
+        AwkUtil.findUserVarDeclarations(userVarName.getProject(), userVarName.getName());
     Resolved resolved = null;
     if (!userVarDeclarations.isEmpty()) {
       AwkUserVarNameImpl found = userVarDeclarations.iterator().next();

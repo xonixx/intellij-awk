@@ -250,6 +250,10 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
             + "}");
   }
 
+  public void testMultipleFunc1() {
+    doTest(1, "BEGIN { f<caret>() }\nfunction f() {}\nfunction f() {}");
+  }
+
   public void testMultipleFilesFunc1() {
     doTest(
         5,

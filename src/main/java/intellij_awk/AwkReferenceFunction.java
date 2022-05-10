@@ -35,6 +35,7 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElement>
 
     for (AwkFunctionNameImpl functionName : functionNames) {
       res.add(new PsiElementResolveResult(functionName));
+      break; // only reference first found function to prevent erroneous unused function error
     }
 
     return res.toArray(new ResolveResult[0]);

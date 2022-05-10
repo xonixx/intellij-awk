@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.stubs.IStubElementType;
 import intellij_awk.AwkIcons;
+import intellij_awk.AwkUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,11 +70,11 @@ public abstract class AwkFunctionNameMixin
     if (awkFunctionNameStub != null) {
       return awkFunctionNameStub.getSignatureString();
     }
-    return "(" + String.join(", ", getArgumentNames()) + ")";
+    return "(" + String.join(", ", getParameterNames()) + ")";
   }
 
-  /** @return argument names excluding "local" */
-  private List<String> getArgumentNames() {
+  /** @return parameter names excluding "local" */
+  public List<String> getParameterNames() {
     List<String> result = new ArrayList<>();
     AwkItem awkItem = (AwkItem) getParent();
     AwkParamList awkParamList = awkItem.getParamList();
@@ -96,7 +97,7 @@ public abstract class AwkFunctionNameMixin
     return result;
   }
 
-  public List<String> getArgumentNamesIncludingLocals() {
+  public List<String> getParameterNamesIncludingLocals() {
     List<String> result = new ArrayList<>();
     AwkItem awkItem = (AwkItem) getParent();
     AwkParamList awkParamList = awkItem.getParamList();
@@ -115,7 +116,7 @@ public abstract class AwkFunctionNameMixin
   private boolean isWhitespaceBeforeLocals(PsiElement psiElement) {
     if (psiElement instanceof PsiWhiteSpace || psiElement instanceof PsiComment) {
       return psiElement instanceof PsiWhiteSpace && psiElement.getTextLength() >= 3
-          || psiElement instanceof PsiComment && psiElement.textMatches("\\\n")
+          || AwkUtil.isLineContinuation(psiElement)
           || isWhitespaceBeforeLocals(psiElement.getPrevSibling());
     }
 

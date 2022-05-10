@@ -17,44 +17,6 @@ import static com.intellij.patterns.StandardPatterns.or;
 
 public class AwkCompletionContributorVariables extends CompletionContributor {
 
-  private static final String[] builtInVariables =
-      new String[] {
-        "ARGC",
-        "ARGV",
-        "CONVFMT",
-        "ENVIRON",
-        "FILENAME",
-        "FNR",
-        "FS",
-        "NF",
-        "NR",
-        "OFMT",
-        "OFS",
-        "ORS",
-        "RLENGTH",
-        "RS",
-        "RSTART",
-        "SUBSEP"
-      };
-
-  private static final String[] gawkVariables =
-      new String[] {
-        "BINMODE",
-        "FIELDWIDTHS",
-        "FPAT",
-        "IGNORECASE",
-        "LINT",
-        "PREC",
-        "ROUNDMODE",
-        "TEXTDOMAIN",
-        "ARGIND",
-        "ERRNO",
-        "FUNCTAB",
-        "PROCINFO",
-        "RT",
-        "SYMTAB"
-      };
-
   public AwkCompletionContributorVariables() {
     extend(
         CompletionType.BASIC,
@@ -70,7 +32,7 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
 
             final PsiElement psiElement = parameters.getPosition();
 
-            addFunctionArgumentsAndVarsInBody(resultSet, psiElement);
+            addFunctionParametersAndVarsInBody(resultSet, psiElement);
 
             addGlobalVarsInCurrentFile(resultSet, psiElement);
 
@@ -81,7 +43,7 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
         });
   }
 
-  private void addFunctionArgumentsAndVarsInBody(
+  private void addFunctionParametersAndVarsInBody(
       @NotNull CompletionResultSet resultSet, PsiElement psiElement) {
     AwkItem awkItem = AwkUtil.findParent(psiElement, AwkItem.class);
     if (awkItem != null) {
@@ -89,9 +51,9 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
       AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
       AwkAction action = awkItem.getAction();
       if (paramList != null) {
-        List<String> args = functionName.getArgumentNamesIncludingLocals();
-        for (String arg : args) {
-          resultSet.addElement(LookupElementBuilder.create(arg).withIcon(AwkIcons.PARAMETER));
+        List<String> params = functionName.getParameterNamesIncludingLocals();
+        for (String param : params) {
+          resultSet.addElement(LookupElementBuilder.create(param).withIcon(AwkIcons.PARAMETER));
         }
       }
       if (functionName != null) {
@@ -133,14 +95,14 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
   }
 
   private void addBuiltIns(@NotNull CompletionResultSet resultSet) {
-    for (String builtInVariable : builtInVariables) {
+    for (String builtInVariable : AwkVariables.builtInVariables) {
       resultSet.addElement(
           LookupElementBuilder.create(builtInVariable)
               .withBoldness(true)
               .withItemTextItalic(true)
               .withIcon(AwkIcons.VARIABLE));
     }
-    for (String builtInVariable : gawkVariables) {
+    for (String builtInVariable : AwkVariables.gawkVariables) {
       resultSet.addElement(
           LookupElementBuilder.create(builtInVariable)
               .withBoldness(true)

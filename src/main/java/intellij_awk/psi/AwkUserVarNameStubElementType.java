@@ -53,12 +53,12 @@ public class AwkUserVarNameStubElementType
 
   @Override
   public void indexStub(@NotNull AwkUserVarNameStub stub, @NotNull IndexSink sink) {
-    if (stub.looksLikeDeclaration() && stub.isInsideInitializingContext()) {
-      sink.occurrence(IndexUserVarDeclarationsInsideInitializingContext.KEY, stub.getName());
+    if (stub.isDeclaration()) {
+      sink.occurrence(IndexUserVarDeclarations.KEY, stub.getName());
     }
   }
 
-  public static class IndexUserVarDeclarationsInsideInitializingContext
+  public static class IndexUserVarDeclarations
       extends StringStubIndexExtension<AwkUserVarNameImpl> {
     public static StubIndexKey<String, AwkUserVarNameImpl> KEY =
         StubIndexKey.createIndexKey(AwkUserVarName.class.getCanonicalName() + "|DeclInit");

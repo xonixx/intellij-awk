@@ -17,6 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static intellij_awk.AwkUtil.isNotType;
+import static intellij_awk.AwkUtil.isType;
+
 public class AwkFormattingBlock extends AbstractBlock {
 
   private final CodeStyleSettings codeStyleSettings;
@@ -46,6 +49,7 @@ public class AwkFormattingBlock extends AbstractBlock {
     while (child != null) {
       if (child.getElementType() != TokenType.WHITE_SPACE
           && child.getElementType() != AwkTypes.NEWLINE) {
+        //        System.out.println("Block: " + child.getText());
         blocks.add(
             new AwkFormattingBlock(
                 child,
@@ -110,7 +114,7 @@ public class AwkFormattingBlock extends AbstractBlock {
     ASTNode parent = node.getTreeParent();
     PsiElement prevSibling = AwkUtil.getPrevNotWhitespace(psi);
 
-    if (prevSibling.getNode().getElementType() != AwkTypes.ELSE) {
+    if (isNotType(prevSibling, AwkTypes.ELSE)) {
       return false;
     }
 
@@ -148,6 +152,7 @@ public class AwkFormattingBlock extends AbstractBlock {
       // considers the current case node block for new indent determination, not the parent switch
       return true;
     }
+    //    System.out.println("@@@ " + this + " :: " + super.isIncomplete());
     return super.isIncomplete();
   }
 
@@ -165,7 +170,7 @@ public class AwkFormattingBlock extends AbstractBlock {
         PsiElement errOrDummyBlockElt;
         if (prevNode.getElementType() == AwkTypes.RPAREN
             || (errOrDummyBlockElt = prevNode.getPsi().getLastChild()) != null
-                && errOrDummyBlockElt.getNode().getElementType() == AwkTypes.RPAREN) {
+                && isType(errOrDummyBlockElt, AwkTypes.RPAREN)) {
 
           // search corresponding LPAREN and then keyword before it
           while (--blockIndex > 0) {
@@ -186,7 +191,9 @@ public class AwkFormattingBlock extends AbstractBlock {
         }
       }
       return new ChildAttributes(Indent.getNoneIndent(), null);
-    } else if (psi instanceof AwkTerminatedStatementList) {
+    } else if (psi instanceof AwkTerminatedStatementList
+        // case of https://github.com/xonixx/intellij-awk/issues/106
+        || psi instanceof AwkTerminatedStatement) {
       return new ChildAttributes(Indent.getNoneIndent(), null);
     } else if (psi instanceof AwkCaseStatement) {
       return new ChildAttributes(Indent.getNormalIndent(true), null);

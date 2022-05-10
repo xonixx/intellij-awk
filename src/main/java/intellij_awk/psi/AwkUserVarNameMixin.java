@@ -17,7 +17,8 @@ import javax.swing.*;
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 
 public abstract class AwkUserVarNameMixin
-    extends AwkNamedStubBasedPsiElementBase<AwkUserVarNameStub> implements AwkUserVarName {
+    extends AwkNamedStubBasedPsiElementBase<AwkUserVarNameStub>
+    implements AwkUserVarName, AwkUserVarNameDeclaration {
 
   /**
    *
@@ -32,6 +33,7 @@ public abstract class AwkUserVarNameMixin
 
   /**
    *
+   * <li>Var TODO should we support this? bwk doesn't support, gawk/mawk do
    * <li>Var["key"]
    */
   private static final PsiElementPattern.@NotNull Capture<PsiElement> LVALUE_ASSIGN1 =
@@ -153,7 +155,7 @@ public abstract class AwkUserVarNameMixin
           || functionName != null
               && functionName.isInitFunction()
               && !functionName
-                  .getArgumentNamesIncludingLocals()
+                  .getParameterNamesIncludingLocals()
                   .contains(getName()) /* not local var */;
     }
 

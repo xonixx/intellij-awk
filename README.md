@@ -6,7 +6,7 @@ The missing IntelliJ IDEA language support plugin for [AWK](https://en.wikipedia
 
 ## Motivation
 
-- At the moment there is no AWK plugin for IDEA, which is a pity.
+- At the moment there ~~is~~was no AWK plugin for IDEA, which ~~is~~was a pity.
 - Help me develop [some](https://github.com/xonixx/makesure) of my own projects in AWK.
 - Interested to sharpen my Java skills and learn some IDEA internals.
 
@@ -31,16 +31,18 @@ The missing IntelliJ IDEA language support plugin for [AWK](https://en.wikipedia
 
 - [x] Add GAWK parsing mode
 
-## Goals v0.3.0
+## Goals v0.3.0 \[done]
 
-- [ ] Enforce variable naming convention (the idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools))
-  - [ ] `Name` for global
-  - [ ] `name` for local
-- [ ] Showing documentation for built-in functions
-- [ ] Showing documentation for built-in variables (`NR`/`NF`/etc.)
+- [x] Enforce variable naming convention (the idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools))
+  - [x] `name` for local
+- [x] Showing parameter hints for functions (Ctrl-P)
+- [x] Showing documentation for built-in functions
+- [x] Showing documentation for built-in variables (`NR`/`NF`/etc.)
     
 ## Future ideas
 
+- [ ] Enforce variable naming convention (the idea taken from [How I Write AWK Code](https://github.com/ttv1/aok/blob/master/docs/codingtips.md#debugging-tools))
+  - [ ] `Name` for global
 - [ ] Add settings switch to select Awk dialect (Posix vs Gawk)
 - [ ] Auto-format code via `gawk --pretty-print`
           

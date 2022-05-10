@@ -1,0 +1,1 @@
+BEGIN { globalVar<caret> = 1 }
