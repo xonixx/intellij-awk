@@ -15,8 +15,6 @@ repositories {
 
 dependencies {
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
 task lexer(type: org.jetbrains.grammarkit.tasks.GenerateLexer) {
@@ -154,9 +152,6 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
         <li>Basic auto-format</li>
     </ul>
 </p>""")
-}
-test {
-    useJUnitPlatform()
 }
 
 sourceSets.main.java.srcDirs 'src/main/gen'
