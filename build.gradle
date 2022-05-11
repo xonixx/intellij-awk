@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.7.3'
+    id 'org.jetbrains.intellij' version '1.4.0'
     id "org.jetbrains.grammarkit" version "2021.1.3"
 //    id 'org.jetbrains.kotlin.jvm' version '1.4.31'
 }
@@ -14,8 +14,6 @@ repositories {
 
 dependencies {
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
 task lexer(type: org.jetbrains.grammarkit.tasks.GenerateLexer) {
@@ -25,14 +23,24 @@ task lexer(type: org.jetbrains.grammarkit.tasks.GenerateLexer) {
     purgeOldFiles = true
 }
 
+task parser(type: org.jetbrains.grammarkit.tasks.GenerateParser) {
+//    dependsOn lexer
+
+    source = "src/main/java/intellij_awk/Awk.bnf"
+    targetRoot = 'src/main/gen'
+    pathToParser = "intellij_awk/AwkParser.java"
+    pathToPsiRoot = "intellij_awk/psi"
+    purgeOldFiles = true
+}
+
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2021.1.3'
+    version = '2021.1.3'
     plugins = ['com.intellij.java']
 }
 patchPluginXml {
-    untilBuild '222.*'
-    pluginDescription """
+    untilBuild.set('222.*')
+    pluginDescription.set("""
 <b>AWK Programming Language Support</b>
 <br/><br/>
 This plugin adds to IntelliJ IDEA the native support for <a href='https://en.wikipedia.org/wiki/AWK'>AWK</a> programming language.
@@ -41,8 +49,8 @@ variables/functions renaming, code completion, go to declaration, find usages, a
 Find more info at <a href="https://github.com/xonixx/intellij-awk">https://github.com/xonixx/intellij-awk</a>.
 <br/><br/>
 <i>Preliminary support for Gawk features is added!</i>
-"""
-    changeNotes """
+""")
+    changeNotes.set("""
 <p>
     <b>v0.3.1</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/10?closed=1">GitHub issues</a>
@@ -152,10 +160,7 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
         </li>
         <li>Basic auto-format</li>
     </ul>
-</p>"""
-}
-test {
-    useJUnitPlatform()
+</p>""")
 }
 
 sourceSets.main.java.srcDirs 'src/main/gen'
