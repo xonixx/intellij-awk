@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    // TODO is buggy in 1.1.6: https://github.com/JetBrains/gradle-intellij-plugin/issues/752
     id 'org.jetbrains.intellij' version '1.4.0'
     id "org.jetbrains.grammarkit" version "2021.1.3"
 //    id 'org.jetbrains.kotlin.jvm' version '1.4.31'
@@ -21,6 +20,16 @@ task lexer(type: org.jetbrains.grammarkit.tasks.GenerateLexer) {
     source = "src/main/java/intellij_awk/Awk.flex"
     targetDir = "src/main/gen/intellij_awk"
     targetClass = "AwkLexer"
+    purgeOldFiles = true
+}
+
+task parser(type: org.jetbrains.grammarkit.tasks.GenerateParser) {
+//    dependsOn lexer
+
+    source = "src/main/java/intellij_awk/Awk.bnf"
+    targetRoot = 'src/main/gen'
+    pathToParser = "intellij_awk/AwkParser.java"
+    pathToPsiRoot = "intellij_awk/psi"
     purgeOldFiles = true
 }
 
