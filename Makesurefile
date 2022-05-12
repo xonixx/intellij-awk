@@ -241,3 +241,7 @@
 
 @goal std.awk_printf @private
   awk -v Stmt=printf -f gen_std.awk >> src/main/resources/std.awk
+
+@goal githubTests
+@doc 'Run tests with Github actions'
+./gradlew clean lexer parser compileJava compileTestJava test

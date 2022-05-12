@@ -164,3 +164,14 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
 }
 
 sourceSets.main.java.srcDirs 'src/main/gen'
+
+task checkJavaVersion() {
+    if (!JavaVersion.current().isJava11()) {
+        String message = "ERROR: Java 11 required but " +
+                JavaVersion.current() +
+                " found. Change your JAVA_HOME environment variable.";
+        throw new IllegalStateException(message);
+    }
+}
+
+compileJava.dependsOn checkJavaVersion
