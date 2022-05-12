@@ -175,3 +175,10 @@ task checkJavaVersion() {
 }
 
 compileJava.dependsOn checkJavaVersion
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+}
