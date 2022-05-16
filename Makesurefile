@@ -93,7 +93,7 @@
 # Let's take for notes the latest record from change log (in build.gradle)
 # Let's make sure the version there is correct
   notesStr=$(awk '
-  /changeNotes """/ { Started=1; next }
+  /changeNotes.set\(/ { Started=1; next }
   Started
   /<\/p>/ { exit 0 }
   ' build.gradle)

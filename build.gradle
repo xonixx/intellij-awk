@@ -40,6 +40,7 @@ intellij {
 }
 patchPluginXml {
     untilBuild.set('222.*')
+    // language=html
     pluginDescription.set("""
 <b>AWK Programming Language Support</b>
 <br/><br/>
@@ -50,7 +51,16 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
 <br/><br/>
 <i>Preliminary support for Gawk features is added!</i>
 """)
+    // language=html
     changeNotes.set("""
+<p>
+    <b>v0.3.2</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/11?closed=1">GitHub issues</a>
+    <ul>
+        <li>Enforce variable naming convention: `Name` for global</li>
+        <li>Detect unused global variable</li>
+    </ul>
+</p>
 <p>
     <b>v0.3.1</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/10?closed=1">GitHub issues</a>
