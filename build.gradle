@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'intellij-awk'
-version '0.3.1.1'
+version '0.3.2'
 
 repositories {
     mavenCentral()
