@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 
 /**
  * Based on approach:
- * https://intellij-support.jetbrains.com/hc/en-us/community/posts/4415025845138-What-is-the-recommended-approach-for-testing-DocumentationProvider-I-ve-added-for-my-language-support-plugin-
+ * <a href="https://intellij-support.jetbrains.com/hc/en-us/community/posts/4415025845138-What-is-the-recommended-approach-for-testing-DocumentationProvider-I-ve-added-for-my-language-support-plugin-">What is the recommended approach for testing DocumentationProvider</a>
  */
 public class AwkDocumentationProviderTests extends BasePlatformTestCase {
   public void testAwkFunctionSubstr() {
