@@ -43,6 +43,7 @@
         <lang.commenter language="AWK" implementationClass="intellij_awk.AwkCommenter"/>
 
         <lang.braceMatcher language="AWK" implementationClass="intellij_awk.AwkBraceMatcher"/>
+        <quoteHandler fileType="AWK File" className="intellij_awk.AwkQuoteHandler"/>
 
         <lang.documentationProvider language="AWK"
                                     implementationClass="intellij_awk.AwkDocumentationProvider"/>
