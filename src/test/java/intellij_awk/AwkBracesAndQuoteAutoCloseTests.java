@@ -20,6 +20,13 @@ public class AwkBracesAndQuoteAutoCloseTests extends BasePlatformTestCase {
     doTest('"', "BEGIN { print <caret> }", "BEGIN { print \"<caret>\" }");
   }
 
+  public void testQuote1() {
+    doTest(
+        '"',
+        "BEGIN {\n  print <caret>\n  print \"\"}",
+        "BEGIN {\n  print \"<caret>\"\n  print \"\"}");
+  }
+
   private void doTest(char brace, String code, String expectedCode) {
     myFixture.configureByText("a.awk", code);
     myFixture.type(brace);
