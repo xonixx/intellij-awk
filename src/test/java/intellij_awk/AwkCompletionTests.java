@@ -248,6 +248,13 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "{ switch(1) { case \"hello\": default:<caret> } }");
   }
 
+  public void testInsideString_1() {
+    checkCompletion(
+            Set.of(),
+            Set.of("return", "for", "while", "break"),
+            "BEGIN { length(\"<caret>\") }");
+  }
+
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();

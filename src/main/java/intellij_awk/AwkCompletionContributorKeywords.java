@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.patterns.StandardPatterns.or;
+import static com.intellij.patterns.StandardPatterns.*;
 import static intellij_awk.AwkUtil.insertHandler;
 
 public class AwkCompletionContributorKeywords extends CompletionContributor {
@@ -80,9 +80,11 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
         });
     extend(
         CompletionType.BASIC,
-        or(
-            psiElement().inside(AwkTerminatedStatement.class),
-            psiElement().inside(AwkUnterminatedStatement.class)),
+        and(
+            or(
+                psiElement().inside(AwkTerminatedStatement.class),
+                psiElement().inside(AwkUnterminatedStatement.class)),
+            not(psiElement().inside(psiElement(AwkTypes.STRING)))),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
@@ -96,7 +98,9 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
         });
     extend(
         CompletionType.BASIC,
-        psiElement().inside(AwkTerminatableStatement.class),
+        psiElement()
+            .inside(AwkTerminatableStatement.class)
+            .andNot(psiElement().inside(psiElement(AwkTypes.STRING))),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
