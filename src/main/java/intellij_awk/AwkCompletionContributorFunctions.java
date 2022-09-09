@@ -15,9 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.patterns.StandardPatterns.or;
+import static com.intellij.patterns.StandardPatterns.*;
 import static intellij_awk.AwkUtil.insertHandler;
-import static java.util.Map.entry;
 
 public class AwkCompletionContributorFunctions extends CompletionContributor {
 
@@ -41,7 +40,9 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
   public AwkCompletionContributorFunctions() {
     extend(
         CompletionType.BASIC,
-        or(psiElement().inside(AwkExpr.class), psiElement().inside(AwkPrintExpr.class)),
+        and(
+            or(psiElement().inside(AwkExpr.class), psiElement().inside(AwkPrintExpr.class)),
+            not(psiElement(AwkTypes.ERE))),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,

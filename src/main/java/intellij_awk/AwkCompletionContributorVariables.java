@@ -12,18 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.patterns.StandardPatterns.not;
-import static com.intellij.patterns.StandardPatterns.or;
+import static com.intellij.patterns.StandardPatterns.*;
 
 public class AwkCompletionContributorVariables extends CompletionContributor {
 
   public AwkCompletionContributorVariables() {
     extend(
         CompletionType.BASIC,
-        or(
-            psiElement().inside(AwkExpr.class),
-            not(psiElement().inside(AwkParamList.class))
-                .andOr(psiElement(AwkTypes.SPECIAL_VAR_NAME), psiElement(AwkTypes.VAR_NAME))),
+        and(
+            or(
+                psiElement().inside(AwkExpr.class),
+                not(psiElement().inside(AwkParamList.class))
+                    .andOr(psiElement(AwkTypes.SPECIAL_VAR_NAME), psiElement(AwkTypes.VAR_NAME))),
+            not(psiElement(AwkTypes.ERE))),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,

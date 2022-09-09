@@ -250,9 +250,18 @@ public class AwkCompletionTests extends BasePlatformTestCase {
 
   public void testInsideString_1() {
     checkCompletion(
-            Set.of(),
-            Set.of("return", "for", "while", "break"),
-            "BEGIN { length(\"<caret>\") }");
+        Set.of(), Set.of("return", "for", "while", "break"), "BEGIN { length(\"<caret>\") }");
+  }
+
+  public void testInsideERE_1() {
+    checkCompletionEmpty("BEGIN { if(/<caret>/){} }");
+  }
+  public void testInsideERE_2() {
+    checkCompletionEmpty("/<caret>/");
+  }
+
+  public void testInsideERE_3() {
+    checkCompletionEmpty("BEGIN {\n switch (1) { case /<caret>/: }\n}");
   }
 
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
@@ -285,6 +294,14 @@ public class AwkCompletionTests extends BasePlatformTestCase {
       fail("Should be empty completion: " + toSet(variants));
     }
     myFixture.checkResult(expectedResult);
+  }
+
+  private void checkCompletionEmpty(String code) {
+    setupCode(code);
+    LookupElement[] variants = myFixture.completeBasic();
+    if (!(variants == null || variants.length == 0)) {
+      fail("Should be empty completion: " + toSet(variants));
+    }
   }
 
   private void checkCompletionSingle(char completionChar, String code, String expectedResult) {

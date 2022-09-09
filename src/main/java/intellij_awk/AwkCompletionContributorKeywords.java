@@ -68,7 +68,9 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
   public AwkCompletionContributorKeywords() {
     extend(
         CompletionType.BASIC,
-        psiElement().inside(AwkPattern.class), // TODO improve this selector to be less specific
+        psiElement()
+            .inside(AwkPattern.class)
+            .andNot(psiElement(AwkTypes.ERE)), // TODO improve this selector to be less specific
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
@@ -84,7 +86,7 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
             or(
                 psiElement().inside(AwkTerminatedStatement.class),
                 psiElement().inside(AwkUnterminatedStatement.class)),
-            not(psiElement().inside(psiElement(AwkTypes.STRING)))),
+            not(psiElement(AwkTypes.STRING)).andNot(psiElement(AwkTypes.ERE))),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
@@ -100,7 +102,8 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
         CompletionType.BASIC,
         psiElement()
             .inside(AwkTerminatableStatement.class)
-            .andNot(psiElement().inside(psiElement(AwkTypes.STRING))),
+            .andNot(psiElement(AwkTypes.STRING))
+            .andNot(psiElement(AwkTypes.ERE)),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
@@ -112,7 +115,9 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
         });
     extend(
         CompletionType.BASIC,
-        psiElement().inside(AwkGawkTerminatedStatementSwitch.class),
+        psiElement()
+            .inside(AwkGawkTerminatedStatementSwitch.class)
+            .andNot(psiElement(AwkTypes.ERE)),
         new CompletionProvider<>() {
           @Override
           protected void addCompletions(
