@@ -253,9 +253,16 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         Set.of(), Set.of("return", "for", "while", "break"), "BEGIN { length(\"<caret>\") }");
   }
 
+  public void testInsideString_2() {
+    checkCompletionAuto(
+        "function f() { print \"fff1<caret>\" } function fff123(){}",
+        "function f() { print \"fff123<caret>\" } function fff123(){}");
+  }
+
   public void testInsideERE_1() {
     checkCompletionEmpty("BEGIN { if(/<caret>/){} }");
   }
+
   public void testInsideERE_2() {
     checkCompletionEmpty("/<caret>/");
   }

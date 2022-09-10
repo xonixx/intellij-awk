@@ -156,12 +156,12 @@ public class AwkUtil {
   }
 
   public static InsertHandler<LookupElement> insertHandler(
-      InsertHandler<LookupElement> replaceCherInsertHandler,
+      InsertHandler<LookupElement> replaceCharInsertHandler,
       InsertHandler<LookupElement> insertHandler) {
 
     return (ctx, item) ->
         (ctx.getCompletionChar() == Lookup.REPLACE_SELECT_CHAR
-                ? replaceCherInsertHandler
+                ? replaceCharInsertHandler
                 : insertHandler)
             .handleInsert(ctx, item);
   }

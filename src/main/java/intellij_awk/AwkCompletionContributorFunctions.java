@@ -23,6 +23,9 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
   private static final PsiElementPattern.@NotNull Capture<PsiElement> FOLLOWED_BY_LPAREN =
       psiElement().beforeLeaf(psiElement(AwkTypes.LPAREN));
 
+  private static final PsiElementPattern.@NotNull Capture<PsiElement> INSIDE_STRING =
+      psiElement(AwkTypes.STRING);
+
   private static final String dummyIdentifier =
       CompletionInitializationContext.DUMMY_IDENTIFIER_TRIMMED;
 
@@ -89,6 +92,7 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
               String tailText) {
             PsiElement position = parameters.getPosition();
             boolean followedByLparen = FOLLOWED_BY_LPAREN.accepts(position);
+            boolean isInsideString = INSIDE_STRING.accepts(position);
             String[] parts = position.getText().split(dummyIdentifier);
             boolean hasTextBeforeLparen = parts.length == 2 && parts[1].length() > 0;
             resultSet.addElement(
@@ -97,13 +101,15 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
                     .withIcon(AwkIcons.FUNCTION)
                     .withBoldness(isBuiltIn)
                     .withInsertHandler(
-                        followedByLparen
-                            ? (hasTextBeforeLparen
-                                ? insertHandler(
-                                    insertHandler("", 1),
-                                    insertHandler("();", 3)) // aaa<caret>bbb()
-                                : insertHandler("", 1)) // aaa<caret>()
-                            : insertHandler("()", 1))); // aaa<caret>
+                        isInsideString
+                            ? null
+                            : followedByLparen
+                                ? (hasTextBeforeLparen
+                                    ? insertHandler(
+                                        insertHandler("", 1),
+                                        insertHandler("();", 3)) // aaa<caret>bbb()
+                                    : insertHandler("", 1)) // aaa<caret>()
+                                : insertHandler("()", 1))); // aaa<caret>
           }
         });
   }
