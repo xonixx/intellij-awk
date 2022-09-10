@@ -259,6 +259,23 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "function f() { print \"fff123<caret>\" } function fff123(){}");
   }
 
+  public void testInsideString_3() {
+    checkCompletionAuto(
+        "function f(aaa123) { print \"aaa1<caret>\" }",
+        "function f(aaa123) { print \"aaa123<caret>\" }");
+  }
+
+  public void testInsideString_4() {
+    checkCompletionAuto(
+        "BEGIN { AAA123=1 } function f() { length(\"AAA1<caret>\") }",
+        "BEGIN { AAA123=1 } function f() { length(\"AAA123<caret>\") }");
+  }
+  public void testInsideString_5() {
+    checkCompletionAuto(
+        "BEGIN { AAA123=1 } function f() { print \"AAA1<caret>\" }",
+        "BEGIN { AAA123=1 } function f() { print \"AAA123<caret>\" }");
+  }
+
   public void testInsideERE_1() {
     checkCompletionEmpty("BEGIN { if(/<caret>/){} }");
   }

@@ -22,6 +22,7 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
         and(
             or(
                 psiElement().inside(AwkExpr.class),
+                psiElement().inside(AwkPrintExpr.class),
                 not(psiElement().inside(AwkParamList.class))
                     .andOr(psiElement(AwkTypes.SPECIAL_VAR_NAME), psiElement(AwkTypes.VAR_NAME))),
             not(psiElement(AwkTypes.ERE))),
