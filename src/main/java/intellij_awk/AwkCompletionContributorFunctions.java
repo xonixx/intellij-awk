@@ -16,15 +16,13 @@ import java.util.Map;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static com.intellij.patterns.StandardPatterns.*;
+import static intellij_awk.AwkCompletionPatterns.INSIDE_STRING;
 import static intellij_awk.AwkUtil.insertHandler;
 
 public class AwkCompletionContributorFunctions extends CompletionContributor {
 
   private static final PsiElementPattern.@NotNull Capture<PsiElement> FOLLOWED_BY_LPAREN =
       psiElement().beforeLeaf(psiElement(AwkTypes.LPAREN));
-
-  private static final PsiElementPattern.@NotNull Capture<PsiElement> INSIDE_STRING =
-      psiElement(AwkTypes.STRING);
 
   private static final String dummyIdentifier =
       CompletionInitializationContext.DUMMY_IDENTIFIER_TRIMMED;
@@ -93,6 +91,9 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
             PsiElement position = parameters.getPosition();
             boolean followedByLparen = FOLLOWED_BY_LPAREN.accepts(position);
             boolean isInsideString = INSIDE_STRING.accepts(position);
+            if (isInsideString && isBuiltIn) {
+              return;
+            }
             String[] parts = position.getText().split(dummyIdentifier);
             boolean hasTextBeforeLparen = parts.length == 2 && parts[1].length() > 0;
             resultSet.addElement(

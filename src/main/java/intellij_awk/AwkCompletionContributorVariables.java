@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static com.intellij.patterns.StandardPatterns.*;
+import static intellij_awk.AwkCompletionPatterns.INSIDE_STRING;
 
 public class AwkCompletionContributorVariables extends CompletionContributor {
 
@@ -40,7 +41,11 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
 
             addGlobalVarsInProject(resultSet, psiElement);
 
-            addBuiltIns(resultSet);
+            boolean isInsideString = INSIDE_STRING.accepts(parameters.getPosition());
+
+            if (!isInsideString) {
+              addBuiltIns(resultSet);
+            }
           }
         });
   }

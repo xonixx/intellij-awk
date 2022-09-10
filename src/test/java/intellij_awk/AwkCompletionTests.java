@@ -250,7 +250,9 @@ public class AwkCompletionTests extends BasePlatformTestCase {
 
   public void testInsideString_1() {
     checkCompletion(
-        Set.of(), Set.of("return", "for", "while", "break"), "BEGIN { length(\"<caret>\") }");
+        Set.of(),
+        Set.of("return", "for", "while", "break", POSIX_VAR, POSIX_FUNC, GAWK_VAR, GAWK_FUNC),
+        "BEGIN { length(\"<caret>\") }");
   }
 
   public void testInsideString_2() {
@@ -270,6 +272,7 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "BEGIN { AAA123=1 } function f() { length(\"AAA1<caret>\") }",
         "BEGIN { AAA123=1 } function f() { length(\"AAA123<caret>\") }");
   }
+
   public void testInsideString_5() {
     checkCompletionAuto(
         "BEGIN { AAA123=1 } function f() { print \"AAA1<caret>\" }",
