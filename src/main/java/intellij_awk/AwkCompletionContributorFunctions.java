@@ -21,7 +21,7 @@ import static intellij_awk.AwkUtil.insertHandler;
 
 public class AwkCompletionContributorFunctions extends CompletionContributor {
 
-  private static final PsiElementPattern.@NotNull Capture<PsiElement> FOLLOWED_BY_LPAREN =
+  private static final PsiElementPattern.Capture<PsiElement> FOLLOWED_BY_LPAREN =
       psiElement().beforeLeaf(psiElement(AwkTypes.LPAREN));
 
   private static final String dummyIdentifier =

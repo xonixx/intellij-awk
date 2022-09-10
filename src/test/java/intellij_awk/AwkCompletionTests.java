@@ -255,6 +255,15 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "BEGIN { length(\"<caret>\") }");
   }
 
+  public void testInsideString_1_1() {
+    checkCompletion(
+        Set.of(), Set.of("case", "default"), "BEGIN { switch (1) { case \"<caret>\":} }");
+  }
+
+  //  public void testInsideString_1_2() {
+  //    checkCompletionEmpty("\"<caret>\"");
+  //  }
+
   public void testInsideString_2() {
     checkCompletionAuto(
         "function f() { print \"fff1<caret>\" } function fff123(){}",

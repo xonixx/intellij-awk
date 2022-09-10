@@ -10,7 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.patterns.StandardPatterns.*;
+import static com.intellij.patterns.StandardPatterns.or;
+import static intellij_awk.AwkCompletionPatterns.notInsideStringERE;
 import static intellij_awk.AwkUtil.insertHandler;
 
 public class AwkCompletionContributorKeywords extends CompletionContributor {
@@ -68,9 +69,9 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
   public AwkCompletionContributorKeywords() {
     extend(
         CompletionType.BASIC,
-        psiElement()
-            .inside(AwkPattern.class)
-            .andNot(psiElement(AwkTypes.ERE)), // TODO improve this selector to be less specific
+        notInsideStringERE(
+            psiElement()
+                .inside(AwkPattern.class)), // TODO improve this selector to be less specific
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
@@ -82,11 +83,10 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
         });
     extend(
         CompletionType.BASIC,
-        and(
+        notInsideStringERE(
             or(
                 psiElement().inside(AwkTerminatedStatement.class),
-                psiElement().inside(AwkUnterminatedStatement.class)),
-            not(psiElement(AwkTypes.STRING)).andNot(psiElement(AwkTypes.ERE))),
+                psiElement().inside(AwkUnterminatedStatement.class))),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
@@ -100,10 +100,7 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
         });
     extend(
         CompletionType.BASIC,
-        psiElement()
-            .inside(AwkTerminatableStatement.class)
-            .andNot(psiElement(AwkTypes.STRING))
-            .andNot(psiElement(AwkTypes.ERE)),
+        notInsideStringERE(psiElement().inside(AwkTerminatableStatement.class)),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
@@ -115,9 +112,7 @@ public class AwkCompletionContributorKeywords extends CompletionContributor {
         });
     extend(
         CompletionType.BASIC,
-        psiElement()
-            .inside(AwkGawkTerminatedStatementSwitch.class)
-            .andNot(psiElement(AwkTypes.ERE)),
+        notInsideStringERE(psiElement().inside(AwkGawkTerminatedStatementSwitch.class)),
         new CompletionProvider<>() {
           @Override
           protected void addCompletions(
