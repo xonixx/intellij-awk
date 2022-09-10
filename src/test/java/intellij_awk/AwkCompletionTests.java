@@ -300,6 +300,14 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionEmpty("BEGIN {\n switch (1) { case /<caret>/: }\n}");
   }
 
+  public void testInsideERE_4() {
+    checkCompletionEmpty("BEGIN { A=@/<caret>/ }");
+  }
+
+  public void testInsideERE_5() {
+    checkCompletionEmpty("function b() { return \"\" ~ @/<caret>/ }");
+  }
+
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();

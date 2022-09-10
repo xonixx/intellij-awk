@@ -14,19 +14,19 @@ import java.util.List;
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static com.intellij.patterns.StandardPatterns.*;
 import static intellij_awk.AwkCompletionPatterns.INSIDE_STRING;
+import static intellij_awk.AwkCompletionPatterns.notInsideERE;
 
 public class AwkCompletionContributorVariables extends CompletionContributor {
 
   public AwkCompletionContributorVariables() {
     extend(
         CompletionType.BASIC,
-        and(
+        notInsideERE(
             or(
                 psiElement().inside(AwkExpr.class),
                 psiElement().inside(AwkPrintExpr.class),
                 not(psiElement().inside(AwkParamList.class))
-                    .andOr(psiElement(AwkTypes.SPECIAL_VAR_NAME), psiElement(AwkTypes.VAR_NAME))),
-            not(psiElement(AwkTypes.ERE))),
+                    .andOr(psiElement(AwkTypes.SPECIAL_VAR_NAME), psiElement(AwkTypes.VAR_NAME)))),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
