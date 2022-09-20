@@ -1,3 +1,5 @@
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct-single.svg)](https://stand-with-ukraine.pp.ua)
+
 # intellij-awk
 
 [![Unit Tests](https://github.com/xonixx/intellij-awk/actions/workflows/run-tests.yml/badge.svg)](https://github.com/xonixx/intellij-awk/actions/workflows/run-tests.yml)
