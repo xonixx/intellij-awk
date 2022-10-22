@@ -94,6 +94,9 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
             if (isInsideString && isBuiltIn) {
               return;
             }
+            if (isInsideString) {
+              resultSet = adjustPrefix(resultSet, parameters);
+            }
             String[] parts = position.getText().split(dummyIdentifier);
             boolean hasTextBeforeLparen = parts.length == 2 && parts[1].length() > 0;
             resultSet.addElement(
@@ -113,5 +116,20 @@ public class AwkCompletionContributorFunctions extends CompletionContributor {
                                 : insertHandler("()", 1))); // aaa<caret>
           }
         });
+  }
+
+  private CompletionResultSet adjustPrefix(
+      CompletionResultSet resultSet, CompletionParameters parameters) {
+    PsiElement stringElement = parameters.getPosition();
+    int offset = parameters.getOffset();
+    String text = stringElement.getText();
+    String substr = text.substring(0, offset - stringElement.getTextRange().getStartOffset());
+
+    String[] parts = substr.split("\\s");
+    if (parts.length == 1) {
+      return resultSet; // no change
+    }
+
+    return resultSet.withPrefixMatcher(parts[parts.length - 1]);
   }
 }
