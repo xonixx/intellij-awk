@@ -30,8 +30,8 @@ abstract class AwkCompletionContributorBase extends CompletionContributor {
     return and(notInsideERE, pattern);
   }
 
-  // The idea behind this is we want to autocomplete funcName when inside string with
-  // space: "xxx fun<cursor>"
+  // The idea behind this is we want to autocomplete `funcName` when inside string with
+  // space: "xxx fun<caret>"
   static CompletionResultSet adjustPrefix(
       CompletionResultSet resultSet, CompletionParameters parameters) {
 
