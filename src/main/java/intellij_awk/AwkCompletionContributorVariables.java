@@ -13,10 +13,8 @@ import java.util.List;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static com.intellij.patterns.StandardPatterns.*;
-import static intellij_awk.AwkCompletionPatterns.INSIDE_STRING;
-import static intellij_awk.AwkCompletionPatterns.notInsideERE;
 
-public class AwkCompletionContributorVariables extends AwkCompletionBase {
+public class AwkCompletionContributorVariables extends AwkCompletionContributorBase {
 
   public AwkCompletionContributorVariables() {
     extend(

@@ -16,11 +16,9 @@ import java.util.Map;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static com.intellij.patterns.StandardPatterns.*;
-import static intellij_awk.AwkCompletionPatterns.INSIDE_STRING;
-import static intellij_awk.AwkCompletionPatterns.notInsideERE;
 import static intellij_awk.AwkUtil.insertHandler;
 
-public class AwkCompletionContributorFunctions extends AwkCompletionBase {
+public class AwkCompletionContributorFunctions extends AwkCompletionContributorBase {
 
   private static final PsiElementPattern.Capture<PsiElement> FOLLOWED_BY_LPAREN =
       psiElement().beforeLeaf(psiElement(AwkTypes.LPAREN));

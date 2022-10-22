@@ -11,10 +11,9 @@ import java.util.Map;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static com.intellij.patterns.StandardPatterns.or;
-import static intellij_awk.AwkCompletionPatterns.notInsideStringERE;
 import static intellij_awk.AwkUtil.insertHandler;
 
-public class AwkCompletionContributorKeywords extends AwkCompletionBase {
+public class AwkCompletionContributorKeywords extends AwkCompletionContributorBase {
 
   public static final InsertHandler<LookupElement> ihBeginEnd = insertHandler(" { }", 3);
 
