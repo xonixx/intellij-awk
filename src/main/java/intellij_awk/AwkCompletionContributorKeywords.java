@@ -14,7 +14,7 @@ import static com.intellij.patterns.StandardPatterns.or;
 import static intellij_awk.AwkCompletionPatterns.notInsideStringERE;
 import static intellij_awk.AwkUtil.insertHandler;
 
-public class AwkCompletionContributorKeywords extends CompletionContributor {
+public class AwkCompletionContributorKeywords extends AwkCompletionBase {
 
   public static final InsertHandler<LookupElement> ihBeginEnd = insertHandler(" { }", 3);
 

@@ -16,7 +16,7 @@ import static com.intellij.patterns.StandardPatterns.*;
 import static intellij_awk.AwkCompletionPatterns.INSIDE_STRING;
 import static intellij_awk.AwkCompletionPatterns.notInsideERE;
 
-public class AwkCompletionContributorVariables extends CompletionContributor {
+public class AwkCompletionContributorVariables extends AwkCompletionBase {
 
   public AwkCompletionContributorVariables() {
     extend(
@@ -32,6 +32,8 @@ public class AwkCompletionContributorVariables extends CompletionContributor {
               @NotNull CompletionParameters parameters,
               @NotNull ProcessingContext context,
               @NotNull CompletionResultSet resultSet) {
+
+            resultSet = adjustPrefix(resultSet, parameters);
 
             final PsiElement psiElement = parameters.getPosition();
 
