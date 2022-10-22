@@ -28,6 +28,8 @@
                                 implementationClass="intellij_awk.AwkCompletionContributorVariables"/>
         <completion.contributor language="AWK"
                                 implementationClass="intellij_awk.AwkCompletionContributorFunctions"/>
+        <completion.contributor language="AWK"
+                                implementationClass="intellij_awk.AwkCompletionContributorStrings"/>
         <lang.refactoringSupport language="AWK"
                                  implementationClass="intellij_awk.AwkRefactoringSupportProvider"/>
         <lang.findUsagesProvider language="AWK"

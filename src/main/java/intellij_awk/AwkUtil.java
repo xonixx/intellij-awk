@@ -60,6 +60,18 @@ public class AwkUtil {
     }
   }
 
+  // Same as findAllMatchedDeep but includes leafs
+  public static void findAllMatchedDeep2(
+      @Nullable PsiElement root, Predicate<PsiElement> predicate, Collection<PsiElement> result) {
+    if (root == null) return;
+    for (PsiElement child = root.getFirstChild(); child != null; child = child.getNextSibling()) {
+      if (predicate.test(child)) {
+        result.add(child);
+      }
+      findAllMatchedDeep2(child, predicate, result);
+    }
+  }
+
   /**
    * Searches the entire project for AWK language files with instances of the AWK function with the
    * given key.
@@ -72,7 +84,8 @@ public class AwkUtil {
     return findFunctions(project, name, GlobalSearchScope.projectScope(project));
   }
 
-  public static Collection<AwkUserVarNameImpl> findUserVarDeclarations(Project project, String name) {
+  public static Collection<AwkUserVarNameImpl> findUserVarDeclarations(
+      Project project, String name) {
     return StubIndex.getElements(
         AwkUserVarNameStubElementType.IndexUserVarDeclarations.KEY,
         name,
@@ -127,9 +140,7 @@ public class AwkUtil {
   @NotNull
   public static Collection<String> findGlobalVarNames(Project project) {
     return StubIndex.getInstance()
-        .getAllKeys(
-            AwkUserVarNameStubElementType.IndexUserVarDeclarations.KEY,
-            project);
+        .getAllKeys(AwkUserVarNameStubElementType.IndexUserVarDeclarations.KEY, project);
   }
 
   public static List<AwkFunctionNameImpl> findFunctionsInFile(

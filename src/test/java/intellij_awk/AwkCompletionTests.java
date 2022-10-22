@@ -318,6 +318,11 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "BEGIN { A = \"xxx aaa123\"; f(\"yyy aaa123<caret>\") }");
   }
 
+  public void testInsideString_6_3() {
+    checkCompletionAuto(
+        "BEGIN { A = \"xxxx yy xx<caret>\" }", "BEGIN { A = \"xxxx yy xxxx<caret>\" }");
+  }
+
   public void testInsideERE_1() {
     checkCompletionEmpty("BEGIN { if(/<caret>/){} }");
   }
