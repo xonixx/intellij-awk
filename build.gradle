@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'intellij-awk'
-version '0.3.4'
+version '0.3.5'
 
 repositories {
     mavenCentral()
@@ -53,6 +53,13 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
 """)
     // language=html
     changeNotes.set("""
+<p>
+    <b>v0.3.5</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/14?closed=1">GitHub issues</a>
+    <ul>
+        <li>Improvements to autocompletion inside strings</li>
+    </ul>
+</p>
 <p>
     <b>v0.3.4</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/13?closed=1">GitHub issues</a>
