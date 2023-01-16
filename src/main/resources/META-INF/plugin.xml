@@ -14,7 +14,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="AWK File" implementationClass="intellij_awk.AwkFileType"
-                  fieldName="INSTANCE" language="AWK" extensions="awk"/>
+                  fieldName="INSTANCE" language="AWK" extensions="awk" hashBangs="awk"/>
         <lang.parserDefinition language="AWK"
                                implementationClass="intellij_awk.AwkParserDefinition"/>
         <lang.syntaxHighlighterFactory language="AWK"
