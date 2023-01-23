@@ -11,16 +11,18 @@ Stmt && /<h4/            { Content=1; next }
 Stmt && Content &&/<hr>/ { Content=0; closeItem(); exit }
 
 /^<\/dl>/     && !Nested { Content=0 }
-/^<dt><code>/ && !Nested { Content=1 }
-/^<dt>/       && !Nested {
+/^<dt id='[a-z0-9_-]+'><span><code>/ && !Nested { Content=1 }
+/^<dt/       && !Nested {
     sub(/ +#/,"")
     if (Vars) {
+        # extract var name
         sub(/<code><code>/,"<code>")
         sub(/<\/code><\/code>/,"</code>")
         Name = substr($0, 11, index($0,"</code>")-11)
         Nested = "PROCINFO"==Name
     } else {
-        Name = substr($0, 11, index($0,"(")-11)
+        # extract function name
+        Name = substr($0, start=index($0,"<code>")+6, index($0,"(")-start)
         Nested = "typeof"==Name
     }
 }
@@ -33,6 +35,7 @@ Nested && ("typeof"==Name ? NR==152 : NR==522) { closeItem(); Nested=0 }
 
 function appendDocLine(l,   l1) {
     l1 = rmSpanId(processCode(processUrls(indentCode(l))))
+#    print "l1="l1
     if (!l || l1)
         Doc = Doc "\n# " l1
 }
