@@ -35,14 +35,18 @@ Content                  { appendDocLine($0) }
 Nested && ("typeof"==Name ? NR==152 : NR==522) { closeItem(); Nested=0 }
 
 function appendDocLine(l,   l1) {
-    l1 = rmSpanId(processCode(processUrls(indentCode(l))))
+    l1 = cleanupHtml(processCode(processUrls(indentCode(l))))
 #    print "l1="l1
     if (!l || l1)
         Doc = Doc "\n# " l1
 }
 
-function rmSpanId(line) {
+function cleanupHtml(line) {
     gsub(/<span id=".+"><\/span>/,"",line)
+    gsub(/<a href='.+' class='copiable-anchor'> &para;<\/a>/,"",line)
+    gsub(/ id='[^']+'/,"",line)
+    gsub(/<span><code>/,"<code>",line)
+    gsub(/<\/code><\/span>/,"</code>",line)
     return line
 }
 
