@@ -11,18 +11,19 @@ Stmt && /<h4/            { Content=1; next }
 Stmt && Content &&/<hr>/ { Content=0; closeItem(); exit }
 
 /^<\/dl>/     && !Nested { Content=0 }
-/^<dt id='[a-z0-9_-]+'><span><code>/ && !Nested { Content=1 }
+/^<dt( id='[a-z0-9_-]+')?><span><code>/ && !Nested { Content=1 }
 /^<dt/       && !Nested {
     sub(/ +#/,"")
+    start=index($0,"<code>")+6
     if (Vars) {
         # extract var name
         sub(/<code><code>/,"<code>")
         sub(/<\/code><\/code>/,"</code>")
-        Name = substr($0, 11, index($0,"</code>")-11)
+        Name = substr($0, start, index($0,"</code>")-start)
         Nested = "PROCINFO"==Name
     } else {
         # extract function name
-        Name = substr($0, start=index($0,"<code>")+6, index($0,"(")-start)
+        Name = substr($0, start, index($0,"(")-start)
         Nested = "typeof"==Name
     }
 }
