@@ -12,23 +12,21 @@ Stmt && Content &&/<hr>/ { Content=0; closeItem(); exit }
 
 /^<\/dl>/     && !Nested { Content=0 }
 /^<dt( id='[a-z0-9_-]+')?><span><code>/ && !Nested { Content=1 }
-/^<dt/                   {
+
+# isarray after typeof()
+# RLENGTH after PROCINFO
+(/^<p><code>isarray\(\)<\/code>/ ||
+/<code>RLENGTH<\/code>/) && Nested  { closeItem(); Nested=0 }
+
+/^<dt/        && !Nested {
     sub(/ +#/,"")
     start=index($0,"<code>")+6
     if (Vars) {
         # extract var name
         sub(/<code><code>/,"<code>")
         sub(/<\/code><\/code>/,"</code>")
-        name = substr($0, start, index($0,"</code>")-start)
-        if (Nested) {
-            if ("RLENGTH" == name) {
-                closeItem()
-                Name = name
-                Nested=0
-            }
-        }
-        else
-            Nested = "PROCINFO"==(Name=name)
+        Name = substr($0, start, index($0,"</code>")-start)
+        Nested = "PROCINFO"==Name
     } else {
         # extract function name
         Name = substr($0, start, index($0,"(")-start)
