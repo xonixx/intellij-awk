@@ -11,7 +11,7 @@ BEGIN {
 # <code>&quot;wr&quot;</code> indicates that all files should use binary I/O.  Any other
 # string value is treated the same as <code>&quot;rw&quot;</code>, but causes <code>gawk</code>
 # to generate a warning message.  <code>BINMODE</code> is described in more
-# detail in <a href="https://www.gnu.org/software/gawk/manual/html_node/PC-Using.html">Using <code>gawk</code> on PC Operating Systems</a>.  <code>mawk</code> (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Other-Versions.html">Other Freely Available <code>awk</code> Implementations</a>)
+# detail in <a href="https://www.gnu.org/software/gawk/manual/html_node/PC-Using.html">Using <code>gawk</code> on PC Operating Systems</a>.  <code>mawk</code> (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Other-Versions.html">Other Freely Available <code>awk</code> Implementations</a>)
 # also supports this variable, but only using numeric values.
 # </p>
 # </dd>
@@ -19,10 +19,10 @@ gawk::BINMODE = ""
 
 # <dt><code>CONVFMT</code></dt>
 # <dd><p>A string that controls the conversion of numbers to
-# strings (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Conversion.html">Conversion of Strings and Numbers</a>).
+# strings (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Conversion.html">Conversion of Strings and Numbers</a>).
 # It works by being passed, in effect, as the first argument to the
 # <code>sprintf()</code> function
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
 # Its default value is <code>&quot;%.6g&quot;</code>.
 # <code>CONVFMT</code> was introduced by the POSIX standard.
 # </p>
@@ -37,7 +37,7 @@ awk::CONVFMT = ""
 # before the field starts.
 # Assigning a value to <code>FIELDWIDTHS</code>
 # overrides the use of <code>FS</code> and <code>FPAT</code> for field splitting.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Constant-Size.html">Reading Fixed-Width Data</a> for more information.
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Constant-Size.html">Reading Fixed-Width Data</a> for more information.
 # </p>
 # </dd>
 gawk::FIELDWIDTHS = ""
@@ -47,13 +47,13 @@ gawk::FIELDWIDTHS = ""
 # to create the fields based on text that matches the regular expression.
 # Assigning a value to <code>FPAT</code>
 # overrides the use of <code>FS</code> and <code>FIELDWIDTHS</code> for field splitting.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Splitting-By-Content.html">Defining Fields by Content</a> for more information.
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Splitting-By-Content.html">Defining Fields by Content</a> for more information.
 # </p>
 # </dd>
 gawk::FPAT = ""
 
 # <dt><code>FS</code></dt>
-# <dd><p>The input field separator (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Field-Separators.html">Specifying How Fields Are Separated</a>).
+# <dd><p>The input field separator (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Field-Separators.html">Specifying How Fields Are Separated</a>).
 # The value is a single-character string or a multicharacter regular
 # expression that matches the separations between fields in an input
 # record.  If the value is the null string (<code>&quot;&quot;</code>), then each
@@ -97,7 +97,7 @@ awk::FS = ""
 # However, the value of <code>IGNORECASE</code> does <em>not</em> affect array subscripting
 # and it does not affect field splitting when using a single-character
 # field separator.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Case_002dsensitivity.html">Case Sensitivity in Matching</a>.
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Case_002dsensitivity.html">Case Sensitivity in Matching</a>.
 # </p>
 # </dd>
 gawk::IGNORECASE = ""
@@ -105,7 +105,7 @@ gawk::IGNORECASE = ""
 # <dt><code>LINT</code></dt>
 # <dd><p>When this variable is true (nonzero or non-null), <code>gawk</code>
 # behaves as if the <samp>--lint</samp> command-line option is in effect
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>).
 # With a value of <code>&quot;fatal&quot;</code>, lint warnings become fatal errors.
 # With a value of <code>&quot;invalid&quot;</code>, only warnings about things that are
 # actually invalid are issued. (This is not fully implemented yet.)
@@ -126,10 +126,10 @@ gawk::LINT = ""
 
 # <dt><code>OFMT</code></dt>
 # <dd><p>A string that controls conversion of numbers to
-# strings (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Conversion.html">Conversion of Strings and Numbers</a>) for
+# strings (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Conversion.html">Conversion of Strings and Numbers</a>) for
 # printing with the <code>print</code> statement.  It works by being passed
 # as the first argument to the <code>sprintf()</code> function
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
 # Its default value is <code>&quot;%.6g&quot;</code>.  Earlier versions of <code>awk</code>
 # used <code>OFMT</code> to specify the format for converting numbers to
 # strings in general expressions; this is now done by <code>CONVFMT</code>.
@@ -138,7 +138,7 @@ gawk::LINT = ""
 awk::OFMT = ""
 
 # <dt><code>OFS</code></dt>
-# <dd><p>The output field separator (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Output-Separators.html">Output Separators</a>).  It is
+# <dd><p>The output field separator (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Output-Separators.html">Output Separators</a>).  It is
 # output between the fields printed by a <code>print</code> statement.  Its
 # default value is <code>&quot;&nbsp;&quot;</code><!-- /@w -->, a string consisting of a single space.
 # </p>
@@ -148,14 +148,14 @@ awk::OFS = ""
 # <dt><code>ORS</code></dt>
 # <dd><p>The output record separator.  It is output at the end of every
 # <code>print</code> statement.  Its default value is <code>&quot;\n&quot;</code>, the newline
-# character.  (See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Output-Separators.html">Output Separators</a>.)
+# character.  (See <a href="https://www.gnu.org/software/gawk/manual/html_node/Output-Separators.html">Output Separators</a>.)
 # </p>
 # </dd>
 awk::ORS = ""
 
 # <dt><code>PREC</code></dt>
 # <dd><p>The working precision of arbitrary-precision floating-point numbers,
-# 53 bits by default (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Setting-precision.html">Setting the Precision</a>).
+# 53 bits by default (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Setting-precision.html">Setting the Precision</a>).
 # </p>
 # </dd>
 gawk::PREC = ""
@@ -163,7 +163,7 @@ gawk::PREC = ""
 # <dt><code>ROUNDMODE</code></dt>
 # <dd><p>The rounding mode to use for arbitrary-precision arithmetic on
 # numbers, by default <code>&quot;N&quot;</code> (<code>roundTiesToEven</code> in
-# the IEEE 754 standard; see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Setting-the-rounding-mode.html">Setting the Rounding Mode</a>).
+# the IEEE 754 standard; see <a href="https://www.gnu.org/software/gawk/manual/html_node/Setting-the-rounding-mode.html">Setting the Rounding Mode</a>).
 # </p>
 # </dd>
 gawk::ROUNDMODE = ""
@@ -176,13 +176,13 @@ gawk::ROUNDMODE = ""
 # runs of blank lines.
 # If it is a regexp, records are separated by
 # matches of the regexp in the input text.
-# (See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Records.html">How Input Is Split into Records</a>.)
+# (See <a href="https://www.gnu.org/software/gawk/manual/html_node/Records.html">How Input Is Split into Records</a>.)
 # </p>
 # <p>The ability for <code>RS</code> to be a regular expression
 # is a <code>gawk</code> extension.
 # In most other <code>awk</code> implementations,
 # or if <code>gawk</code> is in compatibility mode
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>),
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>),
 # just the first character of <code>RS</code>&rsquo;s value is used.
 # </p>
 # </dd>
@@ -193,7 +193,7 @@ awk::RS = ""
 # <code>&quot;\034&quot;</code> and is used to separate the parts of the indices of a
 # multidimensional array.  Thus, the expression &lsquo;<samp>foo[&quot;A&quot;,&nbsp;&quot;B&quot;]<!-- /@w --></samp>&rsquo;
 # really accesses <code>foo[&quot;A\034B&quot;]</code>
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Multidimensional.html">Multidimensional Arrays</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Multidimensional.html">Multidimensional Arrays</a>).
 # </p>
 # </dd>
 awk::SUBSEP = ""
@@ -203,7 +203,7 @@ awk::SUBSEP = ""
 # <code>awk</code> level.  It sets the default text domain for specially
 # marked string constants in the source text, as well as for the
 # <code>dcgettext()</code>, <code>dcngettext()</code>, and <code>bindtextdomain()</code> functions
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Internationalization.html">Internationalization with <code>gawk</code></a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Internationalization.html">Internationalization with <code>gawk</code></a>).
 # The default value of <code>TEXTDOMAIN</code> is <code>&quot;messages&quot;</code>.
 # </p></dd>
 gawk::TEXTDOMAIN = ""
@@ -211,7 +211,7 @@ gawk::TEXTDOMAIN = ""
 # <dt><code>ARGC</code>, <code>ARGV</code></dt>
 # <dd><p>The command-line arguments available to <code>awk</code> programs are stored in
 # an array called <code>ARGV</code>.  <code>ARGC</code> is the number of command-line
-# arguments present.  See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Other-Arguments.html">Other Command-Line Arguments</a>.
+# arguments present.  See <a href="https://www.gnu.org/software/gawk/manual/html_node/Other-Arguments.html">Other Command-Line Arguments</a>.
 # Unlike most <code>awk</code> arrays,
 # <code>ARGV</code> is indexed from 0 to <code>ARGC</code> - 1.
 # In the following example:
@@ -239,7 +239,7 @@ gawk::TEXTDOMAIN = ""
 # <p>The value of <code>ARGV[0]</code> can vary from system to system.
 # Also, you should note that the program text is <em>not</em> included in
 # <code>ARGV</code>, nor are any of <code>awk</code>&rsquo;s command-line options.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a> for information
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a> for information
 # about how <code>awk</code> uses these variables.
 # (d.c.)
 # </p>
@@ -249,7 +249,7 @@ awk::ARGV = ""
 # <dt><code>ARGC</code>, <code>ARGV</code></dt>
 # <dd><p>The command-line arguments available to <code>awk</code> programs are stored in
 # an array called <code>ARGV</code>.  <code>ARGC</code> is the number of command-line
-# arguments present.  See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Other-Arguments.html">Other Command-Line Arguments</a>.
+# arguments present.  See <a href="https://www.gnu.org/software/gawk/manual/html_node/Other-Arguments.html">Other Command-Line Arguments</a>.
 # Unlike most <code>awk</code> arrays,
 # <code>ARGV</code> is indexed from 0 to <code>ARGC</code> - 1.
 # In the following example:
@@ -277,7 +277,7 @@ awk::ARGV = ""
 # <p>The value of <code>ARGV[0]</code> can vary from system to system.
 # Also, you should note that the program text is <em>not</em> included in
 # <code>ARGV</code>, nor are any of <code>awk</code>&rsquo;s command-line options.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a> for information
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a> for information
 # about how <code>awk</code> uses these variables.
 # (d.c.)
 # </p>
@@ -321,15 +321,15 @@ gawk::ARGIND = ""
 # </p>
 # <p>This can also affect the running <code>gawk</code> program, since some of the
 # built-in functions may pay attention to certain environment variables.
-# The most notable instance of this is <code>mktime()</code> (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Time-Functions.html">Time Functions</a>), which pays attention the value of the <code>TZ</code> environment
+# The most notable instance of this is <code>mktime()</code> (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Time-Functions.html">Time Functions</a>), which pays attention the value of the <code>TZ</code> environment
 # variable on many systems.
 # </p>
 # <p>Some operating systems may not have environment variables.
 # On such systems, the <code>ENVIRON</code> array is empty (except for
 # <code>ENVIRON[&quot;AWKPATH&quot;]</code><!-- /@w --> and
 # <code>ENVIRON[&quot;AWKLIBPATH&quot;]</code><!-- /@w -->;
-# see section <a href="https://www.gnu.org/software/gawk/manual/html_node/AWKPATH-Variable.html">The <code>AWKPATH</code> Environment Variable</a> and
-# see section <a href="https://www.gnu.org/software/gawk/manual/html_node/AWKLIBPATH-Variable.html">The <code>AWKLIBPATH</code> Environment Variable</a>).
+# see <a href="https://www.gnu.org/software/gawk/manual/html_node/AWKPATH-Variable.html">The <code>AWKPATH</code> Environment Variable</a> and
+# see <a href="https://www.gnu.org/software/gawk/manual/html_node/AWKLIBPATH-Variable.html">The <code>AWKLIBPATH</code> Environment Variable</a>).
 # </p>
 # </dd>
 awk::ENVIRON = ""
@@ -341,7 +341,7 @@ awk::ENVIRON = ""
 # </p>
 # <p>In addition, <code>gawk</code> clears <code>ERRNO</code> before opening each
 # command-line input file. This enables checking if the file is readable
-# inside a <code>BEGINFILE</code> pattern (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/BEGINFILE_002fENDFILE.html">The <code>BEGINFILE</code> and <code>ENDFILE</code> Special Patterns</a>).
+# inside a <code>BEGINFILE</code> pattern (see <a href="https://www.gnu.org/software/gawk/manual/html_node/BEGINFILE_002fENDFILE.html">The <code>BEGINFILE</code> and <code>ENDFILE</code> Special Patterns</a>).
 # </p>
 # <p>Otherwise, <code>ERRNO</code> works similarly to the C variable <code>errno</code>.
 # Except for the case just mentioned, <code>gawk</code> <em>never</em> clears
@@ -362,10 +362,10 @@ gawk::ERRNO = ""
 # <dd><p>The name of the current input file.  When no data files are listed
 # on the command line, <code>awk</code> reads from the standard input and
 # <code>FILENAME</code> is set to <code>&quot;-&quot;</code>.  <code>FILENAME</code> changes each
-# time a new file is read (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Reading-Files.html">Reading Input Files</a>).  Inside a <code>BEGIN</code>
+# time a new file is read (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Reading-Files.html">Reading Input Files</a>).  Inside a <code>BEGIN</code>
 # rule, the value of <code>FILENAME</code> is <code>&quot;&quot;</code>, because there are no input
 # files being processed yet. (d.c.) Note, though,
-# that using <code>getline</code> (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Getline.html">Explicit Input with <code>getline</code></a>) inside a <code>BEGIN</code> rule
+# that using <code>getline</code> (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Getline.html">Explicit Input with <code>getline</code></a>) inside a <code>BEGIN</code> rule
 # can give <code>FILENAME</code> a value.
 # </p>
 # </dd>
@@ -373,7 +373,7 @@ awk::FILENAME = ""
 
 # <dt><code>FNR</code></dt>
 # <dd><p>The current record number in the current file.  <code>awk</code> increments
-# <code>FNR</code> each time it reads a new record (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Records.html">How Input Is Split into Records</a>).
+# <code>FNR</code> each time it reads a new record (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Records.html">How Input Is Split into Records</a>).
 # <code>awk</code> resets <code>FNR</code> to zero each time it starts a new
 # input file.
 # </p>
@@ -383,13 +383,13 @@ awk::FNR = ""
 # <dt><code>NF</code></dt>
 # <dd><p>The number of fields in the current input record.
 # <code>NF</code> is set each time a new record is read, when a new field is
-# created, or when <code>$0</code> changes (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Fields.html">Examining Fields</a>).
+# created, or when <code>$0</code> changes (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Fields.html">Examining Fields</a>).
 # </p>
 # <p>Unlike most of the variables described in this subsection,
 # assigning a value to <code>NF</code> has the potential to affect
 # <code>awk</code>&rsquo;s internal workings.  In particular, assignments
 # to <code>NF</code> can be used to create fields in or remove fields from the
-# current record. See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Changing-Fields.html">Changing the Contents of a Field</a>.
+# current record. See <a href="https://www.gnu.org/software/gawk/manual/html_node/Changing-Fields.html">Changing the Contents of a Field</a>.
 # </p>
 # </dd>
 awk::NF = ""
@@ -410,7 +410,7 @@ gawk::FUNCTAB = ""
 # <dt><code>NR</code></dt>
 # <dd><p>The number of input records <code>awk</code> has processed since
 # the beginning of the program&rsquo;s execution
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Records.html">How Input Is Split into Records</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Records.html">How Input Is Split into Records</a>).
 # <code>awk</code> increments <code>NR</code> each time it reads a new record.
 # </p>
 # </dd>
@@ -442,7 +442,7 @@ awk::NR = ""
 # 
 # <p>Please note that this differs from the standard <code>ARGV</code> array which does
 # not include command-line arguments that have already been processed by
-# <code>gawk</code> (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a>).
+# <code>gawk</code> (see <a href="https://www.gnu.org/software/gawk/manual/html_node/ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a>).
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;egid&quot;]</code></dt>
@@ -560,7 +560,7 @@ awk::NR = ""
 # <dt><code>PROCINFO[&quot;strftime&quot;]</code></dt>
 # <dd><p>The default time format string for <code>strftime()</code>.
 # Assigning a new value to this element changes the default.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Time-Functions.html">Time Functions</a>.
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Time-Functions.html">Time Functions</a>.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;uid&quot;]</code></dt>
@@ -576,7 +576,7 @@ awk::NR = ""
 # <p>The following additional elements in the array
 # are available to provide information about the MPFR and GMP libraries
 # if your version of <code>gawk</code> supports arbitrary-precision arithmetic
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Arbitrary-Precision-Arithmetic.html">Arithmetic and Arbitrary-Precision Arithmetic with <code>gawk</code></a>):
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Arbitrary-Precision-Arithmetic.html">Arithmetic and Arbitrary-Precision Arithmetic with <code>gawk</code></a>):
 # </p>
 # <dl compact="compact">
 # <dt><code>PROCINFO[&quot;gmp_version&quot;]</code></dt>
@@ -602,7 +602,7 @@ awk::NR = ""
 # <p>The following additional elements in the array are available to provide
 # information about the version of the extension API, if your version
 # of <code>gawk</code> supports dynamic loading of extension functions
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Dynamic-Extensions.html">Writing Extensions for <code>gawk</code></a>):
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Dynamic-Extensions.html">Writing Extensions for <code>gawk</code></a>):
 # </p>
 # <dl compact="compact">
 # <dt><code>PROCINFO[&quot;api_major&quot;]</code></dt>
@@ -619,30 +619,30 @@ awk::NR = ""
 # through <code>&quot;group<var>N</var>&quot;</code> for some <var>N</var>. <var>N</var> is the number of
 # supplementary groups that the process has.  Use the <code>in</code> operator
 # to test for these elements
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Reference-to-Elements.html">Referring to an Array Element</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Reference-to-Elements.html">Referring to an Array Element</a>).
 # </p>
 # <p>The following elements allow you to change <code>gawk</code>&rsquo;s behavior:
 # </p>
 # <dl compact="compact">
 # <dt><code>PROCINFO[&quot;NONFATAL&quot;]</code></dt>
 # <dd><p>If this element exists, then I/O errors for all redirections become nonfatal.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nonfatal.html">Enabling Nonfatal Output</a>.
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Nonfatal.html">Enabling Nonfatal Output</a>.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;<var>name</var>&quot;, &quot;NONFATAL&quot;]</code></dt>
 # <dd><p>Make I/O errors for <var>name</var> be nonfatal.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nonfatal.html">Enabling Nonfatal Output</a>.
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Nonfatal.html">Enabling Nonfatal Output</a>.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;<var>command</var>&quot;, &quot;pty&quot;]</code></dt>
 # <dd><p>For two-way communication to <var>command</var>, use a pseudo-tty instead
 # of setting up a two-way pipe.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Two_002dway-I_002fO.html">Two-Way Communications with Another Process</a> for more information.
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Two_002dway-I_002fO.html">Two-Way Communications with Another Process</a> for more information.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;<var>input_name</var>&quot;, &quot;READ_TIMEOUT&quot;]</code></dt>
 # <dd><p>Set a timeout for reading from input redirection <var>input_name</var>.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Read-Timeout.html">Reading Input with a Timeout</a> for more information.
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Read-Timeout.html">Reading Input with a Timeout</a> for more information.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;<var>input_name</var>&quot;, &quot;RETRY&quot;]</code></dt>
@@ -655,7 +655,7 @@ awk::NR = ""
 # in conjunction with <code>PROCINFO[&quot;<var>input_name</var>&quot;, &quot;READ_TIMEOUT&quot;]</code>
 # or situations where a file descriptor has been configured to behave in
 # a non-blocking fashion.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Retrying-Input.html">Retrying Reads After Certain Input Errors</a> for more information.
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Retrying-Input.html">Retrying Reads After Certain Input Errors</a> for more information.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;sorted_in&quot;]</code></dt>
@@ -674,7 +674,7 @@ gawk::PROCINFO = ""
 # <dt><code>RLENGTH</code></dt>
 # <dd><p>The length of the substring matched by the
 # <code>match()</code> function
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
 # <code>RLENGTH</code> is set by invoking the <code>match()</code> function.  Its value
 # is the length of the matched string, or -1 if no match is found.
 # </p>
@@ -684,7 +684,7 @@ awk::RLENGTH = ""
 # <dt><code>RSTART</code></dt>
 # <dd><p>The start index in characters of the substring that is matched by the
 # <code>match()</code> function
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>).
 # <code>RSTART</code> is set by invoking the <code>match()</code> function.  Its value
 # is the position of the string where the matched substring starts, or zero
 # if no match was found.
@@ -714,7 +714,7 @@ gawk::RT = ""
 # print foo    # prints 4
 # </pre></div>
 # 
-# <p>The <code>isarray()</code> function (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Type-Functions.html">Getting Type Information</a>) may be used to test
+# <p>The <code>isarray()</code> function (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Type-Functions.html">Getting Type Information</a>) may be used to test
 # if an element in <code>SYMTAB</code> is an array.
 # Also, you may not use the <code>delete</code> statement with the
 # <code>SYMTAB</code> array.
@@ -931,8 +931,8 @@ function awk::srand() {}
 # is then sorted, leaving the indices of <var>source</var> unchanged.
 # </p>
 # <p>When comparing strings, <code>IGNORECASE</code> affects the sorting
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a>).  If the
-# <var>source</var> array contains subarrays as values (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Arrays-of-Arrays.html">Arrays of Arrays</a>), they will come last, after all scalar values.
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a>).  If the
+# <var>source</var> array contains subarrays as values (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Arrays-of-Arrays.html">Arrays of Arrays</a>), they will come last, after all scalar values.
 # Subarrays are <em>not</em> recursively sorted.
 # </p>
 # <p>For example, if the contents of <code>a</code> are as follows:
@@ -1002,8 +1002,8 @@ function gawk::asort() {}
 # is then sorted, leaving the indices of <var>source</var> unchanged.
 # </p>
 # <p>When comparing strings, <code>IGNORECASE</code> affects the sorting
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a>).  If the
-# <var>source</var> array contains subarrays as values (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Arrays-of-Arrays.html">Arrays of Arrays</a>), they will come last, after all scalar values.
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Array-Sorting-Functions.html">Sorting Array Values and Indices with <code>gawk</code></a>).  If the
+# <var>source</var> array contains subarrays as values (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Arrays-of-Arrays.html">Arrays of Arrays</a>), they will come last, after all scalar values.
 # Subarrays are <em>not</em> recursively sorted.
 # </p>
 # <p>For example, if the contents of <code>a</code> are as follows:
@@ -1209,10 +1209,10 @@ function awk::index() {}
 # array is not guaranteed to be indexed from one to the number of elements
 # in it.
 # If <samp>--lint</samp> is provided on the command line
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>),
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>),
 # <code>gawk</code> warns that passing an array argument is not portable.
 # If <samp>--posix</samp> is supplied, using an array argument is a fatal error
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Arrays.html">Arrays in <code>awk</code></a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Arrays.html">Arrays in <code>awk</code></a>).
 # </p>
 # </dd>
 function awk::length() {}
@@ -1228,7 +1228,7 @@ function awk::length() {}
 # <p>The <var>regexp</var> argument may be either a regexp constant
 # (<code>/</code>&hellip;<code>/</code>) or a string constant (<code>&quot;</code>&hellip;<code>&quot;</code>).
 # In the latter case, the string is treated as a regexp to be matched.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Computed-Regexps.html">Using Dynamic Regexps</a> for a
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Computed-Regexps.html">Using Dynamic Regexps</a> for a
 # discussion of the difference between the two forms, and the
 # implications for writing your program correctly.
 # </p>
@@ -1313,11 +1313,11 @@ function awk::length() {}
 # <p>There may not be subscripts for the start and index for every parenthesized
 # subexpression, because they may not all have matched text; thus, they
 # should be tested for with the <code>in</code> operator
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Reference-to-Elements.html">Referring to an Array Element</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Reference-to-Elements.html">Referring to an Array Element</a>).
 # </p>
 # <p>The <var>array</var> argument to <code>match()</code> is a
 # <code>gawk</code> extension.  In compatibility mode
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>),
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>),
 # using a third argument is a fatal error.
 # </p>
 # </dd>
@@ -1345,7 +1345,7 @@ function awk::match() {}
 # </p>
 # <p>The <code>patsplit()</code> function splits strings into pieces in a
 # manner similar to the way input lines are split into fields using <code>FPAT</code>
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Splitting-By-Content.html">Defining Fields by Content</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Splitting-By-Content.html">Defining Fields by Content</a>).
 # </p>
 # <p>Before splitting the string, <code>patsplit()</code> deletes any previously existing
 # elements in the arrays <var>array</var> and <var>seps</var>.
@@ -1419,7 +1419,7 @@ function gawk::patsplit() {}
 # the third argument to be a regexp constant (<code>/</code>&hellip;<code>/</code><!-- /@w -->)
 # as well as a string.  (d.c.)
 # The POSIX standard allows this as well.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Computed-Regexps.html">Using Dynamic Regexps</a> for a
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Computed-Regexps.html">Using Dynamic Regexps</a> for a
 # discussion of the difference between using a string constant or a regexp constant,
 # and the implications for writing your program correctly.
 # </p>
@@ -1428,13 +1428,13 @@ function gawk::patsplit() {}
 # </p>
 # <p>If <var>string</var> is null, the array has no elements. (So this is a portable
 # way to delete an entire array with one statement.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Delete.html">The <code>delete</code> Statement</a>.)
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Delete.html">The <code>delete</code> Statement</a>.)
 # </p>
 # <p>If <var>string</var> does not match <var>fieldsep</var> at all (but is not null),
 # <var>array</var> has one element only. The value of that element is the original
 # <var>string</var>.
 # </p>
-# <p>In POSIX mode (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), the fourth argument is not allowed.
+# <p>In POSIX mode (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), the fourth argument is not allowed.
 # </p>
 # </dd>
 function awk::split() {}
@@ -1443,7 +1443,7 @@ function awk::split() {}
 # <dd>
 # <p>Return (without printing) the string that <code>printf</code> would
 # have printed out with the same arguments
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Printf.html">Using <code>printf</code> Statements for Fancier Printing</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Printf.html">Using <code>printf</code> Statements for Fancier Printing</a>).
 # For example:
 # </p>
 # <div class="example" style="border: 1px dashed #888888; padding-left: 5px">
@@ -1549,7 +1549,7 @@ function awk::split() {}
 # and positive infinity as
 # &lsquo;<samp>inf</samp>&rsquo; or &lsquo;<samp>infinity</samp>&rsquo;.
 # The special &ldquo;not a number&rdquo; value formats as &lsquo;<samp>-nan</samp>&rsquo; or &lsquo;<samp>nan</samp>&rsquo;
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Math-Definitions.html">Other Stuff to Know</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Math-Definitions.html">Other Stuff to Know</a>).
 # </p>
 # </dd>
 # <dt><code>%F</code></dt>
@@ -1568,7 +1568,7 @@ function awk::split() {}
 # </dd>
 # <dt><code>%o</code></dt>
 # <dd><p>Print an unsigned octal integer
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
 # </p>
 # </dd>
 # <dt><code>%s</code></dt>
@@ -1585,7 +1585,7 @@ function awk::split() {}
 # <dd><p>Print an unsigned hexadecimal integer;
 # &lsquo;<samp>%X</samp>&rsquo; uses the letters &lsquo;<samp>A</samp>&rsquo; through &lsquo;<samp>F</samp>&rsquo;
 # instead of &lsquo;<samp>a</samp>&rsquo; through &lsquo;<samp>f</samp>&rsquo;
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
 # </p>
 # </dd>
 # <dt><code>%%</code></dt>
@@ -1599,7 +1599,7 @@ function awk::split() {}
 # <p><b>NOTE:</b> When using the integer format-control letters for values that are
 # outside the range of the widest C integer type, <code>gawk</code> switches to
 # the &lsquo;<samp>%g</samp>&rsquo; format specifier. If <samp>--lint</samp> is provided on the
-# command line (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code>
+# command line (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code>
 # warns about this.  Other versions of <code>awk</code> may print invalid
 # values or do something else entirely.
 # (d.c.)
@@ -1647,7 +1647,7 @@ function awk::split() {}
 # <p>At first glance, this feature doesn&rsquo;t seem to be of much use.
 # It is in fact a <code>gawk</code> extension, intended for use in translating
 # messages at runtime.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Printf-Ordering.html">Rearranging <code>printf</code> Arguments</a>,
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Printf-Ordering.html">Rearranging <code>printf</code> Arguments</a>,
 # which describes how and why to use positional specifiers.
 # For now, we ignore them.
 # </p>
@@ -1818,7 +1818,7 @@ function awk::split() {}
 # &lsquo;<samp>j</samp>&rsquo;, &lsquo;<samp>l</samp>&rsquo;, &lsquo;<samp>L</samp>&rsquo;, &lsquo;<samp>t</samp>&rsquo;, and &lsquo;<samp>z</samp>&rsquo;) in <code>printf</code>
 # format strings. These are not valid in <code>awk</code>.  Most <code>awk</code>
 # implementations silently ignore them.  If <samp>--lint</samp> is provided
-# on the command line (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code> warns about their
+# on the command line (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code> warns about their
 # use. If <samp>--posix</samp> is supplied, their use is a fatal error.
 # </p>
 function awk::sprintf() {}
@@ -1841,7 +1841,7 @@ function awk::sprintf() {}
 # works only for decimal data, not for octal or hexadecimal.
 # </p>
 # <p>Note also that <code>strtonum()</code> uses the current locale&rsquo;s decimal point
-# for recognizing numbers (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Locales.html">Where You Are Makes a Difference</a>).
+# for recognizing numbers (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Locales.html">Where You Are Makes a Difference</a>).
 # </p>
 # </dd>
 function gawk::strtonum() {}
@@ -1858,7 +1858,7 @@ function gawk::strtonum() {}
 # <p>The <var>regexp</var> argument may be either a regexp constant
 # (<code>/</code>&hellip;<code>/</code>) or a string constant (<code>&quot;</code>&hellip;<code>&quot;</code>).
 # In the latter case, the string is treated as a regexp to be matched.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Computed-Regexps.html">Using Dynamic Regexps</a> for a
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Computed-Regexps.html">Using Dynamic Regexps</a> for a
 # discussion of the difference between the two forms, and the
 # implications for writing your program correctly.
 # </p>
@@ -1901,7 +1901,7 @@ function gawk::strtonum() {}
 # 
 # <p>This shows how &lsquo;<samp>&amp;</samp>&rsquo; can represent a nonconstant string and also
 # illustrates the &ldquo;leftmost, longest&rdquo; rule in regexp matching
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Leftmost-Longest.html">How Much Text Matches?</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Leftmost-Longest.html">How Much Text Matches?</a>).
 # </p>
 # <p>The effect of this special character (&lsquo;<samp>&amp;</samp>&rsquo;) can be turned off by putting a
 # backslash before it in the string.  As usual, to insert one backslash in
@@ -2018,7 +2018,7 @@ function awk::toupper() {}
 # <p>Close the file <var>filename</var> for input or output. Alternatively, the
 # argument may be a shell command that was used for creating a coprocess, or
 # for redirecting to or from a pipe; then the coprocess or pipe is closed.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Close-Files-And-Pipes.html">Closing Input and Output Redirections</a>
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Close-Files-And-Pipes.html">Closing Input and Output Redirections</a>
 # for more information.
 # </p>
 # <p>When closing a coprocess, it is occasionally useful to first close
@@ -2028,11 +2028,11 @@ function awk::toupper() {}
 # should be one of the two string values <code>&quot;to&quot;</code> or <code>&quot;from&quot;</code>,
 # indicating which end of the pipe to close.  Case in the string does
 # not matter.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Two_002dway-I_002fO.html">Two-Way Communications with Another Process</a>,
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Two_002dway-I_002fO.html">Two-Way Communications with Another Process</a>,
 # which discusses this feature in more detail and gives an example.
 # </p>
 # <p>Note that the second argument to <code>close()</code> is a <code>gawk</code>
-# extension; it is not available in compatibility mode (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>).
+# extension; it is not available in compatibility mode (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>).
 # </p>
 # </dd>
 function awk::close() {}
@@ -2128,7 +2128,7 @@ function awk::fflush() {}
 # </p>
 # <blockquote>
 # <p><b>NOTE:</b> When <samp>--sandbox</samp> is specified, the <code>system()</code> function is disabled
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>).
 # </p></blockquote>
 # 
 # <p>On POSIX systems, a command&rsquo;s exit status is a 16-bit number. The exit
@@ -2202,7 +2202,7 @@ function gawk::mktime() {}
 # <code>gawk</code> uses the current time of day as the timestamp.
 # Without a <var>format</var> argument, <code>strftime()</code> uses
 # the value of <code>PROCINFO[&quot;strftime&quot;]</code> as the format string
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Built_002din-Variables.html">Predefined Variables</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Built_002din-Variables.html">Predefined Variables</a>).
 # The default string value is
 # <code>&quot;%a&nbsp;%b&nbsp;%e&nbsp;%H:%M:%S&nbsp;%Z&nbsp;%Y&quot;<!-- /@w --></code>.  This format string produces
 # output that is equivalent to that of the <code>date</code> utility.
@@ -2215,7 +2215,7 @@ function gawk::mktime() {}
 # <p>The <code>strftime()</code> function allows you to easily turn a timestamp
 # into human-readable information.  It is similar in nature to the <code>sprintf()</code>
 # function
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>),
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/String-Functions.html">String-Manipulation Functions</a>),
 # in that it copies nonformat specification characters verbatim to the
 # returned string, while substituting date and time values for format
 # specifications in the <var>format</var> string.
@@ -2411,7 +2411,7 @@ function gawk::mktime() {}
 # <code>strftime()</code> from the GNU C Library.
 # It supports all of the just-listed format specifications.
 # If that version is
-# used to compile <code>gawk</code> (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Installation.html">Installing <code>gawk</code></a>),
+# used to compile <code>gawk</code> (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Installation.html">Installing <code>gawk</code></a>),
 # then the following additional format specifications are available:
 # </p>
 # <dl compact="compact">
@@ -2492,7 +2492,7 @@ function gawk::isarray() {}
 # </p>
 # </dd>
 # <dt><code>&quot;regexp&quot;</code></dt>
-# <dd><p><var>x</var> is a strongly typed regexp (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Strong-Regexp-Constants.html">Strongly Typed Regexp Constants</a>).
+# <dd><p><var>x</var> is a strongly typed regexp (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Strong-Regexp-Constants.html">Strongly Typed Regexp Constants</a>).
 # </p>
 # </dd>
 # <dt><code>&quot;number&quot;</code></dt>
@@ -2506,7 +2506,7 @@ function gawk::isarray() {}
 # <dt><code>&quot;strnum&quot;</code></dt>
 # <dd><p><var>x</var> is a number that started life as user input, such as a field or
 # the result of calling <code>split()</code>. (I.e., <var>x</var> has the strnum
-# attribute; see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Variable-Typing.html">String Type versus Numeric Type</a>.)
+# attribute; see <a href="https://www.gnu.org/software/gawk/manual/html_node/Variable-Typing.html">String Type versus Numeric Type</a>.)
 # </p>
 # </dd>
 # <dt><code>&quot;unassigned&quot;</code></dt>
@@ -2598,7 +2598,7 @@ function gawk::dcngettext() {}
 # read.  However, if an <code>END</code> rule is present,
 # as part of executing the <code>exit</code> statement,
 # the <code>END</code> rule is executed
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/BEGIN_002fEND.html">The <code>BEGIN</code> and <code>END</code> Special Patterns</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/BEGIN_002fEND.html">The <code>BEGIN</code> and <code>END</code> Special Patterns</a>).
 # If <code>exit</code> is used in the body of an <code>END</code> rule, it causes
 # the program to stop immediately.
 # </p>
@@ -2612,7 +2612,7 @@ function gawk::dcngettext() {}
 # if you don&rsquo;t want the <code>END</code> rule to do its job, set a variable
 # to a nonzero value before the <code>exit</code> statement and check that variable in
 # the <code>END</code> rule.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Assert-Function.html">Assertions</a>
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Assert-Function.html">Assertions</a>
 # for an example that does this.
 # </p>
 # <p>If an argument is supplied to <code>exit</code>, its value is used as the exit
@@ -2622,7 +2622,7 @@ function gawk::dcngettext() {}
 # is supplied to a first <code>exit</code> statement, and then <code>exit</code> is
 # called a second time from an <code>END</code> rule with no argument,
 # <code>awk</code> uses the previously supplied exit value.  (d.c.)
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Exit-Status.html"><code>gawk</code>&rsquo;s Exit Status</a> for more information.
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Exit-Status.html"><code>gawk</code>&rsquo;s Exit Status</a> for more information.
 # </p>
 # <p>For example, suppose an error condition occurs that is difficult or
 # impossible to handle.  Conventionally, programs report this by
@@ -2746,7 +2746,7 @@ function stmt::exit() {}
 # and positive infinity as
 # &lsquo;<samp>inf</samp>&rsquo; or &lsquo;<samp>infinity</samp>&rsquo;.
 # The special &ldquo;not a number&rdquo; value formats as &lsquo;<samp>-nan</samp>&rsquo; or &lsquo;<samp>nan</samp>&rsquo;
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Math-Definitions.html">Other Stuff to Know</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Math-Definitions.html">Other Stuff to Know</a>).
 # </p>
 # </dd>
 # <dt><code>%F</code></dt>
@@ -2765,7 +2765,7 @@ function stmt::exit() {}
 # </dd>
 # <dt><code>%o</code></dt>
 # <dd><p>Print an unsigned octal integer
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
 # </p>
 # </dd>
 # <dt><code>%s</code></dt>
@@ -2782,7 +2782,7 @@ function stmt::exit() {}
 # <dd><p>Print an unsigned hexadecimal integer;
 # &lsquo;<samp>%X</samp>&rsquo; uses the letters &lsquo;<samp>A</samp>&rsquo; through &lsquo;<samp>F</samp>&rsquo;
 # instead of &lsquo;<samp>a</samp>&rsquo; through &lsquo;<samp>f</samp>&rsquo;
-# (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
 # </p>
 # </dd>
 # <dt><code>%%</code></dt>
@@ -2796,7 +2796,7 @@ function stmt::exit() {}
 # <p><b>NOTE:</b> When using the integer format-control letters for values that are
 # outside the range of the widest C integer type, <code>gawk</code> switches to
 # the &lsquo;<samp>%g</samp>&rsquo; format specifier. If <samp>--lint</samp> is provided on the
-# command line (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code>
+# command line (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code>
 # warns about this.  Other versions of <code>awk</code> may print invalid
 # values or do something else entirely.
 # (d.c.)
@@ -2844,7 +2844,7 @@ function stmt::exit() {}
 # <p>At first glance, this feature doesn&rsquo;t seem to be of much use.
 # It is in fact a <code>gawk</code> extension, intended for use in translating
 # messages at runtime.
-# See section <a href="https://www.gnu.org/software/gawk/manual/html_node/Printf-Ordering.html">Rearranging <code>printf</code> Arguments</a>,
+# See <a href="https://www.gnu.org/software/gawk/manual/html_node/Printf-Ordering.html">Rearranging <code>printf</code> Arguments</a>,
 # which describes how and why to use positional specifiers.
 # For now, we ignore them.
 # </p>
@@ -3015,7 +3015,7 @@ function stmt::exit() {}
 # &lsquo;<samp>j</samp>&rsquo;, &lsquo;<samp>l</samp>&rsquo;, &lsquo;<samp>L</samp>&rsquo;, &lsquo;<samp>t</samp>&rsquo;, and &lsquo;<samp>z</samp>&rsquo;) in <code>printf</code>
 # format strings. These are not valid in <code>awk</code>.  Most <code>awk</code>
 # implementations silently ignore them.  If <samp>--lint</samp> is provided
-# on the command line (see section <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code> warns about their
+# on the command line (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code> warns about their
 # use. If <samp>--posix</samp> is supplied, their use is a fatal error.
 # </p>
 function stmt::printf() {}
