@@ -12,15 +12,23 @@ Stmt && Content &&/<hr>/ { Content=0; closeItem(); exit }
 
 /^<\/dl>/     && !Nested { Content=0 }
 /^<dt( id='[a-z0-9_-]+')?><span><code>/ && !Nested { Content=1 }
-/^<dt/       && !Nested {
+/^<dt/                   {
     sub(/ +#/,"")
     start=index($0,"<code>")+6
     if (Vars) {
         # extract var name
         sub(/<code><code>/,"<code>")
         sub(/<\/code><\/code>/,"</code>")
-        Name = substr($0, start, index($0,"</code>")-start)
-        Nested = "PROCINFO"==Name
+        name = substr($0, start, index($0,"</code>")-start)
+        if (Nested) {
+            if ("RLENGTH" == name) {
+                closeItem()
+                Name = name
+                Nested=0
+            }
+        }
+        else
+            Nested = "PROCINFO"==(Name=name)
     } else {
         # extract function name
         Name = substr($0, start, index($0,"(")-start)
@@ -32,7 +40,7 @@ Stmt && Content &&/<hr>/ { Content=0; closeItem(); exit }
 Content                  { appendDocLine($0) }
 
 /<\/dd>/ && Name && !Nested    { closeItem() }
-Nested && ("typeof"==Name ? NR==152 : NR==522) { closeItem(); Nested=0 }
+#Nested && ("typeof"==Name ? NR==152 : NR==522) { closeItem(); Nested=0 }
 
 function appendDocLine(l,   l1) {
     l1 = cleanupHtml(processCode(processUrls(indentCode(l))))
