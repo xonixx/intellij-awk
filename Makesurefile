@@ -116,12 +116,11 @@
 
   echo "Please don't forget to open the release draft, edit it as needed and PUBLISH!"
 
-@goal std.awk
-@doc 'generates std.awk file used for documentation (Ctrl-Q)'
-@depends_on std.awk_clean
+@goal std.awk_variables
 @depends_on std.awk_variables1
 @depends_on std.awk_variables2
-@depends_on std.awk_close_BEGIN
+
+@goal std.awk_functions
 @depends_on std.awk_numeric
 @depends_on std.awk_string
 @depends_on std.awk_io
@@ -131,6 +130,16 @@
 @depends_on std.awk_i18n
 @depends_on std.awk_exit
 @depends_on std.awk_printf
+
+
+@goal std.awk
+@doc 'generates std.awk file used for documentation (Ctrl-Q)'
+  {
+     echo 'BEGIN {' 
+     ./makesure std.awk_variables -s 
+     echo '}'
+     ./makesure std.awk_functions -s 
+  } > src/main/resources/std.awk
 
 @goal temp_folder_created @private
 @reached_if [[ -d temp ]]
@@ -196,57 +205,50 @@
 @reached_if [[ -f 'temp/Exit-Statement.html' ]]
   curl https://www.gnu.org/software/gawk/manual/html_node/Exit-Statement.html -o temp/Exit-Statement.html
 
-
-@goal std.awk_clean @private
-  echo 'BEGIN {' > src/main/resources/std.awk
-
-@goal std.awk_close_BEGIN @private
-  echo '}' >> src/main/resources/std.awk
-
 @goal std.awk_numeric @private
 @depends_on numeric_functions_downloaded
-  awk -f gen_std.awk temp/Numeric-Functions.html >> src/main/resources/std.awk
+  awk -f gen_std.awk temp/Numeric-Functions.html
 
 @goal std.awk_string @private
 @depends_on string_functions_downloaded
 @depends_on sprintf1_downloaded
 @depends_on sprintf2_downloaded
-  awk -f gen_std.awk temp/String-Functions.html >> src/main/resources/std.awk
+  awk -f gen_std.awk temp/String-Functions.html
 
 @goal std.awk_io @private
 @depends_on io_functions_downloaded
-  awk -f gen_std.awk temp/IO-Functions.html >> src/main/resources/std.awk
+  awk -f gen_std.awk temp/IO-Functions.html
 
 @goal std.awk_time @private
 @depends_on time_functions_downloaded
-  awk -f gen_std.awk temp/Time-Functions.html >> src/main/resources/std.awk
+  awk -f gen_std.awk temp/Time-Functions.html
 
 @goal std.awk_bitwise @private
 @depends_on bitwise_functions_downloaded
-  awk -f gen_std.awk temp/Bitwise-Functions.html >> src/main/resources/std.awk
+  awk -f gen_std.awk temp/Bitwise-Functions.html
 
 @goal std.awk_type @private
 @depends_on type_functions_downloaded
-  awk -f gen_std.awk temp/Type-Functions.html >> src/main/resources/std.awk
+  awk -f gen_std.awk temp/Type-Functions.html
 
 @goal std.awk_i18n @private
 @depends_on i18n_functions_downloaded
-  awk -f gen_std.awk temp/I18N-Functions.html >> src/main/resources/std.awk
+  awk -f gen_std.awk temp/I18N-Functions.html
 
 @goal std.awk_variables1 @private
 @depends_on variables1_downloaded
-  awk -v Vars=1 -f gen_std.awk temp/User_002dmodified.html >> src/main/resources/std.awk
+  awk -v Vars=1 -f gen_std.awk temp/User_002dmodified.html
 
 @goal std.awk_variables2 @private
 @depends_on variables2_downloaded
-  awk -v Vars=1 -f gen_std.awk temp/Auto_002dset.html >> src/main/resources/std.awk
+  awk -v Vars=1 -f gen_std.awk temp/Auto_002dset.html
 
 @goal std.awk_exit @private
 @depends_on exit_downloaded
-  awk -v Stmt=exit -f gen_std.awk temp/Exit-Statement.html >> src/main/resources/std.awk
+  awk -v Stmt=exit -f gen_std.awk temp/Exit-Statement.html
 
 @goal std.awk_printf @private
-  awk -v Stmt=printf -f gen_std.awk >> src/main/resources/std.awk
+  awk -v Stmt=printf -f gen_std.awk
 
 @goal githubTests
 @doc 'Run tests with Github actions'

@@ -98,7 +98,7 @@ function closeItem() {
     Doc = ""
     if (Stmt)
         print "function stmt::" Stmt "() {}"
-    else
+    else # TODO shell we redo Gawk-specific determination by '#'?
         print Vars ? (Name ~ /^(BINMODE|FIELDWIDTHS|FPAT|IGNORECASE|LINT|PREC|ROUNDMODE|TEXTDOMAIN|ARGIND|ERRNO|FUNCTAB|PROCINFO|RT|SYMTAB)$/ ?
         "gawk" : "awk") "::" Name " = \"\"" : "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?
         "gawk" : "awk") "::" Name "() {}"
