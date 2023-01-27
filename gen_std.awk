@@ -94,7 +94,9 @@ function closeItem() {
     } else if (Name=="strftime") {
         appendDocLine("<br>")
         appendDocLine("<h3>Format-Control Letters</h3>")
-        appendPartOfFileToDoc2("temp/Time-Functions.html")
+        appendPartOfFileToDoc("temp/Time-Functions.html",
+            "<code>strftime\\(\\)</code> function allows you",
+            "<p>Additionally, the alternative representations")
     } else if (Name=="system") {
         gsub(/<a href="[^"]+">Table [0-9]+\.[0-9]+<\/a>/,"table below",Doc)
         gsub(/Table [0-9]+\.[0-9]+:/,"Table:",Doc)
@@ -107,6 +109,15 @@ function closeItem() {
         print Vars ? (Name ~ /^(BINMODE|FIELDWIDTHS|FPAT|IGNORECASE|LINT|PREC|ROUNDMODE|TEXTDOMAIN|ARGIND|ERRNO|FUNCTAB|PROCINFO|RT|SYMTAB)$/ ?
         "gawk" : "awk") "::" Name " = \"\"" : "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?
         "gawk" : "awk") "::" Name "() {}"
+}
+
+function appendPartOfFileToDoc(fName,regexFromIncl,regexToExcl,   l,content) {
+    while ((getline l < fName)>0) {
+        if (content && l ~ regexToExcl) break
+        if (!content && l ~ regexFromIncl) content=1
+        if (content)
+            appendDocLine(l)
+    }
 }
 
 function appendPartOfFileToDoc2(fName,   l,content) {
