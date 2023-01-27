@@ -40,11 +40,10 @@ Stmt && Content &&/<hr>/ { Content=0; closeItem(); exit }
 Content                  { appendDocLine($0) }
 
 /<\/dd>/ && Name && !Nested    { closeItem() }
-#Nested && ("typeof"==Name ? NR==152 : NR==522) { closeItem(); Nested=0 }
 
 function appendDocLine(l,   l1) {
     l1 = cleanupHtml(processCode(processUrls(indentCode(l))))
-#    print "l1="l1
+    #    print "l1="l1
     if (!l || l1)
         Doc = Doc "\n# " l1
 }
@@ -91,13 +90,13 @@ function closeItem() {
             appendDocLine("<dt><code>printf format, item1, item2, …</code></dt>")
         else
             appendDocLine("<br>")
-        appendPartOfFileToDoc("temp/Control-Letters.html",70,236)
+        appendPartOfFileToDoc2("temp/Control-Letters.html")
         appendDocLine("<br>")
-        appendPartOfFileToDoc("temp/Format-Modifiers.html",70,280)
+        appendPartOfFileToDoc2("temp/Format-Modifiers.html")
     } else if (Name=="strftime") {
         appendDocLine("<br>")
         appendDocLine("<h3>Format-Control Letters</h3>")
-        appendPartOfFileToDoc("temp/Time-Functions.html",181,401)
+        appendPartOfFileToDoc2("temp/Time-Functions.html")
     } else if (Name=="system") {
         gsub(/<a href="[^"]+">Table [0-9]+\.[0-9]+<\/a>/,"table below",Doc)
         gsub(/Table [0-9]+\.[0-9]+:/,"Table:",Doc)
@@ -112,17 +111,20 @@ function closeItem() {
         "gawk" : "awk") "::" Name "() {}"
 }
 
-function appendPartOfFileToDoc(fName,nrFrom,nrTo,   l,nr) {
+function appendPartOfFileToDoc2(fName,   l,content) {
     while ((getline l < fName)>0) {
-        nr++
-        if (nr>=nrFrom && nr<=nrTo) {
-            if (l ~ /<h4/) {
-#                print "here ", l
-                gsub(/h4/,"h3",l)
-                gsub(/([0-9]+\.)+[0-9]+ */,"",l) # remove section number
-#                print "here1", l
-            }
-            appendDocLine(l)
+        if ("<hr>"==l) {
+            getline l < fName
+            if ("<div class=\"header\">"==l) break
         }
+        if (!content && l ~ /<h4/) {
+            content=1
+            #                print "here ", l
+            gsub(/h4/,"h3",l)
+            gsub(/([0-9]+\.)+[0-9]+ */,"",l) # remove section number
+            #                print "here1", l
+        }
+        if (content)
+            appendDocLine(l)
     }
 }
