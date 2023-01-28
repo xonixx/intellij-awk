@@ -92,6 +92,7 @@ public abstract class AwkUserVarNameMixin
    * <li>Var["key"] = ...
    * <li>Var["key"]
    * <li>split("",Var)
+   * <li>delete Var
    */
   public boolean looksLikeDeclaration() {
     AwkUserVarNameStub stub = getStub();

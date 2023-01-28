@@ -62,42 +62,46 @@ public class AwkMixinLogicTests extends BasePlatformTestCase {
   }
 
   public void test11() {
-    doTestInInitContext(true, "BEGIN { A=1 }");
+    doTestLooksLikeDeclaration(true, "BEGIN {\n" + "    if ((Instr = trim($0))!=\"\") {}\n" + "}");
   }
 
   public void test12() {
-    doTestInInitContext(false, "END { A=1 }");
+    doTestLooksLikeDeclaration(true, "{ delete A }");
   }
 
   public void test13() {
+    doTestLooksLikeDeclaration(false, "{ delete A[1] }");
+  }
+
+  public void testInitCtx1() {
+    doTestInInitContext(true, "BEGIN { A=1 }");
+  }
+
+  public void testInitCtx2() {
+    doTestInInitContext(false, "END { A=1 }");
+  }
+
+  public void testInitCtx3() {
     doTestInInitContext(true, "function init() { A=1 }");
   }
 
-  public void test14() {
+  public void testInitCtx4() {
     doTestInInitContext(true, "function initSomething() { A=1 }");
   }
 
-  public void test15() {
+  public void testInitCtx5() {
     doTestInInitContext(false, "function f() { A=1 }");
   }
 
-  public void test16() {
+  public void testInitCtx6() {
     doTestInInitContext(false, "{ A=1 }");
   }
 
-  public void test17() {
+  public void testInitCtx7() {
     doTestInInitContext(false, "{ for(;;){ A=1 } }");
   }
 
-  public void test18() {
+  public void testInitCtx8() {
     doTestInInitContext(true, "BEGIN { while(1){ A=1 } }");
-  }
-
-  public void test19() {
-    doTestLooksLikeDeclaration(
-        true,
-        "BEGIN {\n"
-            + "    if ((Instr = trim($0))!=\"\") {}\n"
-            + "}");
   }
 }
