@@ -11,16 +11,25 @@ Stmt && /<h4/            { Content=1; next }
 Stmt && Content &&/<hr>/ { Content=0; closeItem(); exit }
 
 /^<\/dl>/     && !Nested { Content=0 }
-/^<dt><code>/ && !Nested { Content=1 }
-/^<dt>/       && !Nested {
+/^<dt( id='[a-z0-9_-]+')?><span><code>/ && !Nested { Content=1 }
+
+# isarray after typeof()
+# RLENGTH after PROCINFO
+(/^<p><code>isarray\(\)<\/code>/ ||
+/<code>RLENGTH<\/code>/) && Nested  { closeItem(); Nested=0 }
+
+/^<dt/        && !Nested {
     sub(/ +#/,"")
+    start=index($0,"<code>")+6
     if (Vars) {
+        # extract var name
         sub(/<code><code>/,"<code>")
         sub(/<\/code><\/code>/,"</code>")
-        Name = substr($0, 11, index($0,"</code>")-11)
+        Name = substr($0, start, index($0,"</code>")-start)
         Nested = "PROCINFO"==Name
     } else {
-        Name = substr($0, 11, index($0,"(")-11)
+        # extract function name
+        Name = substr($0, start, index($0,"(")-start)
         Nested = "typeof"==Name
     }
 }
@@ -29,16 +38,20 @@ Stmt && Content &&/<hr>/ { Content=0; closeItem(); exit }
 Content                  { appendDocLine($0) }
 
 /<\/dd>/ && Name && !Nested    { closeItem() }
-Nested && ("typeof"==Name ? NR==152 : NR==522) { closeItem(); Nested=0 }
 
 function appendDocLine(l,   l1) {
-    l1 = rmSpanId(processCode(processUrls(indentCode(l))))
+    l1 = cleanupHtml(processCode(processUrls(indentCode(l))))
+    #    print "l1="l1
     if (!l || l1)
         Doc = Doc "\n# " l1
 }
 
-function rmSpanId(line) {
+function cleanupHtml(line) {
     gsub(/<span id=".+"><\/span>/,"",line)
+    gsub(/<a href='.+' class='copiable-anchor'> &para;<\/a>/,"",line)
+    gsub(/ id='[^']+'/,"",line)
+    gsub(/<span><code>/,"<code>",line)
+    gsub(/<\/code><\/span>/,"</code>",line)
     return line
 }
 
@@ -75,38 +88,54 @@ function closeItem() {
             appendDocLine("<dt><code>printf format, item1, item2, …</code></dt>")
         else
             appendDocLine("<br>")
-        appendPartOfFileToDoc("temp/Control-Letters.html",70,236)
+        appendPartOfFileToDoc2("temp/Control-Letters.html")
         appendDocLine("<br>")
-        appendPartOfFileToDoc("temp/Format-Modifiers.html",70,280)
+        appendPartOfFileToDoc2("temp/Format-Modifiers.html")
     } else if (Name=="strftime") {
         appendDocLine("<br>")
         appendDocLine("<h3>Format-Control Letters</h3>")
-        appendPartOfFileToDoc("temp/Time-Functions.html",181,401)
+        appendPartOfFileToDoc("temp/Time-Functions.html",
+            "<code>strftime\\(\\)</code> function allows you",
+            "<p>Additionally, the alternative representations")
     } else if (Name=="system") {
         gsub(/<a href="[^"]+">Table [0-9]+\.[0-9]+<\/a>/,"table below",Doc)
         gsub(/Table [0-9]+\.[0-9]+:/,"Table:",Doc)
     }
+    sub(/<\/div>$/,"",Doc)
     print Doc
     Doc = ""
     if (Stmt)
         print "function stmt::" Stmt "() {}"
-    else
+    else # TODO shell we redo Gawk-specific determination by '#'?
         print Vars ? (Name ~ /^(BINMODE|FIELDWIDTHS|FPAT|IGNORECASE|LINT|PREC|ROUNDMODE|TEXTDOMAIN|ARGIND|ERRNO|FUNCTAB|PROCINFO|RT|SYMTAB)$/ ?
         "gawk" : "awk") "::" Name " = \"\"" : "function " (Name ~ /^(asort|asorti|gensub|patsplit|strtonum|mktime|strftime|systime|and|compl|lshift|or|rshift|xor|isarray|typeof|bindtextdomain|dcgettext|dcngettext)$/ ?
         "gawk" : "awk") "::" Name "() {}"
 }
 
-function appendPartOfFileToDoc(fName,nrFrom,nrTo,   l,nr) {
+function appendPartOfFileToDoc(fName,regexFromIncl,regexToExcl,   l,content) {
     while ((getline l < fName)>0) {
-        nr++
-        if (nr>=nrFrom && nr<=nrTo) {
-            if (l ~ /<h4/) {
-#                print "here ", l
-                gsub(/h4/,"h3",l)
-                gsub(/([0-9]+\.)+[0-9]+ */,"",l) # remove section number
-#                print "here1", l
-            }
+        if (content && l ~ regexToExcl) break
+        if (!content && l ~ regexFromIncl) content=1
+        if (content)
             appendDocLine(l)
-        }
     }
+}
+
+function appendPartOfFileToDoc2(fName,   l,content) {
+    while ((getline l < fName)>0) {
+        if ("<hr>"==l) {
+            getline l < fName
+            if ("<div class=\"header\">"==l) break
+        }
+        if (!content && l ~ /<h4/) {
+            content=1
+            #                print "here ", l
+            gsub(/h4/,"h3",l)
+            gsub(/([0-9]+\.)+[0-9]+ */,"",l) # remove section number
+            #                print "here1", l
+        }
+        if (content)
+            appendDocLine(l)
+    }
+    sub(/<\/div>$/,"",Doc)
 }
