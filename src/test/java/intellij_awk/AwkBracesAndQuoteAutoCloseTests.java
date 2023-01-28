@@ -11,6 +11,12 @@ public class AwkBracesAndQuoteAutoCloseTests extends BasePlatformTestCase {
   public void testParen_should2() {
     doTest('(', "BEGIN {a<caret>}", "BEGIN {a(<caret>)}");
   }
+  public void testParen_should3() {
+    doTest('(', "BEGIN {if(a<caret>){}}", "BEGIN {if(a(<caret>)){}}");
+  }
+  public void testParen_should4() {
+    doTest('(', "BEGIN {B[a<caret>]}", "BEGIN {B[a(<caret>)]}");
+  }
 
   public void testParen_shouldNot1() {
     doTest('(', "BEGIN { A = <caret>a }", "BEGIN { A = (<caret>a }");
@@ -26,6 +32,21 @@ public class AwkBracesAndQuoteAutoCloseTests extends BasePlatformTestCase {
 
   public void testBracket_should1() {
     doTest('[', "BEGIN { a<caret> }", "BEGIN { a[<caret>] }");
+  }
+  public void testBracket_should2() {
+    doTest('[', "BEGIN {a<caret>}", "BEGIN {a[<caret>]}");
+  }
+  public void testBracket_should3() {
+    doTest('[', "BEGIN {b(a<caret>)}", "BEGIN {b(a[<caret>])}");
+  }
+  public void testBracket_should4() {
+    doTest('[', "BEGIN {B[a<caret>]}", "BEGIN {B[a[<caret>]]}");
+  }
+  public void testBracket_shouldNot1() {
+    doTest('[', "BEGIN {<caret>B[1]}", "BEGIN {[<caret>B[1]}");
+  }
+  public void testBracket_shouldNot2() {
+    doTest('[', "BEGIN {B<caret>[1]}", "BEGIN {B[<caret>[1]}");
   }
 
   public void testQuote_should1() {

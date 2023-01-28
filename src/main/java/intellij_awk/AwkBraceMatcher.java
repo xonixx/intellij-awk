@@ -27,10 +27,10 @@ public class AwkBraceMatcher implements PairedBraceMatcher {
   @Override
   public boolean isPairedBracesAllowedBeforeType(
       @NotNull IElementType lbraceType, @Nullable IElementType contextType) {
-    if (lbraceType == LPAREN) {
-      return contextType == TokenType.WHITE_SPACE || contextType == RBRACE;
-    }
-    return true;
+    return TokenType.WHITE_SPACE == contextType
+        || RBRACE == contextType
+        || RBRACKET == contextType
+        || RPAREN == contextType;
   }
 
   @Override
