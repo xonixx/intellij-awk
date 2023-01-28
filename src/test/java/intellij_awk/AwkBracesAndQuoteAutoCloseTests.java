@@ -4,19 +4,31 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 
 public class AwkBracesAndQuoteAutoCloseTests extends BasePlatformTestCase {
 
-  public void testParen() {
+  public void testParen_should1() {
     doTest('(', "BEGIN { a<caret> }", "BEGIN { a(<caret>) }");
   }
 
-  public void testBrace() {
+  public void testParen_should2() {
+    doTest('(', "BEGIN {a<caret>}", "BEGIN {a(<caret>)}");
+  }
+
+  public void testParen_shouldNot1() {
+    doTest('(', "BEGIN { A = <caret>a }", "BEGIN { A = (<caret>a }");
+  }
+
+  public void testParen_shouldNot2() {
+    doTest('(', "BEGIN { A = <caret>a() }", "BEGIN { A = (<caret>a() }");
+  }
+
+  public void testBrace_should1() {
     doTest('{', "BEGIN <caret>", "BEGIN {<caret>}");
   }
 
-  public void testBracket() {
+  public void testBracket_should1() {
     doTest('[', "BEGIN { a<caret> }", "BEGIN { a[<caret>] }");
   }
 
-  public void testQuote() {
+  public void testQuote_should1() {
     doTest('"', "BEGIN { print <caret> }", "BEGIN { print \"<caret>\" }");
   }
 

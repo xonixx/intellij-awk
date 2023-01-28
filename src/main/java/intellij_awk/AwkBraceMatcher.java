@@ -3,6 +3,7 @@ package intellij_awk;
 import com.intellij.lang.BracePair;
 import com.intellij.lang.PairedBraceMatcher;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,6 +27,9 @@ public class AwkBraceMatcher implements PairedBraceMatcher {
   @Override
   public boolean isPairedBracesAllowedBeforeType(
       @NotNull IElementType lbraceType, @Nullable IElementType contextType) {
+    if (lbraceType == LPAREN) {
+      return contextType == TokenType.WHITE_SPACE || contextType == RBRACE;
+    }
     return true;
   }
 
