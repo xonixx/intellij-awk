@@ -14,6 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
+import java.util.regex.Pattern;
+
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 
 public abstract class AwkUserVarNameMixin
@@ -43,6 +45,8 @@ public abstract class AwkUserVarNameMixin
                   .withParent(
                       psiElement(AwkNonUnaryExpr.class)
                           .withParent(psiElement(AwkSimpleStatement.class))));
+
+  private static final Pattern WHITESPACES = Pattern.compile("\\s+");
 
   public AwkUserVarNameMixin(@NotNull ASTNode node) {
     super(node);
@@ -123,6 +127,12 @@ public abstract class AwkUserVarNameMixin
         // `split("",Var)` case
         return true;
       }
+    }
+
+    // delete A
+    String code = getParent().getText();
+    if (("delete " + getName()).equals(WHITESPACES.matcher(code).replaceFirst(" "))) {
+      return true;
     }
 
     return false;

@@ -68,8 +68,11 @@ public class AwkMixinLogicTests extends BasePlatformTestCase {
   public void test12() {
     doTestLooksLikeDeclaration(true, "{ delete A }");
   }
-
   public void test13() {
+    doTestLooksLikeDeclaration(true, "{ delete \t  A }");
+  }
+
+  public void test14() {
     doTestLooksLikeDeclaration(false, "{ delete A[1] }");
   }
 
