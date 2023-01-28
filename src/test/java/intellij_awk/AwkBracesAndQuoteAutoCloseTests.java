@@ -17,6 +17,12 @@ public class AwkBracesAndQuoteAutoCloseTests extends BasePlatformTestCase {
   public void testParen_should4() {
     doTest('(', "BEGIN {B[a<caret>]}", "BEGIN {B[a(<caret>)]}");
   }
+  public void testParen_should5() {
+    doTest('(', "function f(){ a=<caret>; }", "function f(){ a=(<caret>); }");
+  }
+  public void testParen_should6() {
+    doTest('(', "function f(){ a=<caret>\n }", "function f(){ a=(<caret>)\n }");
+  }
 
   public void testParen_shouldNot1() {
     doTest('(', "BEGIN { A = <caret>a }", "BEGIN { A = (<caret>a }");
@@ -42,6 +48,13 @@ public class AwkBracesAndQuoteAutoCloseTests extends BasePlatformTestCase {
   public void testBracket_should4() {
     doTest('[', "BEGIN {B[a<caret>]}", "BEGIN {B[a[<caret>]]}");
   }
+  public void testBracket_should5() {
+    doTest('[', "function f(){ a=B<caret>; }", "function f(){ a=B[<caret>]; }");
+  }
+  public void testBracket_should6() {
+    doTest('[', "function f(){ a=B<caret>\n }", "function f(){ a=B[<caret>]\n }");
+  }
+
   public void testBracket_shouldNot1() {
     doTest('[', "BEGIN {<caret>B[1]}", "BEGIN {[<caret>B[1]}");
   }

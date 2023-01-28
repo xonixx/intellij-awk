@@ -30,7 +30,9 @@ public class AwkBraceMatcher implements PairedBraceMatcher {
     return TokenType.WHITE_SPACE == contextType
         || RBRACE == contextType
         || RBRACKET == contextType
-        || RPAREN == contextType;
+        || RPAREN == contextType
+        || NEWLINE == contextType
+        || SEMICOLON == contextType;
   }
 
   @Override
