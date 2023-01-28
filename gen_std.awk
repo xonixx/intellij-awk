@@ -101,6 +101,7 @@ function closeItem() {
         gsub(/<a href="[^"]+">Table [0-9]+\.[0-9]+<\/a>/,"table below",Doc)
         gsub(/Table [0-9]+\.[0-9]+:/,"Table:",Doc)
     }
+    sub(/<\/div>$/,"",Doc)
     print Doc
     Doc = ""
     if (Stmt)
@@ -136,4 +137,5 @@ function appendPartOfFileToDoc2(fName,   l,content) {
         if (content)
             appendDocLine(l)
     }
+    sub(/<\/div>$/,"",Doc)
 }

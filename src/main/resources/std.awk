@@ -424,8 +424,7 @@ awk::NR = ""
 # </p>
 # <dl compact="compact">
 # <dt><code>PROCINFO[&quot;argv&quot;]</code></dt>
-# <dd>
-# <p>The <code>PROCINFO[&quot;argv&quot;]</code> array contains all of the command-line arguments
+# <dd><p>The <code>PROCINFO[&quot;argv&quot;]</code> array contains all of the command-line arguments
 # (after glob expansion and redirection processing on platforms where that must
 # be done manually by the program) with subscripts ranging from 0 through
 # <code>argc</code> - 1.  For example, <code>PROCINFO[&quot;argv&quot;][0]</code> will contain
@@ -455,8 +454,7 @@ awk::NR = ""
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;euid&quot;]</code></dt>
-# <dd>
-# <p>The value of the <code>geteuid()</code> system call.
+# <dd><p>The value of the <code>geteuid()</code> system call.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;FS&quot;]</code></dt>
@@ -468,13 +466,11 @@ awk::NR = ""
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;gid&quot;]</code></dt>
-# <dd>
-# <p>The value of the <code>getgid()</code> system call.
+# <dd><p>The value of the <code>getgid()</code> system call.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;identifiers&quot;]</code></dt>
-# <dd>
-# <p>A subarray, indexed by the names of all identifiers used in the text of
+# <dd><p>A subarray, indexed by the names of all identifiers used in the text of
 # the <code>awk</code> program.  An <em>identifier</em> is simply the name of a variable
 # (be it scalar or array), built-in function, user-defined function, or
 # extension function.  For each identifier, the value of the element is
@@ -519,13 +515,8 @@ awk::NR = ""
 # <code>gawk</code> was compiled. The value will be one of the following:
 # </p>
 # <dl compact="compact">
-# <dt><code>&quot;djgpp&quot;</code></dt>
 # <dt><code>&quot;mingw&quot;</code></dt>
-# <dd><p>Microsoft Windows, using either DJGPP or MinGW, respectively.
-# </p>
-# </dd>
-# <dt><code>&quot;os2&quot;</code></dt>
-# <dd><p>OS/2.
+# <dd><p>Microsoft Windows, using MinGW.
 # </p>
 # </dd>
 # <dt><code>&quot;os390&quot;</code></dt>
@@ -543,18 +534,15 @@ awk::NR = ""
 # 
 # </dd>
 # <dt><code>PROCINFO[&quot;pgrpid&quot;]</code></dt>
-# <dd>
-# <p>The process group ID of the current process.
+# <dd><p>The process group ID of the current process.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;pid&quot;]</code></dt>
-# <dd>
-# <p>The process ID of the current process.
+# <dd><p>The process ID of the current process.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;ppid&quot;]</code></dt>
-# <dd>
-# <p>The parent process ID of the current process.
+# <dd><p>The parent process ID of the current process.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;strftime&quot;]</code></dt>
@@ -580,8 +568,7 @@ awk::NR = ""
 # </p>
 # <dl compact="compact">
 # <dt><code>PROCINFO[&quot;gmp_version&quot;]</code></dt>
-# <dd>
-# <p>The version of the GNU MP library.
+# <dd><p>The version of the GNU MP library.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;mpfr_version&quot;]</code></dt>
@@ -589,13 +576,11 @@ awk::NR = ""
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;prec_max&quot;]</code></dt>
-# <dd>
-# <p>The maximum precision supported by MPFR.
+# <dd><p>The maximum precision supported by MPFR.
 # </p>
 # </dd>
 # <dt><code>PROCINFO[&quot;prec_min&quot;]</code></dt>
-# <dd>
-# <p>The minimum precision required by MPFR.
+# <dd><p>The minimum precision required by MPFR.
 # </p></dd>
 # </dl>
 # 
@@ -807,7 +792,7 @@ function awk::int() {}
 # <dt><code>log(<var>x</var>)</code></dt>
 # <dd>
 # <p>Return the natural logarithm of <var>x</var>, if <var>x</var> is positive;
-# otherwise, return <code>NaN</code> (&ldquo;not a number&rdquo;) on IEEE 754 systems.
+# otherwise, return NaN (&ldquo;not a number&rdquo;) on IEEE 754 systems.
 # Additionally, <code>gawk</code> prints a warning message when <code>x</code>
 # is negative.
 # </p>
@@ -881,8 +866,7 @@ function awk::sin() {}
 function awk::sqrt() {}
 
 # <dt><code>srand(</code>[<var>x</var>]<code>)</code></dt>
-# <dd>
-# <p>Set the starting point, or seed,
+# <dd><p>Set the starting point, or seed,
 # for generating random numbers to the value <var>x</var>.
 # </p>
 # <p>Each seed value leads to a particular sequence of random
@@ -1118,8 +1102,7 @@ function gawk::asorti() {}
 function gawk::gensub() {}
 
 # <dt><code>gsub(<var>regexp</var>, <var>replacement</var></code> [<code>, <var>target</var></code>]<code>)</code></dt>
-# <dd>
-# <p>Search <var>target</var> for
+# <dd><p>Search <var>target</var> for
 # <em>all</em> of the longest, leftmost, <em>nonoverlapping</em> matching
 # substrings it can find and replace them with <var>replacement</var>.
 # The &lsquo;<samp>g</samp>&rsquo; in <code>gsub()</code> stands for
@@ -1354,8 +1337,7 @@ function awk::match() {}
 function gawk::patsplit() {}
 
 # <dt><code>split(<var>string</var>, <var>array</var></code> [<code>, <var>fieldsep</var></code> [<code>, <var>seps</var></code> ] ]<code>)</code></dt>
-# <dd>
-# <p>Divide <var>string</var> into pieces separated by <var>fieldsep</var>
+# <dd><p>Divide <var>string</var> into pieces separated by <var>fieldsep</var>
 # and store the pieces in <var>array</var> and the separator strings in the
 # <var>seps</var> array.  The first piece is stored in
 # <code><var>array</var>[1]</code>, the second piece in <code><var>array</var>[2]</code>, and so
@@ -1549,7 +1531,7 @@ function awk::split() {}
 # and positive infinity as
 # &lsquo;<samp>inf</samp>&rsquo; or &lsquo;<samp>infinity</samp>&rsquo;.
 # The special &ldquo;not a number&rdquo; value formats as &lsquo;<samp>-nan</samp>&rsquo; or &lsquo;<samp>nan</samp>&rsquo;
-# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Math-Definitions.html">Other Stuff to Know</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Strange-values.html">Floating Point Values They Didn&rsquo;t Talk About In School</a>).
 # </p>
 # </dd>
 # <dt><code>%F</code></dt>
@@ -1615,6 +1597,8 @@ function awk::split() {}
 # the IEEE standard.  Further details are provided in
 # <a href="https://www.gnu.org/software/gawk/manual/html_node/POSIX-Floating-Point-Problems.html">Standards Versus Existing Practice</a>; please see there.
 # </p></blockquote>
+# 
+# 
 # <br>
 # <h3 class="subsection">Modifiers for <code>printf</code> Formats</h3>
 # 
@@ -1652,7 +1636,7 @@ function awk::split() {}
 # For now, we ignore them.
 # </p>
 # </dd>
-# <dt><code>-</code> (Minus)</dt>
+# <dt><code>-</code> (Minus)</span></dt>
 # <dd><p>The minus sign, used before the width modifier (see later on in
 # this list),
 # says to left-justify
@@ -1666,7 +1650,7 @@ function awk::split() {}
 # <p>prints &lsquo;<samp>foo&bull;</samp>&rsquo;.
 # </p>
 # </dd>
-# <dt><var>space</var></dt>
+# <dt><span><var>space</var></span></dt>
 # <dd><p>For numeric conversions, prefix positive values with a space and
 # negative values with a minus sign.
 # </p>
@@ -1722,7 +1706,7 @@ function awk::split() {}
 # </p></blockquote>
 # 
 # </dd>
-# <dt><var>width</var></dt>
+# <dt><span><var>width</var></span></dt>
 # <dd><p>This is a number specifying the desired minimum width of a field.  Inserting any
 # number between the &lsquo;<samp>%</samp>&rsquo; sign and the format-control character forces the
 # field to expand to this width.  The default way to do this is to
@@ -1821,6 +1805,7 @@ function awk::split() {}
 # on the command line (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code> warns about their
 # use. If <samp>--posix</samp> is supplied, their use is a fatal error.
 # </p>
+# 
 function awk::sprintf() {}
 
 # <dt><code>strtonum(<var>str</var>)</code></dt>
@@ -2431,6 +2416,7 @@ function gawk::mktime() {}
 # </p>
 # </dd>
 # </dl>
+# 
 function gawk::strftime() {}
 
 # <dt><code>systime()</code></dt>
@@ -2499,6 +2485,10 @@ function gawk::isarray() {}
 # <dd><p><var>x</var> is a number.
 # </p>
 # </dd>
+# <dt><code>&quot;number|bool&quot;</code></dt>
+# <dd><p><var>x</var> is a Boolean typed value (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Boolean-Typed-Values.html">Boolean Typed Values</a>).
+# </p>
+# </dd>
 # <dt><code>&quot;string&quot;</code></dt>
 # <dd><p><var>x</var> is a string.
 # </p>
@@ -2547,6 +2537,8 @@ function gawk::isarray() {}
 # </dd>
 # </dl>
 # </dd>
+# </dl>
+# 
 function gawk::typeof() {}
 
 # <dt><code>bindtextdomain(<var>directory</var></code> [<code>,</code> <var>domain</var>]<code>)</code></dt>
@@ -2648,6 +2640,7 @@ function gawk::dcngettext() {}
 # </p></blockquote>
 # 
 # 
+# 
 function stmt::exit() {}
 
 # <dt><code>printf format, item1, item2, …</code></dt>
@@ -2746,7 +2739,7 @@ function stmt::exit() {}
 # and positive infinity as
 # &lsquo;<samp>inf</samp>&rsquo; or &lsquo;<samp>infinity</samp>&rsquo;.
 # The special &ldquo;not a number&rdquo; value formats as &lsquo;<samp>-nan</samp>&rsquo; or &lsquo;<samp>nan</samp>&rsquo;
-# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Math-Definitions.html">Other Stuff to Know</a>).
+# (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Strange-values.html">Floating Point Values They Didn&rsquo;t Talk About In School</a>).
 # </p>
 # </dd>
 # <dt><code>%F</code></dt>
@@ -2812,6 +2805,8 @@ function stmt::exit() {}
 # the IEEE standard.  Further details are provided in
 # <a href="https://www.gnu.org/software/gawk/manual/html_node/POSIX-Floating-Point-Problems.html">Standards Versus Existing Practice</a>; please see there.
 # </p></blockquote>
+# 
+# 
 # <br>
 # <h3 class="subsection">Modifiers for <code>printf</code> Formats</h3>
 # 
@@ -2849,7 +2844,7 @@ function stmt::exit() {}
 # For now, we ignore them.
 # </p>
 # </dd>
-# <dt><code>-</code> (Minus)</dt>
+# <dt><code>-</code> (Minus)</span></dt>
 # <dd><p>The minus sign, used before the width modifier (see later on in
 # this list),
 # says to left-justify
@@ -2863,7 +2858,7 @@ function stmt::exit() {}
 # <p>prints &lsquo;<samp>foo&bull;</samp>&rsquo;.
 # </p>
 # </dd>
-# <dt><var>space</var></dt>
+# <dt><span><var>space</var></span></dt>
 # <dd><p>For numeric conversions, prefix positive values with a space and
 # negative values with a minus sign.
 # </p>
@@ -2919,7 +2914,7 @@ function stmt::exit() {}
 # </p></blockquote>
 # 
 # </dd>
-# <dt><var>width</var></dt>
+# <dt><span><var>width</var></span></dt>
 # <dd><p>This is a number specifying the desired minimum width of a field.  Inserting any
 # number between the &lsquo;<samp>%</samp>&rsquo; sign and the format-control character forces the
 # field to expand to this width.  The default way to do this is to
@@ -3018,4 +3013,5 @@ function stmt::exit() {}
 # on the command line (see <a href="https://www.gnu.org/software/gawk/manual/html_node/Options.html">Command-Line Options</a>), <code>gawk</code> warns about their
 # use. If <samp>--posix</samp> is supplied, their use is a fatal error.
 # </p>
+# 
 function stmt::printf() {}
