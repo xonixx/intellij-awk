@@ -11,8 +11,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * Based on approach:
- * <a href="https://intellij-support.jetbrains.com/hc/en-us/community/posts/4415025845138-What-is-the-recommended-approach-for-testing-DocumentationProvider-I-ve-added-for-my-language-support-plugin-">What is the recommended approach for testing DocumentationProvider</a>
+ * Based on approach: <a
+ * href="https://intellij-support.jetbrains.com/hc/en-us/community/posts/4415025845138-What-is-the-recommended-approach-for-testing-DocumentationProvider-I-ve-added-for-my-language-support-plugin-">What
+ * is the recommended approach for testing DocumentationProvider</a>
  */
 public class AwkDocumentationProviderTests extends BasePlatformTestCase {
   public void testAwkFunctionSubstr() {
@@ -68,6 +69,32 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
             s.contains("information about the running awk program")
                 && s.contains("PROCINFO[\"argv\"]")
                 && s.contains("PROCINFO[\"sorted_in\"]"));
+  }
+
+  public void testGlobalVar1() {
+    doTest("BEGIN {\nVar = 1  # doc_string\n}\n{ print Va<caret>r }", "doc_string"::equals);
+  }
+
+  public void testGlobalVar2() {
+    doTest("BEGIN {\ndelete Var #   doc_string\n}\n{ print Va<caret>r[0] }", "doc_string"::equals);
+  }
+
+  public void testGlobalVar3() {
+    doTest(
+        "BEGIN {\nsplit(\"\",Var) \t  #  \t doc string \t \n}\n{ print Var<caret>[0] }",
+        "doc string"::equals);
+  }
+
+  public void testGlobalVar4() {
+    doTest(
+        "BEGIN {\nVar[\"a\"] # doc string\nVar[\"b\"]}\n{ print <caret>Var[\"b\"] }",
+        "doc string"::equals);
+  }
+
+  public void testGlobalVar5() {
+    doTest(
+        "BEGIN {\nVar[\"a\"] = 1 # doc string\n}\n{ print <caret>Var[\"b\"] }",
+        "doc string"::equals);
   }
 
   public void testStmtExit1() {
