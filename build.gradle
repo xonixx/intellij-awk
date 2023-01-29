@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'intellij-awk'
-version '0.3.5.1'
+version '0.3.6'
 
 repositories {
     mavenCentral()
@@ -53,6 +53,15 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
 """)
     // language=html
     changeNotes.set("""
+<p>
+    <b>v0.3.6</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/15?closed=1">GitHub issues</a>
+    <ul>
+        <li>Show Ctrl-Q documentation for commented global variables</li>
+        <li>Should not auto-close braces/brackets/parentheses in all positions</li>
+        <li>Fixes / improvements</li>
+    </ul>
+</p>
 <p>
     <b>v0.3.5.1</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/16?closed=1">GitHub issues</a>
