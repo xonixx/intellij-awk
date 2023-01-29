@@ -3,6 +3,7 @@ package intellij_awk;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiWhiteSpace;
@@ -69,6 +70,17 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       String stmt = element.getText();
       String documentation = getBuiltInFunctionDocumentation(element.getProject(), "stmt::" + stmt);
       return postprocessDocumentation(stmt, documentation, false);
+    } else if (element instanceof AwkUserVarNameMixin) {
+      AwkUserVarNameMixin userVarName = (AwkUserVarNameMixin) element;
+      AwkTerminatableStatement parent =
+          AwkUtil.findParent(userVarName, AwkTerminatableStatement.class);
+      PsiElement maybeComment = parent;
+      while ((maybeComment = maybeComment.getNextSibling()) instanceof PsiWhiteSpace)
+        ;
+      if (maybeComment instanceof PsiComment) {
+        PsiComment comment = (PsiComment) maybeComment;
+        return comment.getText().substring(1).trim();
+      }
     }
     return null;
   }
