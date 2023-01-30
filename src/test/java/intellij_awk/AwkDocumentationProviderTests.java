@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import org.jsoup.Jsoup;
 
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -97,6 +98,13 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
         "doc string"::equals);
   }
 
+  public void testGlobalVarNoDoc1() {
+    doTest("BEGIN {\nVar = 1\n}\n{ print Va<caret>r }", Objects::isNull);
+  }
+  public void testGlobalVarNoDoc2() {
+    doTest("Var<caret> {}", Objects::isNull);
+  }
+
   public void testStmtExit1() {
     testStmtExit("BEGIN { exi<caret>t 123 }");
   }
@@ -174,7 +182,7 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
     DocumentationProvider provider = DocumentationManager.getProviderFromElement(docElement);
 
     String docString = provider.generateDoc(docElement, getOriginalElement());
-    String docStringWithoutHtmlTags = removeTags(docString);
+    String docStringWithoutHtmlTags = docString != null ? removeTags(docString) : null;
     assertTrue("Incorrect doc detected", docChecker.test(docStringWithoutHtmlTags));
   }
 

@@ -74,6 +74,9 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       AwkUserVarNameMixin userVarName = (AwkUserVarNameMixin) element;
       AwkTerminatableStatement parent =
           AwkUtil.findParent(userVarName, AwkTerminatableStatement.class);
+      if (parent == null) {
+        return null;
+      }
       PsiElement maybeComment = parent;
       while ((maybeComment = maybeComment.getNextSibling()) instanceof PsiWhiteSpace)
         ;
