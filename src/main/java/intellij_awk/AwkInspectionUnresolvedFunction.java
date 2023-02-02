@@ -1,16 +1,16 @@
 package intellij_awk;
 
+import com.intellij.codeInsight.intention.IntentionAction;
+import com.intellij.codeInsight.template.Template;
+import com.intellij.codeInsight.template.TemplateManager;
 import com.intellij.codeInspection.*;
 import com.intellij.codeInspection.util.IntentionFamilyName;
+import com.intellij.codeInspection.util.IntentionName;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.ResolveResult;
-import intellij_awk.psi.AwkElementFactory;
-import intellij_awk.psi.AwkFunctionCallName;
-import intellij_awk.psi.AwkItem;
-import intellij_awk.psi.AwkVisitor;
+import com.intellij.psi.*;
+import com.intellij.util.IncorrectOperationException;
+import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
@@ -41,11 +41,45 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
     };
   }
 
-  private static class CreateNewFunctionQuickFix implements LocalQuickFix {
+  private static class CreateNewFunctionQuickFix implements LocalQuickFix, IntentionAction {
+
+    @Override
+    public @IntentionName @NotNull String getText() {
+      return getName();
+    }
 
     @Override
     public @IntentionFamilyName @NotNull String getFamilyName() {
       return QUICK_FIX_NAME;
+    }
+
+    @Override
+    public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
+      return true;
+    }
+
+    @Override
+    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
+      PsiElement psiElement = file.findElementAt(editor.getCaretModel().getOffset());
+      //      System.out.println("INVOKE: " + psiElement.getText());
+
+      PsiElement funcName = AwkUtil.findParent(psiElement, AwkFunctionCallUser.class).getFunctionCallName().getFuncName();
+
+      AwkItem awkItem = AwkUtil.findParent(funcName, AwkItem.class);
+
+      TemplateManager templateManager = TemplateManager.getInstance(project);
+      Template template = templateManager.createTemplate("", "");
+      template.setToReformat(true);
+      template.addTextSegment("\nfunction " + funcName.getText() + "(){}");
+//      template.addTextSegment("\n\n");
+//      template.addTextSegment(myFunctionText.getName() + "(");
+      editor.getCaretModel().moveToOffset(awkItem.getTextRange().getEndOffset());
+      templateManager.startTemplate(editor, template);
+    }
+
+    @Override
+    public boolean startInWriteAction() {
+      return true;
     }
 
     @Override
