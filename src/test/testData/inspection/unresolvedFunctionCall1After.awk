@@ -1,7 +1,7 @@
 {
     print unresolved() + 1
 }
-function unresolved(){}
+function unresolved() {}
 function a() {
 
 }

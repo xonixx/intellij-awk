@@ -172,13 +172,16 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   public void testUnresolvedFunctionCall1() {
     checkByFile(unresolvedFunctionCall);
   }
-
   public void testUnresolvedFunctionCall2() {
     checkByFileNoProblemAtCaret(unresolvedFunctionCall);
   }
 
   public void testUnresolvedFunctionCall3() {
     checkByFileNoProblemAtCaret(unresolvedFunctionCall);
+  }
+
+  public void testUnresolvedFunctionCall4() {
+    checkByFile(unresolvedFunctionCall);
   }
 
   public void testEnforceGlobalVarNaming1() {
