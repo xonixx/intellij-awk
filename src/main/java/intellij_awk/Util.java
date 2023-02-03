@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 public final class Util {
   private static final Pattern lcLetterFirst = Pattern.compile("^[a-z]");
   private static final Pattern ucLetterFirst = Pattern.compile("^[A-Z]");
+  private static final Pattern spacesRegex = Pattern.compile("\\s+");
 
   public static boolean startsWithLowercaseLetter(String string) {
     return lcLetterFirst.matcher(string).find();
@@ -26,6 +27,17 @@ public final class Util {
     String[] parts = str.split("_");
     for (int i = 0; i < parts.length; i++) {
       parts[i] = ucFirst(parts[i]);
+    }
+    return String.join("", parts);
+  }
+
+  /** 'aaa BBBB cc' -> 'aaaBbbbCc' */
+  public static String stringToCamelCase(String str) {
+    if (str == null) return null;
+    String[] parts = spacesRegex.split(str);
+    for (int i = 0; i < parts.length; i++) {
+      String part = parts[i].toLowerCase();
+      parts[i] = i == 0 ? part : ucFirst(part);
     }
     return String.join("", parts);
   }

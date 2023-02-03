@@ -110,7 +110,9 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
               String text = string.getText();
               name = text.substring(1, text.length() - 1);
               if (Pattern.compile("[a-zA-Z][a-zA-Z0-9 ]*").matcher(name).matches()) {
-                name = CaseUtils.toCamelCase("THIS STRING SHOULD BE IN CAMEL CASE", false, ' ');
+                name = Util.stringToCamelCase(name);
+              } else {
+                name = "s";
               }
             }
           }
