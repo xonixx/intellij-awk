@@ -12,6 +12,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import intellij_awk.psi.*;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -98,11 +99,21 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
               String text = number.getText();
               if (Pattern.compile("\\d+").matcher(text).matches()) {
                 name = "i" + text;
+              } else {
+                name = "f" + Pattern.compile("\\D").matcher(text).replaceAll("");
               }
             }
           }
-//          PsiElement string = nonUnaryExpr.getString();
-
+          if (name == null) {
+            PsiElement string = nonUnaryExpr.getString();
+            if (string != null) {
+              String text = string.getText();
+              name = text.substring(1, text.length() - 1);
+              if (Pattern.compile("[a-zA-Z][a-zA-Z0-9 ]*").matcher(name).matches()) {
+                name = CaseUtils.toCamelCase("THIS STRING SHOULD BE IN CAMEL CASE", false, ' ');
+              }
+            }
+          }
         }
         if (name == null) {
           name = "arg" + i;
