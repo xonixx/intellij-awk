@@ -20,6 +20,11 @@ public final class Util {
     if (str.length() == 0) return str;
     return str.substring(0, 1).toUpperCase() + str.substring(1);
   }
+  public static String lcFirst(String str) {
+    if (str == null) return null;
+    if (str.length() == 0) return str;
+    return str.substring(0, 1).toLowerCase() + str.substring(1);
+  }
 
   /** 'aaa_bbb' -> 'AaaBbb' */
   public static String lowerUnderscoreToCamelCase(String str) {

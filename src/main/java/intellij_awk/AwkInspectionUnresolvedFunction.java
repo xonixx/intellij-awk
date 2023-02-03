@@ -87,15 +87,15 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
         if (awkExpr instanceof AwkNonUnaryExpr) {
           AwkNonUnaryExpr nonUnaryExpr = (AwkNonUnaryExpr) awkExpr;
           AwkLvalue lvalue = nonUnaryExpr.getLvalue();
-          if (lvalue != null && lvalue.getExpr() == null) {
+          if (lvalue != null && lvalue.getExpr() == null && lvalue.getExprLstList().isEmpty()) {
             AwkUserVarName userVarName = lvalue.getUserVarName();
             if (userVarName != null) {
-              name = userVarName.getName();
+              name = Util.lcFirst(userVarName.getName());
             }
           }
           if (name == null) {
             PsiElement number = nonUnaryExpr.getNumber();
-            if (number != null) {
+            if (number != null && number.getText().equals(nonUnaryExpr.getText())) {
               String text = number.getText();
               if (Pattern.compile("\\d+").matcher(text).matches()) {
                 name = "i" + text;
@@ -106,7 +106,7 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
           }
           if (name == null) {
             PsiElement string = nonUnaryExpr.getString();
-            if (string != null) {
+            if (string != null && string.getText().equals(nonUnaryExpr.getText())) {
               String text = string.getText();
               name = text.substring(1, text.length() - 1);
               if (Pattern.compile("[a-zA-Z][a-zA-Z0-9 ]*").matcher(name).matches()) {
