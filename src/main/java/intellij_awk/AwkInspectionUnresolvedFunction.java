@@ -15,6 +15,7 @@ import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
 
@@ -81,10 +82,35 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
       int exprListSize = exprList.size();
       for (int i = 0; i < exprListSize; i++) {
         AwkExpr awkExpr = exprList.get(i);
-        template.addVariable(new ConstantNode("arg" + i), true);
-        if (i < exprListSize -1)
-          template.addTextSegment(", ");
-        System.out.println("EXPR: " + awkExpr);
+        String name = null;
+        if (awkExpr instanceof AwkNonUnaryExpr) {
+          AwkNonUnaryExpr nonUnaryExpr = (AwkNonUnaryExpr) awkExpr;
+          AwkLvalue lvalue = nonUnaryExpr.getLvalue();
+          if (lvalue != null && lvalue.getExpr() == null) {
+            AwkUserVarName userVarName = lvalue.getUserVarName();
+            if (userVarName != null) {
+              name = userVarName.getName();
+            }
+          }
+          if (name == null) {
+            PsiElement number = nonUnaryExpr.getNumber();
+            if (number != null) {
+              String text = number.getText();
+              if (Pattern.compile("\\d+").matcher(text).matches()) {
+                name = "i" + text;
+              }
+            }
+          }
+//          PsiElement string = nonUnaryExpr.getString();
+
+        }
+        if (name == null) {
+          name = "arg" + i;
+        }
+
+        template.addVariable(new ConstantNode(name), true);
+        if (i < exprListSize - 1) template.addTextSegment(", ");
+        //        System.out.println("EXPR: " + awkExpr);
       }
 
       template.addTextSegment("){}");
