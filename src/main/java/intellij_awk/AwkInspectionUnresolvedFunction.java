@@ -3,6 +3,7 @@ package intellij_awk;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.template.Template;
 import com.intellij.codeInsight.template.TemplateManager;
+import com.intellij.codeInsight.template.impl.ConstantNode;
 import com.intellij.codeInspection.*;
 import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.codeInspection.util.IntentionName;
@@ -12,6 +13,8 @@ import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import intellij_awk.psi.*;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
 
@@ -59,20 +62,34 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
     }
 
     @Override
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
+    public void invoke(@NotNull Project project, Editor editor, PsiFile file)
+        throws IncorrectOperationException {
       PsiElement psiElement = file.findElementAt(editor.getCaretModel().getOffset());
       //      System.out.println("INVOKE: " + psiElement.getText());
 
-      PsiElement funcName = AwkUtil.findParent(psiElement, AwkFunctionCallUser.class).getFunctionCallName().getFuncName();
+      AwkFunctionCallUser funcCall = AwkUtil.findParent(psiElement, AwkFunctionCallUser.class);
+      AwkFunctionCallName funcCallName = funcCall.getFunctionCallName();
 
-      AwkItem awkItem = AwkUtil.findParent(funcName, AwkItem.class);
+      AwkItem awkItem = AwkUtil.findParent(funcCallName, AwkItem.class);
 
       TemplateManager templateManager = TemplateManager.getInstance(project);
       Template template = templateManager.createTemplate("", "");
       template.setToReformat(true);
-      template.addTextSegment("\nfunction " + funcName.getText() + "(){}");
-//      template.addTextSegment("\n\n");
-//      template.addTextSegment(myFunctionText.getName() + "(");
+      template.addTextSegment("\nfunction " + funcCallName.getName() + "(");
+
+      List<AwkExpr> exprList = funcCall.getGawkFuncCallList().getExprList();
+      int exprListSize = exprList.size();
+      for (int i = 0; i < exprListSize; i++) {
+        AwkExpr awkExpr = exprList.get(i);
+        template.addVariable(new ConstantNode("arg" + i), true);
+        if (i < exprListSize -1)
+          template.addTextSegment(", ");
+        System.out.println("EXPR: " + awkExpr);
+      }
+
+      template.addTextSegment("){}");
+      //      template.addTextSegment("\n\n");
+      //      template.addTextSegment(myFunctionText.getName() + "(");
       editor.getCaretModel().moveToOffset(awkItem.getTextRange().getEndOffset());
       templateManager.startTemplate(editor, template);
     }
@@ -84,13 +101,13 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
 
     @Override
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-      AwkFunctionCallName awkFunctionCallName = (AwkFunctionCallName) descriptor.getPsiElement();
+      /*AwkFunctionCallName awkFunctionCallName = (AwkFunctionCallName) descriptor.getPsiElement();
       AwkItem awkItem = AwkUtil.findParent(awkFunctionCallName, AwkItem.class);
       PsiElement parent = awkItem.getParent();
       parent.addAfter(
           AwkElementFactory.createFunctionItem(awkItem.getProject(), awkFunctionCallName.getName()),
           awkItem);
-      parent.addAfter(AwkElementFactory.createNewline(awkItem.getProject()), awkItem);
+      parent.addAfter(AwkElementFactory.createNewline(awkItem.getProject()), awkItem);*/
     }
   }
 }
