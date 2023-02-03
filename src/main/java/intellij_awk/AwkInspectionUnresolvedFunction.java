@@ -48,6 +48,10 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
 
   private static class CreateNewFunctionQuickFix implements LocalQuickFix, IntentionAction {
 
+    private static final Pattern digits = Pattern.compile("\\d+");
+    private static final Pattern nonDigits = Pattern.compile("\\D");
+    private static final Pattern wordsWithSpaces = Pattern.compile("[a-zA-Z][a-zA-Z0-9 ]*");
+
     @Override
     public @IntentionName @NotNull String getText() {
       return getName();
@@ -63,11 +67,23 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
       return true;
     }
 
+    static class NameSequencer {
+      final String prefix;
+      int i = -1;
+
+      NameSequencer(String prefix) {
+        this.prefix = prefix;
+      }
+
+      String nextName() {
+        return 0 == ++i ? prefix : prefix + i;
+      }
+    }
+
     @Override
     public void invoke(@NotNull Project project, Editor editor, PsiFile file)
         throws IncorrectOperationException {
       PsiElement psiElement = file.findElementAt(editor.getCaretModel().getOffset());
-      //      System.out.println("INVOKE: " + psiElement.getText());
 
       AwkFunctionCallUser funcCall = AwkUtil.findParent(psiElement, AwkFunctionCallUser.class);
       AwkFunctionCallName funcCallName = funcCall.getFunctionCallName();
@@ -79,7 +95,12 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
       template.setToReformat(true);
       template.addTextSegment("\nfunction " + funcCallName.getName() + "(");
 
-      List<AwkExpr> exprList = funcCall.getGawkFuncCallList().getExprList();
+      AwkGawkFuncCallList gawkFuncCallList = funcCall.getGawkFuncCallList();
+      List<AwkExpr> exprList = gawkFuncCallList != null ? gawkFuncCallList.getExprList() : List.of();
+
+      NameSequencer strNames = new NameSequencer("s");
+      NameSequencer argsNames = new NameSequencer("arg");
+
       int exprListSize = exprList.size();
       for (int i = 0; i < exprListSize; i++) {
         AwkExpr awkExpr = exprList.get(i);
@@ -97,10 +118,10 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
             PsiElement number = nonUnaryExpr.getNumber();
             if (number != null && number.getText().equals(nonUnaryExpr.getText())) {
               String text = number.getText();
-              if (Pattern.compile("\\d+").matcher(text).matches()) {
+              if (digits.matcher(text).matches()) {
                 name = "i" + text;
               } else {
-                name = "f" + Pattern.compile("\\D").matcher(text).replaceAll("");
+                name = "f" + nonDigits.matcher(text).replaceAll("");
               }
             }
           }
@@ -109,26 +130,27 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
             if (string != null && string.getText().equals(nonUnaryExpr.getText())) {
               String text = string.getText();
               name = text.substring(1, text.length() - 1);
-              if (Pattern.compile("[a-zA-Z][a-zA-Z0-9 ]*").matcher(name).matches()) {
+              if (wordsWithSpaces.matcher(name).matches()) {
                 name = Util.stringToCamelCase(name);
               } else {
-                name = "s";
+                name = strNames.nextName();
               }
             }
           }
         }
         if (name == null) {
-          name = "arg" + i;
+          name = argsNames.nextName();
         }
 
         template.addVariable(new ConstantNode(name), true);
-        if (i < exprListSize - 1) template.addTextSegment(", ");
-        //        System.out.println("EXPR: " + awkExpr);
+        if (i < exprListSize - 1) {
+          template.addTextSegment(", ");
+        }
       }
 
-      template.addTextSegment("){}");
-      //      template.addTextSegment("\n\n");
-      //      template.addTextSegment(myFunctionText.getName() + "(");
+      template.addTextSegment(") {");
+      template.addEndVariable();
+      template.addTextSegment("}");
       editor.getCaretModel().moveToOffset(awkItem.getTextRange().getEndOffset());
       templateManager.startTemplate(editor, template);
     }
@@ -139,14 +161,6 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
     }
 
     @Override
-    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-      /*AwkFunctionCallName awkFunctionCallName = (AwkFunctionCallName) descriptor.getPsiElement();
-      AwkItem awkItem = AwkUtil.findParent(awkFunctionCallName, AwkItem.class);
-      PsiElement parent = awkItem.getParent();
-      parent.addAfter(
-          AwkElementFactory.createFunctionItem(awkItem.getProject(), awkFunctionCallName.getName()),
-          awkItem);
-      parent.addAfter(AwkElementFactory.createNewline(awkItem.getProject()), awkItem);*/
-    }
+    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {}
   }
 }
