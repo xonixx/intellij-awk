@@ -7,9 +7,12 @@
 @depends_on installed_bwk
 @depends_on installed_gawk51
 
+@goal folder_created @params D @private
+@reached_if [[ -d "$D" ]]
+  mkdir "$D"
+
 @goal soft_folder_created @private
-@reached_if [[ -d "soft" ]]
-  mkdir soft
+@depends_on folder_created @args 'soft'
 
 @goal installed_bwk
 @reached_if [[ -f soft/bwk ]]
@@ -144,16 +147,12 @@
      ./makesure std.awk_functions -s 
   } > src/main/resources/std.awk
 
-@goal temp_folder_created @private
-@reached_if [[ -d temp ]]
-  mkdir temp
-
 @goal document_processed @params F @private
 @depends_on document_downloaded @args F
   awk -f gen_std.awk temp/"$F"
 
 @goal document_downloaded @params F @private
-@depends_on temp_folder_created
+@depends_on folder_created @args 'temp'
 @reached_if [[ -f "temp/$F" ]]
   curl --fail https://www.gnu.org/software/gawk/manual/html_node/"$F" -o temp/"$F"
 
