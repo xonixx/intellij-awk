@@ -121,8 +121,8 @@
 ./gradlew clean lexer parser compileJava compileTestJava test
 
 @goal std.awk_variables
-@depends_on std.awk_variables1
-@depends_on std.awk_variables2
+@depends_on std.awk_variables_ @args 'User_002dmodified.html'
+@depends_on std.awk_variables_ @args 'Auto_002dset.html'
 
 @goal std.awk_functions
 @depends_on document_processed @args 'Numeric-Functions.html'
@@ -134,7 +134,6 @@
 @depends_on document_processed @args 'I18N-Functions.html'
 @depends_on std.awk_exit
 @depends_on std.awk_printf
-
 
 @goal std.awk
 @doc 'generates std.awk file used for documentation (Ctrl-Q)'
@@ -149,11 +148,11 @@
 @reached_if [[ -d temp ]]
   mkdir temp
 
-@goal document_processed @params F
+@goal document_processed @params F @private
 @depends_on document_downloaded @args F
   awk -f gen_std.awk temp/"$F"
 
-@goal document_downloaded @params F
+@goal document_downloaded @params F @private
 @depends_on temp_folder_created
 @reached_if [[ -f "temp/$F" ]]
   curl --fail https://www.gnu.org/software/gawk/manual/html_node/"$F" -o temp/"$F"
@@ -164,13 +163,9 @@
 @depends_on document_downloaded @args 'Format-Modifiers.html'
   awk -f gen_std.awk temp/String-Functions.html
 
-@goal std.awk_variables1 @private
-@depends_on document_downloaded @args 'User_002dmodified.html'
-  awk -v Vars=1 -f gen_std.awk temp/User_002dmodified.html
-
-@goal std.awk_variables2 @private
-@depends_on document_downloaded @args 'Auto_002dset.html'
-  awk -v Vars=1 -f gen_std.awk temp/Auto_002dset.html
+@goal std.awk_variables_ @params F @private
+@depends_on document_downloaded @args F
+  awk -v Vars=1 -f gen_std.awk temp/"$F"
 
 @goal std.awk_exit @private
 @depends_on document_downloaded @args 'Exit-Statement.html'
