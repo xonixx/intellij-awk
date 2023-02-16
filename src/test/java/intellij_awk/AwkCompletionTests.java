@@ -358,6 +358,9 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   public void testIssue164() {
     checkCompletionAuto("BEGIN { bb<caret> } function bbb(){}", "BEGIN { bbb(<caret>) } function bbb(){}");
   }
+  public void testIssue164_1() {
+    checkCompletionAuto("function f(){ Xxx=1; Xx<caret> }", "function f(){ Xxx=1; Xxx<caret> }");
+  }
 
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
     setupCode(code);
