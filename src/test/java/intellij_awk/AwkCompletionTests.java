@@ -87,6 +87,14 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionAuto("BEGINF<caret>", "BEGINFILE {<caret>}");
   }
 
+  public void test8_2() {
+    checkCompletionExact(Set.of("next", "nextfile"), "BEGIN { nex<caret> }");
+  }
+
+  public void test8_3() {
+    checkCompletionAuto("BEGIN { nextf<caret> }", "BEGIN { nextfile<caret> }");
+  }
+
   public void test9() {
     checkCompletionAuto("function f() { retu<caret> }", "function f() { return<caret> }");
   }
