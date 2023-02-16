@@ -34,6 +34,9 @@ public class AwkParserTests extends ParsingTestCaseBase {
     ensureOnlyParsingNoErrors();
   }
 
+  public void testMultilineStr() {
+    ensureOnlyParsingNoErrors();
+  }
   public void testMakesure() {
     ensureOnlyParsingNoErrors();
   }
