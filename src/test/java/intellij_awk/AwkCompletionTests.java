@@ -63,14 +63,14 @@ public class AwkCompletionTests extends BasePlatformTestCase {
 
   public void test6() {
     checkCompletion(
-        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf", "next"),
+        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf", "next", "nextfile"),
         Set.of(),
         "BEGIN { var1=1\nsplit(\"\",var2)}\nfunction f1(arg1, arg2,     arg3) { <caret> }");
   }
 
   public void test6_1() {
     checkCompletion(
-        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf", "next"),
+        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf", "next", "nextfile"),
         Set.of(),
         "BEGIN { var1=1\nsplit(\"\",var2)}\nfunction f1(arg1, arg2,     arg3) { print <caret> }");
   }
@@ -80,7 +80,19 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void test8() {
-    checkCompletionAuto("BEG<caret>", "BEGIN { <caret>}");
+    checkCompletionExact(Set.of("BEGIN", "BEGINFILE"), "BEG<caret>");
+  }
+
+  public void test8_1() {
+    checkCompletionAuto("BEGINF<caret>", "BEGINFILE {<caret>}");
+  }
+
+  public void test8_2() {
+    checkCompletionExact(Set.of("next", "nextfile"), "BEGIN { nex<caret> }");
+  }
+
+  public void test8_3() {
+    checkCompletionAuto("BEGIN { nextf<caret> }", "BEGIN { nextfile<caret> }");
   }
 
   public void test9() {
@@ -341,6 +353,13 @@ public class AwkCompletionTests extends BasePlatformTestCase {
 
   public void testInsideERE_5() {
     checkCompletionEmpty("function b() { return \"\" ~ @/<caret>/ }");
+  }
+
+  public void testIssue164() {
+    checkCompletionAuto("BEGIN { bb<caret> } function bbb(){}", "BEGIN { bbb(<caret>) } function bbb(){}");
+  }
+  public void testIssue164_1() {
+    checkCompletionAuto("function f(){ Xxx=1; Xx<caret> }", "function f(){ Xxx=1; Xxx<caret> }");
   }
 
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {

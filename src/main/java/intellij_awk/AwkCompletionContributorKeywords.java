@@ -15,10 +15,20 @@ import static intellij_awk.AwkUtil.insertHandler;
 
 public class AwkCompletionContributorKeywords extends AwkCompletionContributorBase {
 
-  public static final InsertHandler<LookupElement> ihBeginEnd = insertHandler(" { }", 3);
+  public static final InsertHandler<LookupElement> ihBeginEnd = insertHandler(" {}", 2);
 
   private static final Map<String, InsertHandler<LookupElement>> KEYWORDS0 =
-      Map.of("function", insertHandler(" ", 1), "BEGIN", ihBeginEnd, "END", ihBeginEnd);
+      Map.of(
+          "function",
+          insertHandler(" ", 1),
+          "BEGIN",
+          ihBeginEnd,
+          "END",
+          ihBeginEnd,
+          "BEGINFILE",
+          ihBeginEnd,
+          "ENDFILE",
+          ihBeginEnd);
 
   private static final InsertHandler<LookupElement> ihParens = insertHandler(" ()", 2);
   private static final InsertHandler<LookupElement> ihSpace = insertHandler(" ", 1);
@@ -53,6 +63,8 @@ public class AwkCompletionContributorKeywords extends AwkCompletionContributorBa
           "continue",
           ihNone,
           "next",
+          ihNone,
+          "nextfile",
           ihNone,
           "exit",
           ihSpace,
