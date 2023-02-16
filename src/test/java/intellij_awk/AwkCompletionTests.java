@@ -63,14 +63,14 @@ public class AwkCompletionTests extends BasePlatformTestCase {
 
   public void test6() {
     checkCompletion(
-        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf", "next"),
+        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf", "next", "nextfile"),
         Set.of(),
         "BEGIN { var1=1\nsplit(\"\",var2)}\nfunction f1(arg1, arg2,     arg3) { <caret> }");
   }
 
   public void test6_1() {
     checkCompletion(
-        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf", "next"),
+        Set.of("var1", "var2", "arg1", "arg2", "arg3", "delete", "printf", "next", "nextfile"),
         Set.of(),
         "BEGIN { var1=1\nsplit(\"\",var2)}\nfunction f1(arg1, arg2,     arg3) { print <caret> }");
   }
@@ -80,7 +80,11 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void test8() {
-    checkCompletionAuto("BEG<caret>", "BEGIN { <caret>}");
+    checkCompletionExact(Set.of("BEGIN", "BEGINFILE"), "BEG<caret>");
+  }
+
+  public void test8_1() {
+    checkCompletionAuto("BEGINF<caret>", "BEGINFILE {<caret>}");
   }
 
   public void test9() {

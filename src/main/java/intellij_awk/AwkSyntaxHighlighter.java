@@ -19,9 +19,11 @@ public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
       TokenSet.create(
           AwkTypes.FUNCTION,
           AwkTypes.BEGIN,
+          AwkTypes.BEGINFILE,
           AwkTypes.END,
+          AwkTypes.ENDFILE,
           AwkTypes.NEXT,
-          AwkTypes.WHILE,
+          AwkTypes.NEXTFILE,
           AwkTypes.FOR,
           AwkTypes.WHILE,
           AwkTypes.DO,
