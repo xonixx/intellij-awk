@@ -40,6 +40,7 @@ VAR_NAME              = {NS_PART}? [a-zA-Z_]+[a-zA-Z_\d]*
 WHITE_SPACE=[ \t]+
 
 %state AFTER_BEGIN_END
+%state AFTER_AT
 %state DIV_POSSIBLE
 
 %%
@@ -77,9 +78,6 @@ WHITE_SPACE=[ \t]+
   "case"                   { yybegin(YYINITIAL); return CASE; }
   "default"                { yybegin(YYINITIAL); return DEFAULT; }
   "getline"   /\(?         { yybegin(DIV_POSSIBLE); return GETLINE; }
-  "namespace"              { yybegin(YYINITIAL); return NAMESPACE; }
-  "include"                { yybegin(YYINITIAL); return INCLUDE; }
-  "load"                   { yybegin(YYINITIAL); return LOAD; }
   "+="                     { yybegin(YYINITIAL); return ADD_ASSIGN; }
   "-="                     { yybegin(YYINITIAL); return SUB_ASSIGN; }
   "*="                     { yybegin(YYINITIAL); return MUL_ASSIGN; }
@@ -120,7 +118,7 @@ WHITE_SPACE=[ \t]+
   "?"                      { yybegin(YYINITIAL); return QUESTION; }
   ":"                      { yybegin(YYINITIAL); return COLON; }
   "="                      { yybegin(YYINITIAL); return ASSIGN; }
-  "@"                      { yybegin(YYINITIAL); return AT; }
+  "@"                      { yybegin(AFTER_AT); return AT; }
 
   {COMMENT}                     { return COMMENT; }
   {NUMBER}                      { yybegin(DIV_POSSIBLE); return NUMBER; }
@@ -139,6 +137,14 @@ WHITE_SPACE=[ \t]+
 
 <YYINITIAL> {
   {ERE}                         { return ERE; }
+}
+
+<AFTER_AT> {
+  "namespace"              { yybegin(YYINITIAL); return NAMESPACE; }
+  "include"                { yybegin(YYINITIAL); return INCLUDE; }
+  "load"                   { yybegin(YYINITIAL); return LOAD; }
+  {WHITE_SPACE}            { return WHITE_SPACE; }
+  {VAR_NAME}               { yybegin(YYINITIAL); return VAR_NAME; }
 }
 
 [^] { return BAD_CHARACTER; }

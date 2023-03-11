@@ -398,7 +398,7 @@ private func_call_args_start ::= LPAREN gawk_func_call_list_opt {
     recoverWhile=recover_on_rparen
 }
 private recover_on_rparen ::= !RPAREN
-function_call_user       ::= AT? function_call_name func_call_args_start RPAREN /* no white space allowed before LPAREN */
+function_call_user     ::= (function_call_name | AT user_var_name) func_call_args_start RPAREN /* no white space allowed before LPAREN */
 function_call_built_in ::= (BUILTIN_FUNC_NAME | BUILTIN_FUNC_NAME_GAWK) [ func_call_args_start RPAREN ]
 
 function_call_name          ::= FUNC_NAME
