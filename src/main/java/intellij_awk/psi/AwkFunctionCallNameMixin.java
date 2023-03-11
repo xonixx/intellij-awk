@@ -4,14 +4,9 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import intellij_awk.AwkReferenceFunction;
-import intellij_awk.AwkReferenceVariable;
-import intellij_awk.AwkUtil;
+import javax.swing.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
-
-import static intellij_awk.AwkUtil.isType;
 
 public abstract class AwkFunctionCallNameMixin extends AwkNamedElementImpl
     implements AwkFunctionCallName {
@@ -25,10 +20,7 @@ public abstract class AwkFunctionCallNameMixin extends AwkNamedElementImpl
 
   @Override
   public PsiReference getReference() {
-    PsiElement prevSibling = AwkUtil.getPrevNotWhitespace(this);
-    return isType(prevSibling, AwkTypes.AT)
-        ? new AwkReferenceVariable(this, getNameTextRange())
-        : new AwkReferenceFunction(this, getNameTextRange());
+    return new AwkReferenceFunction(this, getNameTextRange());
   }
 
   @Override
