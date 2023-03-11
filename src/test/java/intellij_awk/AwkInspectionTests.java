@@ -63,6 +63,10 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(unusedFunctionParam);
   }
 
+  public void testUnusedFunctionParamNoProblem1() {
+    checkByFileNoProblemAtCaret(unusedFunctionParam);
+  }
+
   public void testUnusedFunction1() {
     checkByFile(unusedFunction);
   }
@@ -172,6 +176,7 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   public void testUnresolvedFunctionCall1() {
     checkByFile(unresolvedFunctionCall);
   }
+
   public void testUnresolvedFunctionCall2() {
     checkByFileNoProblemAtCaret(unresolvedFunctionCall);
   }
@@ -219,7 +224,8 @@ public class AwkInspectionTests extends BasePlatformTestCase {
                         && highlightInfo.endOffset >= caretOffset)
             .findAny();
 
-    assertTrue(highlightInfoAtCaretOpt.isEmpty());
+    highlightInfoAtCaretOpt.ifPresent(
+        highlightInfo -> fail("Should be no error, but was: " + highlightInfo.getDescription()));
   }
 
   private void checkByFile(Inspection inspection) {
