@@ -75,6 +75,11 @@
                          level="ERROR"
                          implementationClass="intellij_awk.AwkInspectionUnresolvedFunction"/>
         <localInspection language="AWK" groupName="AWK"
+                         displayName="Unresolved import"
+                         enabledByDefault="true"
+                         level="ERROR"
+                         implementationClass="intellij_awk.AwkInspectionUnresolvedInclude"/>
+        <localInspection language="AWK" groupName="AWK"
                          displayName="Duplicate function"
                          enabledByDefault="true"
                          level="ERROR"
