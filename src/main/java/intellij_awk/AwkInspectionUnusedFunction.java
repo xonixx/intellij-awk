@@ -3,6 +3,7 @@ package intellij_awk;
 import com.intellij.codeInspection.*;
 import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.searches.ReferencesSearch;
@@ -25,18 +26,30 @@ public class AwkInspectionUnusedFunction extends LocalInspectionTool {
       @Override
       public void visitItem(@NotNull AwkItem awkItem) {
         AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
-        if (functionName != null) {
-          Query<PsiReference> functionReferences = ReferencesSearch.search(functionName);
-          if (!functionReferences.iterator().hasNext()) {
-            holder.registerProblem(
-                functionName,
-                "Function '" + functionName.getName() + "()' is never used",
-                ProblemHighlightType.LIKE_UNUSED_SYMBOL,
-                deleteUnusedFunctionQuickFix);
-          }
+        if (functionName != null && !existNonRecursiveReferences(functionName)) {
+          holder.registerProblem(
+              functionName,
+              "Function '" + functionName.getName() + "()' is never used",
+              ProblemHighlightType.LIKE_UNUSED_SYMBOL,
+              deleteUnusedFunctionQuickFix);
         }
       }
     };
+  }
+
+  private boolean existNonRecursiveReferences(AwkFunctionNameMixin functionName) {
+    Query<PsiReference> functionReferences = ReferencesSearch.search(functionName);
+    for (PsiReference functionReference : functionReferences) {
+      if (!isRecursive(functionReference.getElement(), functionName)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean isRecursive(PsiElement functionCall, AwkFunctionNameMixin functionName) {
+    return AwkUtil.findParent(functionCall, AwkItem.class)
+        .equals(AwkUtil.findParent(functionName, AwkItem.class));
   }
 
   private static class DeleteUnusedFunctionQuickFix implements LocalQuickFix {
