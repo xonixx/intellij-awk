@@ -71,6 +71,10 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(unusedFunction);
   }
 
+  public void testUnusedFunction2Recursive() {
+    checkByFile(unusedFunction);
+  }
+
   public void testUnusedGlobalVar1_0() {
     checkByFile(unusedGlobalVariable);
   }
@@ -235,7 +239,9 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
     myFixture.enableInspections(inspection.inspection);
     List<HighlightInfo> highlightInfos = myFixture.doHighlighting();
-    assertFalse(highlightInfos.isEmpty());
+    assertFalse(
+        "Inspection '" + inspection.quickFixName + "' must show, but is absent",
+        highlightInfos.isEmpty());
 
     if (inspection.quickFixName != null) {
       // Get the quick fix action for comparing references inspection and apply it to the file
