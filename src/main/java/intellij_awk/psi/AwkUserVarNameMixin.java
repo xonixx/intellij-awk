@@ -1,5 +1,7 @@
 package intellij_awk.psi;
 
+import static com.intellij.patterns.PlatformPatterns.psiElement;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.patterns.PsiElementPattern;
@@ -9,14 +11,10 @@ import com.intellij.psi.util.PsiTreeUtil;
 import intellij_awk.AwkIcons;
 import intellij_awk.AwkReferenceVariable;
 import intellij_awk.AwkUtil;
+import java.util.regex.Pattern;
+import javax.swing.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
-
-import java.util.regex.Pattern;
-
-import static com.intellij.patterns.PlatformPatterns.psiElement;
 
 public abstract class AwkUserVarNameMixin
     extends AwkNamedStubBasedPsiElementBase<AwkUserVarNameStub>

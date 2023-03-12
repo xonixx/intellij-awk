@@ -6,12 +6,11 @@ import com.intellij.util.IncorrectOperationException;
 import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkItemImpl;
 import intellij_awk.psi.impl.AwkUserVarNameImpl;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     implements PsiPolyVariantReference {

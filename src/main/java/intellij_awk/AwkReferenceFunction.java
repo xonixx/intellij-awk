@@ -5,12 +5,11 @@ import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import intellij_awk.psi.AwkNamedElement;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElement>
     implements PsiPolyVariantReference {

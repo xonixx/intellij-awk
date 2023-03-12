@@ -1,5 +1,9 @@
 package intellij_awk;
 
+import static com.intellij.patterns.PlatformPatterns.psiElement;
+import static com.intellij.patterns.StandardPatterns.*;
+import static intellij_awk.AwkUtil.insertHandler;
+
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PsiElementPattern;
@@ -9,14 +13,9 @@ import intellij_awk.psi.AwkExpr;
 import intellij_awk.psi.AwkPrintExpr;
 import intellij_awk.psi.AwkTypes;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Map;
-
-import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.patterns.StandardPatterns.*;
-import static intellij_awk.AwkUtil.insertHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkCompletionContributorFunctions extends AwkCompletionContributorBase {
 

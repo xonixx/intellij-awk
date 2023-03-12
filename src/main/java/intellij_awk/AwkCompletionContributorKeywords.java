@@ -1,17 +1,16 @@
 package intellij_awk;
 
+import static com.intellij.patterns.PlatformPatterns.psiElement;
+import static com.intellij.patterns.StandardPatterns.or;
+import static intellij_awk.AwkUtil.insertHandler;
+
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.*;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Map;
-
-import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.patterns.StandardPatterns.or;
-import static intellij_awk.AwkUtil.insertHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkCompletionContributorKeywords extends AwkCompletionContributorBase {
 

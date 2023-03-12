@@ -9,9 +9,8 @@ import intellij_awk.psi.AwkFunctionNameMixin;
 import intellij_awk.psi.AwkItem;
 import intellij_awk.psi.AwkVisitor;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collection;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkInspectionDuplicateFunction extends LocalInspectionTool {
 

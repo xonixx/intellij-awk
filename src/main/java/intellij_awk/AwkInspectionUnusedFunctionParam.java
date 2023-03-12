@@ -1,5 +1,7 @@
 package intellij_awk;
 
+import static intellij_awk.AwkUtil.isType;
+
 import com.intellij.codeInspection.*;
 import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.openapi.project.Project;
@@ -9,13 +11,10 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.util.Query;
 import intellij_awk.psi.*;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static intellij_awk.AwkUtil.isType;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
 

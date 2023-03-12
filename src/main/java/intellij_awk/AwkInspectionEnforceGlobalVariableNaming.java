@@ -10,9 +10,8 @@ import com.intellij.psi.search.searches.ReferencesSearch;
 import intellij_awk.psi.AwkUserVarName;
 import intellij_awk.psi.AwkUserVarNameMixin;
 import intellij_awk.psi.AwkVisitor;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.function.Consumer;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkInspectionEnforceGlobalVariableNaming extends LocalInspectionTool {
 

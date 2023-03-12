@@ -2,10 +2,9 @@ package intellij_awk.psi;
 
 import com.intellij.lang.ASTNode;
 import intellij_awk.AwkIcons;
+import javax.swing.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
 
 public class AwkBeginEndMixin extends AwkNamedElementImpl {
   public AwkBeginEndMixin(@NotNull ASTNode node) {

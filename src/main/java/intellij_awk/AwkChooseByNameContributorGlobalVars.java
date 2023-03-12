@@ -4,9 +4,8 @@ import com.intellij.navigation.ChooseByNameContributor;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.Project;
 import intellij_awk.psi.impl.AwkUserVarNameImpl;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collection;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkChooseByNameContributorGlobalVars implements ChooseByNameContributor {
 

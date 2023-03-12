@@ -5,10 +5,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import intellij_awk.AwkReferenceIncludePath;
 import intellij_awk.AwkUtil;
+import javax.swing.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
 
 public abstract class AwkIncludePathMixin extends AwkNamedElementImpl implements AwkIncludePath {
   public AwkIncludePathMixin(@NotNull ASTNode node) {

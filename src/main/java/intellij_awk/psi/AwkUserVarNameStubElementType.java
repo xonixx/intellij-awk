@@ -3,9 +3,8 @@ package intellij_awk.psi;
 import com.intellij.psi.stubs.*;
 import intellij_awk.AwkLanguage;
 import intellij_awk.psi.impl.AwkUserVarNameImpl;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkUserVarNameStubElementType
     extends /*TODO ILightStubElementType*/ IStubElementType<AwkUserVarNameStub, AwkUserVarName> {

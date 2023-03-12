@@ -11,9 +11,8 @@ import intellij_awk.psi.*;
 import intellij_awk.psi.impl.AwkBeginOrEndImpl;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import intellij_awk.psi.impl.AwkUserVarNameImpl;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.*;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkStructureViewElement implements StructureViewTreeElement, SortableTreeElement {
 

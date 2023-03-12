@@ -1,5 +1,7 @@
 package intellij_awk;
 
+import static intellij_awk.psi.AwkTypes.*;
+
 import com.intellij.lang.BracePair;
 import com.intellij.lang.PairedBraceMatcher;
 import com.intellij.psi.PsiFile;
@@ -7,8 +9,6 @@ import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static intellij_awk.psi.AwkTypes.*;
 
 public class AwkBraceMatcher implements PairedBraceMatcher {
 

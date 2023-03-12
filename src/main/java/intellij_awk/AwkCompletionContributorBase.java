@@ -1,5 +1,8 @@
 package intellij_awk;
 
+import static com.intellij.patterns.PlatformPatterns.psiElement;
+import static com.intellij.patterns.StandardPatterns.*;
+
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
@@ -8,9 +11,6 @@ import com.intellij.patterns.ObjectPattern;
 import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
 import intellij_awk.psi.AwkTypes;
-
-import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.patterns.StandardPatterns.*;
 
 abstract class AwkCompletionContributorBase extends CompletionContributor {
   static final PsiElementPattern.Capture<PsiElement> INSIDE_STRING = psiElement(AwkTypes.STRING);

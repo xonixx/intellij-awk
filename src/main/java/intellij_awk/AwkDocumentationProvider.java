@@ -1,5 +1,7 @@
 package intellij_awk;
 
+import static com.intellij.lang.documentation.DocumentationMarkup.*;
+
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
@@ -9,15 +11,12 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import intellij_awk.psi.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
-
-import static com.intellij.lang.documentation.DocumentationMarkup.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class AwkDocumentationProvider extends AbstractDocumentationProvider {
   public static final String STD_LIB_FILE_NAME = "std.awk";

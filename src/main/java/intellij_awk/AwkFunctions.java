@@ -1,8 +1,8 @@
 package intellij_awk;
 
-import java.util.*;
-
 import static java.util.Map.entry;
+
+import java.util.*;
 
 public final class AwkFunctions {
   static final Map<String, String> builtInFunctions =

@@ -1,10 +1,9 @@
 package intellij_awk;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
+import javax.swing.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
 
 public class AwkFileType extends LanguageFileType {
 

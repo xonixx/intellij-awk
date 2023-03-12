@@ -1,17 +1,16 @@
 package intellij_awk;
 
+import static intellij_awk.AwkUtil.findFirstMatchedDeep;
+
 import com.intellij.lang.parameterInfo.*;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import intellij_awk.psi.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static intellij_awk.AwkUtil.findFirstMatchedDeep;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 // TODO can we better handle case f(  <caret> 1,2 ) ?
 // TODO handle printf

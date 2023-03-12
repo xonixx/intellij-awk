@@ -10,9 +10,8 @@ import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.Query;
 import intellij_awk.psi.*;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.function.Consumer;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
 

@@ -1,5 +1,8 @@
 package intellij_awk;
 
+import static intellij_awk.AwkUtil.isNotType;
+import static intellij_awk.AwkUtil.isType;
+
 import com.intellij.formatting.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.text.LineColumn;
@@ -11,14 +14,10 @@ import com.intellij.psi.formatter.common.AbstractBlock;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import intellij_awk.psi.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static intellij_awk.AwkUtil.isNotType;
-import static intellij_awk.AwkUtil.isType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class AwkFormattingBlock extends AbstractBlock {
 

@@ -8,12 +8,11 @@ import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.stubs.IStubElementType;
 import intellij_awk.AwkIcons;
 import intellij_awk.AwkUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class AwkFunctionNameMixin
     extends AwkNamedStubBasedPsiElementBase<AwkFunctionNameStub> implements AwkFunctionName {

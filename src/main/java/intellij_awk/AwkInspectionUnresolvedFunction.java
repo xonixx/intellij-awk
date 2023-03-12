@@ -12,11 +12,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import intellij_awk.psi.*;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.regex.Pattern;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
 

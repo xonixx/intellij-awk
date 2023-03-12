@@ -1,5 +1,7 @@
 package intellij_awk;
 
+import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
+
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
@@ -10,8 +12,6 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import intellij_awk.psi.AwkTypes;
 import org.jetbrains.annotations.NotNull;
-
-import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 
 public class AwkSyntaxHighlighter extends SyntaxHighlighterBase {
 
