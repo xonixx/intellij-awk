@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'intellij-awk'
-version '0.3.8'
+version '0.3.9'
 
 repositories {
     mavenCentral()
@@ -53,6 +53,14 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
 """)
     // language=html
     changeNotes.set("""
+<p>
+    <b>v0.3.9</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/19?closed=1">GitHub issues</a>
+    <ul>
+        <li>Fix for 'Parameter is never used' inspection false-positive</li>
+        <li>Minor fixes</li>
+    </ul>
+</p>
 <p>
     <b>v0.3.8</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/18?closed=1">GitHub issues</a>
