@@ -1,7 +1,7 @@
 package intellij_awk;
 
 import com.intellij.codeInspection.*;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElementVisitor;
 import intellij_awk.psi.AwkIncludePath;
 import intellij_awk.psi.AwkVisitor;
 import org.jetbrains.annotations.NotNull;

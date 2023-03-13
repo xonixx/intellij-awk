@@ -4,7 +4,6 @@ import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +24,8 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   private final Inspection unresolvedFunctionCall =
       new Inspection(
           new AwkInspectionUnresolvedFunction(), AwkInspectionUnresolvedFunction.QUICK_FIX_NAME);
+  private final Inspection unresolvedInclude =
+      new Inspection(new AwkInspectionUnresolvedInclude(), null);
 
   private final Inspection duplicateFunction =
       new Inspection(new AwkInspectionDuplicateFunction(), null);
@@ -193,6 +194,20 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(unresolvedFunctionCall);
   }
 
+  public void testUnresolvedInclude1() {
+    checkByFile(unresolvedInclude);
+  }
+
+  public void testUnresolvedIncludeNoProblem1() {
+    myFixture.configureByText("resolved.awk", "");
+    checkByFileNoProblemAtCaret(unresolvedInclude);
+  }
+
+  public void testUnresolvedIncludeNoProblem2() {
+    myFixture.configureByText("resolved.awk", "");
+    checkByFileNoProblemAtCaret(unresolvedInclude);
+  }
+
   public void testEnforceGlobalVarNaming1() {
     checkByFile(enforceGlobalVarNaming);
   }
@@ -234,7 +249,6 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
   private void checkByFile(Inspection inspection) {
     String before = getTestName(true) + ".awk";
-    String after = before.replace(".awk", "After.awk");
     myFixture.configureByFile(before);
 
     myFixture.enableInspections(inspection.inspection);
@@ -249,6 +263,7 @@ public class AwkInspectionTests extends BasePlatformTestCase {
       assertNotNull(action);
       myFixture.launchAction(action);
 
+      String after = before.replace(".awk", "After.awk");
       myFixture.checkResultByFile(after, true);
     }
   }
