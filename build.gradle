@@ -39,7 +39,7 @@ intellij {
     plugins = ['com.intellij.java']
 }
 patchPluginXml {
-    untilBuild.set('223.*')
+    untilBuild.set('231.*') // https://www.jetbrains.com/idea/nextversion/
     // language=html
     pluginDescription.set("""
 <b>AWK Programming Language Support</b>
