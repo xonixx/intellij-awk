@@ -60,7 +60,7 @@ public class AwkUserVarNameStubElementType
   public static class IndexUserVarDeclarations
       extends StringStubIndexExtension<AwkUserVarNameImpl> {
     public static StubIndexKey<String, AwkUserVarNameImpl> KEY =
-        StubIndexKey.createIndexKey(AwkUserVarName.class.getCanonicalName() + "|DeclInit");
+        StubIndexKey.createIndexKey(AwkUserVarName.class.getCanonicalName() + "_DeclInit");
 
     @Override
     public @NotNull StubIndexKey<String, AwkUserVarNameImpl> getKey() {
