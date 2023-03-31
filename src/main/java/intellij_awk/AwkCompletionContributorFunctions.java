@@ -15,6 +15,7 @@ import intellij_awk.psi.AwkTypes;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
 public class AwkCompletionContributorFunctions extends AwkCompletionContributorBase {
@@ -24,6 +25,9 @@ public class AwkCompletionContributorFunctions extends AwkCompletionContributorB
 
   private static final String dummyIdentifier =
       CompletionInitializationContext.DUMMY_IDENTIFIER_TRIMMED;
+
+  private static final List<Set<Map.Entry<String, String>>> builtInFunctionSets =
+      List.of(AwkFunctions.builtInFunctions.entrySet(), AwkFunctions.gawkFunctions.entrySet());
 
   @Override
   public void beforeCompletion(@NotNull CompletionInitializationContext context) {
@@ -49,23 +53,15 @@ public class AwkCompletionContributorFunctions extends AwkCompletionContributorB
 
             resultSet = adjustPrefix(resultSet, parameters);
 
-            for (Map.Entry<String, String> standardFunction :
-                AwkFunctions.builtInFunctions.entrySet()) {
-              addFunctionCompletionCandidate(
-                  parameters,
-                  resultSet,
-                  standardFunction.getKey(),
-                  true,
-                  standardFunction.getValue());
-            }
-            for (Map.Entry<String, String> standardFunction :
-                AwkFunctions.gawkFunctions.entrySet()) {
-              addFunctionCompletionCandidate(
-                  parameters,
-                  resultSet,
-                  standardFunction.getKey(),
-                  true,
-                  standardFunction.getValue());
+            for (Set<Map.Entry<String, String>> builtInFunctionSet : builtInFunctionSets) {
+              for (Map.Entry<String, String> builtInFunction : builtInFunctionSet) {
+                addFunctionCompletionCandidate(
+                    parameters,
+                    resultSet,
+                    builtInFunction.getKey(),
+                    true,
+                    builtInFunction.getValue());
+              }
             }
 
             List<AwkFunctionNameImpl> functionNames =
