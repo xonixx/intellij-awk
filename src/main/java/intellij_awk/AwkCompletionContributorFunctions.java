@@ -8,6 +8,8 @@ import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.AwkExpr;
 import intellij_awk.psi.AwkPrintExpr;
@@ -64,8 +66,12 @@ public class AwkCompletionContributorFunctions extends AwkCompletionContributorB
               }
             }
 
+            PsiFile file = parameters.getOriginalFile();
+
             List<AwkFunctionNameImpl> functionNames =
-                AwkUtil.findFunctions(parameters.getOriginalFile().getProject());
+                GlobalSearchScope.projectScope(file.getProject()).contains(file.getVirtualFile())
+                    ? AwkUtil.findFunctions(file.getProject())
+                    : AwkUtil.findFunctionsInFile(file);
 
             for (AwkFunctionNameImpl functionName : functionNames) {
               addFunctionCompletionCandidate(
