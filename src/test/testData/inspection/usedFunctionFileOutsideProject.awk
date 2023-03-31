@@ -2,5 +2,5 @@
     print usedFunction()
 }
 
-function usedFunction() {
+function <caret>usedFunction() {
 }

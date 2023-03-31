@@ -3,8 +3,11 @@ package intellij_awk;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInspection.LocalInspectionTool;
-import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -235,12 +238,25 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   }
 
   private void checkByFileNoProblemAtCaret(Inspection inspection, boolean fileOutsideProject) {
-    String before = getTestName(true) + ".awk";
+    String testName = getTestName(true) + ".awk";
     if (fileOutsideProject) {
-      myFixture.configureFromExistingVirtualFile(
-          LocalFileSystem.getInstance().refreshAndFindFileByPath(getTestDataPath() + '/' + before));
+      Path testSource = Path.of(getTestDataPath(), testName);
+      VirtualFile beforeFileTmp;
+      try {
+        // 1. We can't just configure by virtual file in place, because test run will overwrite test
+        // file by removing the <caret>
+        // 2. So we create temp file but with path "temp://src/../testName" which appears to be out
+        // of project dir "temp://src"
+        beforeFileTmp =
+            myFixture
+                .getTempDirFixture()
+                .createFile("../" + testName, Files.readString(testSource));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      myFixture.configureFromExistingVirtualFile(beforeFileTmp);
     } else {
-      myFixture.configureByFile(before);
+      myFixture.configureByFile(testName);
     }
 
     myFixture.enableInspections(inspection.inspection);
