@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.util.Query;
 import intellij_awk.psi.AwkFunctionNameMixin;
@@ -22,19 +23,24 @@ public class AwkInspectionUnusedFunction extends LocalInspectionTool {
   @Override
   public @NotNull PsiElementVisitor buildVisitor(
       @NotNull ProblemsHolder holder, boolean isOnTheFly) {
-    return new AwkVisitor() {
-      @Override
-      public void visitItem(@NotNull AwkItem awkItem) {
-        AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
-        if (functionName != null && !existNonRecursiveReferences(functionName)) {
-          holder.registerProblem(
-              functionName,
-              "Function '" + functionName.getName() + "()' is never used",
-              ProblemHighlightType.LIKE_UNUSED_SYMBOL,
-              deleteUnusedFunctionQuickFix);
+
+    if (GlobalSearchScope.projectScope(holder.getProject())
+        .contains(holder.getFile().getVirtualFile())) {
+      return new AwkVisitor() {
+        @Override
+        public void visitItem(@NotNull AwkItem awkItem) {
+          AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
+          if (functionName != null && !existNonRecursiveReferences(functionName)) {
+            holder.registerProblem(
+                functionName,
+                "Function '" + functionName.getName() + "()' is never used",
+                ProblemHighlightType.LIKE_UNUSED_SYMBOL,
+                deleteUnusedFunctionQuickFix);
+          }
         }
-      }
-    };
+      };
+    }
+    return new AwkVisitor();
   }
 
   private boolean existNonRecursiveReferences(AwkFunctionNameMixin functionName) {
