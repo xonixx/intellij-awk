@@ -28,16 +28,16 @@ public class ExternalFileConfigurer {
   }
 
   public void configureByText(String fileName, String code) {
-    VirtualFile beforeFileTmp;
+    VirtualFile file;
     try {
-      // 1. We can't just configure by virtual file in place, because test run will overwrite test
-      // file by removing the <caret>
-      // 2. So we create temp file but with path "temp://src/../testName" which appears to be out
-      // of project dir "temp://src"
-      beforeFileTmp = myFixture.getTempDirFixture().createFile("../" + fileName, code);
+      // We can't just configure by virtual file in place, because test run will overwrite test file
+      // by removing the <caret>.
+      // So we create temp file but with path "temp://src/../testName" which appears to be out of
+      // the project dir "temp://src".
+      file = myFixture.getTempDirFixture().createFile("../" + fileName, code);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    myFixture.configureFromExistingVirtualFile(beforeFileTmp);
+    myFixture.configureFromExistingVirtualFile(file);
   }
 }
