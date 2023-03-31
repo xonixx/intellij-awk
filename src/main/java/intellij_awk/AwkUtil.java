@@ -160,6 +160,23 @@ public class AwkUtil {
     return result;
   }
 
+  public static List<AwkFunctionNameImpl> findFunctionsInFile(PsiFile psiFile) {
+    List<AwkFunctionNameImpl> result = new ArrayList<>();
+    if (psiFile instanceof AwkFile) {
+      AwkFile awkFile = (AwkFile) psiFile;
+      for (PsiElement child : awkFile.getChildren()) {
+        if (child instanceof AwkItem) {
+          AwkItem awkItem = (AwkItem) child;
+          AwkFunctionName functionName = awkItem.getFunctionName();
+          if (functionName != null) {
+            result.add((AwkFunctionNameImpl) functionName);
+          }
+        }
+      }
+    }
+    return result;
+  }
+
   @NotNull
   private static Collection<VirtualFile> getAwkFiles(Project project) {
     return FileTypeIndex.getFiles(AwkFileType.INSTANCE, GlobalSearchScope.allScope(project));

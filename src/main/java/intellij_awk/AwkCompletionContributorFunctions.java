@@ -8,6 +8,8 @@ import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.AwkExpr;
 import intellij_awk.psi.AwkPrintExpr;
@@ -15,6 +17,7 @@ import intellij_awk.psi.AwkTypes;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
 public class AwkCompletionContributorFunctions extends AwkCompletionContributorBase {
@@ -24,6 +27,9 @@ public class AwkCompletionContributorFunctions extends AwkCompletionContributorB
 
   private static final String dummyIdentifier =
       CompletionInitializationContext.DUMMY_IDENTIFIER_TRIMMED;
+
+  private static final List<Set<Map.Entry<String, String>>> builtInFunctionSets =
+      List.of(AwkFunctions.builtInFunctions.entrySet(), AwkFunctions.gawkFunctions.entrySet());
 
   @Override
   public void beforeCompletion(@NotNull CompletionInitializationContext context) {
@@ -49,27 +55,23 @@ public class AwkCompletionContributorFunctions extends AwkCompletionContributorB
 
             resultSet = adjustPrefix(resultSet, parameters);
 
-            for (Map.Entry<String, String> standardFunction :
-                AwkFunctions.builtInFunctions.entrySet()) {
-              addFunctionCompletionCandidate(
-                  parameters,
-                  resultSet,
-                  standardFunction.getKey(),
-                  true,
-                  standardFunction.getValue());
-            }
-            for (Map.Entry<String, String> standardFunction :
-                AwkFunctions.gawkFunctions.entrySet()) {
-              addFunctionCompletionCandidate(
-                  parameters,
-                  resultSet,
-                  standardFunction.getKey(),
-                  true,
-                  standardFunction.getValue());
+            for (Set<Map.Entry<String, String>> builtInFunctionSet : builtInFunctionSets) {
+              for (Map.Entry<String, String> builtInFunction : builtInFunctionSet) {
+                addFunctionCompletionCandidate(
+                    parameters,
+                    resultSet,
+                    builtInFunction.getKey(),
+                    true,
+                    builtInFunction.getValue());
+              }
             }
 
+            PsiFile file = parameters.getOriginalFile();
+
             List<AwkFunctionNameImpl> functionNames =
-                AwkUtil.findFunctions(parameters.getOriginalFile().getProject());
+                GlobalSearchScope.projectScope(file.getProject()).contains(file.getVirtualFile())
+                    ? AwkUtil.findFunctions(file.getProject())
+                    : AwkUtil.findFunctionsInFile(file);
 
             for (AwkFunctionNameImpl functionName : functionNames) {
               addFunctionCompletionCandidate(

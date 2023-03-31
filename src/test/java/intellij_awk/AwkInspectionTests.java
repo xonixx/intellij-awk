@@ -4,6 +4,7 @@ import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +75,10 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
   public void testUnusedFunction2Recursive() {
     checkByFile(unusedFunction);
+  }
+
+  public void testUsedFunctionFileOutsideProject() {
+    checkByFileNoProblemAtCaret(unusedFunction, true);
   }
 
   public void testUnusedGlobalVar1_0() {
@@ -226,8 +231,17 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   }
 
   private void checkByFileNoProblemAtCaret(Inspection inspection) {
-    String before = getTestName(true) + ".awk";
-    myFixture.configureByFile(before);
+    checkByFileNoProblemAtCaret(inspection, false);
+  }
+
+  private void checkByFileNoProblemAtCaret(Inspection inspection, boolean fileOutsideProject) {
+    String testName = getTestName(true) + ".awk";
+    if (fileOutsideProject) {
+      new ExternalFileConfigurer(myFixture)
+          .configureByExternalFile(Path.of(getTestDataPath(), testName));
+    } else {
+      myFixture.configureByFile(testName);
+    }
 
     myFixture.enableInspections(inspection.inspection);
 
