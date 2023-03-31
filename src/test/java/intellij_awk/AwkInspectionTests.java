@@ -77,8 +77,12 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(unusedFunction);
   }
 
-  public void testUsedFunctionFileOutsideProject() {
+  public void testUsedFunctionInFileOutsideProject() {
     checkByFileNoProblemAtCaret(unusedFunction, true);
+  }
+
+  public void testUsedVarInFileOutsideProject() {
+    checkByFileNoProblemAtCaret(unusedGlobalVariable, true);
   }
 
   public void testUnusedGlobalVar1_0() {
