@@ -1,0 +1,6 @@
+{
+    print usedFunction()
+}
+
+function usedFunction() {
+}
