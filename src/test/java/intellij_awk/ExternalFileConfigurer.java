@@ -10,7 +10,7 @@ import java.nio.file.Path;
 See https://intellij-support.jetbrains.com/hc/en-us/community/posts/10752685429394-How-can-I-create-a-unit-test-for-my-language-support-plugin-to-emulate-opening-a-file-from-outside-of-the-project-?page=1
  */
 public class ExternalFileConfigurer {
-  private CodeInsightTestFixture myFixture;
+  private final CodeInsightTestFixture myFixture;
 
   public ExternalFileConfigurer(CodeInsightTestFixture myFixture) {
     this.myFixture = myFixture;
