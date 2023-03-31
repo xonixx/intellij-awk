@@ -4,12 +4,11 @@ import com.intellij.codeInsight.lookup.Lookup;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementPresentation;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkCompletionTests extends BasePlatformTestCase {
 
@@ -355,9 +354,16 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionEmpty("function b() { return \"\" ~ @/<caret>/ }");
   }
 
-  public void testIssue164() {
-    checkCompletionAuto("BEGIN { bb<caret> } function bbb(){}", "BEGIN { bbb(<caret>) } function bbb(){}");
+  public void testIssue155() {
+    checkCompletionAutoExternalFile(
+        "BEGIN { bb<caret> } function bbb(){}", "BEGIN { bbb(<caret>) } function bbb(){}");
   }
+
+  public void testIssue164() {
+    checkCompletionAuto(
+        "BEGIN { bb<caret> } function bbb(){}", "BEGIN { bbb(<caret>) } function bbb(){}");
+  }
+
   public void testIssue164_1() {
     checkCompletionAuto("function f(){ Xxx=1; Xx<caret> }", "function f(){ Xxx=1; Xxx<caret> }");
   }
@@ -385,8 +391,17 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionAuto(code, code);
   }
 
+  private void checkCompletionAutoExternalFile(String code, String expectedResult) {
+    setupCodeExternal(code);
+    checkExpected(expectedResult);
+  }
+
   private void checkCompletionAuto(String code, String expectedResult) {
     setupCode(code);
+    checkExpected(expectedResult);
+  }
+
+  private void checkExpected(String expectedResult) {
     LookupElement[] variants = myFixture.completeBasic();
     if (!(variants == null || variants.length == 0)) {
       fail("Should be empty completion: " + toSet(variants));
@@ -448,5 +463,12 @@ public class AwkCompletionTests extends BasePlatformTestCase {
       String otherFileCode = otherFiles[i];
       myFixture.addFileToProject("f" + i + ".awk", otherFileCode);
     }
+  }
+
+  private void setupCodeExternal(String code) {
+    if (!code.contains("<caret>")) {
+      throw new IllegalArgumentException("Please, add `<caret>` marker to code");
+    }
+    new ExternalFileConfigurer(myFixture).configureByText("a.awk", code);
   }
 }
