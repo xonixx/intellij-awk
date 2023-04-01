@@ -22,30 +22,33 @@ public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
   @Override
   public @NotNull PsiElementVisitor buildVisitor(
       @NotNull ProblemsHolder holder, boolean isOnTheFly) {
-    return new AwkVisitor() {
-      @Override
-      public void visitUserVarName(@NotNull AwkUserVarName userVarName) {
-        AwkUserVarNameMixin userVarNameMixin = (AwkUserVarNameMixin) userVarName;
-        if (userVarNameMixin.isDeclaration()
-            || userVarNameMixin.looksLikeDeclaration()
-                && Util.startsWithUppercaseLetter(userVarNameMixin.getName())) {
-          Query<PsiReference> references = ReferencesSearch.search(userVarNameMixin);
-          if (!references.anyMatch(
-                  psiReference -> {
-                    PsiElement psiElement = psiReference.getElement();
-                    return psiElement instanceof AwkUserVarNameMixin
-                        && !((AwkUserVarNameMixin) psiElement).isDeclaration();
-                  })
-              && userVarNameMixin.getReference().resolve() == null) {
-            holder.registerProblem(
-                userVarNameMixin,
-                "Global variable '" + userVarNameMixin.getName() + "' is never used",
-                ProblemHighlightType.LIKE_UNUSED_SYMBOL,
-                deleteUnusedGlobalVariableQuickFix);
+
+    return AwkInspectionUtil.disableInspectionOnFileOutsideProject(
+        holder,
+        new AwkVisitor() {
+          @Override
+          public void visitUserVarName(@NotNull AwkUserVarName userVarName) {
+            AwkUserVarNameMixin userVarNameMixin = (AwkUserVarNameMixin) userVarName;
+            if (userVarNameMixin.isDeclaration()
+                || userVarNameMixin.looksLikeDeclaration()
+                    && Util.startsWithUppercaseLetter(userVarNameMixin.getName())) {
+              Query<PsiReference> references = ReferencesSearch.search(userVarNameMixin);
+              if (!references.anyMatch(
+                      psiReference -> {
+                        PsiElement psiElement = psiReference.getElement();
+                        return psiElement instanceof AwkUserVarNameMixin
+                            && !((AwkUserVarNameMixin) psiElement).isDeclaration();
+                      })
+                  && userVarNameMixin.getReference().resolve() == null) {
+                holder.registerProblem(
+                    userVarNameMixin,
+                    "Global variable '" + userVarNameMixin.getName() + "' is never used",
+                    ProblemHighlightType.LIKE_UNUSED_SYMBOL,
+                    deleteUnusedGlobalVariableQuickFix);
+              }
+            }
           }
-        }
-      }
-    };
+        });
   }
 
   private static class DeleteUnusedGlobalVariableQuickFix implements LocalQuickFix {
