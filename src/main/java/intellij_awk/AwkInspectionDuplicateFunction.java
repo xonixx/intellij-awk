@@ -5,11 +5,12 @@ import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
-import intellij_awk.psi.AwkFunctionNameMixin;
-import intellij_awk.psi.AwkItem;
 import intellij_awk.psi.AwkVisitor;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
-import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 public class AwkInspectionDuplicateFunction extends LocalInspectionTool {
@@ -19,20 +20,25 @@ public class AwkInspectionDuplicateFunction extends LocalInspectionTool {
       @NotNull ProblemsHolder holder, boolean isOnTheFly) {
     return new AwkVisitor() {
       @Override
-      public void visitItem(@NotNull AwkItem awkItem) {
-        AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
-        if (functionName != null) {
-          PsiFile containingFile = functionName.getContainingFile();
-          Collection<AwkFunctionNameImpl> functionsWithSameName =
-              AwkUtil.findFunctionsInFile(containingFile, functionName.getText());
-          if (functionsWithSameName.size() > 1) {
-            holder.registerProblem(
-                functionName,
-                "Function '"
-                    + functionName.getName()
-                    + "' is already defined in "
-                    + containingFile.getName(),
-                ProblemHighlightType.GENERIC_ERROR);
+      public void visitFile(@NotNull PsiFile awkFile) {
+        // TODO what about same function in other files?
+        List<AwkFunctionNameImpl> functionsInFile = AwkUtil.findFunctionsInFile(awkFile);
+
+        Map<String, List<AwkFunctionNameImpl>> functionsByName =
+            functionsInFile.stream()
+                .collect(
+                    Collectors.groupingBy(
+                        awkFunctionName -> awkFunctionName.getFuncName().getText()));
+
+        for (Entry<String, List<AwkFunctionNameImpl>> entry : functionsByName.entrySet()) {
+          if (entry.getValue().size() > 1) {
+            String functionName = entry.getKey();
+            for (AwkFunctionNameImpl awkFunctionName : entry.getValue()) {
+              holder.registerProblem(
+                  awkFunctionName,
+                  "Function '" + functionName + "' is already defined in " + functionName,
+                  ProblemHighlightType.GENERIC_ERROR);
+            }
           }
         }
       }
