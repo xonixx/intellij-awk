@@ -26,6 +26,11 @@ public abstract class AwkFunctionNameMixin
     super(stub, nodeType);
   }
 
+  public PsiElement getNamePsiElement() {
+    PsiElement funcName = getFuncName();
+    return funcName != null ? funcName : getVarName();
+  }
+
   @Override
   public String getName() {
     AwkFunctionNameStub awkFunctionNameStub = getStub();

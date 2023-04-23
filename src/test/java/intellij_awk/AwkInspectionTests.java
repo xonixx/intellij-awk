@@ -186,6 +186,9 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   public void testDupFunctions2() {
     checkByFile(duplicateFunction);
   }
+  public void testDupFunctionsRegression180() {
+    checkByFile(duplicateFunction);
+  }
 
   public void testUnresolvedFunctionCall1() {
     checkByFile(unresolvedFunctionCall);

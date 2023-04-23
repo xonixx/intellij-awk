@@ -28,7 +28,7 @@ public class AwkInspectionDuplicateFunction extends LocalInspectionTool {
             functionsInFile.stream()
                 .collect(
                     Collectors.groupingBy(
-                        awkFunctionName -> awkFunctionName.getFuncName().getText()));
+                        awkFunctionName -> awkFunctionName.getNamePsiElement().getText()));
 
         for (Entry<String, List<AwkFunctionNameImpl>> entry : functionsByName.entrySet()) {
           if (entry.getValue().size() > 1) {
