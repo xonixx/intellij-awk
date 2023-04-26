@@ -30,6 +30,8 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
   private final Inspection duplicateFunction =
       new Inspection(new AwkInspectionDuplicateFunction(), null);
+  private final Inspection duplicateFunctionParam =
+      new Inspection(new AwkInspectionDuplicateFunctionParam(), null);
 
   private final Inspection declareLocal =
       new Inspection(
@@ -40,6 +42,14 @@ public class AwkInspectionTests extends BasePlatformTestCase {
       new Inspection(
           new AwkInspectionEnforceGlobalVariableNaming(),
           AwkInspectionEnforceGlobalVariableNaming.QUICK_FIX_NAME);
+
+  public void testDuplicateFunctionParam1() {
+    checkByFile(duplicateFunctionParam);
+  }
+
+  public void testDuplicateFunctionParam2() {
+    checkByFile(duplicateFunctionParam);
+  }
 
   public void testUnusedFunctionParam1() {
     checkByFile(unusedFunctionParam);
@@ -186,6 +196,7 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   public void testDupFunctions2() {
     checkByFile(duplicateFunction);
   }
+
   public void testDupFunctionsRegression180() {
     checkByFile(duplicateFunction);
   }
