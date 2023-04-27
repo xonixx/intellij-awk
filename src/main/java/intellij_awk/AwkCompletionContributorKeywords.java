@@ -78,7 +78,7 @@ public class AwkCompletionContributorKeywords extends AwkCompletionContributorBa
           ihSpace);
 
   private static final Map<String, InsertHandler<LookupElement>> KEYWORDS_INCLUDE_LOAD_NS =
-      Map.of("inculde", ihQuotes, "load", ihQuotes, "namespace", ihQuotes);
+      Map.of("include", ihQuotes, "load", ihQuotes, "namespace", ihQuotes);
 
   public AwkCompletionContributorKeywords() {
     extend(
@@ -139,7 +139,7 @@ public class AwkCompletionContributorKeywords extends AwkCompletionContributorBa
         });
     extend(
         CompletionType.BASIC,
-        psiElement().withParent(AwkItem.class).afterLeaf("@"),
+        psiElement().afterLeaf("@").andNot(psiElement().inside(AwkAction.class)),
         new CompletionProvider<>() {
           @Override
           protected void addCompletions(
