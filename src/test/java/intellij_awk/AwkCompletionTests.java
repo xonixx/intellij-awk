@@ -368,6 +368,14 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionAuto("function f(){ Xxx=1; Xx<caret> }", "function f(){ Xxx=1; Xxx<caret> }");
   }
 
+  public void testIncludeLoadNs1() {
+    checkCompletion(Set.of("include", "load", "namespace"), Set.of(), "@<caret>");
+  }
+
+  public void testIncludeLoadNs2() {
+    checkCompletionAuto("@inc<caret>", "@include \"<caret>\"");
+  }
+
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();
