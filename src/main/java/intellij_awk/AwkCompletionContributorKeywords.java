@@ -30,6 +30,7 @@ public class AwkCompletionContributorKeywords extends AwkCompletionContributorBa
           ihBeginEnd);
 
   private static final InsertHandler<LookupElement> ihParens = insertHandler(" ()", 2);
+  private static final InsertHandler<LookupElement> ihQuotes = insertHandler(" \"\"", 2);
   private static final InsertHandler<LookupElement> ihSpace = insertHandler(" ", 1);
   private static final InsertHandler<LookupElement> ihNone = insertHandler("", 0);
 
@@ -75,6 +76,9 @@ public class AwkCompletionContributorKeywords extends AwkCompletionContributorBa
           ihSpace,
           "printf",
           ihSpace);
+
+  private static final Map<String, InsertHandler<LookupElement>> KEYWORDS_INCLUDE_LOAD_NS =
+      Map.of("inculde", ihQuotes, "load", ihQuotes, "namespace", ihQuotes);
 
   public AwkCompletionContributorKeywords() {
     extend(
@@ -131,6 +135,19 @@ public class AwkCompletionContributorKeywords extends AwkCompletionContributorBa
               @NotNull CompletionResultSet resultSet) {
 
             addContributionResults(resultSet, KEYWORDS_CASE_DEFAULT);
+          }
+        });
+    extend(
+        CompletionType.BASIC,
+        psiElement().withParent(AwkItem.class).afterLeaf("@"),
+        new CompletionProvider<>() {
+          @Override
+          protected void addCompletions(
+              @NotNull CompletionParameters parameters,
+              @NotNull ProcessingContext context,
+              @NotNull CompletionResultSet resultSet) {
+
+            addContributionResults(resultSet, KEYWORDS_INCLUDE_LOAD_NS);
           }
         });
   }

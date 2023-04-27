@@ -50,7 +50,14 @@ WHITE_SPACE=[ \t]+
   "{"                      { yybegin(YYINITIAL); return LBRACE; }
 }
 
-<YYINITIAL, DIV_POSSIBLE> {
+<AFTER_AT> {
+  "namespace"              { yybegin(YYINITIAL); return NAMESPACE; }
+  "include"                { yybegin(YYINITIAL); return INCLUDE; }
+  "load"                   { yybegin(YYINITIAL); return LOAD; }
+  {VAR_NAME}          /\(  { yybegin(YYINITIAL); return VAR_NAME; }
+}
+
+<YYINITIAL, DIV_POSSIBLE, AFTER_AT> {
   {WHITE_SPACE}            { return WHITE_SPACE; }
 
   "BEGINFILE" /\(?         { yybegin(AFTER_BEGIN_END); return BEGINFILE; }
@@ -137,14 +144,6 @@ WHITE_SPACE=[ \t]+
 
 <YYINITIAL> {
   {ERE}                         { return ERE; }
-}
-
-<AFTER_AT> {
-  "namespace"              { yybegin(YYINITIAL); return NAMESPACE; }
-  "include"                { yybegin(YYINITIAL); return INCLUDE; }
-  "load"                   { yybegin(YYINITIAL); return LOAD; }
-  {WHITE_SPACE}            { return WHITE_SPACE; }
-  {VAR_NAME}               { yybegin(YYINITIAL); return VAR_NAME; }
 }
 
 [^] { return BAD_CHARACTER; }
