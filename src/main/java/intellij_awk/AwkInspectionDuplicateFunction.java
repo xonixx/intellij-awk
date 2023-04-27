@@ -36,7 +36,7 @@ public class AwkInspectionDuplicateFunction extends LocalInspectionTool {
             for (AwkFunctionNameImpl awkFunctionName : entry.getValue()) {
               holder.registerProblem(
                   awkFunctionName,
-                  "Function '" + functionName + "' is already defined in " + functionName,
+                  "Function '" + functionName + "' is already defined in " + awkFile.getName(),
                   ProblemHighlightType.GENERIC_ERROR);
             }
           }

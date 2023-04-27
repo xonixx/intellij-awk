@@ -7,6 +7,7 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 public class AwkInspectionTests extends BasePlatformTestCase {
 
@@ -189,16 +190,19 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFileNoProblemAtCaret(unusedFunction);
   }
 
+  private static final HighlightInfoChecker correctDupFunctionErrorText =
+      (highlightInfo, file) -> highlightInfo.getDescription().endsWith(file);
+
   public void testDupFunctions1() {
-    checkByFile(duplicateFunction);
+    checkByFile(duplicateFunction, correctDupFunctionErrorText);
   }
 
   public void testDupFunctions2() {
-    checkByFile(duplicateFunction);
+    checkByFile(duplicateFunction, correctDupFunctionErrorText);
   }
 
   public void testDupFunctionsRegression180() {
-    checkByFile(duplicateFunction);
+    checkByFile(duplicateFunction, correctDupFunctionErrorText);
   }
 
   public void testUnresolvedFunctionCall1() {
@@ -265,21 +269,24 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
     List<HighlightInfo> highlightInfos = myFixture.doHighlighting();
 
-    int caretOffset = myFixture.getCaretOffset();
-
-    Optional<HighlightInfo> highlightInfoAtCaretOpt =
-        highlightInfos.stream()
-            .filter(
-                highlightInfo ->
-                    highlightInfo.startOffset <= caretOffset
-                        && highlightInfo.endOffset >= caretOffset)
-            .findAny();
+    Optional<HighlightInfo> highlightInfoAtCaretOpt = getHighlightInfoAtCaret(highlightInfos);
 
     highlightInfoAtCaretOpt.ifPresent(
         highlightInfo -> fail("Should be no error, but was: " + highlightInfo.getDescription()));
   }
 
-  private void checkByFile(Inspection inspection) {
+  @NotNull
+  private Optional<HighlightInfo> getHighlightInfoAtCaret(List<HighlightInfo> highlightInfos) {
+    int caretOffset = myFixture.getCaretOffset();
+
+    return highlightInfos.stream()
+        .filter(
+            highlightInfo ->
+                highlightInfo.startOffset <= caretOffset && highlightInfo.endOffset >= caretOffset)
+        .findAny();
+  }
+
+  private void checkByFile(Inspection inspection, HighlightInfoChecker... highlightInfoCheckers) {
     String before = getTestName(true) + ".awk";
     myFixture.configureByFile(before);
 
@@ -288,6 +295,14 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     assertFalse(
         "Inspection '" + inspection.quickFixName + "' must show, but is absent",
         highlightInfos.isEmpty());
+
+    if (highlightInfoCheckers != null) {
+      for (HighlightInfoChecker highlightInfoChecker : highlightInfoCheckers) {
+        assertTrue(
+            highlightInfoChecker.isValid(
+                getHighlightInfoAtCaret(highlightInfos).orElseThrow(), before));
+      }
+    }
 
     if (inspection.quickFixName != null) {
       // Get the quick fix action for comparing references inspection and apply it to the file
@@ -308,5 +323,9 @@ public class AwkInspectionTests extends BasePlatformTestCase {
       this.inspection = inspection;
       this.quickFixName = quickFixName;
     }
+  }
+
+  private interface HighlightInfoChecker {
+    boolean isValid(HighlightInfo highlightInfo, String file);
   }
 }
