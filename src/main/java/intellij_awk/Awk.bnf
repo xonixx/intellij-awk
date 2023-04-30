@@ -213,7 +213,8 @@ end_block              ::= END
 action           ::= LBRACE newlines_opt (
                          RBRACE
                        | (statement terminator*)*  RBRACE
-                   ) // TODO pin 1
+                   )
+{ pin=1 }
 
 statement ::=      action
                  | statement_if
@@ -229,18 +230,19 @@ statement ::=      action
                  | simple_statement
                  | gawk_terminated_statement_switch
 
-private statement_if ::=
-                           IF LPAREN expr RPAREN newlines_opt (
-                               statement terminator* [ ELSE newlines_opt statement ]
-                           )
+private statement_if ::= IF LPAREN expr RPAREN newlines_opt
+                            statement terminator* [ ELSE newlines_opt statement ]
+{ pin=2 }
 
 private statement_while ::= WHILE LPAREN expr RPAREN newlines_opt statement
+{ pin=2 }
 
 private statement_for ::=
                    FOR LPAREN (
                        simple_statement_opt SEMICOLON newlines_opt expr_opt SEMICOLON newlines_opt simple_statement_opt RPAREN newlines_opt
                      | var_name IN gawk_var_name RPAREN newlines_opt
                   ) statement
+{ pin=2 }
 
 private terminator       ::= (NEWLINE|SEMICOLON) newlines_opt
 
