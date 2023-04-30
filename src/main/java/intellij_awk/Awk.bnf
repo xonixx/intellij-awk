@@ -274,9 +274,7 @@ private switch_start ::= SWITCH LPAREN expr RPAREN newlines_opt LBRACE newlines_
 
 private recover_switch ::= !RBRACE
 
-case_statement  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ (
-                                        terminated_statement_list (&CASE | &DEFAULT | &RBRACE)
-                                      | [unterminated_statement_list] &RBRACE )
+case_statement  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ (statement terminator*)*
 
 private case_value      ::= ([ADD|SUB] NUMBER) | STRING | ERE | TYPED_ERE
 
