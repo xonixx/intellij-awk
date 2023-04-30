@@ -71,8 +71,8 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       return postprocessDocumentation(stmt, documentation, false);
     } else if (element instanceof AwkUserVarNameMixin) {
       AwkUserVarNameMixin userVarName = (AwkUserVarNameMixin) element;
-      AwkTerminatableStatement parent =
-          AwkUtil.findParent(userVarName, AwkTerminatableStatement.class);
+      AwkStatement parent =
+          AwkUtil.findParent(userVarName, AwkStatement.class);
       if (parent == null) {
         return null;
       }

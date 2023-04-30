@@ -112,7 +112,7 @@ public class AwkCompletionContributorKeywords extends AwkCompletionContributorBa
         });
     extend(
         CompletionType.BASIC,
-        notInsideStringERE(psiElement().inside(AwkTerminatableStatement.class)),
+        notInsideStringERE(psiElement().inside(AwkStatement.class)),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,

@@ -212,15 +212,22 @@ end_block              ::= END
 
 action           ::= LBRACE newlines_opt (
                          RBRACE
-//                       | (terminated_statement* (terminated_statement | unterminated_statement))  RBRACE
-//                       | terminated_statement* unterminated_statement*  RBRACE
-//                       | (statement terminator)* statement? terminator?  RBRACE
                        | (statement terminator*)*  RBRACE
-                       //| unterminated_statement_list RBRACE
                    ) // TODO pin 1
 
-statement ::= action | statement_if | statement_for | statement_while | terminatable_statement | SEMICOLON newlines_opt
-                | gawk_terminated_statement_switch
+statement ::=      action
+                 | statement_if
+                 | statement_for
+                 | statement_while
+                 | BREAK
+                 | CONTINUE
+                 | NEXTFILE
+                 | NEXT
+                 | EXIT expr_opt
+                 | RETURN expr_opt
+                 | DO newlines_opt statement newlines_opt WHILE LPAREN expr RPAREN | SEMICOLON newlines_opt
+                 | simple_statement
+                 | gawk_terminated_statement_switch
 
 private statement_if ::=
                            IF LPAREN expr RPAREN newlines_opt (
@@ -234,7 +241,6 @@ private statement_for ::=
                        simple_statement_opt SEMICOLON newlines_opt expr_opt SEMICOLON newlines_opt simple_statement_opt RPAREN newlines_opt
                      | var_name IN gawk_var_name RPAREN newlines_opt
                   ) statement
-
 
 private terminator       ::= (NEWLINE|SEMICOLON) newlines_opt
 
@@ -251,15 +257,6 @@ private recover_switch ::= !RBRACE
 case_statement  ::= ((CASE case_value | DEFAULT) COLON newlines_opt)+ (statement terminator*)*
 
 private case_value      ::= ([ADD|SUB] NUMBER) | STRING | ERE | TYPED_ERE
-
-terminatable_statement ::= simple_statement
-                 | BREAK
-                 | CONTINUE
-                 | NEXTFILE
-                 | NEXT
-                 | EXIT expr_opt
-                 | RETURN expr_opt
-                 | DO newlines_opt statement newlines_opt WHILE LPAREN expr RPAREN
 
 private simple_statement_opt ::= simple_statement?
 
