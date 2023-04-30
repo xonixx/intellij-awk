@@ -376,6 +376,12 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionAuto("@inc<caret>", "@include \"<caret>\"");
   }
 
+  public void testIfNotClosed1() {
+    checkCompletionAuto(
+        "function assertEquals(expected,actual) { if(exp<caret>) }",
+        "function expectEquals(expected,actual) { if(expected<caret>) }");
+  }
+
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();
