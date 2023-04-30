@@ -220,6 +220,7 @@ action           ::= LBRACE newlines_opt (
                    ) // TODO pin 1
 
 statement ::= action | statement_if | statement_for | statement_while | terminatable_statement | SEMICOLON newlines_opt
+                | gawk_terminated_statement_switch
 
 private statement_if ::=
                            IF LPAREN expr RPAREN newlines_opt (
