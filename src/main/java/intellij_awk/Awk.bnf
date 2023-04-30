@@ -213,9 +213,27 @@ end_block              ::= END
 action           ::= LBRACE newlines_opt (
                          RBRACE
 //                       | (terminated_statement* (terminated_statement | unterminated_statement))  RBRACE
-                       | terminated_statement* unterminated_statement*  RBRACE
+//                       | terminated_statement* unterminated_statement*  RBRACE
+//                       | (statement terminator)* statement? terminator?  RBRACE
+                       | (statement terminator*)*  RBRACE
                        //| unterminated_statement_list RBRACE
-                   )
+                   ) // TODO pin 1
+
+statement ::= action | statement_if | statement_for | statement_while | terminatable_statement | SEMICOLON newlines_opt
+
+private statement_if ::=
+                           IF LPAREN expr RPAREN newlines_opt (
+                               statement terminator* [ ELSE newlines_opt statement ]
+                           )
+
+private statement_while ::= WHILE LPAREN expr RPAREN newlines_opt statement
+
+private statement_for ::=
+                   FOR LPAREN (
+                       simple_statement_opt SEMICOLON newlines_opt expr_opt SEMICOLON newlines_opt simple_statement_opt RPAREN newlines_opt
+                     | var_name IN gawk_var_name RPAREN newlines_opt
+                  ) statement
+
 
 private terminator       ::= (NEWLINE|SEMICOLON) newlines_opt
 
