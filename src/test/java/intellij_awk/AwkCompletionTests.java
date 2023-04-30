@@ -378,8 +378,8 @@ public class AwkCompletionTests extends BasePlatformTestCase {
 
   public void testIfNotClosed1() {
     checkCompletionAuto(
-        "function assertEquals(expected,actual) { if(exp<caret>) }",
-        "function expectEquals(expected,actual) { if(expected<caret>) }");
+        "function assertEquals(expected,actual) { if(expe<caret>) }",
+        "function assertEquals(expected,actual) { if(expected<caret>) }");
   }
 
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
