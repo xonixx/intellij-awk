@@ -212,8 +212,9 @@ end_block              ::= END
 
 action           ::= LBRACE newlines_opt (
                          RBRACE
-                       | terminated_statement_list   RBRACE
-                       | unterminated_statement_list RBRACE
+//                       | (terminated_statement* (terminated_statement | unterminated_statement))  RBRACE
+                       | terminated_statement* unterminated_statement*  RBRACE
+                       //| unterminated_statement_list RBRACE
                    )
 
 private terminator       ::= (NEWLINE|SEMICOLON) newlines_opt
@@ -234,16 +235,15 @@ terminated_statement ::= action newlines_opt
 private terminated_statement_if ::= IF LPAREN expr RPAREN newlines_opt terminated_statement
                                   ( ELSE newlines_opt terminated_statement
                                   | !ELSE
-                                  )
+                                  ) //{ pin=2 }
 
 private terminated_statement_while ::= WHILE LPAREN expr RPAREN newlines_opt terminated_statement
 private terminated_statement_for ::=
                    FOR LPAREN (
                      simple_statement_opt SEMICOLON newlines_opt expr_opt SEMICOLON newlines_opt simple_statement_opt RPAREN newlines_opt
-                      terminated_statement
                    | var_name IN gawk_var_name RPAREN newlines_opt
-                      terminated_statement
-                   )
+                   ) terminated_statement
+
 
 gawk_terminated_statement_switch ::= switch_start RBRACE newlines_opt
 
@@ -266,7 +266,6 @@ unterminated_statement ::= terminatable_statement
                  | unterminated_statement_while
                  | unterminated_statement_for
 
-
 private unterminated_statement_if ::=
                    IF LPAREN expr RPAREN newlines_opt (
                        terminated_statement ELSE newlines_opt unterminated_statement
@@ -276,10 +275,8 @@ private unterminated_statement_while ::= WHILE LPAREN expr RPAREN newlines_opt u
 private unterminated_statement_for ::=
                    FOR LPAREN (
                        simple_statement_opt SEMICOLON newlines_opt expr_opt SEMICOLON newlines_opt simple_statement_opt RPAREN newlines_opt
-                          unterminated_statement
                      | var_name IN gawk_var_name RPAREN newlines_opt
-                          unterminated_statement
-                  )
+                  ) unterminated_statement
 
 terminatable_statement ::= simple_statement
                  | BREAK
