@@ -132,7 +132,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       return null;
     }
 
-    PsiElement psiElemWithComment = AwkUtil.findParent(awkBuiltInVar, AwkTerminatedStatement.class);
+    PsiElement psiElemWithComment = AwkUtil.findParent(awkBuiltInVar, AwkStatement.class);
     // It appears that for
     // {
     //   # comment1

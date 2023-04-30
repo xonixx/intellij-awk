@@ -77,7 +77,7 @@ public class AwkFormattingBlock extends AbstractBlock {
       return Indent.getNormalIndent();
     }
 
-    if (parent instanceof AwkCaseStatement && psi instanceof AwkTerminatedStatementList) {
+    if (parent instanceof AwkCaseStatement /*&& psi instanceof AwkTerminatedStatementList*/) {
       return Indent.getNormalIndent();
     }
 
@@ -98,9 +98,9 @@ public class AwkFormattingBlock extends AbstractBlock {
       }
     }
 
-    if (parent instanceof AwkTerminatedStatement
+    if (parent instanceof AwkStatement
         && IF_FOR_WHILE.contains(parent.getFirstChild().getNode().getElementType())
-        && psi instanceof AwkTerminatedStatement
+        && psi instanceof AwkStatement
         && !isPrecededByElseOnSameLine(psi)) {
       return Indent.getNormalIndent();
     }
@@ -190,11 +190,11 @@ public class AwkFormattingBlock extends AbstractBlock {
         }
       }
       return new ChildAttributes(Indent.getNoneIndent(), null);
-    } else if (psi instanceof AwkTerminatedStatementList
+    } /*else if (psi instanceof AwkTerminatedStatementList
         // case of https://github.com/xonixx/intellij-awk/issues/106
         || psi instanceof AwkTerminatedStatement) {
       return new ChildAttributes(Indent.getNoneIndent(), null);
-    } else if (psi instanceof AwkCaseStatement) {
+    }*/ else if (psi instanceof AwkCaseStatement) {
       return new ChildAttributes(Indent.getNormalIndent(true), null);
     }
     return new ChildAttributes(Indent.getNormalIndent(), null);
