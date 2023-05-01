@@ -228,7 +228,7 @@ statement ::=      action
                  | RETURN expr_opt
                  | DO newlines_opt statement newlines_opt WHILE LPAREN expr RPAREN | SEMICOLON newlines_opt
                  | simple_statement
-                 | gawk_terminated_statement_switch
+                 | gawk_statement_switch
 
 private statement_if ::= IF LPAREN expr RPAREN newlines_opt
                             statement terminator* [ ELSE newlines_opt statement ]
@@ -246,7 +246,7 @@ private statement_for ::=
 
 private terminator       ::= (NEWLINE|SEMICOLON) newlines_opt
 
-gawk_terminated_statement_switch ::= switch_start RBRACE newlines_opt
+gawk_statement_switch ::= switch_start RBRACE newlines_opt
 
 private switch_start ::= SWITCH LPAREN expr RPAREN newlines_opt LBRACE newlines_opt case_statement*
                         {

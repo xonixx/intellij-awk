@@ -1,7 +1,6 @@
 package intellij_awk;
 
 import static intellij_awk.AwkUtil.isNotType;
-import static intellij_awk.AwkUtil.isType;
 
 import com.intellij.formatting.*;
 import com.intellij.lang.ASTNode;
@@ -73,7 +72,7 @@ public class AwkFormattingBlock extends AbstractBlock {
       return Indent.getNormalIndent();
     }
 
-    if (parent instanceof AwkGawkTerminatedStatementSwitch && psi instanceof AwkCaseStatement) {
+    if (parent instanceof AwkGawkStatementSwitch && psi instanceof AwkCaseStatement) {
       return Indent.getNormalIndent();
     }
 
@@ -160,11 +159,7 @@ public class AwkFormattingBlock extends AbstractBlock {
     PsiElement psi = myNode.getPsi();
     if (psi instanceof AwkFile) {
       return new ChildAttributes(Indent.getNoneIndent(), null);
-    } /*else if (psi instanceof AwkTerminatedStatementList
-        // case of https://github.com/xonixx/intellij-awk/issues/106
-        || psi instanceof AwkTerminatedStatement) {
-      return new ChildAttributes(Indent.getNoneIndent(), null);
-    }*/ else if (psi instanceof AwkCaseStatement) {
+    } else if (psi instanceof AwkCaseStatement) {
       return new ChildAttributes(Indent.getNormalIndent(true), null);
     }
     return new ChildAttributes(Indent.getNormalIndent(), null);

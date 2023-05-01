@@ -124,7 +124,7 @@ public class AwkCompletionContributorKeywords extends AwkCompletionContributorBa
         });
     extend(
         CompletionType.BASIC,
-        notInsideStringERE(psiElement().inside(AwkGawkTerminatedStatementSwitch.class)),
+        notInsideStringERE(psiElement().inside(AwkGawkStatementSwitch.class)),
         new CompletionProvider<>() {
           @Override
           protected void addCompletions(
