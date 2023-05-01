@@ -72,12 +72,8 @@ public class AwkFormattingBlock extends AbstractBlock {
       return Indent.getNormalIndent();
     }
 
-    if (parent instanceof AwkGawkStatementSwitch && psi instanceof AwkCaseStatement) {
-      return Indent.getNormalIndent();
-    }
-
-    if (parent instanceof AwkCaseStatement /*&& psi instanceof AwkTerminatedStatementList*/) {
-      return Indent.getNormalIndent();
+    if (parent instanceof AwkCaseStatement) {
+      return Indent.getNormalIndent(true);
     }
 
     if (parent instanceof AwkExprLst || parent instanceof AwkGawkFuncCallList) {
