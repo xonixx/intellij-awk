@@ -133,20 +133,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
     }
 
     PsiElement psiElemWithComment = AwkUtil.findParent(awkBuiltInVar, AwkStatement.class);
-    // It appears that for
-    // {
-    //   # comment1
-    //   A=1
-    //   # comment2
-    //   A=2
-    // }
-    // The comment1 will be above AwkTerminatedStatementList and comment2 inside
-    // AwkTerminatedStatement OF A=1 (sic!)
-    if (psiElemWithComment.getPrevSibling() == null) {
-      psiElemWithComment = psiElemWithComment.getParent();
-    } else {
-      psiElemWithComment = psiElemWithComment.getPrevSibling().getLastChild();
-    }
+
     return AwkUtil.getDocStringFromCommentBefore(psiElemWithComment);
   }
 
