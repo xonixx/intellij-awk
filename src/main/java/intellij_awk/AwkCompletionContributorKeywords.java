@@ -98,9 +98,7 @@ public class AwkCompletionContributorKeywords extends AwkCompletionContributorBa
     extend(
         CompletionType.BASIC,
         notInsideStringERE(
-            or(
-                psiElement().inside(AwkTerminatedStatement.class),
-                psiElement().inside(AwkUnterminatedStatement.class))),
+            psiElement().inside(AwkStatement.class)),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
@@ -114,7 +112,7 @@ public class AwkCompletionContributorKeywords extends AwkCompletionContributorBa
         });
     extend(
         CompletionType.BASIC,
-        notInsideStringERE(psiElement().inside(AwkTerminatableStatement.class)),
+        notInsideStringERE(psiElement().inside(AwkStatement.class)),
         new CompletionProvider<>() {
           public void addCompletions(
               @NotNull CompletionParameters parameters,
@@ -126,7 +124,7 @@ public class AwkCompletionContributorKeywords extends AwkCompletionContributorBa
         });
     extend(
         CompletionType.BASIC,
-        notInsideStringERE(psiElement().inside(AwkGawkTerminatedStatementSwitch.class)),
+        notInsideStringERE(psiElement().inside(AwkGawkStatementSwitch.class)),
         new CompletionProvider<>() {
           @Override
           protected void addCompletions(

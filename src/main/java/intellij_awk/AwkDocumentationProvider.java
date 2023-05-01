@@ -71,8 +71,8 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       return postprocessDocumentation(stmt, documentation, false);
     } else if (element instanceof AwkUserVarNameMixin) {
       AwkUserVarNameMixin userVarName = (AwkUserVarNameMixin) element;
-      AwkTerminatableStatement parent =
-          AwkUtil.findParent(userVarName, AwkTerminatableStatement.class);
+      AwkStatement parent =
+          AwkUtil.findParent(userVarName, AwkStatement.class);
       if (parent == null) {
         return null;
       }
@@ -132,21 +132,8 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       return null;
     }
 
-    PsiElement psiElemWithComment = AwkUtil.findParent(awkBuiltInVar, AwkTerminatedStatement.class);
-    // It appears that for
-    // {
-    //   # comment1
-    //   A=1
-    //   # comment2
-    //   A=2
-    // }
-    // The comment1 will be above AwkTerminatedStatementList and comment2 inside
-    // AwkTerminatedStatement OF A=1 (sic!)
-    if (psiElemWithComment.getPrevSibling() == null) {
-      psiElemWithComment = psiElemWithComment.getParent();
-    } else {
-      psiElemWithComment = psiElemWithComment.getPrevSibling().getLastChild();
-    }
+    PsiElement psiElemWithComment = AwkUtil.findParent(awkBuiltInVar, AwkStatement.class);
+
     return AwkUtil.getDocStringFromCommentBefore(psiElemWithComment);
   }
 

@@ -70,7 +70,7 @@ public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
 
     private void deleteDeclarationStatement(PsiElement psiElement) {
       PsiTreeUtil.getParentOfType(
-              psiElement, AwkTerminatedStatement.class, AwkUnterminatedStatement.class)
+              psiElement, AwkStatement.class, AwkStatement.class)
           .delete();
     }
   }

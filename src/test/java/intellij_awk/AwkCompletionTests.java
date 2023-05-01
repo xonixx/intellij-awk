@@ -376,6 +376,22 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionAuto("@inc<caret>", "@include \"<caret>\"");
   }
 
+  public void testIfNotClosed1() {
+    checkCompletionAuto(
+        "function assertEquals(expected,actual) { if(expe<caret>) }",
+        "function assertEquals(expected,actual) { if(expected<caret>) }");
+  }
+
+  public void testWhileNotClosed1() {
+    checkCompletionAuto(
+        "function f() { zzzz=1\nwhile(zz<caret>) }", "function f() { zzzz=1\nwhile(zzzz<caret>) }");
+  }
+
+  public void testForNotClosed1() {
+    checkCompletionExact(
+        Set.of("FILENAME", "FILENAME1"), "BEGIN { FILENAME1=1 } END { for(a = FILEN<caret>) }");
+  }
+
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();

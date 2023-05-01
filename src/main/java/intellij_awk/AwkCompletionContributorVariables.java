@@ -97,9 +97,11 @@ public class AwkCompletionContributorVariables extends AwkCompletionContributorB
     int textOffset = psiElement.getTextOffset();
 
     for (AwkUserVarNameImpl projectGlobalVar : projectGlobalVars) {
-      // We need this if because when we query live AST, it returns var name at cursor with IntellijIdeaRulezzz suffix.
-      // When we query index - the var at caret returns as is, thus polluting the autocompletion with the name of current
-      // string being completed.
+      /*
+      We need this if because when we query live AST, it returns var name at cursor with IntellijIdeaRulezzz suffix.
+      When we query index - the var at caret returns as is, thus polluting the autocompletion with the name of current
+      string being completed.
+      */
       if (textOffset != projectGlobalVar.getTextOffset()) {
         resultSet.addElement(
             LookupElementBuilder.create(projectGlobalVar.getText()).withIcon(AwkIcons.VARIABLE));

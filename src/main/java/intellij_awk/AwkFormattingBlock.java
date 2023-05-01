@@ -1,7 +1,6 @@
 package intellij_awk;
 
 import static intellij_awk.AwkUtil.isNotType;
-import static intellij_awk.AwkUtil.isType;
 
 import com.intellij.formatting.*;
 import com.intellij.lang.ASTNode;
@@ -73,12 +72,8 @@ public class AwkFormattingBlock extends AbstractBlock {
       return Indent.getNormalIndent();
     }
 
-    if (parent instanceof AwkGawkTerminatedStatementSwitch && psi instanceof AwkCaseStatement) {
-      return Indent.getNormalIndent();
-    }
-
-    if (parent instanceof AwkCaseStatement && psi instanceof AwkTerminatedStatementList) {
-      return Indent.getNormalIndent();
+    if (parent instanceof AwkCaseStatement) {
+      return Indent.getNormalIndent(true);
     }
 
     if (parent instanceof AwkExprLst || parent instanceof AwkGawkFuncCallList) {
@@ -98,9 +93,9 @@ public class AwkFormattingBlock extends AbstractBlock {
       }
     }
 
-    if (parent instanceof AwkTerminatedStatement
+    if (parent instanceof AwkStatement
         && IF_FOR_WHILE.contains(parent.getFirstChild().getNode().getElementType())
-        && psi instanceof AwkTerminatedStatement
+        && psi instanceof AwkStatement
         && !isPrecededByElseOnSameLine(psi)) {
       return Indent.getNormalIndent();
     }
@@ -159,40 +154,6 @@ public class AwkFormattingBlock extends AbstractBlock {
   public @NotNull ChildAttributes getChildAttributes(int newChildIndex) {
     PsiElement psi = myNode.getPsi();
     if (psi instanceof AwkFile) {
-      if (newChildIndex > 0) {
-        // handle if(1)<ENTER>, while(1)<ENTER> etc
-        // below is hacky code, because in presence of uncompleted if(1) the file is not parsed to
-        // correct AST yet and is rather a flat token list in a awk file node
-        List<Block> children = buildChildren();
-        int blockIndex = newChildIndex - 1;
-        ASTNode prevNode = getChildBlockNode(children, blockIndex);
-        PsiElement errOrDummyBlockElt;
-        if (prevNode.getElementType() == AwkTypes.RPAREN
-            || (errOrDummyBlockElt = prevNode.getPsi().getLastChild()) != null
-                && isType(errOrDummyBlockElt, AwkTypes.RPAREN)) {
-
-          // search corresponding LPAREN and then keyword before it
-          while (--blockIndex > 0) {
-            ASTNode node = getChildBlockNode(children, blockIndex);
-            if (node.getElementType() == AwkTypes.LPAREN) {
-              node = getChildBlockNode(children, blockIndex - 1);
-              if (IF_FOR_WHILE.contains(node.getElementType())) {
-                int indentSize =
-                    codeStyleSettings
-                        .getCommonSettings(AwkLanguage.INSTANCE)
-                        .getIndentOptions()
-                        .INDENT_SIZE;
-                int colNo = getLineColumnRelativeToParent(myNode, node).column;
-                return new ChildAttributes(Indent.getSpaceIndent(colNo + indentSize), null);
-              }
-            }
-          }
-        }
-      }
-      return new ChildAttributes(Indent.getNoneIndent(), null);
-    } else if (psi instanceof AwkTerminatedStatementList
-        // case of https://github.com/xonixx/intellij-awk/issues/106
-        || psi instanceof AwkTerminatedStatement) {
       return new ChildAttributes(Indent.getNoneIndent(), null);
     } else if (psi instanceof AwkCaseStatement) {
       return new ChildAttributes(Indent.getNormalIndent(true), null);
