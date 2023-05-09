@@ -165,10 +165,6 @@ public class AwkFormattingBlock extends AbstractBlock {
     return StringUtil.offsetToLineColumn(parent.getText(), child.getStartOffsetInParent());
   }
 
-  private static ASTNode getChildBlockNode(List<Block> children, int idx) {
-    return ((AwkFormattingBlock) children.get(idx)).myNode;
-  }
-
   @Override
   public boolean isLeaf() {
     return myNode.getFirstChildNode() == null;
