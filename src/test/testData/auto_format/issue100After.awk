@@ -31,6 +31,7 @@ BEGIN {
     v = !v
     v = a != b
     "cat file" | getline
+    print data | "subprogram"
     print data |& "subprogram"
     print "123" > "file"
     print "123" >> "file"

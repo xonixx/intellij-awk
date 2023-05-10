@@ -14,5 +14,5 @@ function f2() {
 
 END {
     print toupper(++newName)
-    @  newName()
+    @newName()
 }

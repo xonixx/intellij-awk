@@ -1,9 +1,9 @@
 BEGIN {}
 BEGIN {}
 BEGIN {
-    newName=1
+    newName =1
     newName++
-    print newName+1
+    print newName +1
 }
 
 function f(a,    i) {

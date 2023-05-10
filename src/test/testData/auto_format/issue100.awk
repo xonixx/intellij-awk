@@ -3,9 +3,9 @@
 @  include       "x"
 BEGIN {
 for(  i=0;i<7;i  ++   )print -- i
-if(1){}else   if(2){}else{}
-while(1){}
-do{}while(1)
+if(   1  ){}else   if( 2  ){}else{}
+while(  1  ){}
+do{}while(  1   )
 print -  7
 f(-  7)
 f( a+b*c/d%f^j-h  )
@@ -31,7 +31,8 @@ v=$   NF
 v=!   v
 v=a!=b
 "cat file"|getline
-print data|&"subprogram"
+print  data    |    "subprogram"
+print  data|&"subprogram"
 print   "123"    >   "file"
 print"123">>"file"
 }

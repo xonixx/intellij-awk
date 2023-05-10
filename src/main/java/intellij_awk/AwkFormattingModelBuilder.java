@@ -38,7 +38,8 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
           EQ,
           NE,
           QUESTION,
-          ASSIGN);
+          ASSIGN,
+          PIPE);
 
   private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
     TokenSet ternaryExpr = TokenSet.create(TERNARY_EXPR, TERNARY_PRINT_EXPR);
@@ -61,7 +62,11 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
         .none()
         .after(TokenSet.create(LOAD, NAMESPACE, INCLUDE))
         .spaces(1)
-        .after(TokenSet.create(LPAREN, LBRACKET))
+        .after(LBRACKET)
+        .none()
+        .afterInside(
+            LPAREN,
+            TokenSet.create(FUNCTION_CALL_USER, FUNCTION_CALL_BUILT_IN, STATEMENT, NON_UNARY_EXPR))
         .none()
         .before(TokenSet.create(RPAREN, RBRACKET, LBRACKET))
         .none()
@@ -84,6 +89,10 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
         //        .after(COMMA)
         //        .spaces(1)
         .after(TokenSet.create(PRINT, PRINTF))
+        .spaces(1)
+        .between(SIMPLE_PRINT_STATEMENT, OUTPUT_REDIRECTION)
+        .spaces(1)
+        .after(TokenSet.create(APPEND, PIPE_AMP))
         .spaces(1);
   }
 
