@@ -36,6 +36,7 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
           GE,
           LE,
           EQ,
+          NE,
           QUESTION,
           ASSIGN);
 
@@ -76,11 +77,13 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
         .spaces(1)
         .between(ELSE, STATEMENT) // else if
         .spaces(1)
-        .between(RPAREN, STATEMENT) // ) {
+        .between(RPAREN, TokenSet.create(STATEMENT, ACTION)) // ) {
         .spaces(1)
-        .before(COMMA)
-        .none()
-        .after(COMMA)
+        //        .before(COMMA) // TODO taking into account function local params
+        //        .none()
+        //        .after(COMMA)
+        //        .spaces(1)
+        .after(TokenSet.create(PRINT, PRINTF))
         .spaces(1);
   }
 
