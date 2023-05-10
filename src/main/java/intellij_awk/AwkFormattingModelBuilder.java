@@ -30,11 +30,17 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
                 SUB_ASSIGN,
                 MOD,
                 MOD_ASSIGN,
+                AND,
+                OR,
+                MATCH,
+                NO_MATCH,
                 GT,
                 LT,
                 GE,
                 LE,
                 EQ,
+                QUESTION,
+                COLON,
                 ASSIGN))
         .spaces(1)
         .afterInside(SEMICOLON, STATEMENT_FOR_CONDITIONS)
@@ -44,7 +50,13 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
         .after(TokenSet.create(DOLLAR, AT))
         .none()
         .after(TokenSet.create(LOAD, NAMESPACE, INCLUDE))
-        .spaces(1);
+        .spaces(1)
+        .after(TokenSet.create(LPAREN, LBRACKET))
+        .none()
+        .before(TokenSet.create(RPAREN, RBRACKET))
+        .none()
+        .after(NOT)
+        .none();
   }
 
   @Override
