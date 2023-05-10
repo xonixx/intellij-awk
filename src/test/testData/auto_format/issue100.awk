@@ -22,6 +22,7 @@ v=a<7
 v=a>=7
 v=a<=7
 v=a?b:c
+print     a?b:c
 v=a~b
 v=a!~b
 v=(  1    +  2 )

@@ -327,8 +327,8 @@ private unary_expr1      ::= [
                    ]
 
 // newlines in ternary are Gawk-only feature
-private ternary_expr       ::= QUESTION newlines_opt expr       COLON newlines_opt expr
-private ternary_print_expr ::= QUESTION newlines_opt print_expr COLON newlines_opt print_expr
+ternary_expr       ::= QUESTION newlines_opt expr       COLON newlines_opt expr
+ternary_print_expr ::= QUESTION newlines_opt print_expr COLON newlines_opt print_expr
 
 non_unary_expr   ::= (
                            LPAREN ( expr RPAREN

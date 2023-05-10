@@ -37,12 +37,16 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
           LE,
           EQ,
           QUESTION,
-          COLON,
           ASSIGN);
 
   private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
+    TokenSet ternaryExpr = TokenSet.create(TERNARY_EXPR, TERNARY_PRINT_EXPR);
     return new SpacingBuilder(settings, AwkLanguage.INSTANCE)
         .around(binaryOps)
+        .spaces(1)
+        .aroundInside(COLON, ternaryExpr)
+        .spaces(1)
+        .before(ternaryExpr)
         .spaces(1)
         .around(TokenSet.create(INCR, DECR))
         .none()
