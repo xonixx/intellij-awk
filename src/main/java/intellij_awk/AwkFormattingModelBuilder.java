@@ -13,36 +13,39 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AwkFormattingModelBuilder implements FormattingModelBuilder {
+  public static final TokenSet binaryOps =
+      TokenSet.create(
+          MUL,
+          MUL_ASSIGN,
+          DIV,
+          DIV_ASSIGN,
+          POW,
+          POW_ASSIGN,
+          ADD,
+          ADD_ASSIGN,
+          SUB,
+          SUB_ASSIGN,
+          MOD,
+          MOD_ASSIGN,
+          AND,
+          OR,
+          MATCH,
+          NO_MATCH,
+          GT,
+          LT,
+          GE,
+          LE,
+          EQ,
+          QUESTION,
+          COLON,
+          ASSIGN);
 
   private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
     return new SpacingBuilder(settings, AwkLanguage.INSTANCE)
-        .around(
-            TokenSet.create(
-                MUL,
-                MUL_ASSIGN,
-                DIV,
-                DIV_ASSIGN,
-                POW,
-                POW_ASSIGN,
-                ADD,
-                ADD_ASSIGN,
-                SUB,
-                SUB_ASSIGN,
-                MOD,
-                MOD_ASSIGN,
-                AND,
-                OR,
-                MATCH,
-                NO_MATCH,
-                GT,
-                LT,
-                GE,
-                LE,
-                EQ,
-                QUESTION,
-                COLON,
-                ASSIGN))
+        .around(binaryOps)
         .spaces(1)
+        .around(TokenSet.create(INCR, DECR))
+        .none()
         .after(UNARY_ADD_SUB)
         .none()
         .afterInside(SEMICOLON, STATEMENT_FOR_CONDITIONS)
@@ -71,7 +74,10 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
         .spaces(1)
         .between(RPAREN, STATEMENT) // ) {
         .spaces(1)
-            ;
+        .before(COMMA)
+        .none()
+        .after(COMMA)
+        .spaces(1);
   }
 
   @Override
