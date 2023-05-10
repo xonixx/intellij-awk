@@ -55,10 +55,23 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
         .spaces(1)
         .after(TokenSet.create(LPAREN, LBRACKET))
         .none()
-        .before(TokenSet.create(RPAREN, RBRACKET))
+        .before(TokenSet.create(RPAREN, RBRACKET, LBRACKET))
         .none()
         .after(NOT)
-        .none();
+        .none()
+        .between(TokenSet.create(FOR, IF, WHILE), LPAREN)
+        .spaces(1)
+        .between(DO, STATEMENT) // do {
+        .spaces(1)
+        .between(STATEMENT, WHILE) // } while
+        .spaces(1)
+        .between(STATEMENT, ELSE) // } else
+        .spaces(1)
+        .between(ELSE, STATEMENT) // else if
+        .spaces(1)
+        .between(RPAREN, STATEMENT) // ) {
+        .spaces(1)
+            ;
   }
 
   @Override

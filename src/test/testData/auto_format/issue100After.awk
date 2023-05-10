@@ -3,6 +3,7 @@
 @include "x"
 BEGIN {
     for (i = 0; i < 7; i++) print i
+    if (1) {} else if (2) {} else {}
     while (1) {}
     do {} while (1)
     print -7
