@@ -260,7 +260,8 @@ private recover_switch ::= !RBRACE
 
 case_statement  ::= (CASE case_value | DEFAULT) COLON newlines_opt (statement terminator*)*
 
-private case_value      ::= ([ADD|SUB] NUMBER) | STRING | ERE | TYPED_ERE
+unary_add_sub ::= ADD|SUB
+private case_value      ::= ([unary_add_sub] NUMBER) | STRING | ERE | TYPED_ERE
 
 private simple_statement_opt ::= simple_statement?
 
@@ -298,7 +299,7 @@ expr             ::= unary_expr | non_unary_expr
     A --> β A'
     A' --> ε | α A'   <-->  A' --> (α A')?
 */
-unary_expr       ::= (ADD|SUB)  expr unary_expr1
+unary_expr       ::= unary_add_sub  expr unary_expr1
 
 private unary_expr1      ::= [
                         (    POW      expr
@@ -410,7 +411,7 @@ print_expr       ::= unary_print_expr | non_unary_print_expr
 
 private gawk_print_expr ::= TYPED_ERE | print_expr
 
-private unary_print_expr ::= (ADD|SUB) print_expr unary_print_expr1
+private unary_print_expr ::= unary_add_sub print_expr unary_print_expr1
 
 private unary_print_expr1  ::= [
                             (

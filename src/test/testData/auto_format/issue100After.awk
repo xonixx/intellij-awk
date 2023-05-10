@@ -6,7 +6,8 @@ BEGIN {
     while (1) {}
     do {} while (1)
     print -7
-    f(a + b * c / d % f ^ j)
+    f(-7)
+    f(a + b * c / d % f ^ j - h)
     f(a[b[1, 2]])
     a += 1
     a -= 1

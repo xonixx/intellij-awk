@@ -43,6 +43,8 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
                 COLON,
                 ASSIGN))
         .spaces(1)
+        .after(UNARY_ADD_SUB)
+        .none()
         .afterInside(SEMICOLON, STATEMENT_FOR_CONDITIONS)
         .spaces(1)
         .beforeInside(SEMICOLON, STATEMENT_FOR_CONDITIONS)
