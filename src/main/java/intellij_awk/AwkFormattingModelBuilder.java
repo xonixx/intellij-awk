@@ -18,14 +18,33 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
     return new SpacingBuilder(settings, AwkLanguage.INSTANCE)
         .around(
             TokenSet.create(
-                MUL, MUL_ASSIGN, ADD, ADD_ASSIGN, SUB, SUB_ASSIGN, GT, LT, GE, LE,
-                    MOD, MOD_ASSIGN,
-                    EQ, ASSIGN))
+                MUL,
+                MUL_ASSIGN,
+                DIV,
+                DIV_ASSIGN,
+                POW,
+                POW_ASSIGN,
+                ADD,
+                ADD_ASSIGN,
+                SUB,
+                SUB_ASSIGN,
+                MOD,
+                MOD_ASSIGN,
+                GT,
+                LT,
+                GE,
+                LE,
+                EQ,
+                ASSIGN))
         .spaces(1)
         .afterInside(SEMICOLON, STATEMENT_FOR_CONDITIONS)
         .spaces(1)
         .beforeInside(SEMICOLON, STATEMENT_FOR_CONDITIONS)
-        .none();
+        .none()
+        .after(TokenSet.create(DOLLAR, AT))
+        .none()
+        .after(TokenSet.create(LOAD, NAMESPACE, INCLUDE))
+        .spaces(1);
   }
 
   @Override

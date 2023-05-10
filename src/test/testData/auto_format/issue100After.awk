@@ -1,6 +1,8 @@
 @namespace "x"
+@load "x"
+@include "x"
 BEGIN {
-    for(i = 0; i < 7; i++) print i
+    for (i = 0; i < 7; i++) print i
     print -7
     f(a + b * c / d % f ^ j)
     a += 1
@@ -17,5 +19,6 @@ BEGIN {
     v = a ? b : c
     v = a ~ b
     v = a !~ b
-    v=(1 + 2)
+    v = (1 + 2)
+    v = $NF
 }
