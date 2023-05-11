@@ -233,17 +233,17 @@ statement ::=      action
 
 private statement_if ::= IF LPAREN expr RPAREN newlines_opt
                             statement terminator* [ ELSE newlines_opt statement ]
-{ pin=2 }
+{ pin=1 }
 
 private statement_while ::= WHILE LPAREN expr RPAREN newlines_opt statement
-{ pin=2 }
+{ pin=1 }
 
 private statement_for ::=
                    FOR LPAREN (
                        statement_for_conditions RPAREN newlines_opt
                      | var_name IN gawk_var_name RPAREN newlines_opt
                   ) statement
-{ pin=2 } // TODO make 1!!!!!
+{ pin=1 }
 
 statement_for_conditions ::= simple_statement_opt SEMICOLON newlines_opt expr_opt SEMICOLON newlines_opt simple_statement_opt
 
