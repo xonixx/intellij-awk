@@ -226,7 +226,8 @@ statement ::=      action
                  | NEXT
                  | EXIT expr_opt
                  | RETURN expr_opt
-                 | DO newlines_opt statement newlines_opt WHILE LPAREN expr RPAREN | SEMICOLON newlines_opt
+                 | DO newlines_opt statement newlines_opt WHILE LPAREN expr RPAREN
+                 | SEMICOLON newlines_opt
                  | simple_statement
                  | gawk_statement_switch
 

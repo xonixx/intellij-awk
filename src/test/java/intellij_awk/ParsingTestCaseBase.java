@@ -5,6 +5,11 @@ import com.intellij.testFramework.ParsingTestCase;
 import org.jetbrains.annotations.NotNull;
 
 abstract class ParsingTestCaseBase extends ParsingTestCase {
+  @Override
+  protected String getTestDataPath() {
+    return "src/test/testData";
+  }
+
   protected void ensureOnlyParsingNoErrors() {
     doTest(false);
     ensureNoErrorElements();

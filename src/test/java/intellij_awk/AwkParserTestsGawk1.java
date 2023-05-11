@@ -5,11 +5,6 @@ public class AwkParserTestsGawk1 extends ParsingTestCaseBase {
     super("parser/gawk1", "awk", new AwkParserDefinition());
   }
 
-  @Override
-  protected String getTestDataPath() {
-    return "src/test/testData";
-  }
-
   public void testNs1() { ensureOnlyParsingNoErrors(); }
   public void testNs2() { ensureOnlyParsingNoErrors(); }
   public void testNs3() { ensureOnlyParsingNoErrors(); }
