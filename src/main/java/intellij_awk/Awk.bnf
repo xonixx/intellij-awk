@@ -249,15 +249,17 @@ statement_for_conditions ::= simple_statement_opt SEMICOLON newlines_opt expr_op
 
 private terminator       ::= (NEWLINE|SEMICOLON) newlines_opt
 
-gawk_statement_switch ::= switch_start RBRACE newlines_opt
+gawk_statement_switch ::= SWITCH LPAREN expr RPAREN newlines_opt switch_action
+{ pin=1 }
 
-private switch_start ::= SWITCH LPAREN expr RPAREN newlines_opt LBRACE newlines_opt case_statement*
-                        {
-                            pin=6
-                            recoverWhile=recover_switch
-                        }
+private switch_action ::= switch_action_start RBRACE newlines_opt
+private switch_action_start ::= LBRACE newlines_opt case_statement*
+{
+    pin=1
+    recoverWhile=recover_on_rbrace
+}
 
-private recover_switch ::= !RBRACE
+private recover_on_rbrace ::= !RBRACE
 
 case_statement  ::= (CASE case_value | DEFAULT) COLON newlines_opt (statement terminator*)*
 

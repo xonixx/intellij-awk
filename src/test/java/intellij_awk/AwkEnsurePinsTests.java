@@ -20,19 +20,22 @@ public class AwkEnsurePinsTests extends ParsingTestCaseBase {
   public void test2() {
     checkByText("function f(b,c,){}");
   }
+
   public void test3() {
     checkByText("BEGIN { if }");
   }
+
   public void test4() {
     checkByText("BEGIN { for }");
   }
+
   public void test5() {
     checkByText("BEGIN { while }");
   }
 
-  /*public void test6() {
+  public void test6() {
     checkByText("BEGIN { switch }");
-  }*/
+  }
 
   // XXX for some reason fixing below makes it terribly slow or hanging on profile5.awk
   /*
