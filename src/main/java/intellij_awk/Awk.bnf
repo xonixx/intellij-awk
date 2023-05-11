@@ -226,10 +226,13 @@ statement ::=      action
                  | NEXT
                  | EXIT expr_opt
                  | RETURN expr_opt
-                 | DO newlines_opt statement newlines_opt WHILE LPAREN expr RPAREN
+                 | statement_do
                  | SEMICOLON newlines_opt
                  | simple_statement
                  | gawk_statement_switch
+
+private statement_do ::= DO newlines_opt statement newlines_opt WHILE LPAREN expr RPAREN
+{ pin=1 }
 
 private statement_if ::= IF LPAREN expr RPAREN newlines_opt
                             statement terminator* [ ELSE newlines_opt statement ]
@@ -268,9 +271,12 @@ private case_value      ::= ([unary_add_sub] NUMBER) | STRING | ERE | TYPED_ERE
 
 private simple_statement_opt ::= simple_statement?
 
-simple_statement ::= DELETE gawk_var_name
+simple_statement ::= statement_delete
                  | expr
                  | print_statement
+
+private statement_delete ::= DELETE gawk_var_name
+{ pin=1 }
 
 print_statement  ::= simple_print_statement output_redirection?
 

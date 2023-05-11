@@ -37,6 +37,14 @@ public class AwkEnsurePinsTests extends ParsingTestCaseBase {
     checkByText("BEGIN { switch }");
   }
 
+  public void test7() {
+    checkByText("BEGIN { do }");
+  }
+
+  public void test8() {
+    checkByText("BEGIN { delete }");
+  }
+
   // XXX for some reason fixing below makes it terribly slow or hanging on profile5.awk
   /*
     public void test3() {
