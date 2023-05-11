@@ -8,11 +8,6 @@ public class AwkParserTestsGawk extends ParsingTestCaseBase {
   }
 
   @Override
-  protected String getTestDataPath() {
-    return "src/test/testData";
-  }
-
-  @Override
   protected @NotNull String getTestName(boolean lowercaseFirstLetter) {
     return super.getTestName(lowercaseFirstLetter).toLowerCase();
   }

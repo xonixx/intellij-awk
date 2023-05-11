@@ -5,11 +5,6 @@ public class AwkParserTests extends ParsingTestCaseBase {
     super("parser", "awk", new AwkParserDefinition());
   }
 
-  @Override
-  protected String getTestDataPath() {
-    return "src/test/testData";
-  }
-
   public void testJsonGenAsm() {
     ensureOnlyParsingNoErrors();
   }
