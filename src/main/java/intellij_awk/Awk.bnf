@@ -227,7 +227,7 @@ statement ::=      action
                  | EXIT expr_opt
                  | RETURN expr_opt
                  | statement_do
-                 | SEMICOLON newlines_opt
+                 | semicolon newlines_opt
                  | simple_statement
                  | gawk_statement_switch
 
@@ -250,7 +250,9 @@ private statement_for ::=
 
 statement_for_conditions ::= simple_statement_opt SEMICOLON newlines_opt expr_opt SEMICOLON newlines_opt simple_statement_opt
 
-private terminator       ::= (NEWLINE|SEMICOLON) newlines_opt
+semicolon ::= SEMICOLON
+
+private terminator       ::= (NEWLINE|semicolon) newlines_opt
 
 gawk_statement_switch ::= SWITCH LPAREN expr RPAREN newlines_opt switch_action
 { pin=1 }

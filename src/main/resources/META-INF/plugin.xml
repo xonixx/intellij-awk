@@ -75,7 +75,7 @@
                          level="ERROR"
                          implementationClass="intellij_awk.AwkInspectionUnresolvedFunction"/>
         <localInspection language="AWK" groupName="AWK"
-                         displayName="Unresolved import"
+                         displayName="Unresolved include"
                          enabledByDefault="true"
                          level="ERROR"
                          implementationClass="intellij_awk.AwkInspectionUnresolvedInclude"/>
@@ -99,6 +99,11 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="intellij_awk.AwkInspectionEnforceGlobalVariableNaming"/>
+        <localInspection language="AWK" groupName="AWK"
+                         displayName="Unneeded semicolon"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="intellij_awk.AwkInspectionUnneededSemicolon"/>
 
         <codeInsight.parameterInfo language="AWK"
                                    implementationClass="intellij_awk.AwkParameterInfoHandler"/>
