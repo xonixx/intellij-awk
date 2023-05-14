@@ -103,7 +103,7 @@
                          displayName="Unneeded semicolon"
                          enabledByDefault="true"
                          level="WARNING"
-                         implementationClass="intellij_awk.AwkInspectionUnneededSemicolon"/>
+                         implementationClass="intellij_awk.AwkInspectionUnnecessarySemicolon"/>
 
         <codeInsight.parameterInfo language="AWK"
                                    implementationClass="intellij_awk.AwkParameterInfoHandler"/>
