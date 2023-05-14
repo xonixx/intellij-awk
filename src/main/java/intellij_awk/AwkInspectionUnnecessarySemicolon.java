@@ -23,7 +23,7 @@ public class AwkInspectionUnnecessarySemicolon extends LocalInspectionTool {
     return new AwkVisitor() {
       @Override
       public void visitSemicolonPsi(@NotNull AwkSemicolonPsi semicolonPsi) {
-        PsiElement nextSibling = semicolonPsi.getNextSibling();
+        PsiElement nextSibling = AwkUtil.getNextNotWhitespace(semicolonPsi);
         if (nextSibling instanceof AwkSemicolonPsi
             || AwkUtil.isType(nextSibling, AwkTypes.NEWLINE)
             || AwkUtil.isType(nextSibling, AwkTypes.RBRACE)) {
