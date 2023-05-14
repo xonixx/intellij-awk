@@ -264,6 +264,10 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(unnecessarySemicolon);
   }
 
+  public void testUnnecessarySemicolon4() {
+    checkByFile(unnecessarySemicolon);
+  }
+
   @Override
   protected String getTestDataPath() {
     return "src/test/testData/inspection";

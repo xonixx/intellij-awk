@@ -1,0 +1,2 @@
+BEGIN {
+<caret>}

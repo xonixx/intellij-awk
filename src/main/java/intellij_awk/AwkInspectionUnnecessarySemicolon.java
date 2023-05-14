@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import intellij_awk.psi.AwkSemicolonPsi;
+import intellij_awk.psi.AwkStatement;
 import intellij_awk.psi.AwkTypes;
 import intellij_awk.psi.AwkVisitor;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +47,13 @@ public class AwkInspectionUnnecessarySemicolon extends LocalInspectionTool {
 
     @Override
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-      descriptor.getPsiElement().delete();
+      PsiElement psiElement = descriptor.getPsiElement();
+      PsiElement parent = psiElement.getParent();
+      if (parent instanceof AwkStatement) {
+        parent.delete();
+      } else {
+        psiElement.delete();
+      }
     }
   }
 }
