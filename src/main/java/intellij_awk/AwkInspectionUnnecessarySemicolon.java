@@ -3,8 +3,10 @@ package intellij_awk;
 import com.intellij.codeInspection.*;
 import com.intellij.codeInspection.util.IntentionFamilyName;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import intellij_awk.psi.AwkSemicolonPsi;
+import intellij_awk.psi.AwkTypes;
 import intellij_awk.psi.AwkVisitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,11 +23,16 @@ public class AwkInspectionUnnecessarySemicolon extends LocalInspectionTool {
     return new AwkVisitor() {
       @Override
       public void visitSemicolonPsi(@NotNull AwkSemicolonPsi semicolonPsi) {
-        /*holder.registerProblem(
-            functionName,
-            "Unnecessary semicolon ';'",
-            ProblemHighlightType.LIKE_UNUSED_SYMBOL,
-            deleteUnnecessarySemicolonQuickFix);*/
+        PsiElement nextSibling = semicolonPsi.getNextSibling();
+        if (nextSibling instanceof AwkSemicolonPsi
+            || AwkUtil.isType(nextSibling, AwkTypes.NEWLINE)
+            || AwkUtil.isType(nextSibling, AwkTypes.RBRACE)) {
+          holder.registerProblem(
+              semicolonPsi,
+              "Unnecessary semicolon ';'",
+              ProblemHighlightType.LIKE_UNUSED_SYMBOL,
+              deleteUnnecessarySemicolonQuickFix);
+        }
       }
     };
   }
