@@ -255,7 +255,12 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   public void testUnnecessarySemicolon1() {
     checkByFile(unnecessarySemicolon);
   }
+
   public void testUnnecessarySemicolon2() {
+    checkByFile(unnecessarySemicolon);
+  }
+
+  public void testUnnecessarySemicolon3() {
     checkByFile(unnecessarySemicolon);
   }
 
