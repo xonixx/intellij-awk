@@ -1,6 +1,6 @@
 # vim: syntax=bash
 
-@define NEXT_VERSION='0.3.11'
+@define NEXT_VERSION='0.4.0'
 @define REPO='xonixx/intellij-awk'
 
 @goal default
