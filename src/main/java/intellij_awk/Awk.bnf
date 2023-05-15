@@ -227,7 +227,7 @@ statement ::=      action
                  | EXIT expr_opt
                  | RETURN expr_opt
                  | statement_do
-                 | semicolonPsi newlines_opt
+                 | SEMICOLON newlines_opt
                  | simple_statement
                  | gawk_statement_switch
 
