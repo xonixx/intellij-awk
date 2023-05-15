@@ -44,6 +44,11 @@ public class AwkInspectionTests extends BasePlatformTestCase {
           new AwkInspectionEnforceGlobalVariableNaming(),
           AwkInspectionEnforceGlobalVariableNaming.QUICK_FIX_NAME);
 
+  private final Inspection unnecessarySemicolon =
+      new Inspection(
+          new AwkInspectionUnnecessarySemicolon(),
+          AwkInspectionUnnecessarySemicolon.QUICK_FIX_NAME);
+
   public void testDuplicateFunctionParam1() {
     checkByFile(duplicateFunctionParam);
   }
@@ -245,6 +250,34 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
   public void testEnforceGlobalVarNaming3() {
     checkByFile(enforceGlobalVarNaming);
+  }
+
+  public void testUnnecessarySemicolon1() {
+    checkByFile(unnecessarySemicolon);
+  }
+
+  public void testUnnecessarySemicolon2() {
+    checkByFile(unnecessarySemicolon);
+  }
+
+  public void testUnnecessarySemicolon3() {
+    checkByFile(unnecessarySemicolon);
+  }
+
+  public void testUnnecessarySemicolonNecessary1() {
+    checkByFileNoProblemAtCaret(unnecessarySemicolon);
+  }
+
+  public void testUnnecessarySemicolonNecessary2() {
+    checkByFileNoProblemAtCaret(unnecessarySemicolon);
+  }
+
+  public void testUnnecessarySemicolonNecessary3() {
+    checkByFileNoProblemAtCaret(unnecessarySemicolon);
+  }
+
+  public void testUnnecessarySemicolonNecessary4() {
+    checkByFileNoProblemAtCaret(unnecessarySemicolon);
   }
 
   @Override
