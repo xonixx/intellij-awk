@@ -62,7 +62,7 @@ public class AwkCompletionContributorVariables extends AwkCompletionContributorB
           resultSet.addElement(LookupElementBuilder.create(param).withIcon(AwkIcons.PARAMETER));
         }
       }
-      if (functionName != null) {
+      if (action != null) {
         List<PsiElement> varsInBody = AwkUtil.findUserVars(action);
         for (PsiElement var : varsInBody) {
           resultSet.addElement(
