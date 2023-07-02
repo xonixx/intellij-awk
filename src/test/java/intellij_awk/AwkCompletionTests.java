@@ -334,6 +334,18 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "BEGIN { A = \"xxxx yy xx<caret>\" }", "BEGIN { A = \"xxxx yy xxxx<caret>\" }");
   }
 
+  public void testInsideString_6_4() {
+    checkCompletionExact(
+        Set.of("err.txt"),
+        "BEGIN { system(\"cmd 1>out.txt 2>err.txt\")\nsystem(\"cat err.t<caret>\") }");
+  }
+
+  public void testInsideString_6_5() {
+    checkCompletionExact(
+        Set.of("bbb", "bbb1", "bbb2", "bbb3", "bbb4"),
+        "BEGIN { S=\"aaa=bbb,bbb1 bbb2/bbb3!\\nbbb4\"\nprint \"bb<caret>\" }");
+  }
+
   public void testInsideERE_1() {
     checkCompletionEmpty("BEGIN { if(/<caret>/){} }");
   }
@@ -393,13 +405,14 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void testLocalVariableInAction1() {
-    checkCompletionAuto(
-            "{ var123=7\nprint var1<caret> }", "{ var123=7\nprint var123<caret> }");
+    checkCompletionAuto("{ var123=7\nprint var1<caret> }", "{ var123=7\nprint var123<caret> }");
   }
+
   public void testLocalVariableInAction2() {
     checkCompletionAuto(
-            "END { var123=7\nprint var1<caret> }", "END { var123=7\nprint var123<caret> }");
+        "END { var123=7\nprint var1<caret> }", "END { var123=7\nprint var123<caret> }");
   }
+
   public void testLocalVariableInAction3() {
     checkCompletionAuto("{ arr123[7]\nf(arr1<caret>) }", "{ arr123[7]\nf(arr123<caret>) }");
   }
