@@ -335,9 +335,9 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void testInsideString_6_4() {
-    checkCompletionExact(
-        Set.of("err.txt"),
-        "BEGIN { system(\"cmd 1>out.txt 2>err.txt\")\nsystem(\"cat err.t<caret>\") }");
+    checkCompletionAuto(
+        "BEGIN { system(\"cmd 1>out.txt 2>err.txt\")\nsystem(\"cat err.t<caret>\") }",
+            "BEGIN { system(\"cmd 1>out.txt 2>err.txt\")\nsystem(\"cat err.txt<caret>\") }");
   }
 
   public void testInsideString_6_5() {

@@ -9,10 +9,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.ProcessingContext;
 import intellij_awk.psi.AwkTypes;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,9 +41,33 @@ public class AwkCompletionContributorStrings extends AwkCompletionContributorBas
             for (PsiElement string : strings) {
               String text = string.getText(); // TODO do we need some un-escaping?
               String stringVal = text.substring(1, text.length() - 1);
-              String[] words = stringVal.split("\\s");
+              stringVal = stringVal.replace("\\n", " ");
+              //              String[] words = stringVal.split("[\\W&&[^.]]");
+              Set<String> words = new HashSet<>();
+              StringBuilder currentWord = new StringBuilder();
+              for (int i = 0; i < stringVal.length(); i++) {
+                char c = stringVal.charAt(i);
+                if (Character.isAlphabetic(c) || Character.isDigit(c)) {
+                  currentWord.append(c);
+                } else {
+                  words.add(currentWord.toString());
+                  currentWord = new StringBuilder();
+                }
+              }
+              words.add(currentWord.toString());
+              currentWord = new StringBuilder();
+              for (int i = 0; i < stringVal.length(); i++) {
+                char c = stringVal.charAt(i);
+                if (Character.isAlphabetic(c) || Character.isDigit(c) || '.' == c) {
+                  currentWord.append(c);
+                } else {
+                  words.add(currentWord.toString());
+                  currentWord = new StringBuilder();
+                }
+              }
+              words.add(currentWord.toString());
               wordCompletions.addAll(
-                  Arrays.stream(words).filter(s -> !prefix.equals(s)).collect(Collectors.toList()));
+                  words.stream().filter(s -> !prefix.equals(s)).collect(Collectors.toList()));
             }
 
             for (String wordCompletion : wordCompletions) {
