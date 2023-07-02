@@ -346,6 +346,12 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         "BEGIN { S=\"aaa=bbb,bbb1 bbb2/bbb3!\\nbbb4\"\nprint \"bb<caret>\" }");
   }
 
+  public void testInsideString_6_6() {
+    checkCompletionExact(
+        Set.of("xxxaaa", "xxxfilename123", "xxxext123", "xxxfilename123.xxxext123"),
+        "BEGIN { S=\"xxxaaa xxxfilename123.xxxext123\"\nprint \"xxx<caret>\" }");
+  }
+
   public void testInsideERE_1() {
     checkCompletionEmpty("BEGIN { if(/<caret>/){} }");
   }
