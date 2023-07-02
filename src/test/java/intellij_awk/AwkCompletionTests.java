@@ -392,11 +392,15 @@ public class AwkCompletionTests extends BasePlatformTestCase {
         Set.of("FILENAME", "FILENAME1"), "BEGIN { FILENAME1=1 } END { for(a = FILEN<caret>) }");
   }
 
-  public void testLocalVariableInActon1() {
+  public void testLocalVariableInAction1() {
     checkCompletionAuto(
             "{ var123=7\nprint var1<caret> }", "{ var123=7\nprint var123<caret> }");
   }
-  public void testLocalVariableInActon2() {
+  public void testLocalVariableInAction2() {
+    checkCompletionAuto(
+            "END { var123=7\nprint var1<caret> }", "END { var123=7\nprint var123<caret> }");
+  }
+  public void testLocalVariableInAction3() {
     checkCompletionAuto("{ arr123[7]\nf(arr1<caret>) }", "{ arr123[7]\nf(arr123<caret>) }");
   }
 
