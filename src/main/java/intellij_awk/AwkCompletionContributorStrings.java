@@ -39,10 +39,8 @@ public class AwkCompletionContributorStrings extends AwkCompletionContributorBas
 
             Set<String> wordCompletions = new HashSet<>();
             for (PsiElement string : strings) {
-              String text = string.getText(); // TODO do we need some un-escaping?
-              String stringVal = text.substring(1, text.length() - 1);
-              stringVal = stringVal.replace("\\n", " ");
-              //              String[] words = stringVal.split("[\\W&&[^.]]");
+              String text = string.getText();
+              String stringVal = unescape(text.substring(1, text.length() - 1));
               Set<String> words = new HashSet<>();
               StringBuilder currentWord = new StringBuilder();
               for (int i = 0; i < stringVal.length(); i++) {
@@ -77,5 +75,9 @@ public class AwkCompletionContributorStrings extends AwkCompletionContributorBas
             }
           }
         });
+  }
+
+  private String unescape(String str) {
+    return str.replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r");
   }
 }

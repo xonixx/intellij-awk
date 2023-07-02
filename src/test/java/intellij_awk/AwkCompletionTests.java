@@ -337,19 +337,25 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   public void testInsideString_6_4() {
     checkCompletionAuto(
         "BEGIN { system(\"cmd 1>out.txt 2>err.txt\")\nsystem(\"cat err.t<caret>\") }",
-            "BEGIN { system(\"cmd 1>out.txt 2>err.txt\")\nsystem(\"cat err.txt<caret>\") }");
+        "BEGIN { system(\"cmd 1>out.txt 2>err.txt\")\nsystem(\"cat err.txt<caret>\") }");
   }
 
   public void testInsideString_6_5() {
     checkCompletionExact(
-        Set.of("bbb", "bbb1", "bbb2", "bbb3", "bbb4"),
-        "BEGIN { S=\"aaa=bbb,bbb1 bbb2/bbb3!\\nbbb4\"\nprint \"bb<caret>\" }");
+        Set.of("bbb", "bbb1", "bbb2", "bbb3", "bbb4", "bbb5"),
+        "BEGIN { S=\"aaa=bbb,bbb1 bbb2/bbb3!\\nbbb4\\tbbb5\"\nprint \"bb<caret>\" }");
   }
 
   public void testInsideString_6_6() {
     checkCompletionExact(
         Set.of("xxxaaa", "xxxfilename123", "xxxext123", "xxxfilename123.xxxext123"),
         "BEGIN { S=\"xxxaaa xxxfilename123.xxxext123\"\nprint \"xxx<caret>\" }");
+  }
+
+  public void testInsideString_6_7() {
+    checkCompletionAuto(
+        "BEGIN { S=\"слава Україні\"\nprint \"Укр<caret>\" }",
+        "BEGIN { S=\"слава Україні\"\nprint \"Україні<caret>\" }");
   }
 
   public void testInsideERE_1() {
