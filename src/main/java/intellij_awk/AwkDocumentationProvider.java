@@ -71,18 +71,22 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       return postprocessDocumentation(stmt, documentation, false);
     } else if (element instanceof AwkUserVarNameMixin) {
       AwkUserVarNameMixin userVarName = (AwkUserVarNameMixin) element;
-      AwkStatement parent =
-          AwkUtil.findParent(userVarName, AwkStatement.class);
+      AwkStatement parent = AwkUtil.findParent(userVarName, AwkStatement.class);
       if (parent == null) {
         return null;
+      }
+      StringBuilder doc = new StringBuilder();
+      if (userVarName.looksLikeDeclaration()) {
+        doc.append(DEFINITION_START).append(parent.getText()).append(DEFINITION_END);
       }
       PsiElement maybeComment = parent;
       while ((maybeComment = maybeComment.getNextSibling()) instanceof PsiWhiteSpace)
         ;
       if (maybeComment instanceof PsiComment) {
         PsiComment comment = (PsiComment) maybeComment;
-        return comment.getText().substring(1).trim();
+        doc.append(CONTENT_START).append(comment.getText().substring(1).trim()).append(CONTENT_END);
       }
+      return doc.length() > 0 ? doc.toString() : null;
     }
     return null;
   }
