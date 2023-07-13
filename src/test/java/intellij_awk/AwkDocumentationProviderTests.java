@@ -101,12 +101,22 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
         s -> s.contains("Var[\"a\"] = 1") && s.contains("doc string"));
   }
 
-  public void testGlobalVarNoDoc1() {
+  public void testGlobalVar6() {
     doTest("BEGIN {\nVar = 1\n}\n{ print Va<caret>r }", s -> s.contains("Var = 1"));
   }
 
-  public void testGlobalVarNoDoc2() {
+  public void testGlobalVarNoDoc1() {
     doTest("Var<caret> {}", Objects::isNull);
+  }
+
+  public void testFunc1() {
+    doTest("BEGIN { a<caret>(1,2) } function a(b,c,   d){}", s -> s.contains("function a(b, c)"));
+  }
+  public void testFunc2() {
+    doTest("function a(b,c,    d,e) {return 7}\nEND{ print <caret>a() }", s -> s.contains("function a(b, c)"));
+  }
+  public void testFunc3() {
+    doTest("function a(b,c,    d,e) {\nprint\n}\n<caret>a(7) { exit 7 }", s -> s.contains("function a(b, c)"));
   }
 
   public void testStmtExit1() {

@@ -52,7 +52,6 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
           + awkFunctionName.getName()
           + awkFunctionName.getSignatureString()
           + DEFINITION_END; // TODO add function comment as doc
-      // TODO tests
     } else if (element instanceof AwkBuiltinVarName) {
       AwkBuiltinVarName awkBuiltinVarName = (AwkBuiltinVarName) element;
       {
