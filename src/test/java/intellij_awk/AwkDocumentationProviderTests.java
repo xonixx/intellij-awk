@@ -4,12 +4,11 @@ import com.intellij.codeInsight.documentation.DocumentationManager;
 import com.intellij.lang.documentation.DocumentationProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
-import org.jsoup.Jsoup;
-
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import org.jsoup.Jsoup;
 
 /**
  * Based on approach: <a
@@ -73,36 +72,51 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
   }
 
   public void testGlobalVar1() {
-    doTest("BEGIN {\nVar = 1  # doc_string\n}\n{ print Va<caret>r }", "doc_string"::equals);
+    doTest(
+        "BEGIN {\nVar = 1  # doc_string\n}\n{ print Va<caret>r }",
+        s -> s.contains("Var = 1") && s.contains("doc_string"));
   }
 
   public void testGlobalVar2() {
-    doTest("BEGIN {\ndelete Var #   doc_string\n}\n{ print Va<caret>r[0] }", "doc_string"::equals);
+    doTest(
+        "BEGIN {\ndelete Var #   doc_string\n}\n{ print Va<caret>r[0] }",
+        s -> s.contains("delete Var") && s.contains("doc_string"));
   }
 
   public void testGlobalVar3() {
     doTest(
         "BEGIN {\nsplit(\"\",Var) \t  #  \t doc string \t \n}\n{ print Var<caret>[0] }",
-        "doc string"::equals);
+        s -> s.contains("split(\"\",Var)") && s.contains("doc string"));
   }
 
   public void testGlobalVar4() {
     doTest(
         "BEGIN {\nVar[\"a\"] # doc string\nVar[\"b\"]}\n{ print <caret>Var[\"b\"] }",
-        "doc string"::equals);
+        s -> s.contains("Var[\"a\"]") && s.contains("doc string"));
   }
 
   public void testGlobalVar5() {
     doTest(
         "BEGIN {\nVar[\"a\"] = 1 # doc string\n}\n{ print <caret>Var[\"b\"] }",
-        "doc string"::equals);
+        s -> s.contains("Var[\"a\"] = 1") && s.contains("doc string"));
+  }
+
+  public void testGlobalVar6() {
+    doTest("BEGIN {\nVar = 1\n}\n{ print Va<caret>r }", s -> s.contains("Var = 1"));
   }
 
   public void testGlobalVarNoDoc1() {
-    doTest("BEGIN {\nVar = 1\n}\n{ print Va<caret>r }", Objects::isNull);
-  }
-  public void testGlobalVarNoDoc2() {
     doTest("Var<caret> {}", Objects::isNull);
+  }
+
+  public void testFunc1() {
+    doTest("BEGIN { a<caret>(1,2) } function a(b,c,   d){}", s -> s.contains("function a(b, c)"));
+  }
+  public void testFunc2() {
+    doTest("function a(b,c,    d,e) {return 7}\nEND{ print <caret>a() }", s -> s.contains("function a(b, c)"));
+  }
+  public void testFunc3() {
+    doTest("function a(b,c,    d,e) {\nprint\n}\n<caret>a(7) { exit 7 }", s -> s.contains("function a(b, c)"));
   }
 
   public void testStmtExit1() {
