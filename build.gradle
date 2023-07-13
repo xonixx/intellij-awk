@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'intellij-awk'
-version '0.4.0'
+version '0.4.1'
 
 repositories {
     mavenCentral()
@@ -39,7 +39,7 @@ intellij {
     plugins = ['com.intellij.java']
 }
 patchPluginXml {
-    untilBuild.set('231.*') // https://www.jetbrains.com/idea/nextversion/
+    untilBuild.set('232.*') // https://www.jetbrains.com/idea/nextversion/
     // language=html
     pluginDescription.set("""
 <b>AWK Programming Language Support</b>
@@ -53,6 +53,14 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
 """)
     // language=html
     changeNotes.set("""
+<p>
+    <b>v0.4.1</b>
+    <a href="https://github.com/xonixx/intellij-awk/milestone/23?closed=1">GitHub issues</a>
+    <ul>
+        <li>Improvements to global variables and functions documentation popup (Ctrl-Q)</li>
+        <li>Autocomplete fixes</li>
+    </ul>
+</p>
 <p>
     <b>v0.4.0</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/22?closed=1">GitHub issues</a>
