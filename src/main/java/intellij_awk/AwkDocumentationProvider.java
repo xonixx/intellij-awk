@@ -204,7 +204,8 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       }
     }
     if (AwkUtil.isType(contextElement, AwkTypes.PRINTF)
-        || AwkUtil.isType(contextElement, AwkTypes.EXIT)) {
+        || AwkUtil.isType(contextElement, AwkTypes.EXIT)
+        || AwkUtil.isType(contextElement, AwkTypes.GETLINE)) {
       return contextElement;
     }
     return super.getCustomDocumentationElement(editor, file, contextElement, targetOffset);

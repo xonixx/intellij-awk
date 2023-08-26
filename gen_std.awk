@@ -92,11 +92,10 @@ function closeItem() {
         appendDocLine("<br>")
         appendPartOfFileToDoc2("temp/Format-Modifiers.html")
     } else if (Stmt=="getline") {
-        appendDocLine("<dt><code>getline</code></dt>")
-        appendDocLine("<br>")
         appendPartOfFileToDoc("temp/Getline.html",
             "<p>The .+ command returns 1",
             "<p>If .+ indicates that the I/O")
+        appendDocLine("<br>")
         appendPartOfFileToDoc("temp/Getline-Summary.html",
             "<table",
             "<div")
@@ -111,6 +110,7 @@ function closeItem() {
         gsub(/Table [0-9]+\.[0-9]+:/,"Table:",Doc)
     }
     sub(/<\/div>$/,"",Doc)
+    sub(/<table/,"<table width='100%'",Doc)
     print Doc
     Doc = ""
     if (Stmt)
