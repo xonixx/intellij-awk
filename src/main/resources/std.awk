@@ -3015,3 +3015,25 @@ function stmt::exit() {}
 # </p>
 # 
 function stmt::printf() {}
+
+# <dt><code>getline</code></dt>
+# <br>
+# <p>The <code class="code">getline</code> command returns 1 if it finds a record and 0 if
+# it encounters the end of the file.  If there is some error in getting
+# a record, such as a file that cannot be opened, then <code class="code">getline</code>
+# returns &minus;1.  In this case, <code class="command">gawk</code> sets the variable
+# <code class="code">ERRNO</code> to a string describing the error that occurred.
+# </p>
+# <table class="multitable">
+# <thead><tr><th width="33%">Variant</th><th width="38%">Effect</th><th width="27%"><code class="command">awk</code> / <code class="command">gawk</code></th></tr></thead>
+# <tbody><tr><td width="33%"><code class="code">getline</code></td><td width="38%">Sets <code class="code">$0</code>, <code class="code">NF</code>, <code class="code">FNR</code>, <code class="code">NR</code>, and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+# <tr><td width="33%"><code class="code">getline</code> <var class="var">var</var></td><td width="38%">Sets <var class="var">var</var>, <code class="code">FNR</code>, <code class="code">NR</code>, and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+# <tr><td width="33%"><code class="code">getline &lt;</code> <var class="var">file</var></td><td width="38%">Sets <code class="code">$0</code>, <code class="code">NF</code>, and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+# <tr><td width="33%"><code class="code">getline <var class="var">var</var> &lt; <var class="var">file</var></code></td><td width="38%">Sets <var class="var">var</var> and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+# <tr><td width="33%"><var class="var">command</var> <code class="code">| getline</code></td><td width="38%">Sets <code class="code">$0</code>, <code class="code">NF</code>, and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+# <tr><td width="33%"><var class="var">command</var> <code class="code">| getline</code> <var class="var">var</var></td><td width="38%">Sets <var class="var">var</var> and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+# <tr><td width="33%"><var class="var">command</var> <code class="code">|&amp; getline</code></td><td width="38%">Sets <code class="code">$0</code>, <code class="code">NF</code>, and <code class="code">RT</code></td><td width="27%"><code class="command">gawk</code></td></tr>
+# <tr><td width="33%"><var class="var">command</var> <code class="code">|&amp; getline</code> <var class="var">var</var></td><td width="38%">Sets <var class="var">var</var> and <code class="code">RT</code></td><td width="27%"><code class="command">gawk</code></td></tr>
+# </tbody>
+# </table>
+function stmt::getline() {}

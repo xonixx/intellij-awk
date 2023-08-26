@@ -2,7 +2,7 @@ BEGIN {
     Doc=""
     Base="https://www.gnu.org/software/gawk/manual/html_node/"
 
-    if ("printf" == Stmt) { closeItem(); exit }
+    if ("getline" == Stmt || "printf" == Stmt) { closeItem(); exit }
 }
 
 { sub(/<\/pre><pre class="example">/,"") } # unsplit code blocks
@@ -91,6 +91,15 @@ function closeItem() {
         appendPartOfFileToDoc2("temp/Control-Letters.html")
         appendDocLine("<br>")
         appendPartOfFileToDoc2("temp/Format-Modifiers.html")
+    } else if (Stmt=="getline") {
+        appendDocLine("<dt><code>getline</code></dt>")
+        appendDocLine("<br>")
+        appendPartOfFileToDoc("temp/Getline.html",
+            "<p>The .+ command returns 1",
+            "<p>If .+ indicates that the I/O")
+        appendPartOfFileToDoc("temp/Getline-Summary.html",
+            "<table",
+            "<div")
     } else if (Name=="strftime") {
         appendDocLine("<br>")
         appendDocLine("<h3>Format-Control Letters</h3>")

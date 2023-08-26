@@ -137,6 +137,7 @@
 @depends_on document_processed @args 'I18N-Functions.html'
 @depends_on std.awk_exit
 @depends_on std.awk_printf
+@depends_on std.awk_getline
 
 @goal std.awk
 @doc 'generates std.awk file used for documentation (Ctrl-Q)'
@@ -172,4 +173,9 @@
 
 @goal std.awk_printf @private
   awk -v Stmt=printf -f gen_std.awk
+
+@goal std.awk_getline @private
+@depends_on document_downloaded @args 'Getline.html'
+@depends_on document_downloaded @args 'Getline-Summary.html'
+  awk -v Stmt=getline -f gen_std.awk
 
