@@ -196,7 +196,9 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
         || AwkUtil.isType(contextElement, AwkTypes.LPAREN)) {
       PsiElement parent = contextElement.getParent();
       contextElement = contextElement.getPrevSibling();
-      if (contextElement == null) { // exit<caret>() case
+      if (contextElement instanceof AwkSimpleGet && "getline".equals(contextElement.getText())) {
+        contextElement = contextElement.getFirstChild();
+      } else if (contextElement == null) { // exit<caret>() case
         contextElement = parent.getPrevSibling();
         if (contextElement == null) { // printf<caret>("") case
           contextElement = parent.getParent().getPrevSibling();
