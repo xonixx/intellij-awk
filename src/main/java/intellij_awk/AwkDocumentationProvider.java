@@ -194,7 +194,9 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       int targetOffset) {
     if (contextElement instanceof PsiWhiteSpace
         || AwkUtil.isType(contextElement, AwkTypes.LPAREN)
-        || AwkUtil.isType(contextElement, AwkTypes.RPAREN)) {
+        || AwkUtil.isType(contextElement, AwkTypes.RPAREN)
+        || AwkUtil.isType(contextElement, AwkTypes.NEWLINE)
+        || AwkUtil.isType(contextElement, AwkTypes.RBRACE)) {
       PsiElement parent = contextElement.getParent();
       contextElement = contextElement.getPrevSibling();
       if (contextElement == null) { // exit<caret>() case
@@ -205,17 +207,22 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       } else {
         PsiElement searchGetline = contextElement;
 
-        // why 5? because it can be statement -> simple_statement -> non_unary_expr -> simple_get ->
+        // why 4? because it can be statement -> simple_statement -> non_unary_expr -> simple_get ->
         // getline
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
+          searchGetline = searchGetline.getFirstChild();
+          if (searchGetline == null) {
+            break;
+          }
           if (AwkUtil.isType(searchGetline, AwkTypes.GETLINE)) {
             if ("getline".equals(contextElement.getText())) {
               return searchGetline;
             }
             break;
-          }
-          searchGetline = searchGetline.getFirstChild();
-          if (searchGetline == null) {
+          } else if (AwkUtil.isType(searchGetline, AwkTypes.EXIT)) {
+            if ("exit".equals(contextElement.getText())) {
+              return searchGetline;
+            }
             break;
           }
         }

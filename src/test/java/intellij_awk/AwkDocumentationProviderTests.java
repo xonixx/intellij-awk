@@ -136,6 +136,12 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
   public void testStmtExit3() {
     testStmtExit("BEGIN { exit<caret>(123) }");
   }
+  public void testStmtExit4() {
+    testStmtExit("BEGIN { exit<caret>\n}");
+  }
+  public void testStmtExit5() {
+    testStmtExit("BEGIN {exit<caret>}");
+  }
 
   private void testStmtExit(String code) {
     doTest(code, s -> s.contains("The exit statement causes awk to immediately stop executing"));
@@ -172,6 +178,12 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
   }
   public void testGetline5() {
     testStmtGetline("BEGIN { getline<caret> }");
+  }
+  public void testGetline6() {
+    testStmtGetline("BEGIN { getline<caret>\n}");
+  }
+  public void testGetline7() {
+    testStmtGetline("BEGIN { getline<caret>}");
   }
 
   private void testStmtPrintf(String code) {
