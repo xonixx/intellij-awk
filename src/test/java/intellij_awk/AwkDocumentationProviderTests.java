@@ -112,11 +112,17 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
   public void testFunc1() {
     doTest("BEGIN { a<caret>(1,2) } function a(b,c,   d){}", s -> s.contains("function a(b, c)"));
   }
+
   public void testFunc2() {
-    doTest("function a(b,c,    d,e) {return 7}\nEND{ print <caret>a() }", s -> s.contains("function a(b, c)"));
+    doTest(
+        "function a(b,c,    d,e) {return 7}\nEND{ print <caret>a() }",
+        s -> s.contains("function a(b, c)"));
   }
+
   public void testFunc3() {
-    doTest("function a(b,c,    d,e) {\nprint\n}\n<caret>a(7) { exit 7 }", s -> s.contains("function a(b, c)"));
+    doTest(
+        "function a(b,c,    d,e) {\nprint\n}\n<caret>a(7) { exit 7 }",
+        s -> s.contains("function a(b, c)"));
   }
 
   public void testStmtExit1() {
@@ -151,6 +157,17 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
     testStmtPrintf("END { printf<caret>(\"\") }");
   }
 
+  public void testGetline1() {
+    testStmtGetline("BEGIN { getli<caret>ne }");
+  }
+  public void testGetline2() {
+    testStmtGetline("BEGIN { while(getline<caret> > 0) {} }");
+  }
+
+  public void testGetline3() {
+    testStmtGetline("BEGIN { while(<caret>getline <\"file\" > 0) {} }");
+  }
+
   private void testStmtPrintf(String code) {
     doTest(
         code,
@@ -158,6 +175,10 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
             s.contains("printf")
                 && s.contains("Print a number in floating-point notation")
                 && s.contains("The minus sign, used before the width modifier"));
+  }
+
+  private void testStmtGetline(String code) {
+    doTest(code, s -> s.contains("getline") && s.contains("returns 1") && s.contains("Effect"));
   }
 
   public final Consumer<String> awkVariableChecker =
