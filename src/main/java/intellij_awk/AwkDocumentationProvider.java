@@ -193,15 +193,31 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       @Nullable PsiElement contextElement,
       int targetOffset) {
     if (contextElement instanceof PsiWhiteSpace
-        || AwkUtil.isType(contextElement, AwkTypes.LPAREN)) {
+        || AwkUtil.isType(contextElement, AwkTypes.LPAREN)
+        || AwkUtil.isType(contextElement, AwkTypes.RPAREN)) {
       PsiElement parent = contextElement.getParent();
       contextElement = contextElement.getPrevSibling();
-      if (contextElement instanceof AwkSimpleGet && "getline".equals(contextElement.getText())) {
-        contextElement = contextElement.getFirstChild();
-      } else if (contextElement == null) { // exit<caret>() case
+      if (contextElement == null) { // exit<caret>() case
         contextElement = parent.getPrevSibling();
         if (contextElement == null) { // printf<caret>("") case
           contextElement = parent.getParent().getPrevSibling();
+        }
+      } else {
+        PsiElement searchGetline = contextElement;
+
+        // why 5? because it can be statement -> simple_statement -> non_unary_expr -> simple_get ->
+        // getline
+        for (int i = 0; i < 5; i++) {
+          if (AwkUtil.isType(searchGetline, AwkTypes.GETLINE)) {
+            if ("getline".equals(contextElement.getText())) {
+              return searchGetline;
+            }
+            break;
+          }
+          searchGetline = searchGetline.getFirstChild();
+          if (searchGetline == null) {
+            break;
+          }
         }
       }
     }

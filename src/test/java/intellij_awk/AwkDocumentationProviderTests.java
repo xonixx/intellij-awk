@@ -167,6 +167,12 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
   public void testGetline3() {
     testStmtGetline("BEGIN { while(<caret>getline <\"file\" > 0) {} }");
   }
+  public void testGetline4() {
+    testStmtGetline("BEGIN { while(getline<caret>) {} }");
+  }
+  public void testGetline5() {
+    testStmtGetline("BEGIN { getline<caret> }");
+  }
 
   private void testStmtPrintf(String code) {
     doTest(
