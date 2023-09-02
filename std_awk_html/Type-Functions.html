@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 
+Copyright (C) 1989, 1991, 1992, 1993, 1996-2005, 2007, 2009-2022 
+
+Free Software Foundation, Inc.
+
+
+
+This is Edition 5.2 of GAWK: Effective AWK Programming: A User's Guide for GNU Awk,
+for the 5.2.0 (or later) version of the GNU
+implementation of AWK.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License", with the
+Front-Cover Texts being "A GNU Manual", and with the Back-Cover Texts
+as in (a) below.
+A copy of the license is included in the section entitled
+"GNU Free Documentation License".
+
+a. The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual." -->
+<title>Type Functions (The GNU Awk User&rsquo;s Guide)</title>
+
+<meta name="description" content="Type Functions (The GNU Awk User&rsquo;s Guide)">
+<meta name="keywords" content="Type Functions (The GNU Awk User&rsquo;s Guide)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Built_002din.html" rel="up" title="Built-in">
+<link href="I18N-Functions.html" rel="next" title="I18N Functions">
+<link href="Bitwise-Functions.html" rel="prev" title="Bitwise Functions">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/gnulib/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="Type-Functions">
+<div class="header">
+<p>
+Next: <a href="I18N-Functions.html" accesskey="n" rel="next">String-Translation Functions</a>, Previous: <a href="Bitwise-Functions.html" accesskey="p" rel="prev">Bit-Manipulation Functions</a>, Up: <a href="Built_002din.html" accesskey="u" rel="up">Built-in Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Getting-Type-Information"></span><h4 class="subsection">9.1.8 Getting Type Information</h4>
+
+<p><code>gawk</code> provides two functions that let you distinguish
+the type of a variable.
+This is necessary for writing code
+that traverses every element of an array of arrays
+(see <a href="Arrays-of-Arrays.html">Arrays of Arrays</a>), and in other contexts.
+</p>
+<dl compact="compact">
+<dd><span id="index-isarray_0028_0029-function-_0028gawk_0029"></span>
+<span id="index-scalar-or-array"></span>
+</dd>
+<dt><span><code>isarray(<var>x</var>)</code></span></dt>
+<dd><p>Return a true value if <var>x</var> is an array. Otherwise, return false.
+</p>
+<span id="index-typeof_0028_0029-function-_0028gawk_0029"></span>
+<span id="index-variable-type_002c-typeof_0028_0029-function-_0028gawk_0029"></span>
+<span id="index-type-1"></span>
+</dd>
+<dt><span><code>typeof(<var>x</var>)</code></span></dt>
+<dd><p>Return one of the following strings, depending upon the type of <var>x</var>:
+</p>
+<dl compact="compact">
+<dt><span><code>&quot;array&quot;</code></span></dt>
+<dd><p><var>x</var> is an array.
+</p>
+</dd>
+<dt><span><code>&quot;regexp&quot;</code></span></dt>
+<dd><p><var>x</var> is a strongly typed regexp (see <a href="Strong-Regexp-Constants.html">Strongly Typed Regexp Constants</a>).
+</p>
+</dd>
+<dt><span><code>&quot;number&quot;</code></span></dt>
+<dd><p><var>x</var> is a number.
+</p>
+</dd>
+<dt><span><code>&quot;number|bool&quot;</code></span></dt>
+<dd><p><var>x</var> is a Boolean typed value (see <a href="Boolean-Typed-Values.html">Boolean Typed Values</a>).
+</p>
+</dd>
+<dt><span><code>&quot;string&quot;</code></span></dt>
+<dd><p><var>x</var> is a string.
+</p>
+</dd>
+<dt><span><code>&quot;strnum&quot;</code></span></dt>
+<dd><p><var>x</var> is a number that started life as user input, such as a field or
+the result of calling <code>split()</code>. (I.e., <var>x</var> has the strnum
+attribute; see <a href="Variable-Typing.html">String Type versus Numeric Type</a>.)
+</p>
+</dd>
+<dt><span><code>&quot;unassigned&quot;</code></span></dt>
+<dd><p><var>x</var> is a scalar variable that has not been assigned a value yet.
+For example:
+</p>
+<div class="example">
+<pre class="example">BEGIN {
+    # creates a[1] but it has no assigned value
+    a[1]
+    print typeof(a[1])  # unassigned
+}
+</pre></div>
+
+</dd>
+<dt><span><code>&quot;untyped&quot;</code></span></dt>
+<dd><p><var>x</var> has not yet been used yet at all; it can become a scalar or an
+array.  The typing could even conceivably differ from run to run of
+the same program! For example:
+</p>
+<div class="example">
+<pre class="example">BEGIN {
+    print &quot;initially, typeof(v) = &quot;, typeof(v)
+
+    if (&quot;FOO&quot; in ENVIRON)
+        make_scalar(v)
+    else
+        make_array(v)
+
+    print &quot;typeof(v) =&quot;, typeof(v)
+}
+
+function make_scalar(p,    l) { l = p }
+
+function make_array(p) { p[1] = 1 }
+</pre></div>
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+<p><code>isarray()</code> is meant for use in two circumstances. The first is when
+traversing a multidimensional array: you can test if an element is itself
+an array or not.  The second is inside the body of a user-defined function
+(not discussed yet; see <a href="User_002ddefined.html">User-Defined Functions</a>), to test if a parameter is an
+array or not.
+</p>
+<blockquote>
+<p><b>NOTE:</b> While you can use <code>isarray()</code> at the global level to test variables,
+doing so makes no sense. Because <em>you</em> are the one writing the
+program, <em>you</em> are supposed to know if your variables are arrays
+or not.
+</p></blockquote>
+
+<p>The <code>typeof()</code> function is general; it allows you to determine
+if a variable or function parameter is a scalar (number, string,
+or strongly typed regexp) or an array.
+</p>
+<p>Normally, passing a variable that has never been used to a built-in
+function causes it to become a scalar variable (unassigned).
+However, <code>isarray()</code> and <code>typeof()</code> are different; they do
+not change their arguments from untyped to unassigned.
+</p>
+<p>This applies to both variables denoted by simple identifiers
+and array elements that come into existence simply by referencing them.
+Consider:
+</p>
+<div class="example">
+<pre class="example">$ <kbd>gawk 'BEGIN { print typeof(x) }'</kbd>
+-| untyped
+$ <kbd>gawk 'BEGIN { print typeof(x[&quot;foo&quot;]) }'</kbd>
+-| untyped
+</pre></div>
+
+<p>Note that prior to version 5.2, array elements
+that come into existence simply by referencing them
+were different, they were automatically forced to be scalars:
+</p>
+<div class="example">
+<pre class="example">$ <kbd>gawk-5.1.1 'BEGIN { print typeof(x) }'</kbd>
+-| untyped
+$ <kbd>gawk-5.1.1 'BEGIN { print typeof(x[&quot;foo&quot;]) }'</kbd>
+-| unassigned
+</pre></div>
+
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="I18N-Functions.html">String-Translation Functions</a>, Previous: <a href="Bitwise-Functions.html">Bit-Manipulation Functions</a>, Up: <a href="Built_002din.html">Built-in Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

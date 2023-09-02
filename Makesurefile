@@ -150,26 +150,26 @@
 
 @goal document_processed @params F @private
 @depends_on document_downloaded @args F
-  awk -f gen_std.awk temp/"$F"
+  awk -f gen_std.awk std_awk_html/"$F"
 
 @goal document_downloaded @params F @private
-@depends_on folder_created @args 'temp'
-@reached_if [[ -f "temp/$F" ]]
-  curl --fail https://www.gnu.org/software/gawk/manual/html_node/"$F" -o temp/"$F"
+@depends_on folder_created @args 'std_awk_html'
+@reached_if [[ -f "std_awk_html/$F" ]]
+  curl --fail https://www.gnu.org/software/gawk/manual/html_node/"$F" -o std_awk_html/"$F"
 
 @goal std.awk_string @private
 @depends_on document_downloaded @args 'String-Functions.html'
 @depends_on document_downloaded @args 'Control-Letters.html'
 @depends_on document_downloaded @args 'Format-Modifiers.html'
-  awk -f gen_std.awk temp/String-Functions.html
+  awk -f gen_std.awk std_awk_html/String-Functions.html
 
 @goal std.awk_variables_ @params F @private
 @depends_on document_downloaded @args F
-  awk -v Vars=1 -f gen_std.awk temp/"$F"
+  awk -v Vars=1 -f gen_std.awk std_awk_html/"$F"
 
 @goal std.awk_exit @private
 @depends_on document_downloaded @args 'Exit-Statement.html'
-  awk -v Stmt=exit -f gen_std.awk temp/Exit-Statement.html
+  awk -v Stmt=exit -f gen_std.awk std_awk_html/Exit-Statement.html
 
 @goal std.awk_printf @private
   awk -v Stmt=printf -f gen_std.awk

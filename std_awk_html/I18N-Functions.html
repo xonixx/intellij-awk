@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 
+Copyright (C) 1989, 1991, 1992, 1993, 1996-2005, 2007, 2009-2022 
+
+Free Software Foundation, Inc.
+
+
+
+This is Edition 5.2 of GAWK: Effective AWK Programming: A User's Guide for GNU Awk,
+for the 5.2.0 (or later) version of the GNU
+implementation of AWK.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License", with the
+Front-Cover Texts being "A GNU Manual", and with the Back-Cover Texts
+as in (a) below.
+A copy of the license is included in the section entitled
+"GNU Free Documentation License".
+
+a. The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual." -->
+<title>I18N Functions (The GNU Awk User&rsquo;s Guide)</title>
+
+<meta name="description" content="I18N Functions (The GNU Awk User&rsquo;s Guide)">
+<meta name="keywords" content="I18N Functions (The GNU Awk User&rsquo;s Guide)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Built_002din.html" rel="up" title="Built-in">
+<link href="Type-Functions.html" rel="prev" title="Type Functions">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/gnulib/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="I18N-Functions">
+<div class="header">
+<p>
+Previous: <a href="Type-Functions.html" accesskey="p" rel="prev">Getting Type Information</a>, Up: <a href="Built_002din.html" accesskey="u" rel="up">Built-in Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="String_002dTranslation-Functions"></span><h4 class="subsection">9.1.9 String-Translation Functions</h4>
+<span id="index-gawk-58"></span>
+<span id="index-functions-5"></span>
+<span id="index-string_002dtranslation-functions"></span>
+<span id="index-internationalization-2"></span>
+<span id="index-awk-programs-17"></span>
+
+<p><code>gawk</code> provides facilities for internationalizing <code>awk</code> programs.
+These include the functions described in the following list.
+The descriptions here are purposely brief.
+See <a href="Internationalization.html">Internationalization with <code>gawk</code></a>,
+for the full story.
+Optional parameters are enclosed in square brackets ([ ]):
+</p>
+<dl compact="compact">
+<dd><span id="index-bindtextdomain_0028_0029-function-_0028gawk_0029"></span>
+<span id="index-set-directory-of-message-catalogs"></span>
+</dd>
+<dt><span><code>bindtextdomain(<var>directory</var></code> [<code>,</code> <var>domain</var>]<code>)</code></span></dt>
+<dd><p>Set the directory in which
+<code>gawk</code> will look for message translation files, in case they
+will not or cannot be placed in the &ldquo;standard&rdquo; locations
+(e.g., during testing).
+It returns the directory in which <var>domain</var> is &ldquo;bound.&rdquo;
+</p>
+<p>The default <var>domain</var> is the value of <code>TEXTDOMAIN</code>.
+If <var>directory</var> is the null string (<code>&quot;&quot;</code>), then
+<code>bindtextdomain()</code> returns the current binding for the
+given <var>domain</var>.
+</p>
+<span id="index-dcgettext_0028_0029-function-_0028gawk_0029"></span>
+<span id="index-translate-string"></span>
+</dd>
+<dt><span><code>dcgettext(<var>string</var></code> [<code>,</code> <var>domain</var> [<code>,</code> <var>category</var>] ]<code>)</code></span></dt>
+<dd><p>Return the translation of <var>string</var> in
+text domain <var>domain</var> for locale category <var>category</var>.
+The default value for <var>domain</var> is the current value of <code>TEXTDOMAIN</code>.
+The default value for <var>category</var> is <code>&quot;LC_MESSAGES&quot;</code>.
+</p>
+<span id="index-dcngettext_0028_0029-function-_0028gawk_0029"></span>
+</dd>
+<dt><span><code>dcngettext(<var>string1</var>, <var>string2</var>, <var>number</var></code> [<code>,</code> <var>domain</var> [<code>,</code> <var>category</var>] ]<code>)</code></span></dt>
+<dd><p>Return the plural form used for <var>number</var> of the
+translation of <var>string1</var> and <var>string2</var> in text domain
+<var>domain</var> for locale category <var>category</var>. <var>string1</var> is the
+English singular variant of a message, and <var>string2</var> is the English plural
+variant of the same message.
+The default value for <var>domain</var> is the current value of <code>TEXTDOMAIN</code>.
+The default value for <var>category</var> is <code>&quot;LC_MESSAGES&quot;</code>.
+</p></dd>
+</dl>
+
+</div>
+
+
+
+</body>
+</html>

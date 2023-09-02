@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 
+Copyright (C) 1989, 1991, 1992, 1993, 1996-2005, 2007, 2009-2022 
+
+Free Software Foundation, Inc.
+
+
+
+This is Edition 5.2 of GAWK: Effective AWK Programming: A User's Guide for GNU Awk,
+for the 5.2.0 (or later) version of the GNU
+implementation of AWK.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License", with the
+Front-Cover Texts being "A GNU Manual", and with the Back-Cover Texts
+as in (a) below.
+A copy of the license is included in the section entitled
+"GNU Free Documentation License".
+
+a. The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual." -->
+<title>User-modified (The GNU Awk User&rsquo;s Guide)</title>
+
+<meta name="description" content="User-modified (The GNU Awk User&rsquo;s Guide)">
+<meta name="keywords" content="User-modified (The GNU Awk User&rsquo;s Guide)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Built_002din-Variables.html" rel="up" title="Built-in Variables">
+<link href="Auto_002dset.html" rel="next" title="Auto-set">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/gnulib/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="User_002dmodified">
+<div class="header">
+<p>
+Next: <a href="Auto_002dset.html" accesskey="n" rel="next">Built-in Variables That Convey Information</a>, Up: <a href="Built_002din-Variables.html" accesskey="u" rel="up">Predefined Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Built_002din-Variables-That-Control-awk"></span><h4 class="subsection">7.5.1 Built-in Variables That Control <code>awk</code></h4>
+<span id="index-predefined-variables-2"></span>
+<span id="index-user_002dmodifiable-variables"></span>
+
+<p>The following is an alphabetical list of variables that you can change to
+control how <code>awk</code> does certain things.
+</p>
+<p>The variables that are specific to <code>gawk</code> are marked with a pound
+sign (&lsquo;<samp>#</samp>&rsquo;).  These variables are <code>gawk</code> extensions.  In other
+<code>awk</code> implementations or if <code>gawk</code> is in compatibility
+mode (see <a href="Options.html">Command-Line Options</a>), they are not special.  (Any exceptions are noted
+in the description of each variable.)
+</p>
+<dl compact="compact">
+<dd><span id="index-BINMODE-variable"></span>
+<span id="index-binary-input_002foutput"></span>
+<span id="index-input_002foutput-1"></span>
+<span id="index-differences-in-awk-and-gawk-28"></span>
+</dd>
+<dt><span><code>BINMODE #</code></span></dt>
+<dd><p>On non-POSIX systems, this variable specifies use of binary mode
+for all I/O.  Numeric values of one, two, or three specify that input
+files, output files, or all files, respectively, should use binary I/O.
+A numeric value less than zero is treated as zero, and a numeric value
+greater than three is treated as three.  Alternatively, string values
+of <code>&quot;r&quot;</code> or <code>&quot;w&quot;</code> specify that input files and output files,
+respectively, should use binary I/O.  A string value of <code>&quot;rw&quot;</code> or
+<code>&quot;wr&quot;</code> indicates that all files should use binary I/O.  Any other
+string value is treated the same as <code>&quot;rw&quot;</code>, but causes <code>gawk</code>
+to generate a warning message.  <code>BINMODE</code> is described in more
+detail in <a href="PC-Using.html">Using <code>gawk</code> on PC Operating Systems</a>.  <code>mawk</code> (see <a href="Other-Versions.html">Other Freely Available <code>awk</code> Implementations</a>)
+also supports this variable, but only using numeric values.
+</p>
+<span id="index-CONVFMT-variable-1"></span>
+<span id="index-POSIX-awk-24"></span>
+<span id="index-numbers-3"></span>
+<span id="index-strings-6"></span>
+</dd>
+<dt><span><code><code>CONVFMT</code></code></span></dt>
+<dd><p>A string that controls the conversion of numbers to
+strings (see <a href="Conversion.html">Conversion of Strings and Numbers</a>).
+It works by being passed, in effect, as the first argument to the
+<code>sprintf()</code> function
+(see <a href="String-Functions.html">String-Manipulation Functions</a>).
+Its default value is <code>&quot;%.6g&quot;</code>.
+<code>CONVFMT</code> was introduced by the POSIX standard.
+</p>
+<span id="index-gawk-40"></span>
+<span id="index-FIELDWIDTHS-variable-1"></span>
+<span id="index-differences-in-awk-and-gawk-29"></span>
+<span id="index-field-separator-10"></span>
+<span id="index-separators-5"></span>
+</dd>
+<dt><span><code>FIELDWIDTHS #</code></span></dt>
+<dd><p>A space-separated list of columns that tells <code>gawk</code>
+how to split input with fixed columnar boundaries.
+Starting in version 4.2, each field width may optionally be
+preceded by a colon-separated value specifying the number of characters to skip
+before the field starts.
+Assigning a value to <code>FIELDWIDTHS</code>
+overrides the use of <code>FS</code> and <code>FPAT</code> for field splitting.
+See <a href="Constant-Size.html">Reading Fixed-Width Data</a> for more information.
+</p>
+<span id="index-gawk-41"></span>
+<span id="index-FPAT-variable-1"></span>
+<span id="index-differences-in-awk-and-gawk-30"></span>
+<span id="index-field-separator-11"></span>
+<span id="index-separators-6"></span>
+</dd>
+<dt><span><code>FPAT #</code></span></dt>
+<dd><p>A regular expression (as a string) that tells <code>gawk</code>
+to create the fields based on text that matches the regular expression.
+Assigning a value to <code>FPAT</code>
+overrides the use of <code>FS</code> and <code>FIELDWIDTHS</code> for field splitting.
+See <a href="Splitting-By-Content.html">Defining Fields by Content</a> for more information.
+</p>
+<span id="index-FS-variable-8"></span>
+<span id="index-separators-7"></span>
+<span id="index-field-separator-12"></span>
+</dd>
+<dt><span><code>FS</code></span></dt>
+<dd><p>The input field separator (see <a href="Field-Separators.html">Specifying How Fields Are Separated</a>).
+The value is a single-character string or a multicharacter regular
+expression that matches the separations between fields in an input
+record.  If the value is the null string (<code>&quot;&quot;</code>), then each
+character in the record becomes a separate field.
+(This behavior is a <code>gawk</code> extension. POSIX <code>awk</code> does not
+specify the behavior when <code>FS</code> is the null string.
+Nonetheless, some other versions of <code>awk</code> also treat
+<code>&quot;&quot;</code> specially.)
+</p>
+<p>The default value is <code>&quot;&nbsp;&quot;</code><!-- /@w -->, a string consisting of a single
+space.  As a special exception, this value means that any sequence of
+spaces, TABs, and/or newlines is a single separator.  It also causes
+spaces, TABs, and newlines at the beginning and end of a record to
+be ignored.
+</p>
+<p>You can set the value of <code>FS</code> on the command line using the
+<samp>-F</samp> option:
+</p>
+<div class="example">
+<pre class="example">awk -F, '<var>program</var>' <var>input-files</var>
+</pre></div>
+
+<span id="index-gawk-42"></span>
+<p>If <code>gawk</code> is using <code>FIELDWIDTHS</code> or <code>FPAT</code>
+for field splitting,
+assigning a value to <code>FS</code> causes <code>gawk</code> to return to
+the normal, <code>FS</code>-based field splitting. An easy way to do this
+is to simply say &lsquo;<samp>FS = FS</samp>&rsquo;, perhaps with an explanatory comment.
+</p>
+<span id="index-gawk-43"></span>
+<span id="index-IGNORECASE-variable-1"></span>
+<span id="index-differences-in-awk-and-gawk-31"></span>
+<span id="index-case-sensitivity-2"></span>
+<span id="index-case-sensitivity-3"></span>
+<span id="index-regular-expressions-20"></span>
+</dd>
+<dt><span><code>IGNORECASE #</code></span></dt>
+<dd><p>If <code>IGNORECASE</code> is nonzero or non-null, then all string comparisons
+and all regular expression matching are case-independent.
+This applies to
+regexp matching with &lsquo;<samp>~</samp>&rsquo; and &lsquo;<samp>!~</samp>&rsquo;,
+the <code>gensub()</code>, <code>gsub()</code>, <code>index()</code>, <code>match()</code>,
+<code>patsplit()</code>, <code>split()</code>, and <code>sub()</code> functions,
+record termination with <code>RS</code>, and field splitting with
+<code>FS</code> and <code>FPAT</code>.
+However, the value of <code>IGNORECASE</code> does <em>not</em> affect array subscripting
+and it does not affect field splitting when using a single-character
+field separator.
+See <a href="Case_002dsensitivity.html">Case Sensitivity in Matching</a>.
+</p>
+<span id="index-gawk-44"></span>
+<span id="index-LINT-variable"></span>
+<span id="index-differences-in-awk-and-gawk-32"></span>
+<span id="index-lint-checking-3"></span>
+</dd>
+<dt><span><code>LINT #</code></span></dt>
+<dd><p>When this variable is true (nonzero or non-null), <code>gawk</code>
+behaves as if the <samp>--lint</samp> command-line option is in effect
+(see <a href="Options.html">Command-Line Options</a>).
+With a value of <code>&quot;fatal&quot;</code>, lint warnings become fatal errors.
+With a value of <code>&quot;invalid&quot;</code>, only warnings about things that are
+actually invalid are issued. (This is not fully implemented yet.)
+Any other true value prints nonfatal warnings.
+Assigning a false value to <code>LINT</code> turns off the lint warnings.
+</p>
+<p>This variable is a <code>gawk</code> extension.  It is not special
+in other <code>awk</code> implementations.  Unlike with the other special variables,
+changing <code>LINT</code> does affect the production of lint warnings,
+even if <code>gawk</code> is in compatibility mode.  Much as
+the <samp>--lint</samp> and <samp>--traditional</samp> options independently
+control different aspects of <code>gawk</code>&rsquo;s behavior, the control
+of lint warnings during program execution is independent of the flavor
+of <code>awk</code> being executed.
+</p>
+<span id="index-OFMT-variable-3"></span>
+<span id="index-numbers-4"></span>
+<span id="index-strings-7"></span>
+</dd>
+<dt><span><code>OFMT</code></span></dt>
+<dd><p>A string that controls conversion of numbers to
+strings (see <a href="Conversion.html">Conversion of Strings and Numbers</a>) for
+printing with the <code>print</code> statement.  It works by being passed
+as the first argument to the <code>sprintf()</code> function
+(see <a href="String-Functions.html">String-Manipulation Functions</a>).
+Its default value is <code>&quot;%.6g&quot;</code>.  Earlier versions of <code>awk</code>
+used <code>OFMT</code> to specify the format for converting numbers to
+strings in general expressions; this is now done by <code>CONVFMT</code>.
+</p>
+<span id="index-print-statement-5"></span>
+<span id="index-OFS-variable-2"></span>
+<span id="index-separators-8"></span>
+<span id="index-field-separator-13"></span>
+</dd>
+<dt><span><code>OFS</code></span></dt>
+<dd><p>The output field separator (see <a href="Output-Separators.html">Output Separators</a>).  It is
+output between the fields printed by a <code>print</code> statement.  Its
+default value is <code>&quot;&nbsp;&quot;</code><!-- /@w -->, a string consisting of a single space.
+</p>
+<span id="index-ORS-variable-1"></span>
+</dd>
+<dt><span><code>ORS</code></span></dt>
+<dd><p>The output record separator.  It is output at the end of every
+<code>print</code> statement.  Its default value is <code>&quot;\n&quot;</code>, the newline
+character.  (See <a href="Output-Separators.html">Output Separators</a>.)
+</p>
+<span id="index-PREC-variable"></span>
+</dd>
+<dt><span><code>PREC #</code></span></dt>
+<dd><p>The working precision of arbitrary-precision floating-point numbers,
+53 bits by default (see <a href="Setting-precision.html">Setting the Precision</a>).
+</p>
+<span id="index-ROUNDMODE-variable"></span>
+</dd>
+<dt><span><code>ROUNDMODE #</code></span></dt>
+<dd><p>The rounding mode to use for arbitrary-precision arithmetic on
+numbers, by default <code>&quot;N&quot;</code> (<code>roundTiesToEven</code> in
+the IEEE 754 standard; see <a href="Setting-the-rounding-mode.html">Setting the Rounding Mode</a>).
+</p>
+<span id="index-RS-variable-2"></span>
+<span id="index-separators-9"></span>
+<span id="index-record-separators-5"></span>
+</dd>
+<dt><span><code><code>RS</code></code></span></dt>
+<dd><p>The input record separator.  Its default value is a string
+containing a single newline character, which means that an input record
+consists of a single line of text.
+It can also be the null string, in which case records are separated by
+runs of blank lines.
+If it is a regexp, records are separated by
+matches of the regexp in the input text.
+(See <a href="Records.html">How Input Is Split into Records</a>.)
+</p>
+<p>The ability for <code>RS</code> to be a regular expression
+is a <code>gawk</code> extension.
+In most other <code>awk</code> implementations,
+or if <code>gawk</code> is in compatibility mode
+(see <a href="Options.html">Command-Line Options</a>),
+just the first character of <code>RS</code>&rsquo;s value is used.
+</p>
+<span id="index-SUBSEP-variable"></span>
+<span id="index-separators-10"></span>
+<span id="index-subscript-separators"></span>
+</dd>
+<dt><span><code><code>SUBSEP</code></code></span></dt>
+<dd><p>The subscript separator.  It has the default value of
+<code>&quot;\034&quot;</code> and is used to separate the parts of the indices of a
+multidimensional array.  Thus, the expression &lsquo;<samp>foo[&quot;A&quot;,&nbsp;&quot;B&quot;]<!-- /@w --></samp>&rsquo;
+really accesses <code>foo[&quot;A\034B&quot;]</code>
+(see <a href="Multidimensional.html">Multidimensional Arrays</a>).
+</p>
+<span id="index-gawk-45"></span>
+<span id="index-TEXTDOMAIN-variable"></span>
+<span id="index-differences-in-awk-and-gawk-33"></span>
+<span id="index-internationalization-1"></span>
+</dd>
+<dt><span><code>TEXTDOMAIN #</code></span></dt>
+<dd><p>Used for internationalization of programs at the
+<code>awk</code> level.  It sets the default text domain for specially
+marked string constants in the source text, as well as for the
+<code>dcgettext()</code>, <code>dcngettext()</code>, and <code>bindtextdomain()</code> functions
+(see <a href="Internationalization.html">Internationalization with <code>gawk</code></a>).
+The default value of <code>TEXTDOMAIN</code> is <code>&quot;messages&quot;</code>.
+</p></dd>
+</dl>
+
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Auto_002dset.html">Built-in Variables That Convey Information</a>, Up: <a href="Built_002din-Variables.html">Predefined Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

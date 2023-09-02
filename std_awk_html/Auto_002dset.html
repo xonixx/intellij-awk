@@ -1,0 +1,668 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 
+Copyright (C) 1989, 1991, 1992, 1993, 1996-2005, 2007, 2009-2022 
+
+Free Software Foundation, Inc.
+
+
+
+This is Edition 5.2 of GAWK: Effective AWK Programming: A User's Guide for GNU Awk,
+for the 5.2.0 (or later) version of the GNU
+implementation of AWK.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License", with the
+Front-Cover Texts being "A GNU Manual", and with the Back-Cover Texts
+as in (a) below.
+A copy of the license is included in the section entitled
+"GNU Free Documentation License".
+
+a. The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual." -->
+<title>Auto-set (The GNU Awk User&rsquo;s Guide)</title>
+
+<meta name="description" content="Auto-set (The GNU Awk User&rsquo;s Guide)">
+<meta name="keywords" content="Auto-set (The GNU Awk User&rsquo;s Guide)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Built_002din-Variables.html" rel="up" title="Built-in Variables">
+<link href="ARGC-and-ARGV.html" rel="next" title="ARGC and ARGV">
+<link href="User_002dmodified.html" rel="prev" title="User-modified">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/gnulib/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="Auto_002dset">
+<div class="header">
+<p>
+Next: <a href="ARGC-and-ARGV.html" accesskey="n" rel="next">Using <code>ARGC</code> and <code>ARGV</code></a>, Previous: <a href="User_002dmodified.html" accesskey="p" rel="prev">Built-in Variables That Control <code>awk</code></a>, Up: <a href="Built_002din-Variables.html" accesskey="u" rel="up">Predefined Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Built_002din-Variables-That-Convey-Information"></span><h4 class="subsection">7.5.2 Built-in Variables That Convey Information</h4>
+
+<span id="index-predefined-variables-3"></span>
+<span id="index-variables-16"></span>
+<p>The following is an alphabetical list of variables that <code>awk</code>
+sets automatically on certain occasions in order to provide
+information to your program.
+</p>
+<p>The variables that are specific to <code>gawk</code> are marked with a pound
+sign (&lsquo;<samp>#</samp>&rsquo;).  These variables are <code>gawk</code> extensions.  In other
+<code>awk</code> implementations or if <code>gawk</code> is in compatibility
+mode (see <a href="Options.html">Command-Line Options</a>), they are not special:
+</p>
+<dl compact="compact">
+<dd><span id="index-ARGC_002fARGV-variables-2"></span>
+<span id="index-arguments-3"></span>
+<span id="index-command-line-9"></span>
+</dd>
+<dt><span><code>ARGC</code>, <code>ARGV</code></span></dt>
+<dd><p>The command-line arguments available to <code>awk</code> programs are stored in
+an array called <code>ARGV</code>.  <code>ARGC</code> is the number of command-line
+arguments present.  See <a href="Other-Arguments.html">Other Command-Line Arguments</a>.
+Unlike most <code>awk</code> arrays,
+<code>ARGV</code> is indexed from 0 to <code>ARGC</code> - 1.
+In the following example:
+</p>
+<div class="example">
+<pre class="example">$ <kbd>awk 'BEGIN {</kbd>
+&gt;         <kbd>for (i = 0; i &lt; ARGC; i++)</kbd>
+&gt;             <kbd>print ARGV[i]</kbd>
+&gt;      <kbd>}' inventory-shipped mail-list</kbd>
+-| awk
+-| inventory-shipped
+-| mail-list
+</pre></div>
+
+<p><code>ARGV[0]</code> contains &lsquo;<samp>awk</samp>&rsquo;, <code>ARGV[1]</code>
+contains &lsquo;<samp>inventory-shipped</samp>&rsquo;, and <code>ARGV[2]</code> contains
+&lsquo;<samp>mail-list</samp>&rsquo;.  The value of <code>ARGC</code> is three, one more than the
+index of the last element in <code>ARGV</code>, because the elements are numbered
+from zero.
+</p>
+<span id="index-programming-conventions-1"></span>
+<p>The names <code>ARGC</code> and <code>ARGV</code>, as well as the convention of indexing
+the array from 0 to <code>ARGC</code> - 1, are derived from the C language&rsquo;s
+method of accessing command-line arguments.
+</p>
+<span id="index-dark-corner-31"></span>
+<p>The value of <code>ARGV[0]</code> can vary from system to system.
+Also, you should note that the program text is <em>not</em> included in
+<code>ARGV</code>, nor are any of <code>awk</code>&rsquo;s command-line options.
+See <a href="ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a> for information
+about how <code>awk</code> uses these variables.
+(d.c.)
+</p>
+<span id="index-ARGIND-variable-1"></span>
+<span id="index-differences-in-awk-and-gawk-34"></span>
+</dd>
+<dt><span><code>ARGIND #</code></span></dt>
+<dd><p>The index in <code>ARGV</code> of the current file being processed.
+Every time <code>gawk</code> opens a new data file for processing, it sets
+<code>ARGIND</code> to the index in <code>ARGV</code> of the file name.
+When <code>gawk</code> is processing the input files,
+&lsquo;<samp>FILENAME == ARGV[ARGIND]</samp>&rsquo; is always true.
+</p>
+<span id="index-files-9"></span>
+<p>This variable is useful in file processing; it allows you to tell how far
+along you are in the list of data files as well as to distinguish between
+successive instances of the same file name on the command line.
+</p>
+<span id="index-file-names-2"></span>
+<p>While you can change the value of <code>ARGIND</code> within your <code>awk</code>
+program, <code>gawk</code> automatically sets it to a new value when it
+opens the next file.
+</p>
+<span id="index-ENVIRON-array"></span>
+<span id="index-environment-variables-29"></span>
+</dd>
+<dt><span><code>ENVIRON</code></span></dt>
+<dd><p>An associative array containing the values of the environment.  The array
+indices are the environment variable names; the elements are the values of
+the particular environment variables.  For example,
+<code>ENVIRON[&quot;HOME&quot;]</code> might be <code>/home/arnold</code>.
+</p>
+<p>For POSIX <code>awk</code>, changing this array does not affect the
+environment passed on to any programs that <code>awk</code> may spawn via
+redirection or the <code>system()</code> function.
+</p>
+<p>However, beginning with version 4.2, if not in POSIX
+compatibility mode, <code>gawk</code> does update its own environment when
+<code>ENVIRON</code> is changed, thus changing the environment seen by programs
+that it creates.  You should therefore be especially careful if you
+modify <code>ENVIRON[&quot;PATH&quot;]</code>, which is the search path for finding
+executable programs.
+</p>
+<span id="index-TZ-environment-variable"></span>
+<span id="index-environment-variables-30"></span>
+<p>This can also affect the running <code>gawk</code> program, since some of the
+built-in functions may pay attention to certain environment variables.
+The most notable instance of this is <code>mktime()</code> (see <a href="Time-Functions.html">Time Functions</a>), which pays attention the value of the <code>TZ</code> environment
+variable on many systems.
+</p>
+<p>Some operating systems may not have environment variables.
+On such systems, the <code>ENVIRON</code> array is empty (except for
+<code>ENVIRON[&quot;AWKPATH&quot;]</code><!-- /@w --> and
+<code>ENVIRON[&quot;AWKLIBPATH&quot;]</code><!-- /@w -->;
+see <a href="AWKPATH-Variable.html">The <code>AWKPATH</code> Environment Variable</a> and
+see <a href="AWKLIBPATH-Variable.html">The <code>AWKLIBPATH</code> Environment Variable</a>).
+</p>
+<span id="index-gawk-46"></span>
+<span id="index-ERRNO-variable-3"></span>
+<span id="index-differences-in-awk-and-gawk-35"></span>
+<span id="index-error-handling-1"></span>
+</dd>
+<dt><span><code>ERRNO #</code></span></dt>
+<dd><p>If a system error occurs during a redirection for <code>getline</code>, during
+a read for <code>getline</code>, or during a <code>close()</code> operation, then
+<code>ERRNO</code> contains a string describing the error.
+</p>
+<p>In addition, <code>gawk</code> clears <code>ERRNO</code> before opening each
+command-line input file. This enables checking if the file is readable
+inside a <code>BEGINFILE</code> pattern (see <a href="BEGINFILE_002fENDFILE.html">The <code>BEGINFILE</code> and <code>ENDFILE</code> Special Patterns</a>).
+</p>
+<p>Otherwise, <code>ERRNO</code> works similarly to the C variable <code>errno</code>.
+Except for the case just mentioned, <code>gawk</code> <em>never</em> clears
+it (sets it to zero or <code>&quot;&quot;</code>).  Thus, you should only expect its
+value to be meaningful when an I/O operation returns a failure value,
+such as <code>getline</code> returning -1.  You are, of course, free
+to clear it yourself before doing an I/O operation.
+</p>
+<p>If the value of <code>ERRNO</code> corresponds to a system error in the C
+<code>errno</code> variable, then <code>PROCINFO[&quot;errno&quot;]</code> will be set to the value
+of <code>errno</code>.  For non-system errors, <code>PROCINFO[&quot;errno&quot;]</code> will
+be zero.
+</p>
+<span id="index-FILENAME-variable-2"></span>
+<span id="index-dark-corner-32"></span>
+</dd>
+<dt><span><code>FILENAME</code></span></dt>
+<dd><p>The name of the current input file.  When no data files are listed
+on the command line, <code>awk</code> reads from the standard input and
+<code>FILENAME</code> is set to <code>&quot;-&quot;</code>.  <code>FILENAME</code> changes each
+time a new file is read (see <a href="Reading-Files.html">Reading Input Files</a>).  Inside a <code>BEGIN</code>
+rule, the value of <code>FILENAME</code> is <code>&quot;&quot;</code>, because there are no input
+files being processed yet.<a id="DOCF39" href="#FOOT39"><sup>39</sup></a> (d.c.) Note, though,
+that using <code>getline</code> (see <a href="Getline.html">Explicit Input with <code>getline</code></a>) inside a <code>BEGIN</code> rule
+can give <code>FILENAME</code> a value.
+</p>
+<span id="index-FNR-variable-1"></span>
+</dd>
+<dt><span><code>FNR</code></span></dt>
+<dd><p>The current record number in the current file.  <code>awk</code> increments
+<code>FNR</code> each time it reads a new record (see <a href="Records.html">How Input Is Split into Records</a>).
+<code>awk</code> resets <code>FNR</code> to zero each time it starts a new
+input file.
+</p>
+<span id="index-NF-variable-2"></span>
+</dd>
+<dt><span><code>NF</code></span></dt>
+<dd><p>The number of fields in the current input record.
+<code>NF</code> is set each time a new record is read, when a new field is
+created, or when <code>$0</code> changes (see <a href="Fields.html">Examining Fields</a>).
+</p>
+<p>Unlike most of the variables described in this subsection,
+assigning a value to <code>NF</code> has the potential to affect
+<code>awk</code>&rsquo;s internal workings.  In particular, assignments
+to <code>NF</code> can be used to create fields in or remove fields from the
+current record. See <a href="Changing-Fields.html">Changing the Contents of a Field</a>.
+</p>
+<span id="index-FUNCTAB-array"></span>
+<span id="index-gawk-47"></span>
+<span id="index-differences-in-awk-and-gawk-36"></span>
+</dd>
+<dt><span><code>FUNCTAB #</code></span></dt>
+<dd><p>An array whose indices and corresponding values are the names of all
+the built-in, user-defined, and extension functions in the program.
+</p>
+<blockquote>
+<p><b>NOTE:</b> Attempting to use the <code>delete</code> statement with the <code>FUNCTAB</code>
+array causes a fatal error.  Any attempt to assign to an element of
+<code>FUNCTAB</code> also causes a fatal error.
+</p></blockquote>
+
+<span id="index-NR-variable-1"></span>
+</dd>
+<dt><span><code>NR</code></span></dt>
+<dd><p>The number of input records <code>awk</code> has processed since
+the beginning of the program&rsquo;s execution
+(see <a href="Records.html">How Input Is Split into Records</a>).
+<code>awk</code> increments <code>NR</code> each time it reads a new record.
+</p>
+<span id="index-gawk-48"></span>
+<span id="index-PROCINFO-array"></span>
+<span id="index-differences-in-awk-and-gawk-37"></span>
+</dd>
+<dt><span><code>PROCINFO #</code></span></dt>
+<dd><p>The elements of this array provide access to information about the
+running <code>awk</code> program.
+The following elements (listed alphabetically)
+are guaranteed to be available:
+</p>
+<dl compact="compact">
+<dt id='index-command-line-10'><span><code>PROCINFO[&quot;argv&quot;]</code><a href='#index-command-line-10' class='copiable-anchor'> &para;</a></span></dt>
+<dd><p>The <code>PROCINFO[&quot;argv&quot;]</code> array contains all of the command-line arguments
+(after glob expansion and redirection processing on platforms where that must
+be done manually by the program) with subscripts ranging from 0 through
+<code>argc</code> - 1.  For example, <code>PROCINFO[&quot;argv&quot;][0]</code> will contain
+the name by which <code>gawk</code> was invoked.  Here is an example of how this
+feature may be used:
+</p>
+<div class="example">
+<pre class="example">gawk '
+BEGIN {
+        for (i = 0; i &lt; length(PROCINFO[&quot;argv&quot;]); i++)
+                print i, PROCINFO[&quot;argv&quot;][i]
+}'
+</pre></div>
+
+<p>Please note that this differs from the standard <code>ARGV</code> array which does
+not include command-line arguments that have already been processed by
+<code>gawk</code> (see <a href="ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a>).
+</p>
+<span id="index-effective-group-ID-of-gawk-user"></span>
+</dd>
+<dt><span><code>PROCINFO[&quot;egid&quot;]</code></span></dt>
+<dd><p>The value of the <code>getegid()</code> system call.
+</p>
+</dd>
+<dt><span><code>PROCINFO[&quot;errno&quot;]</code></span></dt>
+<dd><p>The value of the C <code>errno</code> variable when <code>ERRNO</code> is set to
+the associated error message.
+</p>
+</dd>
+<dt id='index-effective-user-ID-of-gawk-user'><span><code>PROCINFO[&quot;euid&quot;]</code><a href='#index-effective-user-ID-of-gawk-user' class='copiable-anchor'> &para;</a></span></dt>
+<dd><p>The value of the <code>geteuid()</code> system call.
+</p>
+</dd>
+<dt><span><code>PROCINFO[&quot;FS&quot;]</code></span></dt>
+<dd><p>This is
+<code>&quot;FS&quot;</code> if field splitting with <code>FS</code> is in effect,
+<code>&quot;FIELDWIDTHS&quot;</code> if field splitting with <code>FIELDWIDTHS</code> is in effect,
+<code>&quot;FPAT&quot;</code> if field matching with <code>FPAT</code> is in effect,
+or <code>&quot;API&quot;</code> if field splitting is controlled by an API input parser.
+</p>
+</dd>
+<dt id='index-group-ID-of-gawk-user'><span><code>PROCINFO[&quot;gid&quot;]</code><a href='#index-group-ID-of-gawk-user' class='copiable-anchor'> &para;</a></span></dt>
+<dd><p>The value of the <code>getgid()</code> system call.
+</p>
+</dd>
+<dt id='index-program-identifiers'><span><code>PROCINFO[&quot;identifiers&quot;]</code><a href='#index-program-identifiers' class='copiable-anchor'> &para;</a></span></dt>
+<dd><p>A subarray, indexed by the names of all identifiers used in the text of
+the <code>awk</code> program.  An <em>identifier</em> is simply the name of a variable
+(be it scalar or array), built-in function, user-defined function, or
+extension function.  For each identifier, the value of the element is
+one of the following:
+</p>
+<dl compact="compact">
+<dt><span><code>&quot;array&quot;</code></span></dt>
+<dd><p>The identifier is an array.
+</p>
+</dd>
+<dt><span><code>&quot;builtin&quot;</code></span></dt>
+<dd><p>The identifier is a built-in function.
+</p>
+</dd>
+<dt><span><code>&quot;extension&quot;</code></span></dt>
+<dd><p>The identifier is an extension function loaded via
+<code>@load</code> or <samp>-l</samp>.
+</p>
+</dd>
+<dt><span><code>&quot;scalar&quot;</code></span></dt>
+<dd><p>The identifier is a scalar.
+</p>
+</dd>
+<dt><span><code>&quot;untyped&quot;</code></span></dt>
+<dd><p>The identifier is untyped (could be used as a scalar or an array;
+<code>gawk</code> doesn&rsquo;t know yet).
+</p>
+</dd>
+<dt><span><code>&quot;user&quot;</code></span></dt>
+<dd><p>The identifier is a user-defined function.
+</p></dd>
+</dl>
+
+<p>The values indicate what <code>gawk</code> knows about the identifiers
+after it has finished parsing the program; they are <em>not</em> updated
+while the program runs.
+</p>
+</dd>
+<dt id='index-platform-running-on'><span><code>PROCINFO[&quot;platform&quot;]</code><a href='#index-platform-running-on' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-PROCINFO-array-1"></span>
+<p>This element gives a string indicating the platform for which
+<code>gawk</code> was compiled. The value will be one of the following:
+</p>
+<dl compact="compact">
+<dt><span><code>&quot;mingw&quot;</code></span></dt>
+<dd><p>Microsoft Windows, using MinGW.
+</p>
+</dd>
+<dt><span><code>&quot;os390&quot;</code></span></dt>
+<dd><p>OS/390.
+</p>
+</dd>
+<dt><span><code>&quot;posix&quot;</code></span></dt>
+<dd><p>GNU/Linux, Cygwin, Mac OS X, and legacy Unix systems.
+</p>
+</dd>
+<dt><span><code>&quot;vms&quot;</code></span></dt>
+<dd><p>OpenVMS or Vax/VMS.
+</p></dd>
+</dl>
+
+</dd>
+<dt id='index-process-group-ID-of-gawk-process'><span><code>PROCINFO[&quot;pgrpid&quot;]</code><a href='#index-process-group-ID-of-gawk-process' class='copiable-anchor'> &para;</a></span></dt>
+<dd><p>The process group ID of the current process.
+</p>
+</dd>
+<dt id='index-process-ID-of-gawk-process'><span><code>PROCINFO[&quot;pid&quot;]</code><a href='#index-process-ID-of-gawk-process' class='copiable-anchor'> &para;</a></span></dt>
+<dd><p>The process ID of the current process.
+</p>
+</dd>
+<dt id='index-parent-process-ID-of-gawk-process'><span><code>PROCINFO[&quot;ppid&quot;]</code><a href='#index-parent-process-ID-of-gawk-process' class='copiable-anchor'> &para;</a></span></dt>
+<dd><p>The parent process ID of the current process.
+</p>
+</dd>
+<dt><span><code>PROCINFO[&quot;strftime&quot;]</code></span></dt>
+<dd><p>The default time format string for <code>strftime()</code>.
+Assigning a new value to this element changes the default.
+See <a href="Time-Functions.html">Time Functions</a>.
+</p>
+</dd>
+<dt><span><code>PROCINFO[&quot;uid&quot;]</code></span></dt>
+<dd><p>The value of the <code>getuid()</code> system call.
+</p>
+</dd>
+<dt id='index-version-of'><span><code>PROCINFO[&quot;version&quot;]</code><a href='#index-version-of' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-gawk-49"></span>
+<p>The version of <code>gawk</code>.
+</p></dd>
+</dl>
+
+<p>The following additional elements in the array
+are available to provide information about the MPFR and GMP libraries
+if your version of <code>gawk</code> supports arbitrary-precision arithmetic
+(see <a href="Arbitrary-Precision-Arithmetic.html">Arithmetic and Arbitrary-Precision Arithmetic with <code>gawk</code></a>):
+</p>
+<dl compact="compact">
+<dt id='index-version-of-1'><span><code>PROCINFO[&quot;gmp_version&quot;]</code><a href='#index-version-of-1' class='copiable-anchor'> &para;</a></span></dt>
+<dd><p>The version of the GNU MP library.
+</p>
+<span id="index-version-of-2"></span>
+</dd>
+<dt><span><code>PROCINFO[&quot;mpfr_version&quot;]</code></span></dt>
+<dd><p>The version of the GNU MPFR library.
+</p>
+</dd>
+<dt id='index-maximum-precision-supported-by-MPFR-library'><span><code>PROCINFO[&quot;prec_max&quot;]</code><a href='#index-maximum-precision-supported-by-MPFR-library' class='copiable-anchor'> &para;</a></span></dt>
+<dd><p>The maximum precision supported by MPFR.
+</p>
+</dd>
+<dt id='index-minimum-precision-required-by-MPFR-library'><span><code>PROCINFO[&quot;prec_min&quot;]</code><a href='#index-minimum-precision-required-by-MPFR-library' class='copiable-anchor'> &para;</a></span></dt>
+<dd><p>The minimum precision required by MPFR.
+</p></dd>
+</dl>
+
+<p>The following additional elements in the array are available to provide
+information about the version of the extension API, if your version
+of <code>gawk</code> supports dynamic loading of extension functions
+(see <a href="Dynamic-Extensions.html">Writing Extensions for <code>gawk</code></a>):
+</p>
+<dl compact="compact">
+<dt id='index-version-of-3'><span><code>PROCINFO[&quot;api_major&quot;]</code><a href='#index-version-of-3' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-extension-API"></span>
+<p>The major version of the extension API.
+</p>
+</dd>
+<dt><span><code>PROCINFO[&quot;api_minor&quot;]</code></span></dt>
+<dd><p>The minor version of the extension API.
+</p></dd>
+</dl>
+
+<span id="index-supplementary-groups-of-gawk-process"></span>
+<p>On some systems, there may be elements in the array, <code>&quot;group1&quot;</code>
+through <code>&quot;group<var>N</var>&quot;</code> for some <var>N</var>. <var>N</var> is the number of
+supplementary groups that the process has.  Use the <code>in</code> operator
+to test for these elements
+(see <a href="Reference-to-Elements.html">Referring to an Array Element</a>).
+</p>
+<p>The following elements allow you to change <code>gawk</code>&rsquo;s behavior:
+</p>
+<dl compact="compact">
+<dt><span><code>PROCINFO[&quot;NONFATAL&quot;]</code></span></dt>
+<dd><p>If this element exists, then I/O errors for all redirections become nonfatal.
+See <a href="Nonfatal.html">Enabling Nonfatal Output</a>.
+</p>
+</dd>
+<dt><span><code>PROCINFO[&quot;<var>name</var>&quot;, &quot;NONFATAL&quot;]</code></span></dt>
+<dd><p>Make I/O errors for <var>name</var> be nonfatal.
+See <a href="Nonfatal.html">Enabling Nonfatal Output</a>.
+</p>
+</dd>
+<dt><span><code>PROCINFO[&quot;<var>command</var>&quot;, &quot;pty&quot;]</code></span></dt>
+<dd><p>For two-way communication to <var>command</var>, use a pseudo-tty instead
+of setting up a two-way pipe.
+See <a href="Two_002dway-I_002fO.html">Two-Way Communications with Another Process</a> for more information.
+</p>
+</dd>
+<dt><span><code>PROCINFO[&quot;<var>input_name</var>&quot;, &quot;READ_TIMEOUT&quot;]</code></span></dt>
+<dd><p>Set a timeout for reading from input redirection <var>input_name</var>.
+See <a href="Read-Timeout.html">Reading Input with a Timeout</a> for more information.
+</p>
+</dd>
+<dt><span><code>PROCINFO[&quot;<var>input_name</var>&quot;, &quot;RETRY&quot;]</code></span></dt>
+<dd><p>If an I/O error that may be retried occurs when reading data from
+<var>input_name</var>, and this array entry exists, then <code>getline</code> returns
+-2 instead of following the default behavior of returning -1
+and configuring <var>input_name</var> to return no further data.  An I/O error
+that may be retried is one where <code>errno</code> has the value <code>EAGAIN</code>,
+<code>EWOULDBLOCK</code>, <code>EINTR</code>, or <code>ETIMEDOUT</code>.  This may be useful
+in conjunction with <code>PROCINFO[&quot;<var>input_name</var>&quot;, &quot;READ_TIMEOUT&quot;]</code>
+or situations where a file descriptor has been configured to behave in
+a non-blocking fashion.
+See <a href="Retrying-Input.html">Retrying Reads After Certain Input Errors</a> for more information.
+</p>
+</dd>
+<dt><span><code>PROCINFO[&quot;sorted_in&quot;]</code></span></dt>
+<dd><p>If this element exists in <code>PROCINFO</code>, its value controls the
+order in which array indices will be processed by
+&lsquo;<samp>for (<var>indx</var> in <var>array</var>)</samp>&rsquo; loops.
+This is an advanced feature, so we defer the
+full description until later; see
+<a href="Controlling-Scanning.html">Using Predefined Array Scanning Orders with <code>gawk</code></a>.
+</p></dd>
+</dl>
+
+<span id="index-RLENGTH-variable"></span>
+</dd>
+<dt><span><code>RLENGTH</code></span></dt>
+<dd><p>The length of the substring matched by the
+<code>match()</code> function
+(see <a href="String-Functions.html">String-Manipulation Functions</a>).
+<code>RLENGTH</code> is set by invoking the <code>match()</code> function.  Its value
+is the length of the matched string, or -1 if no match is found.
+</p>
+<span id="index-RSTART-variable"></span>
+</dd>
+<dt><span><code>RSTART</code></span></dt>
+<dd><p>The start index in characters of the substring that is matched by the
+<code>match()</code> function
+(see <a href="String-Functions.html">String-Manipulation Functions</a>).
+<code>RSTART</code> is set by invoking the <code>match()</code> function.  Its value
+is the position of the string where the matched substring starts, or zero
+if no match was found.
+</p>
+<span id="index-gawk-50"></span>
+<span id="index-RT-variable-3"></span>
+<span id="index-differences-in-awk-and-gawk-38"></span>
+</dd>
+<dt><span><code>RT #</code></span></dt>
+<dd><p>The input text that matched the text denoted by <code>RS</code>,
+the record separator.  It is set every time a record is read.
+</p>
+<span id="index-gawk-51"></span>
+<span id="index-SYMTAB-array"></span>
+<span id="index-differences-in-awk-and-gawk-39"></span>
+</dd>
+<dt><span><code>SYMTAB #</code></span></dt>
+<dd><p>An array whose indices are the names of all defined global variables and
+arrays in the program.  <code>SYMTAB</code> makes <code>gawk</code>&rsquo;s symbol table
+visible to the <code>awk</code> programmer.  It is built as <code>gawk</code>
+parses the program and is complete before the program starts to run.
+</p>
+<p>The array may be used for indirect access to read or write the value of
+a variable:
+</p>
+<div class="example">
+<pre class="example">foo = 5
+SYMTAB[&quot;foo&quot;] = 4
+print foo    # prints 4
+</pre></div>
+
+<p>The <code>isarray()</code> function (see <a href="Type-Functions.html">Getting Type Information</a>) may be used to test
+if an element in <code>SYMTAB</code> is an array.
+Also, you may not use the <code>delete</code> statement with the
+<code>SYMTAB</code> array.
+</p>
+<p>Prior to version 5.0 of <code>gawk</code>, you could
+use an index for <code>SYMTAB</code> that was not a predefined identifier:
+</p>
+<div class="example">
+<pre class="example">SYMTAB[&quot;xxx&quot;] = 5
+print SYMTAB[&quot;xxx&quot;]
+</pre></div>
+
+<p>This no longer works, instead producing a fatal error, as it led
+to rampant confusion.
+</p>
+<span id="index-Schorr_002c-Andrew-1"></span>
+<p>The <code>SYMTAB</code> array is more interesting than it looks. Andrew Schorr
+points out that it effectively gives <code>awk</code> data pointers. Consider his
+example:
+</p>
+<div class="example">
+<pre class="example"># Indirect multiply of any variable by amount, return result
+
+function multiply(variable, amount)
+{
+    return SYMTAB[variable] *= amount
+}
+</pre></div>
+
+<p>You would use it like this:
+</p>
+<div class="example">
+<pre class="example">BEGIN {
+    answer = 10.5
+    multiply(&quot;answer&quot;, 4)
+    print &quot;The answer is&quot;, answer
+}
+</pre></div>
+
+<p>When run, this produces:
+</p>
+<div class="example">
+<pre class="example">$ <kbd>gawk -f answer.awk</kbd>
+-| The answer is 42
+</pre></div>
+
+<blockquote>
+<p><b>NOTE:</b> In order to avoid severe time-travel paradoxes,<a id="DOCF40" href="#FOOT40"><sup>40</sup></a> neither <code>FUNCTAB</code> nor <code>SYMTAB</code>
+is available as an element within the <code>SYMTAB</code> array.
+</p></blockquote>
+</dd>
+</dl>
+
+<span id="index-sidebar-18"></span>
+
+<table class="cartouche" border="1"><tr><td>
+<div align="center"><b>Changing <code>NR</code> and <code>FNR</code></b>
+</div>
+
+<span id="index-NR-variable-2"></span>
+<span id="index-FNR-variable-2"></span>
+<span id="index-dark-corner-33"></span>
+<p><code>awk</code> increments <code>NR</code> and <code>FNR</code>
+each time it reads a record, instead of setting them to the absolute
+value of the number of records read.  This means that a program can
+change these variables and their new values are incremented for
+each record.
+(d.c.)
+The following example shows this:
+</p>
+<div class="example">
+<pre class="example">$ <kbd>echo '1</kbd>
+&gt; <kbd>2</kbd>
+&gt; <kbd>3</kbd>
+&gt; <kbd>4' | awk 'NR == 2 { NR = 17 }</kbd>
+&gt; <kbd>{ print NR }'</kbd>
+-| 1
+-| 17
+-| 18
+-| 19
+</pre></div>
+
+<p>Before <code>FNR</code> was added to the <code>awk</code> language
+(see <a href="V7_002fSVR3_002e1.html">Major Changes Between V7 and SVR3.1</a>),
+many <code>awk</code> programs used this feature to track the number of
+records in a file by resetting <code>NR</code> to zero when <code>FILENAME</code>
+changed.
+</p></td></tr></table>
+
+</div>
+<div class="footnote">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5><a id="FOOT39" href="#DOCF39">(39)</a></h5>
+<p>Some early implementations of Unix
+<code>awk</code> initialized <code>FILENAME</code> to <code>&quot;-&quot;</code>, even if there
+were data files to be processed. This behavior was incorrect and should
+not be relied upon in your programs.</p>
+<h5><a id="FOOT40" href="#DOCF40">(40)</a></h5>
+<p>Not to mention
+difficult implementation issues.</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="ARGC-and-ARGV.html">Using <code>ARGC</code> and <code>ARGV</code></a>, Previous: <a href="User_002dmodified.html">Built-in Variables That Control <code>awk</code></a>, Up: <a href="Built_002din-Variables.html">Predefined Variables</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

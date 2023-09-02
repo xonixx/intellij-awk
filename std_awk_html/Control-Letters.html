@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 
+Copyright (C) 1989, 1991, 1992, 1993, 1996-2005, 2007, 2009-2022 
+
+Free Software Foundation, Inc.
+
+
+
+This is Edition 5.2 of GAWK: Effective AWK Programming: A User's Guide for GNU Awk,
+for the 5.2.0 (or later) version of the GNU
+implementation of AWK.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License", with the
+Front-Cover Texts being "A GNU Manual", and with the Back-Cover Texts
+as in (a) below.
+A copy of the license is included in the section entitled
+"GNU Free Documentation License".
+
+a. The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual." -->
+<title>Control Letters (The GNU Awk User&rsquo;s Guide)</title>
+
+<meta name="description" content="Control Letters (The GNU Awk User&rsquo;s Guide)">
+<meta name="keywords" content="Control Letters (The GNU Awk User&rsquo;s Guide)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Printf.html" rel="up" title="Printf">
+<link href="Format-Modifiers.html" rel="next" title="Format Modifiers">
+<link href="Basic-Printf.html" rel="prev" title="Basic Printf">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/gnulib/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="Control-Letters">
+<div class="header">
+<p>
+Next: <a href="Format-Modifiers.html" accesskey="n" rel="next">Modifiers for <code>printf</code> Formats</a>, Previous: <a href="Basic-Printf.html" accesskey="p" rel="prev">Introduction to the <code>printf</code> Statement</a>, Up: <a href="Printf.html" accesskey="u" rel="up">Using <code>printf</code> Statements for Fancier Printing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Format_002dControl-Letters"></span><h4 class="subsection">5.5.2 Format-Control Letters</h4>
+<span id="index-printf-statement-4"></span>
+<span id="index-format-specifiers-1"></span>
+
+<p>A format specifier starts with the character &lsquo;<samp>%</samp>&rsquo; and ends with
+a <em>format-control letter</em>&mdash;it tells the <code>printf</code> statement
+how to output one item.  The format-control letter specifies what <em>kind</em>
+of value to print.  The rest of the format specifier is made up of
+optional <em>modifiers</em> that control <em>how</em> to print the value, such as
+the field width.  Here is a list of the format-control letters:
+</p>
+<dl compact="compact">
+<dt><span><code>%a</code>, <code>%A</code></span></dt>
+<dd><p>A floating point number of the form
+[<code>-</code>]<code>0x<var>h</var>.<var>hhhh</var>p+-<var>dd</var></code>
+(C99 hexadecimal floating point format).
+For <code>%A</code>,
+uppercase letters are used instead of lowercase ones.
+</p>
+<blockquote>
+<p><b>NOTE:</b> The current POSIX standard requires support for <code>%a</code> and <code>%A</code> in
+<code>awk</code>. As far as we know, besides <code>gawk</code>, the only other
+version of <code>awk</code> that actually implements it is BWK <code>awk</code>.
+It&rsquo;s use is thus highly nonportable!
+</p>
+<p>Furthermore, these formats are not available on any system where the
+underlying C library <code>printf()</code> function does not support them. As
+of this writing, among current systems, only OpenVMS is known to not
+support them.
+</p></blockquote>
+
+</dd>
+<dt><span><code>%c</code></span></dt>
+<dd><p>Print a number as a character; thus, &lsquo;<samp>printf &quot;%c&quot;,
+65</samp>&rsquo; outputs the letter &lsquo;<samp>A</samp>&rsquo;. The output for a string value is
+the first character of the string.
+</p>
+<span id="index-dark-corner-15"></span>
+<span id="index-gawk-27"></span>
+<blockquote>
+<p><b>NOTE:</b> The POSIX standard says the first character of a string is printed.
+In locales with multibyte characters, <code>gawk</code> attempts to
+convert the leading bytes of the string into a valid wide character
+and then to print the multibyte encoding of that character.
+Similarly, when printing a numeric value, <code>gawk</code> allows the
+value to be within the numeric range of values that can be held
+in a wide character.
+If the conversion to multibyte encoding fails, <code>gawk</code>
+uses the low eight bits of the value as the character to print.
+</p>
+<p>Other <code>awk</code> versions generally restrict themselves to printing
+the first byte of a string or to numeric values within the range of
+a single byte (0&ndash;255).
+(d.c.)
+</p></blockquote>
+
+
+</dd>
+<dt><span><code>%d</code>, <code>%i</code></span></dt>
+<dd><p>Print a decimal integer.
+The two control letters are equivalent.
+(The &lsquo;<samp>%i</samp>&rsquo; specification is for compatibility with ISO C.)
+</p>
+</dd>
+<dt><span><code>%e</code>, <code>%E</code></span></dt>
+<dd><p>Print a number in scientific (exponential) notation.
+For example:
+</p>
+<div class="example">
+<pre class="example">printf &quot;%4.3e\n&quot;, 1950
+</pre></div>
+
+<p>prints &lsquo;<samp>1.950e+03</samp>&rsquo;, with a total of four significant figures, three of
+which follow the decimal point.
+(The &lsquo;<samp>4.3</samp>&rsquo; represents two modifiers,
+discussed in the next subsection.)
+&lsquo;<samp>%E</samp>&rsquo; uses &lsquo;<samp>E</samp>&rsquo; instead of &lsquo;<samp>e</samp>&rsquo; in the output.
+</p>
+</dd>
+<dt><span><code>%f</code></span></dt>
+<dd><p>Print a number in floating-point notation.
+For example:
+</p>
+<div class="example">
+<pre class="example">printf &quot;%4.3f&quot;, 1950
+</pre></div>
+
+<p>prints &lsquo;<samp>1950.000</samp>&rsquo;, with a minimum of four significant figures, three of
+which follow the decimal point.
+(The &lsquo;<samp>4.3</samp>&rsquo; represents two modifiers,
+discussed in the next subsection.)
+</p>
+<p>On systems supporting IEEE 754 floating-point format, values
+representing negative
+infinity are formatted as
+&lsquo;<samp>-inf</samp>&rsquo; or &lsquo;<samp>-infinity</samp>&rsquo;,
+and positive infinity as
+&lsquo;<samp>inf</samp>&rsquo; or &lsquo;<samp>infinity</samp>&rsquo;.
+The special &ldquo;not a number&rdquo; value formats as &lsquo;<samp>-nan</samp>&rsquo; or &lsquo;<samp>nan</samp>&rsquo;
+(see <a href="Strange-values.html">Floating Point Values They Didn&rsquo;t Talk About In School</a>).
+</p>
+</dd>
+<dt><span><code>%F</code></span></dt>
+<dd><p>Like &lsquo;<samp>%f</samp>&rsquo;, but the infinity and &ldquo;not a number&rdquo; values are spelled
+using uppercase letters.
+</p>
+<p>The &lsquo;<samp>%F</samp>&rsquo; format is a POSIX extension to ISO C; not all systems
+support it.  On those that don&rsquo;t, <code>gawk</code> uses &lsquo;<samp>%f</samp>&rsquo; instead.
+</p>
+</dd>
+<dt><span><code>%g</code>, <code>%G</code></span></dt>
+<dd><p>Print a number in either scientific notation or in floating-point
+notation, whichever uses fewer characters; if the result is printed in
+scientific notation, &lsquo;<samp>%G</samp>&rsquo; uses &lsquo;<samp>E</samp>&rsquo; instead of &lsquo;<samp>e</samp>&rsquo;.
+</p>
+</dd>
+<dt><span><code>%o</code></span></dt>
+<dd><p>Print an unsigned octal integer
+(see <a href="Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
+</p>
+</dd>
+<dt><span><code>%s</code></span></dt>
+<dd><p>Print a string.
+</p>
+</dd>
+<dt><span><code>%u</code></span></dt>
+<dd><p>Print an unsigned decimal integer.
+(This format is of marginal use, because all numbers in <code>awk</code>
+are floating point; it is provided primarily for compatibility with C.)
+</p>
+</dd>
+<dt><span><code>%x</code>, <code>%X</code></span></dt>
+<dd><p>Print an unsigned hexadecimal integer;
+&lsquo;<samp>%X</samp>&rsquo; uses the letters &lsquo;<samp>A</samp>&rsquo; through &lsquo;<samp>F</samp>&rsquo;
+instead of &lsquo;<samp>a</samp>&rsquo; through &lsquo;<samp>f</samp>&rsquo;
+(see <a href="Nondecimal_002dnumbers.html">Octal and Hexadecimal Numbers</a>).
+</p>
+</dd>
+<dt><span><code>%%</code></span></dt>
+<dd><p>Print a single &lsquo;<samp>%</samp>&rsquo;.
+This does not consume an
+argument and it ignores any modifiers.
+</p></dd>
+</dl>
+
+<span id="index-dark-corner-16"></span>
+<span id="index-gawk-28"></span>
+<blockquote>
+<p><b>NOTE:</b> When using the integer format-control letters for values that are
+outside the range of the widest C integer type, <code>gawk</code> switches to
+the &lsquo;<samp>%g</samp>&rsquo; format specifier. If <samp>--lint</samp> is provided on the
+command line (see <a href="Options.html">Command-Line Options</a>), <code>gawk</code>
+warns about this.  Other versions of <code>awk</code> may print invalid
+values or do something else entirely.
+(d.c.)
+</p></blockquote>
+
+<blockquote>
+<p><b>NOTE:</b> The IEEE 754 standard for floating-point arithmetic allows for special
+values that represent &ldquo;infinity&rdquo; (positive and negative) and values
+that are &ldquo;not a number&rdquo; (NaN).
+</p>
+<p>Input and output of these values occurs as text strings. This is
+somewhat problematic for the <code>awk</code> language, which predates
+the IEEE standard.  Further details are provided in
+<a href="POSIX-Floating-Point-Problems.html">Standards Versus Existing Practice</a>; please see there.
+</p></blockquote>
+
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Format-Modifiers.html">Modifiers for <code>printf</code> Formats</a>, Previous: <a href="Basic-Printf.html">Introduction to the <code>printf</code> Statement</a>, Up: <a href="Printf.html">Using <code>printf</code> Statements for Fancier Printing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

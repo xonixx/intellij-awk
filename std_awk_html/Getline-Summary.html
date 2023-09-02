@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.0.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 
+Copyright © 1989, 1991, 1992, 1993, 1996-2005, 2007, 2009-2023 
+
+Free Software Foundation, Inc.
+
+
+
+This is Edition 5.2 of GAWK: Effective AWK Programming: A User's Guide for GNU Awk,
+for the 5.2.2 (or later) version of the GNU
+implementation of AWK.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License", with the
+Front-Cover Texts being "A GNU Manual", and with the Back-Cover Texts
+as in (a) below.
+A copy of the license is included in the section entitled
+"GNU Free Documentation License".
+
+a. The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual." -->
+<title>Getline Summary (The GNU Awk User&rsquo;s Guide)</title>
+
+<meta name="description" content="Getline Summary (The GNU Awk User&rsquo;s Guide)">
+<meta name="keywords" content="Getline Summary (The GNU Awk User&rsquo;s Guide)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Getline.html" rel="up" title="Getline">
+<link href="Getline-Notes.html" rel="prev" title="Getline Notes">
+<style type="text/css">
+<!--
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/gnulib/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection-level-extent" id="Getline-Summary">
+<div class="nav-panel">
+<p>
+Previous: <a href="Getline-Notes.html" accesskey="p" rel="prev">Points to Remember About <code class="code">getline</code></a>, Up: <a href="Getline.html" accesskey="u" rel="up">Explicit Input with <code class="code">getline</code></a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<h4 class="subsection" id="Summary-of-getline-Variants">4.10.10 Summary of <code class="code">getline</code> Variants</h4>
+<a class="index-entry-id" id="index-getline-command-7"></a>
+
+<p><a class="ref" href="#table_002dgetline_002dvariants">Table 4.1</a>
+summarizes the eight variants of <code class="code">getline</code>,
+listing which predefined variables are set by each one,
+and whether the variant is standard or a <code class="command">gawk</code> extension.
+Note: for each variant, <code class="command">gawk</code> sets the <code class="code">RT</code> predefined variable.
+</p>
+<div class="float" id="table_002dgetline_002dvariants">
+
+<table class="multitable">
+<thead><tr><th width="33%">Variant</th><th width="38%">Effect</th><th width="27%"><code class="command">awk</code> / <code class="command">gawk</code></th></tr></thead>
+<tbody><tr><td width="33%"><code class="code">getline</code></td><td width="38%">Sets <code class="code">$0</code>, <code class="code">NF</code>, <code class="code">FNR</code>, <code class="code">NR</code>, and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+<tr><td width="33%"><code class="code">getline</code> <var class="var">var</var></td><td width="38%">Sets <var class="var">var</var>, <code class="code">FNR</code>, <code class="code">NR</code>, and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+<tr><td width="33%"><code class="code">getline &lt;</code> <var class="var">file</var></td><td width="38%">Sets <code class="code">$0</code>, <code class="code">NF</code>, and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+<tr><td width="33%"><code class="code">getline <var class="var">var</var> &lt; <var class="var">file</var></code></td><td width="38%">Sets <var class="var">var</var> and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+<tr><td width="33%"><var class="var">command</var> <code class="code">| getline</code></td><td width="38%">Sets <code class="code">$0</code>, <code class="code">NF</code>, and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+<tr><td width="33%"><var class="var">command</var> <code class="code">| getline</code> <var class="var">var</var></td><td width="38%">Sets <var class="var">var</var> and <code class="code">RT</code></td><td width="27%"><code class="command">awk</code></td></tr>
+<tr><td width="33%"><var class="var">command</var> <code class="code">|&amp; getline</code></td><td width="38%">Sets <code class="code">$0</code>, <code class="code">NF</code>, and <code class="code">RT</code></td><td width="27%"><code class="command">gawk</code></td></tr>
+<tr><td width="33%"><var class="var">command</var> <code class="code">|&amp; getline</code> <var class="var">var</var></td><td width="38%">Sets <var class="var">var</var> and <code class="code">RT</code></td><td width="27%"><code class="command">gawk</code></td></tr>
+</tbody>
+</table>
+<div class="caption"><p><strong class="strong">Table 4.1: </strong><code class="code">getline</code> variants and what they set</p></div></div>
+</div>
+
+
+
+</body>
+</html>

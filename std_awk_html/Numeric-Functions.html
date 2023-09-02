@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 
+Copyright (C) 1989, 1991, 1992, 1993, 1996-2005, 2007, 2009-2022 
+
+Free Software Foundation, Inc.
+
+
+
+This is Edition 5.2 of GAWK: Effective AWK Programming: A User's Guide for GNU Awk,
+for the 5.2.0 (or later) version of the GNU
+implementation of AWK.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License", with the
+Front-Cover Texts being "A GNU Manual", and with the Back-Cover Texts
+as in (a) below.
+A copy of the license is included in the section entitled
+"GNU Free Documentation License".
+
+a. The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual." -->
+<title>Numeric Functions (The GNU Awk User&rsquo;s Guide)</title>
+
+<meta name="description" content="Numeric Functions (The GNU Awk User&rsquo;s Guide)">
+<meta name="keywords" content="Numeric Functions (The GNU Awk User&rsquo;s Guide)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Built_002din.html" rel="up" title="Built-in">
+<link href="String-Functions.html" rel="next" title="String Functions">
+<link href="Boolean-Functions.html" rel="prev" title="Boolean Functions">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/gnulib/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="Numeric-Functions">
+<div class="header">
+<p>
+Next: <a href="String-Functions.html" accesskey="n" rel="next">String-Manipulation Functions</a>, Previous: <a href="Boolean-Functions.html" accesskey="p" rel="prev">Generating Boolean Values</a>, Up: <a href="Built_002din.html" accesskey="u" rel="up">Built-in Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Numeric-Functions-1"></span><h4 class="subsection">9.1.3 Numeric Functions</h4>
+<span id="index-numeric-3"></span>
+
+<p>The following list describes all of
+the built-in functions that work with numbers.
+Optional parameters are enclosed in square brackets&nbsp;([&nbsp;]):<!-- /@w -->
+</p>
+<dl compact="compact">
+<dt id='index-atan2_0028_0029-function'><span><code>atan2(<var>y</var>, <var>x</var>)</code><a href='#index-atan2_0028_0029-function' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-arctangent"></span>
+<p>Return the arctangent of <code><var>y</var> / <var>x</var></code> in radians.
+You can use &lsquo;<samp>pi = atan2(0, -1)</samp>&rsquo; to retrieve the value of
+<i>pi</i>.
+</p>
+</dd>
+<dt id='index-cos_0028_0029-function'><span><code>cos(<var>x</var>)</code><a href='#index-cos_0028_0029-function' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-cosine"></span>
+<p>Return the cosine of <var>x</var>, with <var>x</var> in radians.
+</p>
+</dd>
+<dt id='index-exp_0028_0029-function'><span><code>exp(<var>x</var>)</code><a href='#index-exp_0028_0029-function' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-exponent"></span>
+<p>Return the exponential of <var>x</var> (<code>e ^ <var>x</var></code>) or report
+an error if <var>x</var> is out of range.  The range of values <var>x</var> can have
+depends on your machine&rsquo;s floating-point representation.
+</p>
+</dd>
+<dt id='index-int_0028_0029-function'><span><code>int(<var>x</var>)</code><a href='#index-int_0028_0029-function' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-round-to-nearest-integer"></span>
+<p>Return the nearest integer to <var>x</var>, located between <var>x</var> and zero and
+truncated toward zero.
+For example, <code>int(3)</code> is 3, <code>int(3.9)</code> is 3, <code>int(-3.9)</code>
+is -3, and <code>int(-3)</code> is -3 as well.
+</p>
+
+</dd>
+<dt id='index-log_0028_0029-function'><span><code>log(<var>x</var>)</code><a href='#index-log_0028_0029-function' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-logarithm"></span>
+<p>Return the natural logarithm of <var>x</var>, if <var>x</var> is positive;
+otherwise, return NaN (&ldquo;not a number&rdquo;) on IEEE 754 systems.
+Additionally, <code>gawk</code> prints a warning message when <code>x</code>
+is negative.
+</p>
+<span id="index-Beebe_002c-Nelson-H_002eF_002e-1"></span>
+</dd>
+<dt id='index-rand_0028_0029-function'><span><code>rand()</code><a href='#index-rand_0028_0029-function' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-random-numbers"></span>
+<p>Return a random number.  The values of <code>rand()</code> are
+uniformly distributed between zero and one.
+The value could be zero but is never one.<a id="DOCF44" href="#FOOT44"><sup>44</sup></a>
+</p>
+<p>Often random integers are needed instead.  Following is a user-defined function
+that can be used to obtain a random nonnegative integer less than <var>n</var>:
+</p>
+<div class="example">
+<pre class="example">function randint(n)
+{
+    return int(n * rand())
+}
+</pre></div>
+
+<p>The multiplication produces a random number greater than or equal to
+zero and less than <code>n</code>.  Using <code>int()</code>, this result is made into
+an integer between zero and <code>n</code> - 1, inclusive.
+</p>
+<p>The following example uses a similar function to produce random integers
+between one and <var>n</var>.  This program prints a new random number for
+each input record:
+</p>
+<div class="example">
+<pre class="example"># Function to roll a simulated die.
+function roll(n) { return 1 + int(rand() * n) }
+
+# Roll 3 six-sided dice and
+# print total number of points.
+{
+    printf(&quot;%d points\n&quot;, roll(6) + roll(6) + roll(6))
+}
+</pre></div>
+
+<span id="index-seeding-random-number-generator"></span>
+<span id="index-random-numbers-1"></span>
+<blockquote>
+<p><b>CAUTION:</b> In most <code>awk</code> implementations, including <code>gawk</code>,
+<code>rand()</code> starts generating numbers from the same
+starting number, or <em>seed</em>, each time you run <code>awk</code>.<a id="DOCF45" href="#FOOT45"><sup>45</sup></a>  Thus,
+a program generates the same results each time you run it.
+The numbers are random within one <code>awk</code> run but predictable
+from run to run.  This is convenient for debugging, but if you want
+a program to do different things each time it is used, you must change
+the seed to a value that is different in each run.  To do this,
+use <code>srand()</code>.
+</p></blockquote>
+
+</dd>
+<dt id='index-sin_0028_0029-function'><span><code>sin(<var>x</var>)</code><a href='#index-sin_0028_0029-function' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-sine"></span>
+<p>Return the sine of <var>x</var>, with <var>x</var> in radians.
+</p>
+</dd>
+<dt id='index-sqrt_0028_0029-function'><span><code>sqrt(<var>x</var>)</code><a href='#index-sqrt_0028_0029-function' class='copiable-anchor'> &para;</a></span></dt>
+<dd><span id="index-square-root"></span>
+<p>Return the positive square root of <var>x</var>.
+<code>gawk</code> prints a warning message
+if <var>x</var> is negative.  Thus, <code>sqrt(4)</code> is 2.
+</p>
+</dd>
+<dt id='index-srand_0028_0029-function'><span><code>srand(</code>[<var>x</var>]<code>)</code><a href='#index-srand_0028_0029-function' class='copiable-anchor'> &para;</a></span></dt>
+<dd><p>Set the starting point, or seed,
+for generating random numbers to the value <var>x</var>.
+</p>
+<p>Each seed value leads to a particular sequence of random
+numbers.<a id="DOCF46" href="#FOOT46"><sup>46</sup></a>
+Thus, if the seed is set to the same value a second time,
+the same sequence of random numbers is produced again.
+</p>
+<blockquote>
+<p><b>CAUTION:</b> Different <code>awk</code> implementations use different random-number
+generators internally.  Don&rsquo;t expect the same <code>awk</code> program
+to produce the same series of random numbers when executed by
+different versions of <code>awk</code>.
+</p></blockquote>
+
+<p>If the argument <var>x</var> is omitted, as in &lsquo;<samp>srand()</samp>&rsquo;, then the current
+date and time of day are used for a seed.  This is the way to get random
+numbers that are truly unpredictable.
+</p>
+<p>The return value of <code>srand()</code> is the previous seed.  This makes it
+easy to keep track of the seeds in case you need to consistently reproduce
+sequences of random numbers.
+</p>
+<p>POSIX does not specify the initial seed; it differs among <code>awk</code>
+implementations.
+</p></dd>
+</dl>
+
+</div>
+<div class="footnote">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5><a id="FOOT44" href="#DOCF44">(44)</a></h5>
+<p>The C version of
+<code>rand()</code> on many Unix systems is known to produce fairly poor
+sequences of random numbers.  However, nothing requires that an
+<code>awk</code> implementation use the C <code>rand()</code> to implement the
+<code>awk</code> version of <code>rand()</code>.  In fact, for many years,
+<code>gawk</code> used the BSD <code>random()</code> function, which is
+considerably better than <code>rand()</code>, to produce random numbers.
+From version 4.1.4, courtesy of Nelson H.F. Beebe, <code>gawk</code>
+uses the Bayes-Durham shuffle buffer algorithm which considerably extends
+the period of the random number generator, and eliminates short-range and
+long-range correlations that might exist in the original generator.</p>
+<h5><a id="FOOT45" href="#DOCF45">(45)</a></h5>
+<p><code>mawk</code>
+uses a different seed each time.</p>
+<h5><a id="FOOT46" href="#DOCF46">(46)</a></h5>
+<p>Computer-generated random numbers really are not truly
+random.  They are technically known as <em>pseudorandom</em>.  This means
+that although the numbers in a sequence appear to be random, you can in
+fact generate the same sequence of random numbers over and over again.</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="String-Functions.html">String-Manipulation Functions</a>, Previous: <a href="Boolean-Functions.html">Generating Boolean Values</a>, Up: <a href="Built_002din.html">Built-in Functions</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

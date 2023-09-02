@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.8, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- 
+Copyright (C) 1989, 1991, 1992, 1993, 1996-2005, 2007, 2009-2022 
+
+Free Software Foundation, Inc.
+
+
+
+This is Edition 5.2 of GAWK: Effective AWK Programming: A User's Guide for GNU Awk,
+for the 5.2.0 (or later) version of the GNU
+implementation of AWK.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License", with the
+Front-Cover Texts being "A GNU Manual", and with the Back-Cover Texts
+as in (a) below.
+A copy of the license is included in the section entitled
+"GNU Free Documentation License".
+
+a. The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual." -->
+<title>Format Modifiers (The GNU Awk User&rsquo;s Guide)</title>
+
+<meta name="description" content="Format Modifiers (The GNU Awk User&rsquo;s Guide)">
+<meta name="keywords" content="Format Modifiers (The GNU Awk User&rsquo;s Guide)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="index.html" rel="start" title="Top">
+<link href="Index.html" rel="index" title="Index">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Printf.html" rel="up" title="Printf">
+<link href="Printf-Examples.html" rel="next" title="Printf Examples">
+<link href="Control-Letters.html" rel="prev" title="Control Letters">
+<style type="text/css">
+<!--
+a.copiable-anchor {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+span:hover a.copiable-anchor {visibility: visible}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://www.gnu.org/software/gnulib/manual.css">
+
+
+</head>
+
+<body lang="en">
+<div class="subsection" id="Format-Modifiers">
+<div class="header">
+<p>
+Next: <a href="Printf-Examples.html" accesskey="n" rel="next">Examples Using <code>printf</code></a>, Previous: <a href="Control-Letters.html" accesskey="p" rel="prev">Format-Control Letters</a>, Up: <a href="Printf.html" accesskey="u" rel="up">Using <code>printf</code> Statements for Fancier Printing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+<hr>
+<span id="Modifiers-for-printf-Formats"></span><h4 class="subsection">5.5.3 Modifiers for <code>printf</code> Formats</h4>
+
+<span id="index-printf-statement-5"></span>
+<span id="index-modifiers_002c-in-format-specifiers"></span>
+<p>A format specification can also include <em>modifiers</em> that can control
+how much of the item&rsquo;s value is printed, as well as how much space it gets.
+The modifiers come between the &lsquo;<samp>%</samp>&rsquo; and the format-control letter.
+We use the bullet symbol &ldquo;&bull;&rdquo; in the following examples to
+represent
+spaces in the output. Here are the possible modifiers, in the order in
+which they may appear:
+</p>
+<dl compact="compact">
+<dd><span id="index-differences-in-awk-and-gawk-15"></span>
+<span id="index-printf-statement-6"></span>
+<span id="index-positional-specifiers_002c-printf-statement"></span>
+</dd>
+<dt><span><code><var>N</var>$</code></span></dt>
+<dd><p>An integer constant followed by a &lsquo;<samp>$</samp>&rsquo; is a <em>positional specifier</em>.
+Normally, format specifications are applied to arguments in the order
+given in the format string.  With a positional specifier, the format
+specification is applied to a specific argument, instead of what
+would be the next argument in the list.  Positional specifiers begin
+counting with one. Thus:
+</p>
+<div class="example">
+<pre class="example">printf &quot;%s %s\n&quot;, &quot;don't&quot;, &quot;panic&quot;
+printf &quot;%2$s %1$s\n&quot;, &quot;panic&quot;, &quot;don't&quot;
+</pre></div>
+
+<p>prints the famous friendly message twice.
+</p>
+<p>At first glance, this feature doesn&rsquo;t seem to be of much use.
+It is in fact a <code>gawk</code> extension, intended for use in translating
+messages at runtime.
+See <a href="Printf-Ordering.html">Rearranging <code>printf</code> Arguments</a>,
+which describes how and why to use positional specifiers.
+For now, we ignore them.
+</p>
+</dd>
+<dt><span><code>-</code> (Minus)</span></dt>
+<dd><p>The minus sign, used before the width modifier (see later on in
+this list),
+says to left-justify
+the argument within its specified width.  Normally, the argument
+is printed right-justified in the specified width.  Thus:
+</p>
+<div class="example">
+<pre class="example">printf &quot;%-4s&quot;, &quot;foo&quot;
+</pre></div>
+
+<p>prints &lsquo;<samp>foo&bull;</samp>&rsquo;.
+</p>
+</dd>
+<dt><span><var>space</var></span></dt>
+<dd><p>For numeric conversions, prefix positive values with a space and
+negative values with a minus sign.
+</p>
+</dd>
+<dt><span><code>+</code></span></dt>
+<dd><p>The plus sign, used before the width modifier (see later on in
+this list),
+says to always supply a sign for numeric conversions, even if the data
+to format is positive. The &lsquo;<samp>+</samp>&rsquo; overrides the space modifier.
+</p>
+</dd>
+<dt><span><code>#</code></span></dt>
+<dd><p>Use an &ldquo;alternative form&rdquo; for certain control letters.
+For &lsquo;<samp>%o</samp>&rsquo;, supply a leading zero.
+For &lsquo;<samp>%x</samp>&rsquo; and &lsquo;<samp>%X</samp>&rsquo;, supply a leading &lsquo;<samp>0x</samp>&rsquo; or &lsquo;<samp>0X</samp>&rsquo; for
+a nonzero result.
+For &lsquo;<samp>%e</samp>&rsquo;, &lsquo;<samp>%E</samp>&rsquo;, &lsquo;<samp>%f</samp>&rsquo;, and &lsquo;<samp>%F</samp>&rsquo;, the result always
+contains a decimal point.
+For &lsquo;<samp>%g</samp>&rsquo; and &lsquo;<samp>%G</samp>&rsquo;, trailing zeros are not removed from the result.
+</p>
+</dd>
+<dt><span><code>0</code></span></dt>
+<dd><p>A leading &lsquo;<samp>0</samp>&rsquo; (zero) acts as a flag indicating that output should be
+padded with zeros instead of spaces.
+This applies only to the numeric output formats.
+This flag only has an effect when the field width is wider than the
+value to print.
+</p>
+</dd>
+<dt><span><code>'</code></span></dt>
+<dd><p>A single quote or apostrophe character is a POSIX extension to ISO C.
+It indicates that the integer part of a floating-point value, or the
+entire part of an integer decimal value, should have a thousands-separator
+character in it.  This only works in locales that support such characters.
+For example:
+</p>
+<div class="example">
+<pre class="example">$ <kbd>cat thousands.awk</kbd>          <i>Show source program</i>
+-| BEGIN { printf &quot;%'d\n&quot;, 1234567 }
+$ <kbd>LC_ALL=C gawk -f thousands.awk</kbd>
+-| 1234567                   <i>Results in</i> &quot;C&quot; <i>locale</i>
+$ <kbd>LC_ALL=en_US.UTF-8 gawk -f thousands.awk</kbd>
+-| 1,234,567                 <i>Results in US English UTF locale</i>
+</pre></div>
+
+<p>For more information about locales and internationalization issues,
+see <a href="Locales.html">Where You Are Makes a Difference</a>.
+</p>
+<blockquote>
+<p><b>NOTE:</b> The &lsquo;<samp>'</samp>&rsquo; flag is a nice feature, but its use complicates things: it
+becomes difficult to use it in command-line programs.  For information
+on appropriate quoting tricks, see <a href="Quoting.html">Shell Quoting Issues</a>.
+</p></blockquote>
+
+</dd>
+<dt><span><var>width</var></span></dt>
+<dd><p>This is a number specifying the desired minimum width of a field.  Inserting any
+number between the &lsquo;<samp>%</samp>&rsquo; sign and the format-control character forces the
+field to expand to this width.  The default way to do this is to
+pad with spaces on the left.  For example:
+</p>
+<div class="example">
+<pre class="example">printf &quot;%4s&quot;, &quot;foo&quot;
+</pre></div>
+
+<p>prints &lsquo;<samp>&bull;foo</samp>&rsquo;.
+</p>
+<p>The value of <var>width</var> is a minimum width, not a maximum.  If the item
+value requires more than <var>width</var> characters, it can be as wide as
+necessary.  Thus, the following:
+</p>
+<div class="example">
+<pre class="example">printf &quot;%4s&quot;, &quot;foobar&quot;
+</pre></div>
+
+<p>prints &lsquo;<samp>foobar</samp>&rsquo;.
+</p>
+<p>Preceding the <var>width</var> with a minus sign causes the output to be
+padded with spaces on the right, instead of on the left.
+</p>
+</dd>
+<dt><span><code>.<var>prec</var></code></span></dt>
+<dd><p>A period followed by an integer constant
+specifies the precision to use when printing.
+The meaning of the precision varies by control letter:
+</p>
+<dl compact="compact">
+<dt><span><code>%d</code>, <code>%i</code>, <code>%o</code>, <code>%u</code>, <code>%x</code>, <code>%X</code></span></dt>
+<dd><p>Minimum number of digits to print.
+</p>
+</dd>
+<dt><span><code>%e</code>, <code>%E</code>, <code>%f</code>, <code>%F</code></span></dt>
+<dd><p>Number of digits to the right of the decimal point.
+</p>
+</dd>
+<dt><span><code>%g</code>, <code>%G</code></span></dt>
+<dd><p>Maximum number of significant digits.
+</p>
+</dd>
+<dt><span><code>%s</code></span></dt>
+<dd><p>Maximum number of characters from the string that should print.
+</p></dd>
+</dl>
+
+<p>Thus, the following:
+</p>
+<div class="example">
+<pre class="example">printf &quot;%.4s&quot;, &quot;foobar&quot;
+</pre></div>
+
+<p>prints &lsquo;<samp>foob</samp>&rsquo;.
+</p></dd>
+</dl>
+
+<p>The C library <code>printf</code>&rsquo;s dynamic <var>width</var> and <var>prec</var>
+capability (e.g., <code>&quot;%*.*s&quot;</code>) is supported.  Instead of
+supplying explicit <var>width</var> and/or <var>prec</var> values in the format
+string, they are passed in the argument list.  For example:
+</p>
+<div class="example">
+<pre class="example">w = 5
+p = 3
+s = &quot;abcdefg&quot;
+printf &quot;%*.*s\n&quot;, w, p, s
+</pre></div>
+
+<p>is exactly equivalent to:
+</p>
+<div class="example">
+<pre class="example">s = &quot;abcdefg&quot;
+printf &quot;%5.3s\n&quot;, s
+</pre></div>
+
+<p>Both programs output &lsquo;<samp>&bull;&bull;abc<!-- /@w --></samp>&rsquo;.
+Earlier versions of <code>awk</code> did not support this capability.
+If you must use such a version, you may simulate this feature by using
+concatenation to build up the format string, like so:
+</p>
+<div class="example">
+<pre class="example">w = 5
+p = 3
+s = &quot;abcdefg&quot;
+printf &quot;%&quot; w &quot;.&quot; p &quot;s\n&quot;, s
+</pre></div>
+
+<p>This is not particularly easy to read, but it does work.
+</p>
+<span id="index-troubleshooting-7"></span>
+<span id="index-POSIX-awk-13"></span>
+<p>C programmers may be used to supplying additional modifiers (&lsquo;<samp>h</samp>&rsquo;,
+&lsquo;<samp>j</samp>&rsquo;, &lsquo;<samp>l</samp>&rsquo;, &lsquo;<samp>L</samp>&rsquo;, &lsquo;<samp>t</samp>&rsquo;, and &lsquo;<samp>z</samp>&rsquo;) in <code>printf</code>
+format strings. These are not valid in <code>awk</code>.  Most <code>awk</code>
+implementations silently ignore them.  If <samp>--lint</samp> is provided
+on the command line (see <a href="Options.html">Command-Line Options</a>), <code>gawk</code> warns about their
+use. If <samp>--posix</samp> is supplied, their use is a fatal error.
+</p>
+</div>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Printf-Examples.html">Examples Using <code>printf</code></a>, Previous: <a href="Control-Letters.html">Format-Control Letters</a>, Up: <a href="Printf.html">Using <code>printf</code> Statements for Fancier Printing</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="Index.html" title="Index" rel="index">Index</a>]</p>
+</div>
+
+
+
+</body>
+</html>

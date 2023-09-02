@@ -1,4 +1,5 @@
 BEGIN {
+    HtmlFolder="std_awk_html"
     Doc=""
     Base="https://www.gnu.org/software/gawk/manual/html_node/"
 
@@ -88,21 +89,21 @@ function closeItem() {
             appendDocLine("<dt><code>printf format, item1, item2, …</code></dt>")
         else
             appendDocLine("<br>")
-        appendPartOfFileToDoc2("temp/Control-Letters.html")
+        appendPartOfFileToDoc2(HtmlFolder "/Control-Letters.html")
         appendDocLine("<br>")
-        appendPartOfFileToDoc2("temp/Format-Modifiers.html")
+        appendPartOfFileToDoc2(HtmlFolder "/Format-Modifiers.html")
     } else if (Stmt=="getline") {
-        appendPartOfFileToDoc("temp/Getline.html",
+        appendPartOfFileToDoc(HtmlFolder "/Getline.html",
             "<p>The .+ command returns 1",
             "<p>If .+ indicates that the I/O")
         appendDocLine("<br>")
-        appendPartOfFileToDoc("temp/Getline-Summary.html",
+        appendPartOfFileToDoc(HtmlFolder "/Getline-Summary.html",
             "<table",
             "<div")
     } else if (Name=="strftime") {
         appendDocLine("<br>")
         appendDocLine("<h3>Format-Control Letters</h3>")
-        appendPartOfFileToDoc("temp/Time-Functions.html",
+        appendPartOfFileToDoc(HtmlFolder "/Time-Functions.html",
             "<code>strftime\\(\\)</code> function allows you",
             "<p>Additionally, the alternative representations")
     } else if (Name=="system") {
