@@ -5,9 +5,9 @@ import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import intellij_awk.psi.AwkNamedElement;
 import intellij_awk.psi.impl.AwkFunctionNameImpl;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
+import java.util.*;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,9 +32,16 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElement>
       functionNames = AwkUtil.findFunctions(myElement.getProject(), funcName);
     }
 
+    Set<PsiFile> seenFiles = new HashSet<>();
+
     for (AwkFunctionNameImpl functionName : functionNames) {
+      PsiFile file = functionName.getContainingFile();
+      // only reference first found function in file, all others will be dups
+      if (seenFiles.contains(file)) {
+        continue;
+      }
+      seenFiles.add(file);
       res.add(new PsiElementResolveResult(functionName));
-      break; // only reference first found function to prevent erroneous unused function error
     }
 
     return res.toArray(new ResolveResult[0]);

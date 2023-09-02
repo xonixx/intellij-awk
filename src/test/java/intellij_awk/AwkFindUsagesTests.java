@@ -2,15 +2,17 @@ package intellij_awk;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiPolyVariantReference;
+import com.intellij.psi.ResolveResult;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.usageView.UsageInfo;
+import intellij_awk.psi.AwkFunctionCallNameMixin;
 import intellij_awk.psi.AwkUserVarNameMixin;
-import org.jetbrains.annotations.NotNull;
-import org.junit.Assert;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
+import org.junit.Assert;
 
 public class AwkFindUsagesTests extends BasePlatformTestCase {
 
@@ -308,6 +310,15 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
     doTest(0, "function f() { A<caret> = 1 }", "function f2() { A = 2 }");
   }
 
+  public void testMultipleFilesFunctions() {
+    PsiFile psiFile = configureByFiles("BEGIN { fff<caret>() }", "function fff() {}", "function fff() {}\nfunction fff() {}");
+    ResolveResult[] resolveResults =
+        ((PsiPolyVariantReference)
+                AwkUtil.findFirstMatchedDeep(psiFile, psiElement -> psiElement instanceof AwkFunctionCallNameMixin).getReference())
+            .multiResolve(false);
+    assertEquals(2,resolveResults.length);
+  }
+
   public void testIndirect1() {
     doTest(
         4,
@@ -329,14 +340,18 @@ public class AwkFindUsagesTests extends BasePlatformTestCase {
   }
 
   private void doTest(int expectedUsagesCount, String code, String... otherFiles) {
-    myFixture.configureByText("a.awk", code);
+    configureByFiles(code, otherFiles);
+    PsiElement element = myFixture.getElementAtCaret();
+    Collection<UsageInfo> usages = myFixture.findUsages(element);
+    Assert.assertEquals(expectedUsagesCount, usages.size());
+  }
+  private PsiFile configureByFiles(String code, String... otherFiles) {
+    PsiFile psiFile = myFixture.configureByText("a.awk", code);
     for (int i = 0; i < otherFiles.length; i++) {
       String otherFileCode = otherFiles[i];
       myFixture.addFileToProject("f" + i + ".awk", otherFileCode);
     }
-    PsiElement element = myFixture.getElementAtCaret();
-    Collection<UsageInfo> usages = myFixture.findUsages(element);
-    Assert.assertEquals(expectedUsagesCount, usages.size());
+    return psiFile;
   }
 
   @NotNull
