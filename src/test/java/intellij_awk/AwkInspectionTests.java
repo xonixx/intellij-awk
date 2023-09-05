@@ -97,6 +97,14 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFileNoProblemAtCaret(unusedFunction, true);
   }
 
+  public void testNoUnusedFunctionForRepeatingDefinitionInSeparateFiles() {
+    myFixture.configureByText("a.awk", "function <caret>f(){}");
+    myFixture.addFileToProject("b.awk", "function f() {}");
+    myFixture.addFileToProject("c.awk", "BEGIN { f() } ");
+    assertNoInspectionAtCaret(unusedFunction);
+  }
+
+
   public void testUsedVarInFileOutsideProject() {
     checkByFileNoProblemAtCaret(unusedGlobalVariable, true);
   }
@@ -298,6 +306,10 @@ public class AwkInspectionTests extends BasePlatformTestCase {
       myFixture.configureByFile(testName);
     }
 
+    assertNoInspectionAtCaret(inspection);
+  }
+
+  private void assertNoInspectionAtCaret(Inspection inspection) {
     myFixture.enableInspections(inspection.inspection);
 
     List<HighlightInfo> highlightInfos = myFixture.doHighlighting();
