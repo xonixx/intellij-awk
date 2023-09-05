@@ -54,6 +54,18 @@ public class AwkReferenceFunction extends PsiReferenceBase<AwkNamedElement>
     return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
   }
 
+  /**
+   * See: <a
+   * href="https://intellij-support.jetbrains.com/hc/en-us/community/posts/206116059-ReferencesSearch-PsiPolyVariantReferences">link</a>
+   */
+  @Override
+  public boolean isReferenceTo(@NotNull PsiElement element) {
+    PsiManager manager = getElement().getManager();
+    return Arrays.stream(multiResolve(false))
+        .anyMatch(
+            resolveResult -> manager.areElementsEquivalent(resolveResult.getElement(), element));
+  }
+
   @Override
   public PsiElement handleElementRename(@NotNull String newElementName)
       throws IncorrectOperationException {
