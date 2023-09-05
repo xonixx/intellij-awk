@@ -97,7 +97,12 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFileNoProblemAtCaret(unusedFunction, true);
   }
 
-  public void testNoUnusedFunctionForRepeatingDefinitionInSeparateFiles() {
+  public void testIssue203NoUnusedFunctionErrForUsageInOtherFile() {
+    myFixture.configureByText("a.awk", "function <caret>f(){}");
+    myFixture.addFileToProject("c.awk", "BEGIN { f() } ");
+    assertNoInspectionAtCaret(unusedFunction);
+  }
+  public void testIssue203NoUnusedFunctionErrForRepeatingDefinitionInSeparateFiles() {
     myFixture.configureByText("a.awk", "function <caret>f(){}");
     myFixture.addFileToProject("b.awk", "function f() {}");
     myFixture.addFileToProject("c.awk", "BEGIN { f() } ");
