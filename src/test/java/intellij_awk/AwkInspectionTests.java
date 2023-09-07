@@ -97,6 +97,25 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFileNoProblemAtCaret(unusedFunction, true);
   }
 
+  public void testIssue203NoUnusedFunctionErrForUsageInOtherFile() {
+    myFixture.configureByText("a.awk", "function <caret>f(){}");
+    myFixture.addFileToProject("c.awk", "BEGIN { f() } ");
+    assertNoInspectionAtCaret(unusedFunction);
+  }
+  public void testIssue203NoUnusedFunctionErrForRepeatingDefinitionInSeparateFiles() {
+    myFixture.configureByText("a.awk", "function <caret>f(){}");
+    myFixture.addFileToProject("b.awk", "function f() {}");
+    myFixture.addFileToProject("c.awk", "BEGIN { f() } ");
+    assertNoInspectionAtCaret(unusedFunction);
+  }
+
+  public void testIssue203UnusedFunctionErrForRepeatingDefinitionWhenFunctionIsUsedInSameFileAsDefined() {
+    myFixture.configureByText("a.awk", "function <caret>f(){}");
+    myFixture.addFileToProject("c.awk", "BEGIN { f() } function f() {}");
+    assertInspectionIsShown(unusedFunction);
+  }
+
+
   public void testUsedVarInFileOutsideProject() {
     checkByFileNoProblemAtCaret(unusedGlobalVariable, true);
   }
@@ -298,6 +317,10 @@ public class AwkInspectionTests extends BasePlatformTestCase {
       myFixture.configureByFile(testName);
     }
 
+    assertNoInspectionAtCaret(inspection);
+  }
+
+  private void assertNoInspectionAtCaret(Inspection inspection) {
     myFixture.enableInspections(inspection.inspection);
 
     List<HighlightInfo> highlightInfos = myFixture.doHighlighting();
@@ -323,11 +346,7 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     String before = getTestName(true) + ".awk";
     myFixture.configureByFile(before);
 
-    myFixture.enableInspections(inspection.inspection);
-    List<HighlightInfo> highlightInfos = myFixture.doHighlighting();
-    assertFalse(
-        "Inspection '" + inspection.quickFixName + "' must show, but is absent",
-        highlightInfos.isEmpty());
+    List<HighlightInfo> highlightInfos = assertInspectionIsShown(inspection);
 
     if (highlightInfoCheckers != null) {
       for (HighlightInfoChecker highlightInfoChecker : highlightInfoCheckers) {
@@ -346,6 +365,16 @@ public class AwkInspectionTests extends BasePlatformTestCase {
       String after = before.replace(".awk", "After.awk");
       myFixture.checkResultByFile(after, true);
     }
+  }
+
+  @NotNull
+  private List<HighlightInfo> assertInspectionIsShown(Inspection inspection) {
+    myFixture.enableInspections(inspection.inspection);
+    List<HighlightInfo> highlightInfos = myFixture.doHighlighting();
+    assertFalse(
+        "Inspection '" + inspection.quickFixName + "' must show, but is absent",
+        highlightInfos.isEmpty());
+    return highlightInfos;
   }
 
   private static class Inspection {
