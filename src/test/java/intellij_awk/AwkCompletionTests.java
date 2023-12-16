@@ -429,6 +429,20 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionAuto("{ arr123[7]\nf(arr1<caret>) }", "{ arr123[7]\nf(arr123<caret>) }");
   }
 
+  public void testGlobalVariableInAction1() {
+    checkCompletionAuto("{ Xxx=1 } function f(){ Xx<caret> }", "{ Xxx=1 } function f(){ Xxx<caret> }");
+  }
+  public void testGlobalVariableInAction2() {
+    checkCompletionAuto("{ Xxx=1 }\nXx<caret>", "{ Xxx=1 }\nXxx<caret>");
+  }
+  public void testGlobalVariableInAction3() {
+    checkCompletionAuto("/a/{ Xxx=1 } /b/{ Xx<caret> }", "/a/{ Xxx=1 } /b/{ Xxx<caret> }");
+  }
+  public void testGlobalVariableInAction4() {
+    checkCompletionAuto("function f(){ Xxx=1 } { Xx<caret> }", "function f(){ Xxx=1 } { Xxx<caret> }");
+  }
+
+
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
     setupCode(code);
     LookupElement[] variants = myFixture.completeBasic();
