@@ -4,5 +4,5 @@ BEGIN {
     arr["key3"] = "val3"
 }
 function f() {
-    split("",arr)
+    split("", arr)
 }

@@ -29,6 +29,10 @@ public class AwkAutoFormatTests extends BasePlatformTestCase {
   public void testFile13_2(){ checkByFile(); }
   public void testGawk_switch1(){ checkByFile(); }
   public void testGawk_switch2(){ checkByFile(); }
+  public void testCommaInArrIndex(){ checkByFile(); }
+  public void testCommaInFuncCall(){ checkByFile(); }
+  public void testCommaInIfIn(){ checkByFile(); }
+  public void testCommaInFuncParamsNoChange(){ checkByFile(); }
   public void testIssue100(){ checkByFile(); }
 
   @Override

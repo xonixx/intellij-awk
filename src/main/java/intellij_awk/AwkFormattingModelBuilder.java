@@ -9,6 +9,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.tree.TokenSet;
+import intellij_awk.psi.AwkTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,6 +44,7 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
 
   private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
     TokenSet ternaryExpr = TokenSet.create(TERNARY_EXPR, TERNARY_PRINT_EXPR);
+    TokenSet commaParents = TokenSet.create(GAWK_FUNC_CALL_LIST, EXPR_LST);
     return new SpacingBuilder(settings, AwkLanguage.INSTANCE)
         .around(binaryOps)
         .spaces(1)
@@ -84,10 +86,10 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
         .spaces(1)
         .between(RPAREN, TokenSet.create(STATEMENT, ACTION)) // ) {
         .spaces(1)
-        //        .before(COMMA) // TODO taking into account function local params
-        //        .none()
-        //        .after(COMMA)
-        //        .spaces(1)
+        .beforeInside(COMMA, commaParents)
+        .none()
+        .afterInside(COMMA, commaParents)
+        .spaces(1)
         .after(TokenSet.create(PRINT, PRINTF))
         .spaces(1)
         .between(SIMPLE_PRINT_STATEMENT, OUTPUT_REDIRECTION)
