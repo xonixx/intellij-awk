@@ -172,6 +172,9 @@ public abstract class AwkUserVarNameMixin
   }
 
   public boolean isALocalVariableInAFunction() {
+    if (getParent() instanceof AwkParamList) { // function (here) {}
+      return true;
+    }
     AwkAction action = PsiTreeUtil.getTopmostParentOfType(this, AwkAction.class);
     if (action == null) {
       return false;
