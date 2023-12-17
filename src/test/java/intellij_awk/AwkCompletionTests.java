@@ -436,12 +436,14 @@ public class AwkCompletionTests extends BasePlatformTestCase {
     checkCompletionAuto("{ Xxx=1 }\nXx<caret>", "{ Xxx=1 }\nXxx<caret>");
   }
   public void testGlobalVariableInAction3() {
-    checkCompletionAuto("/a/{ Xxx=1 } /b/{ Xx<caret> }", "/a/{ Xxx=1 } /b/{ Xxx<caret> }");
+    checkCompletionAuto("/a/{ xxx=1 } /b/{ xx<caret> }", "/a/{ xxx=1 } /b/{ xxx<caret> }");
   }
   public void testGlobalVariableInAction4() {
     checkCompletionAuto("function f(){ Xxx=1 } { Xx<caret> }", "function f(){ Xxx=1 } { Xxx<caret> }");
   }
-
+  public void testGlobalVariableInAction5_NotLocal() {
+    checkCompletionEmpty("function f(Xxx){ Xxx=1 } { Xx<caret> }");
+  }
 
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
     setupCode(code);
