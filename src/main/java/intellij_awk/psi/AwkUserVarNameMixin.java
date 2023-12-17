@@ -158,14 +158,31 @@ public abstract class AwkUserVarNameMixin
 
       AwkPattern pattern = awkItem.getPattern();
 
-      AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
+      AwkFunctionNameMixin functionName;
 
       return pattern != null && pattern.getBeginOrEnd() instanceof AwkBeginBlock
-          || functionName != null
+          || (functionName = (AwkFunctionNameMixin) awkItem.getFunctionName()) != null
               && functionName.isInitFunction()
               && !functionName
                   .getParameterNamesIncludingLocals()
                   .contains(getName()) /* not local var */;
+    }
+
+    return false;
+  }
+
+  public boolean isALocalVariableInAFunction() {
+    AwkAction action = PsiTreeUtil.getTopmostParentOfType(this, AwkAction.class);
+    if (action == null) {
+      return false;
+    }
+
+    PsiElement parent = action.getParent();
+    if (parent instanceof AwkItem) {
+      AwkItem awkItem = (AwkItem) parent;
+      AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
+      return functionName != null
+          && functionName.getParameterNamesIncludingLocals().contains(getName()) /* local var */;
     }
 
     return false;

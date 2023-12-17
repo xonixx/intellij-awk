@@ -81,7 +81,7 @@ public class AwkCompletionContributorVariables extends AwkCompletionContributorB
         awkFile,
         psiEl ->
             psiEl instanceof AwkUserVarNameMixin
-                && ((AwkUserVarNameMixin) psiEl).isInsideInitializingContext(),
+                && !((AwkUserVarNameMixin) psiEl).isALocalVariableInAFunction(),
         globalVars);
 
     for (PsiElement globalVar : globalVars) {
