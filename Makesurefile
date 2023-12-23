@@ -69,13 +69,13 @@
   ./gawk51 --version
   rm -r "gawk-5.1.0"
 
-@goal gh_installed @private
+@goal installed_gh @private
 @reached_if command -v gh >/dev/null
   echo "You need to install gh first: https://cli.github.com/"
   exit 1
 
 @goal gh_release
-@depends_on gh_installed
+@depends_on installed_gh
 @doc 'publish Github release (draft)'
   releaseTag="v$NEXT_VERSION"
   echo
