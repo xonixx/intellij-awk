@@ -11,7 +11,7 @@ The missing IntelliJ IDEA language support plugin for [AWK](https://en.wikipedia
 ## Motivation
 
 - At the moment there ~~is~~was no AWK plugin for IDEA, which ~~is~~was a pity.
-- Help me develop [some](https://github.com/xonixx/makesure) of my own projects in AWK.
+- Help me develop [some](https://github.com/xonixx/makesure) [of](https://github.com/xonixx/gron.awk) [my](https://github.com/xonixx/fhtagn) own projects in AWK.
 - Interested to sharpen my Java skills and learn some IDEA internals.
 
 ## Goals v0.0.1 \[done]
