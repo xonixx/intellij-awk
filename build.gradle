@@ -35,6 +35,7 @@ task parser(type: org.jetbrains.grammarkit.tasks.GenerateParser) {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
+    downloadSources = true // https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#ide-configuration
     version = '2021.1.3'
     plugins = ['com.intellij.java']
 }
