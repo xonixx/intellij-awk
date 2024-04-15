@@ -348,7 +348,7 @@ non_unary_expr   ::= (
                          | NOT expr
                          | simple_get (LT expr)?
                          | NUMBER
-                         | STRING
+                         | str
                          | ERE
                          | INCR lvalue
                          | DECR lvalue
@@ -388,6 +388,12 @@ function_call_built_in ::= (BUILTIN_FUNC_NAME | BUILTIN_FUNC_NAME_GAWK) [ func_c
 function_call_name          ::= FUNC_NAME
 {
     mixin="intellij_awk.psi.AwkFunctionCallNameMixin"
+    implements="intellij_awk.psi.AwkNamedElement"
+}
+
+str          ::= STRING  // we need this as PSI to enable GAWK's function references `f="fname"; @f()`
+{
+    mixin="intellij_awk.psi.AwkStringMixin"
     implements="intellij_awk.psi.AwkNamedElement"
 }
 
@@ -449,7 +455,7 @@ private non_unary_print_expr ::= (
                      | LPAREN expr_lst RPAREN IN gawk_var_name
                      | simple_get
                      | NUMBER
-                     | STRING
+                     | str
                      | ERE
                      | INCR lvalue
                      | DECR lvalue
