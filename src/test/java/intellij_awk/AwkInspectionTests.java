@@ -316,6 +316,14 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     checkByFile(unusedFunction);
   }
 
+  public void testFuncRefToPreventUnusedFunc3() {
+    checkByFileNoProblemAtCaret(unusedFunction);
+  }
+
+  public void testFuncRefToPreventUnusedFunc3_1() {
+    checkByFile(unusedFunction);
+  }
+
   @Override
   protected String getTestDataPath() {
     return "src/test/testData/inspection";

@@ -1,17 +1,17 @@
 package intellij_awk.psi;
 
+import static com.intellij.openapi.util.text.StringUtil.unquoteString;
+
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import intellij_awk.AwkReferenceFunction;
+import intellij_awk.AwkUtil;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.regex.Pattern;
-
-import static com.intellij.openapi.util.text.StringUtil.unquoteString;
 
 public abstract class AwkStringMixin extends AwkNamedElementImpl {
   public AwkStringMixin(@NotNull ASTNode node) {
@@ -37,9 +37,13 @@ public abstract class AwkStringMixin extends AwkNamedElementImpl {
 
   @Override
   public PsiReference getReference() {
-    return getName() != null
+    return getName() != null && isRhsOfAssignment()
         ? new AwkReferenceFunction(this, TextRange.from(1, getTextLength() - 2))
         : null;
+  }
+
+  private boolean isRhsOfAssignment() {
+    return AwkUtil.isType(AwkUtil.getPrevNotWhitespace(getParent()), AwkTypes.ASSIGN);
   }
 
   @Override
