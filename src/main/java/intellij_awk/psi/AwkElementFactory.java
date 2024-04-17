@@ -18,6 +18,11 @@ public class AwkElementFactory {
     return createAwkPsiElement(project, "function " + name + "(){}", AwkFunctionName.class);
   }
 
+  public static AwkStr createString(Project project, String str) {
+    return createAwkPsiElement(
+        project, "{ a = \"" + str.replace("\"", "\\\"") + "\" }", AwkStr.class);
+  }
+
   public static AwkItem createFunctionItem(Project project, String name) {
     return createAwkPsiElement(project, "function " + name + "(){}", AwkItem.class);
   }

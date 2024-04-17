@@ -102,6 +102,7 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     myFixture.addFileToProject("c.awk", "BEGIN { f() } ");
     assertNoInspectionAtCaret(unusedFunction);
   }
+
   public void testIssue203NoUnusedFunctionErrForRepeatingDefinitionInSeparateFiles() {
     myFixture.configureByText("a.awk", "function <caret>f(){}");
     myFixture.addFileToProject("b.awk", "function f() {}");
@@ -109,12 +110,12 @@ public class AwkInspectionTests extends BasePlatformTestCase {
     assertNoInspectionAtCaret(unusedFunction);
   }
 
-  public void testIssue203UnusedFunctionErrForRepeatingDefinitionWhenFunctionIsUsedInSameFileAsDefined() {
+  public void
+      testIssue203UnusedFunctionErrForRepeatingDefinitionWhenFunctionIsUsedInSameFileAsDefined() {
     myFixture.configureByText("a.awk", "function <caret>f(){}");
     myFixture.addFileToProject("c.awk", "BEGIN { f() } function f() {}");
     assertInspectionIsShown(unusedFunction);
   }
-
 
   public void testUsedVarInFileOutsideProject() {
     checkByFileNoProblemAtCaret(unusedGlobalVariable, true);
@@ -297,6 +298,38 @@ public class AwkInspectionTests extends BasePlatformTestCase {
 
   public void testUnnecessarySemicolonNecessary4() {
     checkByFileNoProblemAtCaret(unnecessarySemicolon);
+  }
+
+  public void testFuncRefToPreventUnusedFunc1() {
+    checkByFileNoProblemAtCaret(unusedFunction);
+  }
+
+  public void testFuncRefToPreventUnusedFunc1_1() {
+    checkByFile(unusedFunction);
+  }
+
+  public void testFuncRefToPreventUnusedFunc2() {
+    checkByFileNoProblemAtCaret(unusedFunction);
+  }
+
+  public void testFuncRefToPreventUnusedFunc2_1() {
+    checkByFile(unusedFunction);
+  }
+
+  public void testFuncRefToPreventUnusedFunc3() {
+    checkByFileNoProblemAtCaret(unusedFunction);
+  }
+
+  public void testFuncRefToPreventUnusedFunc3_1() {
+    checkByFile(unusedFunction);
+  }
+
+  public void testFuncRefToPreventUnusedFunc4() {
+    checkByFileNoProblemAtCaret(unusedFunction);
+  }
+
+  public void testFuncRefToPreventUnusedFunc4_1() {
+    checkByFile(unusedFunction);
   }
 
   @Override

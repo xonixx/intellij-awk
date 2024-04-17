@@ -15,18 +15,18 @@ import intellij_awk.psi.AwkTypes;
 abstract class AwkCompletionContributorBase extends CompletionContributor {
   static final PsiElementPattern.Capture<PsiElement> INSIDE_STRING = psiElement(AwkTypes.STRING);
   private static final ElementPattern<PsiElement> notInsideERE =
-          not(or(psiElement(AwkTypes.ERE), psiElement(AwkTypes.TYPED_ERE)));
+      not(or(psiElement(AwkTypes.ERE), psiElement(AwkTypes.TYPED_ERE)));
 
   private static final ObjectPattern.Capture<PsiElement> notInsideStringEre =
-          not(INSIDE_STRING).and(notInsideERE);
+      not(INSIDE_STRING).and(notInsideERE);
 
   static ElementPattern<? extends PsiElement> notInsideStringERE(
-          ElementPattern<? extends PsiElement> pattern) {
+      ElementPattern<? extends PsiElement> pattern) {
     return and(notInsideStringEre, pattern);
   }
 
   static ElementPattern<? extends PsiElement> notInsideERE(
-          ElementPattern<? extends PsiElement> pattern) {
+      ElementPattern<? extends PsiElement> pattern) {
     return and(notInsideERE, pattern);
   }
 

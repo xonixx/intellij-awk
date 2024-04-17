@@ -26,7 +26,7 @@ public class AwkParserDefinition implements ParserDefinition {
       new IStubFileElementType<>(AwkLanguage.INSTANCE) {
         @Override
         public int getStubVersion() {
-          return 15;
+          return 16;
         }
 
         @Override

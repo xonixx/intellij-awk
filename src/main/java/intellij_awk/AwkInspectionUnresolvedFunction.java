@@ -124,7 +124,7 @@ public class AwkInspectionUnresolvedFunction extends LocalInspectionTool {
             }
           }
           if (name == null) {
-            PsiElement string = nonUnaryExpr.getString();
+            PsiElement string = nonUnaryExpr.getStr();
             if (string != null && string.getText().equals(nonUnaryExpr.getText())) {
               String text = string.getText();
               name = text.substring(1, text.length() - 1);
