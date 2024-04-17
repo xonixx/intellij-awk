@@ -37,7 +37,7 @@ public abstract class AwkStringMixin extends AwkNamedElementImpl {
   }
 
   public PsiElement setName(String newName) {
-    return replaceNameNode(AwkElementFactory.createFunctionCallName(getProject(), newName));
+    return replaceNameNode(AwkElementFactory.createString(getProject(), newName));
   }
 
   @Override
