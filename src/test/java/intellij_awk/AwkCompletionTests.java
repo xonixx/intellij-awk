@@ -430,19 +430,30 @@ public class AwkCompletionTests extends BasePlatformTestCase {
   }
 
   public void testGlobalVariableInAction1() {
-    checkCompletionAuto("{ Xxx=1 } function f(){ Xx<caret> }", "{ Xxx=1 } function f(){ Xxx<caret> }");
+    checkCompletionAuto(
+        "{ Xxx=1 } function f(){ Xx<caret> }", "{ Xxx=1 } function f(){ Xxx<caret> }");
   }
+
   public void testGlobalVariableInAction2() {
     checkCompletionAuto("{ Xxx=1 }\nXx<caret>", "{ Xxx=1 }\nXxx<caret>");
   }
+
   public void testGlobalVariableInAction3() {
     checkCompletionAuto("/a/{ xxx=1 } /b/{ xx<caret> }", "/a/{ xxx=1 } /b/{ xxx<caret> }");
   }
+
   public void testGlobalVariableInAction4() {
-    checkCompletionAuto("function f(){ Xxx=1 } { Xx<caret> }", "function f(){ Xxx=1 } { Xxx<caret> }");
+    checkCompletionAuto(
+        "function f(){ Xxx=1 } { Xx<caret> }", "function f(){ Xxx=1 } { Xxx<caret> }");
   }
+
   public void testGlobalVariableInAction5_NotLocal() {
     checkCompletionEmpty("function f(Xxx){ Xxx=1 } { Xx<caret> }");
+  }
+
+  public void testMustCompleteInsideEmptySubscript() {
+    checkCompletion(
+        Set.of("q1q2q3"), Set.of(), "BEGIN {\n    a[<caret>]\n}\n\nfunction q1q2q3() {\n}");
   }
 
   private void checkFunctionArgs(String code, String fName, String expectedArgs) {
