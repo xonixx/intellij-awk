@@ -73,6 +73,43 @@ public class AwkBracesAndQuoteAutoCloseTests extends BasePlatformTestCase {
         "BEGIN {\n  print \"<caret>\"\n  print \"\"}");
   }
 
+  public void testEnterCurlyBrace1() {
+    doTest(
+        '\n',
+        "function f() {\n    {<caret>print 123\n}",
+        "function f() {\n    {\n        <caret>print 123\n    }\n}");
+  }
+
+  public void testEnterCurlyBrace2() {
+    doTest(
+        '\n',
+        "function f() {\n    if(1){<caret>print 123\n}",
+        "function f() {\n    if(1){\n        <caret>print 123\n    }\n}");
+  }
+
+  public void testEnterCurlyBrace3() {
+    doTest(
+        '\n',
+        "function f() {\n    while(1){<caret>print 123\n}",
+        "function f() {\n    while(1){\n        <caret>print 123\n    }\n}");
+  }
+
+  public void testEnterCurlyBrace4() {
+    doTest(
+        '\n',
+        "function f() {\n    for (;;) {<caret>f(1)\n}",
+            "function f() {\n    for (;;) {\n        <caret>f(1)\n    }\n}");
+  }
+  public void testEnterCurlyBrace5() {
+    doTest('\n', "{<caret>print 123", "{\n    <caret>print 123\n}");
+  }
+  public void testEnterCurlyBrace6() {
+    doTest('\n', "BEGIN{<caret>print 123", "BEGIN{\n    <caret>print 123\n}");
+  }
+  public void testEnterCurlyBrace7() {
+    doTest('\n', "NF {<caret>print 123", "NF {\n    <caret>print 123\n}");
+  }
+
   private void doTest(char brace, String code, String expectedCode) {
     myFixture.configureByText("a.awk", code);
     myFixture.type(brace);
