@@ -108,6 +108,9 @@
         <codeInsight.parameterInfo language="AWK"
                                    implementationClass="intellij_awk.AwkParameterInfoHandler"/>
 
+        <enterHandlerDelegate implementation="intellij_awk.AwkEnterAfterUnmatchedBraceHandler" order="before afterUnmatchedBrace"/>
+
+
     </extensions>
 
     <actions>
