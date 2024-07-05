@@ -42,6 +42,13 @@ public class AwkEnterAfterUnmatchedBraceHandler extends EnterAfterUnmatchedBrace
 
     System.out.println("awkStatement="+awkStatement.getTextLength());
     System.out.println("awkStatement="+awkStatement.getText());
-    return Pair.create(null, offset + awkStatement.getTextLength());
+
+
+//    int pos = offset + awkStatement.getTextLength();
+    int pos = offset + (awkStatement.getText().trim()).length();
+
+    System.out.println("res="+text.subSequence(0, pos) + "<here>" + text.subSequence(pos, text.length()));
+
+    return Pair.create(null, pos);
   }
 }
