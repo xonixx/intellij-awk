@@ -112,6 +112,22 @@ public class AwkBracesAndQuoteAutoCloseTests extends BasePlatformTestCase {
   public void testEnterCurlyBrace8() {
     doTest('\n', "function f()\n{<caret>print 123", "function f()\n{\n    <caret>print 123\n}");
   }
+  public void testEnterCurlyBrace9() {
+    doTestEnterCurlyBraceComplex("if (2)");
+  }
+  public void testEnterCurlyBrace10() {
+    doTestEnterCurlyBraceComplex("while (2)");
+  }
+  public void testEnterCurlyBrace11() {
+    doTestEnterCurlyBraceComplex("for(;;)");
+  }
+
+  private void doTestEnterCurlyBraceComplex(String opener) {
+    doTest(
+        '\n',
+        "function f() {\n    if (1) {<caret>" + opener + " {\n        print 123}\n}",
+        "function f() {\n    if (1) {\n        "+opener+" {\n            print 123}\n    }\n}");
+  }
 
   private void doTest(char brace, String code, String expectedCode) {
     myFixture.configureByText("a.awk", code);
