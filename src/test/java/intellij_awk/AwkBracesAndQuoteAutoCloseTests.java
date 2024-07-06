@@ -112,14 +112,20 @@ public class AwkBracesAndQuoteAutoCloseTests extends BasePlatformTestCase {
   public void testEnterCurlyBrace8() {
     doTest('\n', "function f()\n{<caret>print 123", "function f()\n{\n    <caret>print 123\n}");
   }
-  public void testEnterCurlyBrace9() {
+  public void testEnterCurlyBrace9_1() {
     doTestEnterCurlyBraceComplex("if (2)");
   }
-  public void testEnterCurlyBrace10() {
+  public void testEnterCurlyBrace9_2() {
     doTestEnterCurlyBraceComplex("while (2)");
   }
-  public void testEnterCurlyBrace11() {
+  public void testEnterCurlyBrace9_3() {
     doTestEnterCurlyBraceComplex("for(;;)");
+  }
+  public void testEnterCurlyBrace10() {
+    doTest(
+        '\n',
+        "function f() {\n    if(1){<caret>\n}",
+        "function f() {\n    if(1){\n        <caret>\n    }\n}");
   }
 
   private void doTestEnterCurlyBraceComplex(String opener) {

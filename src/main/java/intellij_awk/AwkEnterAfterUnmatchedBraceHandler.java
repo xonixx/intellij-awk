@@ -34,12 +34,11 @@ public class AwkEnterAfterUnmatchedBraceHandler extends EnterAfterUnmatchedBrace
 
     AwkStatement awkStatement = (AwkStatement) AwkUtil.findFirstMatchedDeep(awkFile, AwkStatement.class::isInstance);
 
-    System.out.println("zzz:"+CharArrayUtil.shiftForwardUntil(text, offset, "\n")+":"+(offset + awkStatement.getTextLength()+1));
-
     if (awkStatement == null) {
       return Pair.create(null, CharArrayUtil.shiftForwardUntil(text, offset, "\n"));
     }
 
+    System.out.println("zzz:"+CharArrayUtil.shiftForwardUntil(text, offset, "\n")+":"+(offset + awkStatement.getTextLength()+1));
     System.out.println("awkStatement="+awkStatement.getTextLength());
     System.out.println("awkStatement="+awkStatement.getText());
 
