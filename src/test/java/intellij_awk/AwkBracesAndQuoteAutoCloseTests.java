@@ -80,6 +80,13 @@ public class AwkBracesAndQuoteAutoCloseTests extends BasePlatformTestCase {
         "function f() {\n    {\n        <caret>print 123\n    }\n}");
   }
 
+  public void testEnterCurlyBrace1_1() {
+    doTest(
+        '\n',
+        "function f() {\n    {<caret>print 123   # comment\n}",
+        "function f() {\n    {\n        <caret>print 123   # comment\n    }\n}");
+  }
+
   public void testEnterCurlyBrace2() {
     doTest(
         '\n',
