@@ -41,7 +41,7 @@ intellij {
 }
 patchPluginXml {
     // let's set untilBuild to very high to make it compatible by default with all future versions
-    untilBuild.set('999.*') // https://www.jetbrains.com/idea/nextversion/
+    untilBuild.set('500.*') // https://www.jetbrains.com/idea/nextversion/
     // language=html
     pluginDescription.set("""
 <b>AWK Programming Language Support</b>
