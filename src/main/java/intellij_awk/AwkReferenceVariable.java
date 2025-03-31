@@ -12,8 +12,30 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static intellij_awk.AwkReferenceVariable.ResolutionMethod.*;
+
 public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     implements PsiPolyVariantReference {
+
+  public enum ResolutionMethod {
+    /** RESOLVE-ARG */
+    FunctionParameter,
+
+    /** RESOLVE-CUR-INIT-DECL */
+    InitDeclarationInCurrentFile,
+
+    /** RESOLVE-ALL-INIT-DECL */
+    InitDeclarationAll,
+
+    /** RESOLVE-CUR-INIT-VAR */
+    InitVariableInCurrentFile,
+
+    /** RESOLVE-CUR-DECL */
+    DeclarationInCurrentFile,
+
+    /** RESOLVE-CUR-VAR */
+    VariableInCurrentFile
+  }
 
   public AwkReferenceVariable(@NotNull AwkNamedElement element, TextRange rangeInElement) {
     super(element, rangeInElement);
@@ -23,22 +45,21 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
   public Resolved.AwkResolvedResult @NotNull [] multiResolve(boolean incompleteCode) {
     List<Resolved.AwkResolvedResult> res = new ArrayList<>();
 
-    Resolved ref =
-        resolveFunctionParameter("RESOLVE-ARG", myElement); // TODO rename to RESOLVE-PARAM
+    Resolved ref = resolveFunctionParameter(FunctionParameter, myElement);
     if (ref == null) {
-      ref = resolveInCurrentFile("RESOLVE-CUR-INIT-DECL", true, true, myElement);
+      ref = resolveInCurrentFile(InitDeclarationInCurrentFile, true, true, myElement);
     }
     if (ref == null) {
-      ref = resolveInAllFilesDeclarationsInInit("RESOLVE-ALL-INIT-DECL", myElement);
+      ref = resolveInAllFilesDeclarationsInInit(InitDeclarationAll, myElement);
     }
     if (ref == null) {
-      ref = resolveInCurrentFile("RESOLVE-CUR-INIT-VAR", false, true, myElement);
+      ref = resolveInCurrentFile(InitVariableInCurrentFile, false, true, myElement);
     }
     if (ref == null) {
-      ref = resolveInCurrentFile("RESOLVE-CUR-DECL", true, false, myElement);
+      ref = resolveInCurrentFile(DeclarationInCurrentFile, true, false, myElement);
     }
     if (ref == null) {
-      ref = resolveInCurrentFile("RESOLVE-CUR-VAR", false, false, myElement);
+      ref = resolveInCurrentFile(VariableInCurrentFile, false, false, myElement);
     }
     if (ref != null) {
       Resolved.AwkResolvedResult resolvedResult = ref.toResolvedResult();
@@ -49,7 +70,8 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
     return res.toArray(new AwkReferenceVariable.Resolved.AwkResolvedResult[0]);
   }
 
-  private @Nullable Resolved resolveFunctionParameter(String type, AwkNamedElement userVarName) {
+  private @Nullable Resolved resolveFunctionParameter(
+      ResolutionMethod method, AwkNamedElement userVarName) {
     PsiElement parent = userVarName;
     while (true) {
       parent = parent.getParent();
@@ -66,9 +88,9 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
               PsiElement varName = awkUserVarName.getVarName();
               if (varName.textMatches(userVarName.getName())) {
                 if (awkUserVarName == userVarName) {
-                  return new Resolved(type, null); // no need to display a reference to itself
+                  return new Resolved(method, null); // no need to display a reference to itself
                 }
-                return new Resolved(type, awkUserVarName);
+                return new Resolved(method, awkUserVarName);
               }
             }
           }
@@ -79,7 +101,10 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
   }
 
   private Resolved resolveInCurrentFile(
-      String type, boolean declarations, boolean insideInit, AwkNamedElement userVarName) {
+      ResolutionMethod method,
+      boolean declarations,
+      boolean insideInit,
+      AwkNamedElement userVarName) {
     AwkFile awkFile = (AwkFile) userVarName.getContainingFile();
 
     Resolved resolved = null;
@@ -94,9 +119,9 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
                         || ((AwkUserVarNameMixin) psiElement).isInsideInitializingContext()));
     if (varDeclaration != null) {
       if (varDeclaration == userVarName) {
-        resolved = new Resolved(type, null); // no need to display a reference to itself
+        resolved = new Resolved(method, null); // no need to display a reference to itself
       } else {
-        resolved = new Resolved(type, varDeclaration);
+        resolved = new Resolved(method, varDeclaration);
       }
     }
 
@@ -104,16 +129,16 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
   }
 
   private @Nullable Resolved resolveInAllFilesDeclarationsInInit(
-      String type, AwkNamedElement userVarName) {
+      ResolutionMethod method, AwkNamedElement userVarName) {
     Collection<AwkUserVarNameImpl> userVarDeclarations =
         AwkUtil.findUserVarDeclarations(userVarName.getProject(), userVarName.getName());
     Resolved resolved = null;
     if (!userVarDeclarations.isEmpty()) {
       AwkUserVarNameImpl found = userVarDeclarations.iterator().next();
       if (found == userVarName) {
-        resolved = new Resolved(type, null); // no need to display a reference to itself
+        resolved = new Resolved(method, null); // no need to display a reference to itself
       } else {
-        resolved = new Resolved(type, found);
+        resolved = new Resolved(method, found);
       }
     }
     return resolved;
@@ -127,23 +152,23 @@ public class AwkReferenceVariable extends PsiReferenceBase<AwkNamedElement>
    */
   public static class Resolved {
     @Nullable private final PsiElement value;
-    private final String type;
+    private final ResolutionMethod method;
 
-    Resolved(String type, @Nullable PsiElement value) {
-      this.type = type;
+    Resolved(ResolutionMethod method, @Nullable PsiElement value) {
+      this.method = method;
       this.value = value;
     }
 
     private AwkResolvedResult toResolvedResult() {
-      return value == null ? null : new AwkResolvedResult(type, value);
+      return value == null ? null : new AwkResolvedResult(method, value);
     }
 
     public static class AwkResolvedResult extends PsiElementResolveResult {
-      public final String type;
+      public final ResolutionMethod method;
 
-      public AwkResolvedResult(String type, @NotNull PsiElement element) {
+      public AwkResolvedResult(ResolutionMethod method, @NotNull PsiElement element) {
         super(element);
-        this.type = type;
+        this.method = method;
       }
     }
   }
