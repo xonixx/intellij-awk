@@ -11,6 +11,8 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.util.Query;
 import intellij_awk.psi.*;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -92,10 +94,31 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
             }
           }
         }
+
+        boolean isLastLocalParam = isLastLocalParam(paramName, functionName);
+        if (isLastLocalParam) {
+          PsiElement possibleLocalsStartMarker = paramName.getPrevSibling();
+          if (possibleLocalsStartMarker == null) {
+            // apparently, if there is only one func param, the whitespace goes before the param container
+            possibleLocalsStartMarker = paramName.getParent().getPrevSibling();
+          }
+          if (AwkUtil.isWhitespaceBeforeLocals(possibleLocalsStartMarker)) {
+            possibleLocalsStartMarker.delete();
+          }
+        }
       }
 
       deleteWithNeighborComma(paramName);
     }
+  }
+
+  private static boolean isLastLocalParam(AwkUserVarNameMixin paramName, AwkFunctionNameMixin functionName) {
+    List<String> parameterNames = functionName.getParameterNames();
+    List<String> parameterNamesIncludingLocals = functionName.getParameterNamesIncludingLocals();
+    Set<String> locals = new HashSet<>(parameterNamesIncludingLocals);
+    locals.removeAll(parameterNames);
+    String paramNameS = paramName.getName();
+    return locals.size() == 1 && locals.contains(paramNameS);
   }
 
   private static void deleteWithNeighborComma(PsiElement element) {
