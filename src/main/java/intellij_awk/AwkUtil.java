@@ -223,6 +223,25 @@ public class AwkUtil {
     return element instanceof PsiComment && element.textMatches("\\\n");
   }
 
+  /**
+   * <pre><code>
+   * function fname(a, b,   l1,l2)
+   *                     ^^^--------this whitespace
+   * </code></pre>
+   *
+   * @return true when this element represents the delimiter that plays the role of delimiting the
+   *     function's locals
+   */
+  public static boolean isWhitespaceBeforeLocals(PsiElement psiElement) {
+    if (psiElement instanceof PsiWhiteSpace || psiElement instanceof PsiComment) {
+      return psiElement instanceof PsiWhiteSpace && psiElement.getTextLength() >= 3
+          || isLineContinuation(psiElement)
+          || isWhitespaceBeforeLocals(psiElement.getPrevSibling());
+    }
+
+    return false;
+  }
+
   /** "\"value\"" -> "value" */
   public static String stringValue(String str) {
     return str == null || str.length() < 2 ? null : str.substring(1, str.length() - 1);
