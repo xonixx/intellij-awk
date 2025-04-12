@@ -56,6 +56,8 @@ public class AwkFormattingModelBuilder implements FormattingModelBuilder {
         .none()
         .after(UNARY_ADD_SUB)
         .none()
+        .betweenInside(SEMICOLON, SEMICOLON, STATEMENT_FOR_CONDITIONS)
+        .none()
         .afterInside(SEMICOLON, STATEMENT_FOR_CONDITIONS)
         .spaces(1)
         .beforeInside(SEMICOLON, STATEMENT_FOR_CONDITIONS)

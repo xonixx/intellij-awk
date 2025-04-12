@@ -34,6 +34,7 @@ public class AwkAutoFormatTests extends BasePlatformTestCase {
   public void testCommaInIfIn(){ checkByFile(); }
   public void testCommaInFuncParamsNoChange(){ checkByFile(); }
   public void testIssue100(){ checkByFile(); }
+  public void testIssue224For(){ checkByFile(); }
 
   @Override
   protected String getTestDataPath() {
