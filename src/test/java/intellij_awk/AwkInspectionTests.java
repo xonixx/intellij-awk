@@ -83,14 +83,16 @@ public class AwkInspectionTests extends BasePlatformTestCase {
   public void testUnusedFunctionParam5() {
     checkByFile(unusedFunctionParam);
   }
-  public void testUnusedFunctionParam6() {
+  public void testUnusedFunctionParam6_0() {
+    checkByFile(unusedFunctionParam);
+  }
+  public void testUnusedFunctionParam6_1() {
     checkByFile(unusedFunctionParam);
   }
 
-  // TODO
-/*  public void testUnusedFunctionParam61() {
+  public void testUnusedFunctionParam7_0() {
     checkByFile(unusedFunctionParam);
-  }*/
+  }
 
   public void testUnusedFunctionParamNoProblem1() {
     checkByFileNoProblemAtCaret(unusedFunctionParam);
