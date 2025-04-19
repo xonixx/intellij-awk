@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.util.Query;
 import intellij_awk.psi.*;
@@ -75,7 +76,7 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
       AwkItem awkItem = AwkUtil.findParent(paramName, AwkItem.class);
       AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
 
-      if (functionName != null) {
+      if (functionName != null) { // we found the function node
         Query<PsiReference> functionCallRefs = ReferencesSearch.search(functionName);
         for (PsiReference functionCallRef_ : functionCallRefs) {
           AwkReferenceFunction functionCallRef = (AwkReferenceFunction) functionCallRef_;
@@ -99,20 +100,24 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
         if (isLastLocalParam) {
           PsiElement possibleLocalsStartMarker = paramName.getPrevSibling();
           if (possibleLocalsStartMarker == null) {
-            // apparently, if there is only one func param, the whitespace goes before the param container
-            possibleLocalsStartMarker = paramName.getParent().getPrevSibling();
+            // apparently, if there is only one func param, the whitespace goes before the param
+            // container
+            possibleLocalsStartMarker = paramList.getPrevSibling();
           }
-          if (AwkUtil.isWhitespaceBeforeLocals(possibleLocalsStartMarker)) {
+          if (AwkUtil.isLocalsMarkingDelimiter(possibleLocalsStartMarker)) {
             possibleLocalsStartMarker.delete();
           }
         }
       }
 
       deleteWithNeighborComma(paramName);
+
+//      normalizeParamsFormatting(paramList);
     }
   }
 
-  private static boolean isLastLocalParam(AwkUserVarNameMixin paramName, AwkFunctionNameMixin functionName) {
+  private static boolean isLastLocalParam(
+      AwkUserVarNameMixin paramName, AwkFunctionNameMixin functionName) {
     List<String> parameterNames = functionName.getParameterNames();
     List<String> parameterNamesIncludingLocals = functionName.getParameterNamesIncludingLocals();
     Set<String> locals = new HashSet<>(parameterNamesIncludingLocals);
@@ -124,6 +129,12 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
   private static void deleteWithNeighborComma(PsiElement element) {
     PsiElement next = AwkUtil.getNextNotWhitespace(element);
     if (isType(next, AwkTypes.COMMA)) {
+      if (next.getPrevSibling() instanceof PsiWhiteSpace) {
+        next.getPrevSibling().delete();
+      }
+      if (next.getNextSibling() instanceof PsiWhiteSpace && !AwkUtil.isLocalsMarkingDelimiter(next.getNextSibling())) {
+        next.getNextSibling().delete();
+      }
       next.delete();
     } else {
       PsiElement prev = AwkUtil.getPrevNotWhitespace(element);
@@ -132,5 +143,33 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
       }
     }
     element.delete();
+  }
+
+  /**
+   *
+   *
+   * <pre><code>a,  b, c</code></pre>
+   *
+   * ->
+   *
+   * <pre><code>a, b, c</code></pre>
+   */
+  private static void normalizeParamsFormatting(AwkParamList paramList) {
+    // The idea is to substitute each whitespace of two spaces with a single space.
+    // Additionally, if we are past locals-marking delimiter, we substitute 2+ spaces with one.
+    boolean pastLocalsMarkingDelimiter = false;
+    for (PsiElement e = paramList.getFirstChild(); e != null; e = e.getNextSibling()) {
+      if (AwkUtil.isLocalsMarkingDelimiter(e)) {
+        pastLocalsMarkingDelimiter = true;
+        continue;
+      }
+      if (e instanceof PsiWhiteSpace) {
+        PsiWhiteSpace psiWhiteSpace = (PsiWhiteSpace) e;
+        int len = psiWhiteSpace.getTextLength();
+        if (pastLocalsMarkingDelimiter && len > 1 || len == 2) {
+          psiWhiteSpace.replace(AwkElementFactory.createWhiteSpaces(e.getProject(), 1));
+        }
+      }
+    }
   }
 }

@@ -232,17 +232,16 @@ public class AwkUtil {
    * @return true when this element represents the delimiter that plays the role of delimiting the
    *     function's locals
    */
-  public static boolean isWhitespaceBeforeLocals(PsiElement psiElement) {
+  public static boolean isLocalsMarkingDelimiter(PsiElement psiElement) {
     if (psiElement instanceof PsiWhiteSpace || psiElement instanceof PsiComment) {
       return psiElement instanceof PsiWhiteSpace && psiElement.getTextLength() >= 3
-          || isLineContinuation(psiElement)
-          || isWhitespaceBeforeLocals(psiElement.getPrevSibling());
+          || isLineContinuation(psiElement);
     }
 
     return false;
   }
 
-  /** "\"value\"" -> "value" */
+  /** <code>"\"value\""</code> -> <code>"value"</code> */
   public static String stringValue(String str) {
     return str == null || str.length() < 2 ? null : str.substring(1, str.length() - 1);
   }
