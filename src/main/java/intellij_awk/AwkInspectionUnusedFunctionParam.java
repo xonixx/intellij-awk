@@ -12,7 +12,6 @@ import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.util.Query;
 import intellij_awk.psi.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -91,7 +90,7 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
             List<AwkExpr> exprList = funcCallList.getExprList();
             if (paramIndex < exprList.size()) {
               AwkExpr expr = exprList.get(paramIndex);
-              deleteWithNeighborComma(expr);
+              deleteWithNeighborCommaAndSpaces(expr);
             }
           }
         }
@@ -110,9 +109,7 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
         }
       }
 
-      deleteWithNeighborComma(paramName);
-
-//      normalizeParamsFormatting(paramList);
+      deleteWithNeighborCommaAndSpaces(paramName);
     }
   }
 
@@ -126,13 +123,14 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
     return locals.size() == 1 && locals.contains(paramNameS);
   }
 
-  private static void deleteWithNeighborComma(PsiElement element) {
+  private static void deleteWithNeighborCommaAndSpaces(PsiElement element) {
     PsiElement next = AwkUtil.getNextNotWhitespace(element);
     if (isType(next, AwkTypes.COMMA)) {
       if (next.getPrevSibling() instanceof PsiWhiteSpace) {
         next.getPrevSibling().delete();
       }
-      if (next.getNextSibling() instanceof PsiWhiteSpace && !AwkUtil.isLocalsMarkingDelimiter(next.getNextSibling())) {
+      if (next.getNextSibling() instanceof PsiWhiteSpace
+          && !AwkUtil.isLocalsMarkingDelimiter(next.getNextSibling())) {
         next.getNextSibling().delete();
       }
       next.delete();
@@ -143,33 +141,5 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
       }
     }
     element.delete();
-  }
-
-  /**
-   *
-   *
-   * <pre><code>a,  b, c</code></pre>
-   *
-   * ->
-   *
-   * <pre><code>a, b, c</code></pre>
-   */
-  private static void normalizeParamsFormatting(AwkParamList paramList) {
-    // The idea is to substitute each whitespace of two spaces with a single space.
-    // Additionally, if we are past locals-marking delimiter, we substitute 2+ spaces with one.
-    boolean pastLocalsMarkingDelimiter = false;
-    for (PsiElement e = paramList.getFirstChild(); e != null; e = e.getNextSibling()) {
-      if (AwkUtil.isLocalsMarkingDelimiter(e)) {
-        pastLocalsMarkingDelimiter = true;
-        continue;
-      }
-      if (e instanceof PsiWhiteSpace) {
-        PsiWhiteSpace psiWhiteSpace = (PsiWhiteSpace) e;
-        int len = psiWhiteSpace.getTextLength();
-        if (pastLocalsMarkingDelimiter && len > 1 || len == 2) {
-          psiWhiteSpace.replace(AwkElementFactory.createWhiteSpaces(e.getProject(), 1));
-        }
-      }
-    }
   }
 }
