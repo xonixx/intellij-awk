@@ -124,21 +124,30 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
   }
 
   private static void deleteWithNeighborCommaAndSpaces(PsiElement element) {
-    PsiElement next = AwkUtil.getNextNotWhitespace(element);
-    if (isType(next, AwkTypes.COMMA)) {
-      if (next.getPrevSibling() instanceof PsiWhiteSpace) {
-        next.getPrevSibling().delete();
+    PsiElement comma = AwkUtil.getNextNotWhitespace(element);
+    if (isType(comma, AwkTypes.COMMA)) {
+      if (comma.getPrevSibling() instanceof PsiWhiteSpace) {
+        comma.getPrevSibling().delete();
       }
-      if (next.getNextSibling() instanceof PsiWhiteSpace
-          && !AwkUtil.isLocalsMarkingDelimiter(next.getNextSibling())) {
-        next.getNextSibling().delete();
+      if (comma.getNextSibling() instanceof PsiWhiteSpace
+          && !AwkUtil.isLocalsMarkingDelimiter(comma.getNextSibling())) {
+        comma.getNextSibling().delete();
       }
-      next.delete();
+      comma.delete();
     } else {
-      PsiElement prev = AwkUtil.getPrevNotWhitespace(element);
-      if (isType(prev, AwkTypes.COMMA)) {
-        prev.delete();
+      comma = AwkUtil.getPrevNotWhitespace(element);
+      if (isType(comma, AwkTypes.COMMA)) {
+        comma.delete();
       }
+    }
+    // add a hack for a very strange case (unusedFunctionParam7_2)
+    if (element.getPrevSibling() == null /* meaning the very first param */
+        && element.getParent().getPrevSibling()
+            instanceof PsiWhiteSpace /* whitespace preceding but outside the param list */
+        && element.getNextSibling() instanceof PsiWhiteSpace
+        && AwkUtil.isLocalsMarkingDelimiter(element.getNextSibling())) {
+      // we need to preserve locals-marking delimiter
+      element.getParent().getPrevSibling().replace(element.getNextSibling());
     }
     element.delete();
   }

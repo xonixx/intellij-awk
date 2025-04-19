@@ -1,0 +1,1 @@
+function f(<caret>unused ,   loc){}
