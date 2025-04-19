@@ -83,14 +83,14 @@ public abstract class AwkFunctionNameMixin
     if_block:
     if (awkParamList != null) {
       PsiElement prevSibling = awkParamList.getPrevSibling();
-      if (AwkUtil.isWhitespaceBeforeLocals(prevSibling)) { // all args are local
+      if (AwkUtil.isLocalsMarkingDelimiter(prevSibling)) { // all args are local
         break if_block;
       }
       PsiElement psiElement = awkParamList.getFirstChild();
       while (psiElement != null) {
         if (psiElement instanceof AwkUserVarName) {
           result.add(psiElement.getText());
-        } else if (AwkUtil.isWhitespaceBeforeLocals(psiElement)) { // locals started
+        } else if (AwkUtil.isLocalsMarkingDelimiter(psiElement)) { // locals started
           break;
         }
         psiElement = psiElement.getNextSibling();

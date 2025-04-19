@@ -8,10 +8,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.searches.ReferencesSearch;
 import com.intellij.util.Query;
 import intellij_awk.psi.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -75,7 +75,7 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
       AwkItem awkItem = AwkUtil.findParent(paramName, AwkItem.class);
       AwkFunctionNameMixin functionName = (AwkFunctionNameMixin) awkItem.getFunctionName();
 
-      if (functionName != null) {
+      if (functionName != null) { // we found the function node
         Query<PsiReference> functionCallRefs = ReferencesSearch.search(functionName);
         for (PsiReference functionCallRef_ : functionCallRefs) {
           AwkReferenceFunction functionCallRef = (AwkReferenceFunction) functionCallRef_;
@@ -90,7 +90,7 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
             List<AwkExpr> exprList = funcCallList.getExprList();
             if (paramIndex < exprList.size()) {
               AwkExpr expr = exprList.get(paramIndex);
-              deleteWithNeighborComma(expr);
+              deleteWithNeighborCommaAndSpaces(expr);
             }
           }
         }
@@ -99,20 +99,22 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
         if (isLastLocalParam) {
           PsiElement possibleLocalsStartMarker = paramName.getPrevSibling();
           if (possibleLocalsStartMarker == null) {
-            // apparently, if there is only one func param, the whitespace goes before the param container
-            possibleLocalsStartMarker = paramName.getParent().getPrevSibling();
+            // apparently, if there is only one func param, the whitespace goes before the param
+            // container
+            possibleLocalsStartMarker = paramList.getPrevSibling();
           }
-          if (AwkUtil.isWhitespaceBeforeLocals(possibleLocalsStartMarker)) {
+          if (AwkUtil.isLocalsMarkingDelimiter(possibleLocalsStartMarker)) {
             possibleLocalsStartMarker.delete();
           }
         }
       }
 
-      deleteWithNeighborComma(paramName);
+      deleteWithNeighborCommaAndSpaces(paramName);
     }
   }
 
-  private static boolean isLastLocalParam(AwkUserVarNameMixin paramName, AwkFunctionNameMixin functionName) {
+  private static boolean isLastLocalParam(
+      AwkUserVarNameMixin paramName, AwkFunctionNameMixin functionName) {
     List<String> parameterNames = functionName.getParameterNames();
     List<String> parameterNamesIncludingLocals = functionName.getParameterNamesIncludingLocals();
     Set<String> locals = new HashSet<>(parameterNamesIncludingLocals);
@@ -121,15 +123,31 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
     return locals.size() == 1 && locals.contains(paramNameS);
   }
 
-  private static void deleteWithNeighborComma(PsiElement element) {
-    PsiElement next = AwkUtil.getNextNotWhitespace(element);
-    if (isType(next, AwkTypes.COMMA)) {
-      next.delete();
-    } else {
-      PsiElement prev = AwkUtil.getPrevNotWhitespace(element);
-      if (isType(prev, AwkTypes.COMMA)) {
-        prev.delete();
+  private static void deleteWithNeighborCommaAndSpaces(PsiElement element) {
+    PsiElement comma = AwkUtil.getNextNotWhitespace(element);
+    if (isType(comma, AwkTypes.COMMA)) {
+      if (comma.getPrevSibling() instanceof PsiWhiteSpace) {
+        comma.getPrevSibling().delete();
       }
+      if (comma.getNextSibling() instanceof PsiWhiteSpace
+          && !AwkUtil.isLocalsMarkingDelimiter(comma.getNextSibling())) {
+        comma.getNextSibling().delete();
+      }
+      comma.delete();
+    } else {
+      comma = AwkUtil.getPrevNotWhitespace(element);
+      if (isType(comma, AwkTypes.COMMA)) {
+        comma.delete();
+      }
+    }
+    // add a hack for a very strange case (unusedFunctionParam7_2)
+    if (element.getPrevSibling() == null /* meaning the very first param */
+        && element.getParent().getPrevSibling()
+            instanceof PsiWhiteSpace /* whitespace preceding but outside the param list */
+        && element.getNextSibling() instanceof PsiWhiteSpace
+        && AwkUtil.isLocalsMarkingDelimiter(element.getNextSibling())) {
+      // we need to preserve locals-marking delimiter
+      element.getParent().getPrevSibling().replace(element.getNextSibling());
     }
     element.delete();
   }
