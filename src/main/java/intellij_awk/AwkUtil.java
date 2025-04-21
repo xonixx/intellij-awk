@@ -277,10 +277,12 @@ public class AwkUtil {
       while (text.startsWith("#")) {
         text = text.substring(1);
       }
-      if (stripLeading) {
-        text = text.stripLeading();
-      } else if (text.startsWith(" ")) {
-        text = text.substring(1);
+      if (e instanceof PsiComment) {
+        if (stripLeading) {
+          text = text.stripLeading();
+        } else if (text.startsWith(" ")) {
+          text = text.substring(1);
+        }
       }
       sb.insert(0, text);
     }

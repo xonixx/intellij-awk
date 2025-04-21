@@ -119,10 +119,16 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
     String doc = doTest(code, docString);
     // make sure we strip all leading '#'
     assertFalse(doc, doc.contains("#"));
+    // make sure we handle newlines properly
+    assertFalse(doc, doc.contains("\n\n\n"));
   }
 
   public void testFunc4() {
     testFuncComment("# doc string\nfunction f(){}\nBEGIN { f<caret>() }", "doc string");
+  }
+
+  public void testFunc4_2() {
+    testFuncComment("\n\n\n# doc string\nfunction f(){}\nBEGIN { f<caret>() }", "doc string");
   }
 
   public void testFunc4_1() {
