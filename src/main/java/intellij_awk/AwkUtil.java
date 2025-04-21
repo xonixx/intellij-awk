@@ -266,7 +266,7 @@ public class AwkUtil {
   }
 
   @NotNull
-  public static String getDocStringFromCommentBefore(PsiElement psiElement) {
+  public static String getDocStringFromCommentBefore(PsiElement psiElement, boolean stripLeading) {
     if (psiElement == null) {
       return "";
     }
@@ -275,7 +275,12 @@ public class AwkUtil {
     while ((e = e.getPrevSibling()) instanceof PsiComment || isType(e, AwkTypes.NEWLINE)) {
       String text = e.getText();
       while (text.startsWith("#")) {
-        text = text.substring(1).stripLeading();
+        text = text.substring(1);
+      }
+      if (stripLeading) {
+        text = text.stripLeading();
+      } else if (text.startsWith(" ")) {
+        text = text.substring(1);
       }
       sb.insert(0, text);
     }

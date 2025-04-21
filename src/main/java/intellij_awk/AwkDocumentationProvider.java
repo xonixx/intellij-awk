@@ -54,9 +54,13 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
               .append(awkFunctionName.getSignatureString())
               .append(DEFINITION_END);
       AwkItem awkFuncItem = AwkUtil.findParent(awkFunctionName, AwkItem.class);
-      String docStr = AwkUtil.getDocStringFromCommentBefore(awkFuncItem);
+      String docStr = AwkUtil.getDocStringFromCommentBefore(awkFuncItem,false);
       if (!docStr.isBlank()) {
-        doc.append(CONTENT_START).append(docStr).append(CONTENT_END);
+        doc.append(CONTENT_START)
+            .append("<pre>")
+            .append(docStr)
+            .append("</pre>")
+            .append(CONTENT_END);
       }
       return doc.toString();
     } else if (element instanceof AwkBuiltinVarName) {
@@ -152,7 +156,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
 
     PsiElement psiElemWithComment = AwkUtil.findParent(awkBuiltInVar, AwkStatement.class);
 
-    return AwkUtil.getDocStringFromCommentBefore(psiElemWithComment);
+    return AwkUtil.getDocStringFromCommentBefore(psiElemWithComment,true);
   }
 
   @Nullable
@@ -172,7 +176,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       return null;
     }
 
-    return AwkUtil.getDocStringFromCommentBefore(awkItemOfFunction);
+    return AwkUtil.getDocStringFromCommentBefore(awkItemOfFunction,true);
   }
 
   private AwkFile getStdLibFile(Project project) {
