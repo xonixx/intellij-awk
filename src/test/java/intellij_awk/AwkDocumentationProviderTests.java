@@ -114,8 +114,32 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
     doTest("function a(b,c,    d,e) {\nprint\n}\n<caret>a(7) { exit 7 }", "function a(b, c)");
   }
 
+  // testing func comments
+  private void testFuncComment(String code, String... docString) {
+    String doc = doTest(code, docString);
+    // make sure we strip all leading '#'
+    assertFalse(doc, doc.contains("#"));
+  }
+
   public void testFunc4() {
-    doTest("# doc string\nfunction f(){}\nBEGIN { f<caret>() }", "doc string");
+    testFuncComment("# doc string\nfunction f(){}\nBEGIN { f<caret>() }", "doc string");
+  }
+
+  public void testFunc4_1() {
+    doTest("# doc string\n\nfunction f(){}\nBEGIN { f<caret>() }");
+  }
+
+  public void testFunc5() {
+    testFuncComment(
+        "# doc string\n# doc string2\nfunction f(){}\nBEGIN { f<caret>() }",
+        "doc string",
+        "doc string2");
+  }
+  public void testFunc6() {
+    testFuncComment(
+        "#\n# doc string\n### doc string2\n#\nfunction f(){}\nBEGIN { f<caret>() }",
+        "doc string",
+        "doc string2");
   }
 
   public void testStmtExit1() {
@@ -228,7 +252,7 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
     AwkFunctions.gawkFunctions.forEach(awkFunctionChecker);
   }
 
-  private void doTest(String code, String... docStringMustContain) {
+  private String doTest(String code, String... docStringMustContain) {
     myFixture.configureByText("a.awk", code);
     PsiElement docElement =
         DocumentationManager.getInstance(getProject())
@@ -245,6 +269,7 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
         docStringMustContain.length == 0
             ? docString == null
             : Arrays.stream(docStringMustContain).allMatch(removeTags(docString)::contains));
+    return docString;
   }
 
   private String removeTags(String docString) {

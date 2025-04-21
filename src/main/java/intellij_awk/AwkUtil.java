@@ -274,7 +274,7 @@ public class AwkUtil {
     PsiElement e = psiElement;
     while ((e = e.getPrevSibling()) instanceof PsiComment || isType(e, AwkTypes.NEWLINE)) {
       String text = e.getText();
-      if (text.startsWith("#")) {
+      while (text.startsWith("#")) {
         text = text.substring(1).stripLeading();
       }
       sb.insert(0, text);

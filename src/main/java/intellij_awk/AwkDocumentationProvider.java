@@ -47,11 +47,18 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       }
     } else if (element instanceof AwkFunctionNameMixin) {
       AwkFunctionNameMixin awkFunctionName = (AwkFunctionNameMixin) element;
-      return DEFINITION_START
-          + "function "
-          + awkFunctionName.getName()
-          + awkFunctionName.getSignatureString()
-          + DEFINITION_END; // TODO add function comment as doc
+      StringBuilder doc =
+          new StringBuilder()
+              .append(DEFINITION_START + "function ")
+              .append(awkFunctionName.getName())
+              .append(awkFunctionName.getSignatureString())
+              .append(DEFINITION_END);
+      AwkItem awkFuncItem = AwkUtil.findParent(awkFunctionName, AwkItem.class);
+      String docStr = AwkUtil.getDocStringFromCommentBefore(awkFuncItem);
+      if (!docStr.isBlank()) {
+        doc.append(CONTENT_START).append(docStr).append(CONTENT_END);
+      }
+      return doc.toString();
     } else if (element instanceof AwkBuiltinVarName) {
       AwkBuiltinVarName awkBuiltinVarName = (AwkBuiltinVarName) element;
       {
@@ -171,8 +178,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
   private AwkFile getStdLibFile(Project project) {
     if (stdLibFile == null) {
       String text;
-      try {
-        InputStream stream = getResourceAsStream(STD_LIB_FILE_NAME);
+      try (InputStream stream = getResourceAsStream(STD_LIB_FILE_NAME)) {
         if (stream != null) {
           text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
         } else {
