@@ -54,7 +54,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
               .append(awkFunctionName.getSignatureString())
               .append(DEFINITION_END);
       AwkItem awkFuncItem = AwkUtil.findParent(awkFunctionName, AwkItem.class);
-      String docStr = AwkUtil.getDocStringFromCommentBefore(awkFuncItem,false);
+      String docStr = getDocStringFromCommentBefore(awkFuncItem, false);
       if (!docStr.isBlank()) {
         doc.append(CONTENT_START)
             .append("<pre>")
@@ -156,7 +156,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
 
     PsiElement psiElemWithComment = AwkUtil.findParent(awkBuiltInVar, AwkStatement.class);
 
-    return AwkUtil.getDocStringFromCommentBefore(psiElemWithComment,true);
+    return getDocStringFromCommentBefore(psiElemWithComment, true);
   }
 
   @Nullable
@@ -176,7 +176,7 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       return null;
     }
 
-    return AwkUtil.getDocStringFromCommentBefore(awkItemOfFunction,true);
+    return getDocStringFromCommentBefore(awkItemOfFunction, true);
   }
 
   private AwkFile getStdLibFile(Project project) {
@@ -244,6 +244,32 @@ public class AwkDocumentationProvider extends AbstractDocumentationProvider {
       return contextElement;
     }
     return super.getCustomDocumentationElement(editor, file, contextElement, targetOffset);
+  }
+
+  @NotNull
+  public static String getDocStringFromCommentBefore(PsiElement psiElement, boolean stripLeading) {
+    if (psiElement == null) {
+      return "";
+    }
+    StringBuilder sb = new StringBuilder();
+    PsiElement e = psiElement;
+    while ((e = e.getPrevSibling()) instanceof PsiComment
+        || AwkUtil.isType(e, AwkTypes.NEWLINE)
+            && e.getPrevSibling() instanceof PsiComment /* don't accept "detached" comments */) {
+      String text = e.getText();
+      while (text.startsWith("#")) {
+        text = text.substring(1);
+      }
+      if (e instanceof PsiComment) {
+        if (stripLeading) {
+          text = text.stripLeading();
+        } else if (text.startsWith(" ")) {
+          text = text.substring(1);
+        }
+      }
+      sb.insert(0, text);
+    }
+    return sb.toString();
   }
 
   @Nullable

@@ -264,28 +264,4 @@ public class AwkUtil {
     ASTNode node = psiElement.getNode();
     return node != null && elementType.equals(node.getElementType());
   }
-
-  @NotNull
-  public static String getDocStringFromCommentBefore(PsiElement psiElement, boolean stripLeading) {
-    if (psiElement == null) {
-      return "";
-    }
-    StringBuilder sb = new StringBuilder();
-    PsiElement e = psiElement;
-    while ((e = e.getPrevSibling()) instanceof PsiComment || isType(e, AwkTypes.NEWLINE)) {
-      String text = e.getText();
-      while (text.startsWith("#")) {
-        text = text.substring(1);
-      }
-      if (e instanceof PsiComment) {
-        if (stripLeading) {
-          text = text.stripLeading();
-        } else if (text.startsWith(" ")) {
-          text = text.substring(1);
-        }
-      }
-      sb.insert(0, text);
-    }
-    return sb.toString();
-  }
 }

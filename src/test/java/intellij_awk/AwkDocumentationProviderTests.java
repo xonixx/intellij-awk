@@ -99,7 +99,7 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
   }
 
   public void testGlobalVarNoDoc1() {
-    doTest("Var<caret> {}");
+    assertNull(doTest("Var<caret> {}"));
   }
 
   public void testFunc1() {
@@ -132,7 +132,8 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
   }
 
   public void testFunc4_1() {
-    doTest("# doc string\n\nfunction f(){}\nBEGIN { f<caret>() }");
+    String doc = doTest("# doc string\n\nfunction f(){}\nBEGIN { f<caret>() }");
+    assertFalse(doc, doc.contains("doc string"));
   }
 
   public void testFunc5() {
@@ -141,6 +142,7 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
         "doc string",
         "doc string2");
   }
+
   public void testFunc6() {
     testFuncComment(
         "#\n# doc string\n### doc string2\n#\nfunction f(){}\nBEGIN { f<caret>() }",
@@ -272,14 +274,12 @@ public class AwkDocumentationProviderTests extends BasePlatformTestCase {
             + String.join("|", docStringMustContain)
             + "\n--- Actual:\n"
             + docString,
-        docStringMustContain.length == 0
-            ? docString == null
-            : Arrays.stream(docStringMustContain).allMatch(removeTags(docString)::contains));
+        Arrays.stream(docStringMustContain).allMatch(removeTags(docString)::contains));
     return docString;
   }
 
   private String removeTags(String docString) {
-    return Jsoup.parse(docString).text();
+    return docString == null ? "" : Jsoup.parse(docString).text();
   }
 
   private PsiElement getOriginalElement() {
