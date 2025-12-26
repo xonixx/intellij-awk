@@ -3,6 +3,7 @@ package intellij_awk;
 import com.intellij.application.options.CodeStyleAbstractConfigurable;
 import com.intellij.application.options.CodeStyleAbstractPanel;
 import com.intellij.application.options.TabbedLanguageCodeStylePanel;
+import com.intellij.lang.Language;
 import com.intellij.psi.codeStyle.CodeStyleConfigurable;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettingsProvider;
@@ -17,12 +18,6 @@ public class AwkCodeStyleSettingsProvider extends CodeStyleSettingsProvider {
     return new AwkCodeStyleSettings(settings);
   }
 
-  @Nullable
-  @Override
-  public String getConfigurableDisplayName() {
-    return AwkLanguage.INSTANCE.getDisplayName();
-  }
-
   @NotNull
   public CodeStyleConfigurable createConfigurable(
       @NotNull CodeStyleSettings settings, @NotNull CodeStyleSettings modelSettings) {
@@ -33,6 +28,11 @@ public class AwkCodeStyleSettingsProvider extends CodeStyleSettingsProvider {
         return new AwkCodeStyleMainPanel(getCurrentSettings(), settings);
       }
     };
+  }
+
+  @Override
+  public @Nullable Language getLanguage() {
+    return AwkLanguage.INSTANCE;
   }
 
   private static class AwkCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
