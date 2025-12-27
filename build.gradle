@@ -25,6 +25,7 @@ task lexer(type: org.jetbrains.grammarkit.tasks.GenerateLexer) {
 
 task parser(type: org.jetbrains.grammarkit.tasks.GenerateParser) {
 //    dependsOn lexer
+    mustRunAfter lexer
 
     source = "src/main/java/intellij_awk/Awk.bnf"
     targetRoot = 'src/main/gen'
@@ -318,6 +319,7 @@ task checkJavaVersion() {
 }
 
 compileJava.dependsOn checkJavaVersion
+compileJava.mustRunAfter parser
 
 test {
     testLogging {
