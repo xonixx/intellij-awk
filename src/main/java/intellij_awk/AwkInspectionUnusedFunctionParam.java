@@ -77,7 +77,7 @@ public class AwkInspectionUnusedFunctionParam extends LocalInspectionTool {
 
       if (functionName != null) { // we found the function node
         Query<PsiReference> functionCallRefs = ReferencesSearch.search(functionName);
-        for (PsiReference functionCallRef_ : functionCallRefs) {
+        for (PsiReference functionCallRef_ : functionCallRefs.findAll()) {
           AwkReferenceFunction functionCallRef = (AwkReferenceFunction) functionCallRef_;
           AwkFunctionCallNameMixin functionCallName =
               (AwkFunctionCallNameMixin) functionCallRef.getElement();

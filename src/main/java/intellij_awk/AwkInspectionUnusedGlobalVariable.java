@@ -62,7 +62,7 @@ public class AwkInspectionUnusedGlobalVariable extends LocalInspectionTool {
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
       PsiElement psiElement = descriptor.getPsiElement();
       ReferencesSearch.search(psiElement)
-          .forEach(
+          .findAll().forEach(
               (Consumer<? super PsiReference>)
                   psiReference -> deleteDeclarationStatement(psiReference.getElement()));
       deleteDeclarationStatement(psiElement);

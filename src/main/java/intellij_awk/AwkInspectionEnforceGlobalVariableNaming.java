@@ -53,7 +53,7 @@ public class AwkInspectionEnforceGlobalVariableNaming extends LocalInspectionToo
       AwkUserVarNameMixin userVarNameMixin = (AwkUserVarNameMixin) psiElement;
       String newName = Util.lowerUnderscoreToCamelCase(userVarNameMixin.getName());
       ReferencesSearch.search(psiElement)
-          .forEach(
+          .findAll().forEach(
               (Consumer<? super PsiReference>)
                   psiReference -> psiReference.handleElementRename(newName));
       userVarNameMixin.setName(newName);

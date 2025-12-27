@@ -42,7 +42,7 @@ public class AwkInspectionUnusedFunction extends LocalInspectionTool {
 
   private boolean existNonRecursiveReferences(AwkFunctionNameMixin functionName) {
     Query<PsiReference> functionReferences = ReferencesSearch.search(functionName);
-    for (PsiReference functionReference : functionReferences) {
+    for (PsiReference functionReference : functionReferences.findAll()) {
       if (!isRecursive(functionReference.getElement(), functionName)) {
         return true;
       }
