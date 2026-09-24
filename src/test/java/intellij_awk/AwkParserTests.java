@@ -53,6 +53,10 @@ public class AwkParserTests extends ParsingTestCaseBase {
     ensureOnlyParsingNoErrors();
   }
 
+  public void testExponentiationOperators() {
+    ensureOnlyParsingNoErrors();
+  }
+
   public void testDeleteArr() {
     ensureOnlyParsingNoErrors();
   }
