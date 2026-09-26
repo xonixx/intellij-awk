@@ -39,7 +39,7 @@
         <gotoSymbolContributor implementation="intellij_awk.AwkChooseByNameContributorGlobalVars"/>
 
         <lang.psiStructureViewFactory language="AWK" implementationClass="intellij_awk.AwkStructureViewFactory"/>
-        <fileStructureGroupRuleProvider implementation="intellij_awk.AwkFileStructureGroupRuleProvider"/>
+        <fileStructureGroupRuleProvider implementation="intellij_awk.AwkFileStructureGroupRuleProvider" order="last"/>
         <lang.formatter language="AWK" implementationClass="intellij_awk.AwkFormattingModelBuilder"/>
         <codeStyleSettingsProvider implementation="intellij_awk.AwkCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider implementation="intellij_awk.AwkCodeStyleSettingsProviderLanguage"/>
