@@ -56,6 +56,10 @@ public class AwkLexerTests extends LexerTestCase {
     doFileTest("awk");
   }
 
+  public void testExponentiationOperators() {
+    doFileTest("awk");
+  }
+
   @Override
   protected Lexer createLexer() {
     return new AwkLexerAdapter();

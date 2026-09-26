@@ -88,6 +88,7 @@ WHITE_SPACE=[ \t]+
   "+="                     { yybegin(YYINITIAL); return ADD_ASSIGN; }
   "-="                     { yybegin(YYINITIAL); return SUB_ASSIGN; }
   "*="                     { yybegin(YYINITIAL); return MUL_ASSIGN; }
+  "**="                    { yybegin(YYINITIAL); return POW_ASSIGN; }
   "/="                     { yybegin(YYINITIAL); return DIV_ASSIGN; }
   "%="                     { yybegin(YYINITIAL); return MOD_ASSIGN; }
   "^="                     { yybegin(YYINITIAL); return POW_ASSIGN; }
@@ -115,6 +116,7 @@ WHITE_SPACE=[ \t]+
   "+"                      { yybegin(YYINITIAL); return ADD; }
   "-"                      { yybegin(YYINITIAL); return SUB; }
   "*"                      { yybegin(YYINITIAL); return MUL; }
+  "**"                     { yybegin(YYINITIAL); return POW; }
   "/"                      { yybegin(YYINITIAL); return DIV; }
   "%"                      { yybegin(YYINITIAL); return MOD; }
   "^"                      { yybegin(YYINITIAL); return POW; }
