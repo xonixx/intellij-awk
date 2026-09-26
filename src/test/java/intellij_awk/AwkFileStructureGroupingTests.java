@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertNotEquals;
+
 public class AwkFileStructureGroupingTests extends BasePlatformTestCase {
   public void testGroupsUsagesByFunctionAndBeginEndBlock() {
     myFixture.configureByText(
@@ -52,7 +54,7 @@ public class AwkFileStructureGroupingTests extends BasePlatformTestCase {
     assertEquals(Integer.valueOf(1), groupCounts.get("<file>"));
     assertEquals(5, groupCounts.size());
     assertEquals(2, beginGroups.size());
-    assertFalse(beginGroups.get(0).equals(beginGroups.get(1)));
+    assertNotEquals(beginGroups.get(0), beginGroups.get(1));
     assertTrue(beginGroups.get(0).compareTo(beginGroups.get(1)) != 0);
   }
 }

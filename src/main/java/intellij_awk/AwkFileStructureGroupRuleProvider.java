@@ -9,7 +9,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.usages.PsiElementUsageGroupBase;
 import com.intellij.usages.Usage;
 import com.intellij.usages.UsageGroup;
-import com.intellij.usages.UsageInfo2UsageAdapter;
 import com.intellij.usages.UsageTarget;
 import com.intellij.usages.UsageView;
 import com.intellij.usages.impl.FileStructureGroupRuleProvider;
@@ -34,24 +33,25 @@ public class AwkFileStructureGroupRuleProvider implements FileStructureGroupRule
     @Override
     protected @Nullable UsageGroup getParentGroupFor(
         @NotNull Usage usage, UsageTarget @NotNull [] targets) {
-      if (!(usage instanceof PsiElementUsage)) return null;
-
-      PsiElement element = ((PsiElementUsage) usage).getElement();
-      if (element == null || !element.isValid()) return null;
-      PsiFile file = element.getContainingFile();
-      if (!(file instanceof AwkFile)) return null;
-
-      PsiElement position = element;
-      if (usage instanceof UsageInfo2UsageAdapter) {
-        int offset = ((UsageInfo2UsageAdapter) usage).getUsageInfo().getNavigationOffset();
-        if (offset >= 0 && offset < file.getTextLength()) {
-          PsiElement atOffset = file.findElementAt(offset);
-          if (atOffset != null) position = atOffset;
-        }
+      if (!(usage instanceof PsiElementUsage)) {
+        return null;
       }
 
+      PsiElement element = ((PsiElementUsage) usage).getElement();
+      if (element == null || !element.isValid()) {
+        return null;
+      }
+      PsiFile file = element.getContainingFile();
+      if (!(file instanceof AwkFile)) {
+        return null;
+      }
+
+      PsiElement position = element;
+
       AwkItem item = PsiTreeUtil.getParentOfType(position, AwkItem.class, false);
-      if (item == null) return null;
+      if (item == null) {
+        return null;
+      }
 
       PsiElement owner = item.getFunctionName();
       if (owner == null) {
