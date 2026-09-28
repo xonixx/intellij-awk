@@ -58,8 +58,8 @@ public class AwkFileStructureGroupingTests extends BasePlatformTestCase {
         "a.awk",
         "function tar<caret>get() {}\n"
             + "BEGIN { target() }\n"
-            + "function alpha() { target(); target() }\n"
-            + "function beta() { target() }\n"
+            + "function alpha(arg1, arg2,    local1, local2) { target(); target() }\n"
+            + "function beta(    local) { target() }\n"
             + "BEGIN { target() }\n"
             + "END { target() }\n"
             + "{ target() }\n");
@@ -85,7 +85,7 @@ public class AwkFileStructureGroupingTests extends BasePlatformTestCase {
       if (name.equals("BEGIN")) beginGroups.add(groups.get(0));
     }
 
-    assertEquals(Integer.valueOf(2), groupCounts.get("alpha()"));
+    assertEquals(Integer.valueOf(2), groupCounts.get("alpha(arg1, arg2)"));
     assertEquals(Integer.valueOf(1), groupCounts.get("beta()"));
     assertEquals(Integer.valueOf(2), groupCounts.get("BEGIN"));
     assertEquals(Integer.valueOf(1), groupCounts.get("END"));

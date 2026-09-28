@@ -3,6 +3,7 @@ package intellij_awk.psi;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.stubs.IStubElementType;
 import intellij_awk.AwkIcons;
 import intellij_awk.AwkUtil;
@@ -84,6 +85,15 @@ public abstract class AwkFunctionNameMixin
     if (awkParamList != null) {
       PsiElement prevSibling = awkParamList.getPrevSibling();
       if (AwkUtil.isLocalsMarkingDelimiter(prevSibling)) { // all args are local
+        break if_block;
+      }
+      while ((prevSibling = prevSibling.getPrevSibling()) instanceof PsiWhiteSpace); // skip prev whitespaces
+      if (AwkUtil.isLineContinuation(prevSibling)) { // all args are local
+        /*
+        here we cover the case
+        function(\
+        {space}{space}a, b)
+         */
         break if_block;
       }
       PsiElement psiElement = awkParamList.getFirstChild();

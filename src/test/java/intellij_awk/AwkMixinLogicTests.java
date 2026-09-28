@@ -2,6 +2,7 @@ package intellij_awk;
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import intellij_awk.psi.AwkElementFactory;
+import intellij_awk.psi.AwkFunctionNameMixin;
 import intellij_awk.psi.AwkUserVarNameMixin;
 
 public class AwkMixinLogicTests extends BasePlatformTestCase {
@@ -19,6 +20,41 @@ public class AwkMixinLogicTests extends BasePlatformTestCase {
   private void doTestInInitContext(boolean expectedResult, String code) {
     AwkUserVarNameMixin awkUserVarNameMixin = getUserVarName(code);
     assertEquals(expectedResult, awkUserVarNameMixin.isInsideInitializingContext());
+  }
+
+  private void doTestFunctionSignature(String code, String expectedSignature) {
+    AwkFunctionNameMixin functionName =
+        AwkElementFactory.createAwkPsiElement(
+            myFixture.getProject(), code, AwkFunctionNameMixin.class);
+    assertNotNull(functionName);
+    assertNull(functionName.getStub());
+    assertEquals(expectedSignature, functionName.getSignatureString());
+  }
+
+  public void testFunctionSignatureWithoutParameters() {
+    doTestFunctionSignature("function f() {}", "()");
+  }
+
+  public void testFunctionSignatureWithParameters() {
+    doTestFunctionSignature("function f(a,b) {}", "(a, b)");
+  }
+
+  public void testFunctionSignatureExcludesLocals() {
+    doTestFunctionSignature("function f(a,b,   local1,local2) {}", "(a, b)");
+  }
+
+  public void testFunctionSignatureExcludesLocals2() {
+    doTestFunctionSignature("function f(a,b,\\\n" +
+            "local1,local2) {}", "(a, b)");
+  }
+
+  public void testFunctionSignatureWithOnlyLocals() {
+    doTestFunctionSignature("function f(   local1,local2) {}", "()");
+  }
+
+  public void testFunctionSignatureWithOnlyLocals2() {
+    doTestFunctionSignature("function f(\\\n" +
+            "  local1,local2) {}", "()");
   }
 
   public void test1() {
