@@ -80,17 +80,5 @@ public class AwkFileStructureGroupRuleProvider implements FileStructureGroupRule
       }
       return super.getText(view);
     }
-
-    @Override
-    public int compareTo(@NotNull UsageGroup other) {
-      int byName = super.compareTo(other);
-      if (byName != 0 || !(other instanceof AwkStructureUsageGroup)) return byName;
-
-      NavigatablePsiElement element = getElement();
-      NavigatablePsiElement otherElement = ((AwkStructureUsageGroup) other).getElement();
-      return element == null || otherElement == null
-          ? 0
-          : Integer.compare(element.getTextOffset(), otherElement.getTextOffset());
-    }
   }
 }

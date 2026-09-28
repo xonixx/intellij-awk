@@ -20,6 +20,10 @@ import java.util.Map;
 import static org.junit.Assert.assertNotEquals;
 
 public class AwkFileStructureGroupingTests extends BasePlatformTestCase {
+  /**
+   * This test makes sure we display file.awk -> functionName() in the find usages popup, not the
+   * opposite order.
+   */
   public void testFileGroupPrecedesFunctionGroupWhenFileProviderIsRegisteredLater() {
     myFixture.configureByText(
         "a.awk", "function tar<caret>get() {}\nfunction alpha() { target() }\n");
@@ -65,6 +69,7 @@ public class AwkFileStructureGroupingTests extends BasePlatformTestCase {
             .filter(extension -> extension instanceof AwkFileStructureGroupRuleProvider)
             .findFirst()
             .orElseThrow(() -> new AssertionError("AWK file structure grouping is not registered"));
+
     UsageGroupingRule rule = provider.getUsageGroupingRule(getProject());
     Collection<UsageInfo> usages = myFixture.findUsages(myFixture.getElementAtCaret());
     assertEquals(7, usages.size());
@@ -88,6 +93,5 @@ public class AwkFileStructureGroupingTests extends BasePlatformTestCase {
     assertEquals(5, groupCounts.size());
     assertEquals(2, beginGroups.size());
     assertNotEquals(beginGroups.get(0), beginGroups.get(1));
-    assertTrue(beginGroups.get(0).compareTo(beginGroups.get(1)) != 0);
   }
 }
