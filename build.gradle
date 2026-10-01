@@ -60,7 +60,7 @@ Find more info at <a href="https://github.com/xonixx/intellij-awk">https://githu
     <b>v0.4.8</b>
     <a href="https://github.com/xonixx/intellij-awk/milestone/30?closed=1">GitHub issues</a>
     <ul>
-        <li>Support `**` for exponentiation</li>
+        <li>Support <code>**</code> for exponentiation</li>
         <li>Show methods in Find Usages</li>
     </ul>
 </p>
